@@ -1,0 +1,18 @@
+{
+  "text": "culling_rule.jjkcraft.curse_tithe",
+  "order": 21,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "curse"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "scale": "curse"
+        }
+      ]
+    }
+  ]
+}

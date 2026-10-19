@@ -1,0 +1,52 @@
+{
+  "name": "curse.jjkcraft.thorn_matriarch",
+  "description": "curse.jjkcraft.thorn_matriarch.desc",
+  "lore": "curse.jjkcraft.thorn_matriarch.lore",
+  "entity": "jjkcraft:thorn_matriarch",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 70,
+    "armor": 6,
+    "speed": 0.2,
+    "attack_damage": 7,
+    "ce_capacity": 150,
+    "drain_on_hit": 6,
+    "knockback_resistance": 0.5
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 6,
+    "min_fear": 30,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:arrow": 0.5,
+    "minecraft:in_fire": 1.5,
+    "minecraft:on_fire": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/thorn_matriarch",
+    "texture": "jjkcraft:textures/entity/thorn_matriarch.png",
+    "animation": "jjkcraft:entity/thorn_matriarch"
+  },
+  "mechanic": "jjkcraft:thorn",
+  "parameters": {
+    "root_range": 14,
+    "root_windup": 22,
+    "bind_ticks": 40,
+    "root_damage": 5,
+    "root_lifetime": 200,
+    "root_interval": 120,
+    "thorns_fraction": 0.2,
+    "day_bonus": 0.6,
+    "hedge_half_width": 3
+  },
+  "codex": {
+    "color": "#B8333F",
+    "unlock_kills": 4
+  }
+}

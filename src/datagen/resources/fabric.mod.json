@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "jjkcraft-datagen",
+  "version": "1.0.0",
+  "name": "Jujutsu Craft data generation",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": ["com.jjkcraft.datagen.JjkCraftDataGenerator"]
+  },
+  "depends": {
+    "jjkcraft": "*"
+  }
+}

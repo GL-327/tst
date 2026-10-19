@@ -1,0 +1,30 @@
+{
+  "name": "domain.jjkcraft.chimera_shadow_garden",
+  "description": "domain.jjkcraft.chimera_shadow_garden.desc",
+  "grade": "jjkcraft:grade_1",
+  "cast_cost": 150,
+  "upkeep": 22,
+  "radius": 16,
+  "clash_priority": 1,
+  "behaviors": [
+    {
+      "type": "jjkcraft:summon_hunters",
+      "count": 4,
+      "respawn_interval": 60,
+      "damage": 4,
+      "health": 14
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "minecraft:darkness",
+      "duration": 60,
+      "interval": 40
+    }
+  ],
+  "visuals": {
+    "color": "#8F6CC0",
+    "secondary": "#1A1424",
+    "dome": "#0B0910",
+    "ambience": "shadows"
+  }
+}

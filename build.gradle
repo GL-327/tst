@@ -1,0 +1,191 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	maven {
+		name = 'GeckoLib'
+		url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+		content { includeGroup 'com.geckolib' }
+	}
+	maven {
+		name = 'Shedaniel'
+		url = 'https://maven.shedaniel.me/'
+		content { includeGroupAndSubgroups 'me.shedaniel' }
+	}
+	maven {
+		name = 'TerraformersMC'
+		url = 'https://maven.terraformersmc.com/releases/'
+		content { includeGroup 'com.terraformersmc' }
+	}
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content { includeGroup 'maven.modrinth' }
+	}
+}
+
+// Logical modules from the brief map to Loom source sets (see docs/DESIGN.md section 2):
+//   main = jjkcraft-common, client = jjkcraft-client, datagen = jjkcraft-datagen, gametest = jjkcraft-gametest.
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"jjkcraft" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+	runs.configureEach {
+		ideConfigGenerated = true
+	}
+}
+
+fabricApi {
+	configureDataGeneration {
+		createSourceSet = true
+		modId = 'jjkcraft-datagen'
+		client = true
+		strictValidation = true
+	}
+
+	configureTests {
+		createSourceSet = true
+		modId = 'jjkcraft-gametest'
+		enableGameTests = true
+		enableClientGameTests = true
+		// Accepting the Minecraft EULA is the user's decision. Leave this false unless you have read
+		// https://aka.ms/MinecraftEULA and agree to it. See README "Running".
+		eula = false
+	}
+}
+
+// Server GameTests write a JUnit-style report so results can be read without scanning the log.
+loom.runs.named("gameTest") {
+	vmArg "-Dfabric-api.gametest.report-file=${layout.buildDirectory.file('reports/gametest/server.xml').get().asFile.absolutePath}"
+}
+
+// The -PwithCompat value as lower-case jar name prefixes: null without the flag, empty for every jar.
+def compatMods = providers.gradleProperty('withCompat')
+		.map { it.split(',')*.trim().findAll().collect { it.toLowerCase(Locale.ROOT) } }
+		.getOrNull()
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	implementation "com.geckolib:geckolib-fabric-${project.minecraft_version}:${project.geckolib_version}"
+	implementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
+
+	// Mod Menu is for development only: the config screen hook compiles against it, and it is
+	// present in dev runs, but the mod never requires it.
+	compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	localRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// Jade and Iris integrations compile against their APIs; the classes that use them load only
+	// when those mods are installed (client/compat), and neither is present in normal dev runs.
+	compileOnly "maven.modrinth:jade:${project.jade_version}"
+	compileOnly "maven.modrinth:iris:${project.iris_version}"
+
+	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+
+	// Compatibility runs only (docs/TEST_REPORT.md, "Compatibility runs"): -PwithCompat adds every jar
+	// in compat/mods/ to development runs; -PwithCompat=sodium,iris adds only the jars whose names
+	// start with those words. The jars are downloaded by hand and are never committed or shipped.
+	if (compatMods != null) {
+		localRuntime fileTree('compat/mods') { include '*.jar' }.filter { jar ->
+			compatMods.isEmpty() || compatMods.any { jar.name.toLowerCase(Locale.ROOT).startsWith(it) }
+		}
+	}
+}
+
+// With -PwithCompat, -PcompatShaders=<file in compat/shaderpacks/> turns that pack on through Iris
+// for the client GameTest. A compat run without it turns shaders off, so one run's choice never
+// carries into the next.
+if (compatMods != null) {
+	def shaderPack = providers.gradleProperty('compatShaders').getOrElse('')
+	def packsDir = file('compat/shaderpacks')
+	def runDir = layout.buildDirectory.dir('run/clientGameTest').get().asFile
+	def irisConfig = tasks.register('compatIrisConfig') {
+		inputs.property 'shaderPack', shaderPack
+		outputs.upToDateWhen { false }
+		// The GameTest run directory is wiped before each run; write into the fresh one.
+		mustRunAfter 'deleteGameTestRunDir'
+		doLast {
+			def config = new File(runDir, 'config/iris.properties')
+			config.parentFile.mkdirs()
+			if (shaderPack.isEmpty()) {
+				config.text = "enableShaders=false\n"
+			} else {
+				def pack = new File(packsDir, shaderPack)
+				if (!pack.isFile()) {
+					throw new GradleException("compatShaders: ${pack} does not exist")
+				}
+
+				def target = new File(runDir, "shaderpacks/${shaderPack}")
+				target.parentFile.mkdirs()
+				java.nio.file.Files.copy(pack.toPath(), target.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+				config.text = "enableShaders=true\nshaderPack=${shaderPack}\n"
+			}
+		}
+	}
+
+	tasks.named('runClientGameTest') { dependsOn irisConfig }
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+	withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+	it.options.encoding = 'UTF-8'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+}
+
+
+// The sample data and resource packs, zipped for the release (see samples/README.md).
+def samplePackTask = tasks.register('samplePack', Zip) {
+	from 'samples/jjkcraft-sample-pack'
+	archiveFileName = "jjkcraft-sample-pack-${project.version}.zip"
+	destinationDirectory = layout.buildDirectory.dir('distributions')
+}
+
+def sampleResourcesTask = tasks.register('sampleResources', Zip) {
+	from 'samples/jjkcraft-sample-resources'
+	archiveFileName = "jjkcraft-sample-resources-${project.version}.zip"
+	destinationDirectory = layout.buildDirectory.dir('distributions')
+}
+
+tasks.named('assemble') {
+	dependsOn samplePackTask, sampleResourcesTask
+}

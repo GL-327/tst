@@ -1,0 +1,41 @@
+{
+  "text": "culling_rule.jjkcraft.leader_mark",
+  "order": 22,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "leader"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "scale": "victim"
+        }
+      ]
+    },
+    {
+      "when": {
+        "type": "jjkcraft:timer",
+        "days": 1
+      },
+      "then": [
+        {
+          "type": "jjkcraft:reveal_leader",
+          "seconds": 300
+        }
+      ]
+    },
+    {
+      "when": {
+        "type": "jjkcraft:added"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:reveal_leader",
+          "seconds": 300
+        }
+      ]
+    }
+  ]
+}

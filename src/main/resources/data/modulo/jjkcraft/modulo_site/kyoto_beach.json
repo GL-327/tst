@@ -1,0 +1,22 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -330,
+    64,
+    200
+  ],
+  "radius": 24,
+  "layout": "beach",
+  "name": "site.jjkcraft.modulo.kyoto_beach",
+  "npcs": [
+    {
+      "character": "tsurugi",
+      "offset": [
+        -16,
+        0,
+        3
+      ]
+    }
+  ],
+  "markers": {}
+}

@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.batto_sword_drawing",
+  "description": "technique.jjkcraft.batto_sword_drawing.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 30,
+    "cooldown": 60,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:arc_slash",
+    "damage": 9,
+    "arc": 120,
+    "ce_scaling": 0.2,
+    "knockback": 0.6
+  },
+  "visuals": {
+    "color": "#FF7A2E",
+    "particle": "minecraft:flame",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.3,
+    "hit_stop": 2,
+    "trail": "slash",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/batto_sword_drawing.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:rumelian_blade",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_3",
+  "technique": "jjkcraft:mul_lance",
+  "cost_multiplier": 1,
+  "description": "item.jjkcraft.rumelian_blade.desc"
+}

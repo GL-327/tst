@@ -1,0 +1,65 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -120,
+    64,
+    0
+  ],
+  "radius": 22,
+  "layout": "plaza",
+  "name": "site.jjkcraft.modulo.kyoto_jujutsu_high",
+  "npcs": [
+    {
+      "character": "usami",
+      "offset": [
+        -3,
+        0,
+        -6
+      ]
+    },
+    {
+      "character": "yuka",
+      "offset": [
+        3,
+        0,
+        -6
+      ]
+    },
+    {
+      "character": "tsurugi",
+      "offset": [
+        6,
+        0,
+        -4
+      ]
+    },
+    {
+      "character": "kyoko_tomoe",
+      "offset": [
+        -7,
+        0,
+        -3
+      ]
+    },
+    {
+      "character": "mino",
+      "offset": [
+        -5,
+        0,
+        -8
+      ]
+    }
+  ],
+  "markers": {
+    "arrival": [
+      0,
+      0,
+      10
+    ],
+    "gate_ship": [
+      8,
+      0,
+      14
+    ]
+  }
+}

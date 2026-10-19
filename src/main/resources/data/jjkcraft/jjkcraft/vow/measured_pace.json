@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjkcraft.measured_pace",
+  "description": "vow.jjkcraft.measured_pace.desc",
+  "restriction": "no_sprint",
+  "weight": 2
+}

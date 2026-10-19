@@ -1,0 +1,11 @@
+{
+  "rank": 0,
+  "name": "grade.jjkcraft.grade_4",
+  "color": "#8A8F98",
+  "ce_multiplier": 1.0,
+  "technique_slots": 2,
+  "tool_durability": 96,
+  "domain_tier": 0,
+  "xp_required": 0,
+  "perks": { "sense_range": 12, "regen_bonus": 0.0, "black_flash_bonus": 0.0 }
+}

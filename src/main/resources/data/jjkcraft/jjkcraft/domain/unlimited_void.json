@@ -1,0 +1,27 @@
+{
+  "name": "domain.jjkcraft.unlimited_void",
+  "description": "domain.jjkcraft.unlimited_void.desc",
+  "grade": "jjkcraft:special_grade",
+  "cast_cost": 220,
+  "upkeep": 28,
+  "radius": 14,
+  "clash_priority": 4,
+  "behaviors": [
+    {
+      "type": "jjkcraft:overload",
+      "surge_interval": 80,
+      "surge_duration": 60
+    },
+    {
+      "type": "jjkcraft:suppress_regen",
+      "multiplier": 0.0
+    }
+  ],
+  "visuals": {
+    "color": "#9FD8E8",
+    "secondary": "#FFFFFF",
+    "dome": "#05060C",
+    "ambience": "glyphs"
+  },
+  "innate_weight": 4
+}

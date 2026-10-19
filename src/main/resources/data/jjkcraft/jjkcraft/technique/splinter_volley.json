@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.splinter_volley",
+  "description": "technique.jjkcraft.splinter_volley.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 24,
+    "cooldown": 70,
+    "range": 32.0
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 3,
+    "speed": 1.4,
+    "size": 0.22,
+    "lifetime": 30,
+    "count": 5,
+    "spread": 15
+  },
+  "visuals": {
+    "color": "#C8A070",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/splinter_volley.png",
+  "innate_weight": 6,
+  "mastery_uses": 50
+}

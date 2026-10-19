@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.projection_sorcery",
+  "description": "technique.jjkcraft.projection_sorcery.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 45,
+    "cooldown": 360,
+    "cast_time": 14
+  },
+  "behavior": {
+    "type": "jjkcraft:projection_sorcery",
+    "radius": 8,
+    "skip_ticks": 14,
+    "blink": 6
+  },
+  "visuals": {
+    "color": "#D0D0E0",
+    "particle": "jjkcraft:domain_shard",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.3,
+    "hit_stop": 3,
+    "trail": "ring"
+  },
+  "icon": "jjkcraft:textures/gui/technique/projection_sorcery.png",
+  "innate_weight": 2,
+  "mastery_uses": 50
+}

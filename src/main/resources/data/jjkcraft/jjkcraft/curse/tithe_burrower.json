@@ -1,0 +1,44 @@
+{
+  "name": "curse.jjkcraft.tithe_burrower",
+  "description": "curse.jjkcraft.tithe_burrower.desc",
+  "lore": "curse.jjkcraft.tithe_burrower.lore",
+  "entity": "jjkcraft:tithe_burrower",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 50,
+    "armor": 4,
+    "speed": 0.32,
+    "attack_damage": 5,
+    "ce_capacity": 130,
+    "drain_on_hit": 6,
+    "follow_range": 28.0
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 7,
+    "min_fear": 30,
+    "max_light": 7,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "model": {
+    "geo": "jjkcraft:entity/tithe_burrower",
+    "texture": "jjkcraft:textures/entity/tithe_burrower.png",
+    "animation": "jjkcraft:entity/tithe_burrower"
+  },
+  "mechanic": "jjkcraft:tithe",
+  "parameters": {
+    "pay_radius": 4,
+    "max_stash": 6,
+    "burrow_ticks": 60,
+    "resurface_min": 6,
+    "resurface_max": 12
+  },
+  "codex": {
+    "color": "#B08D57",
+    "unlock_kills": 6
+  }
+}

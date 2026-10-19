@@ -1,0 +1,16 @@
+{
+  "rank": 4,
+  "name": "grade.jjkcraft.semi_grade_1",
+  "color": "#E0B341",
+  "ce_multiplier": 2.9,
+  "technique_slots": 5,
+  "tool_durability": 352,
+  "domain_tier": 0,
+  "xp_required": 4800,
+  "min_control": 0.45,
+  "trials": [
+    { "id": "jjkcraft:defeat_grade_2", "type": "defeat_curse", "grade": "jjkcraft:grade_2", "count": 3 },
+    { "id": "jjkcraft:vow_days", "type": "vow_days", "count": 3 }
+  ],
+  "perks": { "sense_range": 32, "regen_bonus": 0.20, "black_flash_bonus": 2.0 }
+}

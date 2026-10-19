@@ -1,0 +1,46 @@
+{
+  "name": "curse.jjkcraft.doorframe_hunter",
+  "description": "curse.jjkcraft.doorframe_hunter.desc",
+  "lore": "curse.jjkcraft.doorframe_hunter.lore",
+  "entity": "jjkcraft:doorframe_hunter",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 20,
+    "armor": 1,
+    "speed": 0.3,
+    "attack_damage": 3.5,
+    "ce_capacity": 35,
+    "drain_on_hit": 3,
+    "follow_range": 24.0
+  },
+  "spawn": {
+    "weight": 18,
+    "min_fear": 5,
+    "max_light": 9,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:fall": 0.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/doorframe_hunter",
+    "texture": "jjkcraft:textures/entity/doorframe_hunter.png",
+    "animation": "jjkcraft:entity/doorframe_hunter"
+  },
+  "mechanic": "jjkcraft:doorframe",
+  "parameters": {
+    "door_range": 12,
+    "reveal_distance": 4,
+    "ambush_multiplier": 1.8,
+    "cross_interval": 100,
+    "cross_windup": 15,
+    "cross_range": 6,
+    "exposed_damage_taken": 1.3
+  },
+  "codex": {
+    "color": "#6B5B4A",
+    "unlock_kills": 4
+  }
+}

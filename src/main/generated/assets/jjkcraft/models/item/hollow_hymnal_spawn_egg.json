@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jjkcraft:item/hollow_hymnal_spawn_egg"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.cracked_bell",
+  "description": "curse.jjkcraft.cracked_bell.desc",
+  "lore": "curse.jjkcraft.cracked_bell.lore",
+  "entity": "jjkcraft:cracked_bell",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 55,
+    "armor": 8,
+    "speed": 0.22,
+    "attack_damage": 6,
+    "ce_capacity": 120,
+    "knockback_resistance": 0.6
+  },
+  "spawn": {
+    "weight": 6,
+    "min_fear": 35
+  },
+  "resistances": {
+    "minecraft:arrow": 0.5,
+    "minecraft:fall": 0.0,
+    "minecraft:explosion": 1.5,
+    "minecraft:player_explosion": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/cracked_bell",
+    "texture": "jjkcraft:textures/entity/cracked_bell.png",
+    "animation": "jjkcraft:entity/cracked_bell"
+  },
+  "mechanic": "jjkcraft:bell",
+  "parameters": {
+    "wave_radius": 10,
+    "wave_speed": 0.45,
+    "wave_damage": 6,
+    "wave_knockback": 1.0,
+    "swing_ticks": 26,
+    "ringing_ticks": 50,
+    "ringing_damage_taken": 2,
+    "toll_interval": 140
+  },
+  "codex": {
+    "color": "#D9C9A0",
+    "unlock_kills": 4
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "curse.jjkcraft.wick_moth",
+  "description": "curse.jjkcraft.wick_moth.desc",
+  "lore": "curse.jjkcraft.wick_moth.lore",
+  "entity": "jjkcraft:wick_moth",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 10,
+    "armor": 0,
+    "speed": 0.3,
+    "attack_damage": 2,
+    "ce_capacity": 25,
+    "drain_on_hit": 2
+  },
+  "spawn": {
+    "weight": 30,
+    "min_fear": 0,
+    "group_min": 2,
+    "group_max": 4,
+    "max_light": 4
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:in_fire": 1.5,
+    "minecraft:on_fire": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/wick_moth",
+    "texture": "jjkcraft:textures/entity/wick_moth.png",
+    "animation": "jjkcraft:entity/wick_moth"
+  },
+  "mechanic": "jjkcraft:wick",
+  "parameters": {
+    "eat_radius": 6
+  },
+  "codex": {
+    "color": "#FFB547",
+    "unlock_kills": 4
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "feature": "modulo:city_block",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

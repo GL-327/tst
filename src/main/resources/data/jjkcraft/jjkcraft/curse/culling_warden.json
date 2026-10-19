@@ -1,0 +1,43 @@
+{
+  "name": "curse.jjkcraft.culling_warden",
+  "description": "curse.jjkcraft.culling_warden.desc",
+  "lore": "curse.jjkcraft.culling_warden.lore",
+  "entity": "jjkcraft:culling_warden",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 450,
+    "armor": 14,
+    "speed": 0.25,
+    "attack_damage": 14,
+    "ce_capacity": 500,
+    "drain_on_hit": 10,
+    "follow_range": 40.0,
+    "knockback_resistance": 1.0
+  },
+  "techniques": [
+    "jjkcraft:cursed_speech_crumble_away",
+    "jjkcraft:dismantle"
+  ],
+  "model": {
+    "geo": "jjkcraft:entity/culling_warden",
+    "texture": "jjkcraft:textures/entity/culling_warden.png",
+    "animation": "jjkcraft:entity/culling_warden",
+    "scale": 1.5
+  },
+  "mechanic": "jjkcraft:warden",
+  "parameters": {
+    "seals": 3,
+    "seals_second": 2,
+    "seal_radius": 9,
+    "seal_lifetime": 12000,
+    "edict_interval": 400,
+    "edict_interval_second": 240,
+    "weak_point": 1.5,
+    "off_edict": 0.15,
+    "bar_range": 48
+  },
+  "codex": {
+    "color": "#E0303F",
+    "unlock_kills": 1
+  }
+}

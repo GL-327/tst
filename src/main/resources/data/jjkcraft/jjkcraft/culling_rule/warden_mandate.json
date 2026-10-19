@@ -1,0 +1,23 @@
+{
+  "text": "culling_rule.jjkcraft.warden_mandate",
+  "duration_days": 1,
+  "order": 25,
+  "binds_warden": true,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:added"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:summon_warden"
+        },
+        {
+          "type": "jjkcraft:message",
+          "key": "culling.jjkcraft.warden_arrives",
+          "broadcast": true
+        }
+      ]
+    }
+  ]
+}

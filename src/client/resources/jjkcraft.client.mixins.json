@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.jjkcraft.client.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "CameraMixin",
+    "BossHealthOverlayAccessor",
+    "ClientLevelMixin",
+    "EntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

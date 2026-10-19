@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ember_skin",
+  "description": "technique.jjkcraft.ember_skin.desc",
+  "category": "passive",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 10,
+    "cooldown": 100,
+    "mode": "toggle",
+    "upkeep": 2
+  },
+  "behavior": {
+    "type": "jjkcraft:thorns_aura",
+    "damage": 3,
+    "burn_seconds": 3
+  },
+  "visuals": {
+    "color": "#FF6A2B",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ember_skin.png",
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

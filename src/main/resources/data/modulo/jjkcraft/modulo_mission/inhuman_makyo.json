@@ -1,0 +1,95 @@
+{
+  "order": 7,
+  "title": "mission.jjkcraft.modulo.inhuman_makyo",
+  "summary": "mission.jjkcraft.modulo.inhuman_makyo.summary",
+  "chapters": "11-13",
+  "stages": [
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.inhuman_makyo.core",
+      "site": "modulo:naunax_core",
+      "npc": "jabaloma",
+      "lines": [
+        {
+          "speaker": "jabaloma",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.core_1"
+        },
+        {
+          "speaker": "mino",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.core_2"
+        },
+        {
+          "speaker": "jabaloma",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.core_3"
+        }
+      ]
+    },
+    {
+      "type": "make_mul_energy",
+      "objective": "objective.jjkcraft.modulo.inhuman_makyo.mul",
+      "site": "modulo:naunax_core",
+      "amount": 40
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.inhuman_makyo.barrier",
+      "site": "modulo:tokyo_barrier",
+      "radius": 12,
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.intro_1"
+        },
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.intro_2"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.inhuman_makyo.usami",
+      "site": "modulo:tokyo_barrier",
+      "npc": "usami",
+      "lines": [
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.usami_1"
+        },
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.usami_2"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.inhuman_makyo.dabura",
+      "site": "modulo:tokyo_barrier",
+      "npc": "dabura",
+      "lines": [
+        {
+          "speaker": "dabura",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.dabura_1"
+        },
+        {
+          "speaker": "dabura",
+          "text": "dialogue.jjkcraft.modulo.inhuman_makyo.dabura_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 500,
+    "items": [
+      {
+        "item": "jjkcraft:high_purity_mul",
+        "count": 2
+      },
+      {
+        "item": "jjkcraft:rumelian_blade",
+        "count": 1
+      }
+    ]
+  }
+}

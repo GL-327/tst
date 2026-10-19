@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjkcraft.single_path",
+  "description": "vow.jjkcraft.single_path.desc",
+  "restriction": "innate_only",
+  "weight": 4
+}

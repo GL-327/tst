@@ -1,0 +1,59 @@
+{
+  "name": "curse.jjkcraft.ash_oni",
+  "description": "curse.jjkcraft.ash_oni.desc",
+  "lore": "curse.jjkcraft.ash_oni.lore",
+  "entity": "jjkcraft:ash_oni",
+  "grade": "jjkcraft:grade_1",
+  "stats": {
+    "health": 140,
+    "armor": 8,
+    "speed": 0.27,
+    "attack_damage": 14,
+    "ce_capacity": 250,
+    "drain_on_hit": 10,
+    "follow_range": 32.0,
+    "knockback_resistance": 0.8
+  },
+  "techniques": [
+    "jjkcraft:cleave"
+  ],
+  "spawn": {
+    "weight": 3,
+    "min_fear": 50
+  },
+  "resistances": {
+    "minecraft:in_fire": 0.0,
+    "minecraft:on_fire": 0.0,
+    "minecraft:lava": 0.2,
+    "minecraft:drown": 2.0,
+    "minecraft:freeze": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/ash_oni",
+    "texture": "jjkcraft:textures/entity/ash_oni.png",
+    "animation": "jjkcraft:entity/ash_oni"
+  },
+  "mechanic": "jjkcraft:oni",
+  "parameters": {
+    "rage_threshold": 0.4,
+    "slam_radius": 4.0,
+    "slam_damage": 9,
+    "slam_interval": 100,
+    "charge_min": 5,
+    "charge_max": 18,
+    "charge_windup": 22,
+    "charge_ticks": 25,
+    "charge_speed": 0.85,
+    "charge_interval": 160,
+    "sweep_damage": 10,
+    "sweep_width": 2.2,
+    "wall_stagger_ticks": 70,
+    "stagger_poise": 30,
+    "poise_stagger_ticks": 40,
+    "stagger_damage_taken": 1.5
+  },
+  "codex": {
+    "color": "#FF6A2B",
+    "unlock_kills": 5
+  }
+}

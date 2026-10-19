@@ -1,0 +1,109 @@
+{
+  "order": 1,
+  "title": "mission.jjkcraft.modulo.special_grade_incident",
+  "summary": "mission.jjkcraft.modulo.special_grade_incident.summary",
+  "chapters": "1-2",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.special_grade_incident.board",
+      "site": "modulo:naunax_deck",
+      "marker": "arrival",
+      "radius": 10,
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.intro_1"
+        },
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.intro_2"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.special_grade_incident.maru",
+      "site": "modulo:naunax_bridge",
+      "npc": "maru",
+      "lines": [
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.maru_1"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.maru_2"
+        },
+        {
+          "speaker": "jabaloma",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.maru_3"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.maru_4"
+        }
+      ]
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.special_grade_incident.kyoto",
+      "site": "modulo:kyoto_jujutsu_high",
+      "radius": 14
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.special_grade_incident.usami",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "usami",
+      "lines": [
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.usami_1"
+        },
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.usami_2"
+        },
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.usami_3"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.special_grade_incident.yuka",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "yuka",
+      "lines": [
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.yuka_1"
+        },
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.yuka_2"
+        },
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.special_grade_incident.yuka_3"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "companion": true,
+    "grade_xp": 300,
+    "items": [
+      {
+        "item": "jjkcraft:mul",
+        "count": 4
+      },
+      {
+        "item": "jjkcraft:naunax_beacon",
+        "count": 1
+      }
+    ]
+  }
+}

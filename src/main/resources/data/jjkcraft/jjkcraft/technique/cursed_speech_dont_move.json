@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.cursed_speech_dont_move",
+  "description": "technique.jjkcraft.cursed_speech_dont_move.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 22,
+    "cooldown": 140,
+    "range": 8.0
+  },
+  "behavior": {
+    "type": "jjkcraft:cursed_speech",
+    "command": "stop",
+    "radius": 8,
+    "duration": 40,
+    "strain": 0.6
+  },
+  "visuals": {
+    "color": "#B08D57",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.speech",
+    "shake": 0.4,
+    "hit_stop": 0,
+    "trail": "shout"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_speech_dont_move.png",
+  "innate_weight": 5,
+  "mastery_uses": 50
+}

@@ -1,0 +1,36 @@
+{
+  "name": "curse.jjkcraft.ledger_crawler",
+  "description": "curse.jjkcraft.ledger_crawler.desc",
+  "lore": "curse.jjkcraft.ledger_crawler.lore",
+  "entity": "jjkcraft:ledger_crawler",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 18,
+    "armor": 2,
+    "speed": 0.24,
+    "attack_damage": 3,
+    "ce_capacity": 30
+  },
+  "spawn": {
+    "weight": 25,
+    "min_fear": 0,
+    "group_max": 3
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/ledger_crawler",
+    "texture": "jjkcraft:textures/entity/ledger_crawler.png",
+    "animation": "jjkcraft:entity/ledger_crawler"
+  },
+  "mechanic": "jjkcraft:ledger",
+  "parameters": {
+    "max_tally": 8,
+    "damage_per_mark": 0.15
+  },
+  "codex": {
+    "color": "#E6DCBE",
+    "unlock_kills": 3
+  }
+}

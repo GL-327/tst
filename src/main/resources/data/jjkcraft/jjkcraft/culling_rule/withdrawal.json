@@ -1,0 +1,21 @@
+{
+  "text": "culling_rule.jjkcraft.withdrawal",
+  "text_args": [
+    "100"
+  ],
+  "order": 20,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:action",
+        "action": "withdraw"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:withdraw",
+          "cost": 100
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_nue",
+  "description": "technique.jjkcraft.ten_shadows_nue.desc",
+  "category": "summon",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 20,
+    "cooldown": 300
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:nue",
+    "count": 1,
+    "lifetime": 900
+  },
+  "visuals": {
+    "color": "#E9E3D5",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_nue.png",
+  "innate_weight": 6,
+  "mastery_uses": 30
+}

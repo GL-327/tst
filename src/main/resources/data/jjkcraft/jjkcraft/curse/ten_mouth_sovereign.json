@@ -1,0 +1,48 @@
+{
+  "name": "curse.jjkcraft.ten_mouth_sovereign",
+  "description": "curse.jjkcraft.ten_mouth_sovereign.desc",
+  "lore": "curse.jjkcraft.ten_mouth_sovereign.lore",
+  "entity": "jjkcraft:ten_mouth_sovereign",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 800,
+    "armor": 14,
+    "speed": 0.24,
+    "attack_damage": 16,
+    "ce_capacity": 800,
+    "regen_multiplier": 2.5,
+    "drain_on_hit": 16,
+    "follow_range": 48.0,
+    "knockback_resistance": 1.0
+  },
+  "techniques": [
+    "jjkcraft:cursed_speech_dont_move",
+    "jjkcraft:cursed_speech_crumble_away",
+    "jjkcraft:cursed_speech_blast_away"
+  ],
+  "model": {
+    "geo": "jjkcraft:entity/ten_mouth_sovereign",
+    "texture": "jjkcraft:textures/entity/ten_mouth_sovereign.png",
+    "animation": "jjkcraft:entity/ten_mouth_sovereign",
+    "scale": 2.1
+  },
+  "mechanic": "jjkcraft:sovereign",
+  "parameters": {
+    "chorus_radius": 12,
+    "chorus_windup": 24,
+    "chorus_interval": 160,
+    "chorus_stun": 24,
+    "chorus_damage": 5,
+    "bite_range": 18,
+    "bite_radius": 1.8,
+    "bite_windup": 28,
+    "bite_interval": 100,
+    "bite_damage": 10,
+    "bite_hold": 40,
+    "bar_range": 64
+  },
+  "codex": {
+    "color": "#C0392B",
+    "unlock_kills": 1
+  }
+}

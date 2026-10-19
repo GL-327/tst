@@ -1,0 +1,46 @@
+{
+  "name": "curse.jjkcraft.pale_stilt",
+  "description": "curse.jjkcraft.pale_stilt.desc",
+  "lore": "curse.jjkcraft.pale_stilt.lore",
+  "entity": "jjkcraft:pale_stilt",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 34,
+    "armor": 2,
+    "speed": 0.26,
+    "attack_damage": 6,
+    "ce_capacity": 80,
+    "follow_range": 40.0
+  },
+  "spawn": {
+    "weight": 12,
+    "min_fear": 15,
+    "max_light": 6,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/pale_stilt",
+    "texture": "jjkcraft:textures/entity/pale_stilt.png",
+    "animation": "jjkcraft:entity/pale_stilt"
+  },
+  "mechanic": "jjkcraft:stilt",
+  "parameters": {
+    "airborne_speed": 0.5,
+    "grounded_speed": -0.3,
+    "airborne_multiplier": 2.0,
+    "grounded_multiplier": 0.6,
+    "airborne_damage_taken": 0.5,
+    "grounded_damage_taken": 1.25,
+    "snatch_reach": 5,
+    "snatch_interval": 30
+  },
+  "codex": {
+    "color": "#F2EEE6",
+    "unlock_kills": 3
+  }
+}

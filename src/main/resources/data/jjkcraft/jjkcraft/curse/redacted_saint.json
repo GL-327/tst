@@ -1,0 +1,54 @@
+{
+  "name": "curse.jjkcraft.redacted_saint",
+  "description": "curse.jjkcraft.redacted_saint.desc",
+  "lore": "curse.jjkcraft.redacted_saint.lore",
+  "entity": "jjkcraft:redacted_saint",
+  "grade": "jjkcraft:grade_1",
+  "stats": {
+    "health": 90,
+    "armor": 4,
+    "speed": 0.28,
+    "attack_damage": 10,
+    "ce_capacity": 300,
+    "regen_multiplier": 1.5,
+    "drain_on_hit": 10,
+    "follow_range": 32.0
+  },
+  "techniques": [
+    "jjkcraft:cursed_speech_dont_move",
+    "jjkcraft:dismantle"
+  ],
+  "spawn": {
+    "weight": 3,
+    "min_fear": 45,
+    "max_light": 10,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8,
+    "minecraft:magic": 0.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/redacted_saint",
+    "texture": "jjkcraft:textures/entity/redacted_saint.png",
+    "animation": "jjkcraft:entity/redacted_saint",
+    "disguise": {
+      "geo": "jjkcraft:entity/redacted_saint_disguise",
+      "texture": "jjkcraft:textures/entity/redacted_saint_disguise.png"
+    }
+  },
+  "mechanic": "jjkcraft:saint",
+  "parameters": {
+    "reveal_distance": 2.6,
+    "max_patience": 400,
+    "redisguise_ticks": 600,
+    "first_strike_multiplier": 2,
+    "blind_ticks": 40
+  },
+  "codex": {
+    "color": "#F0E6D2",
+    "unlock_kills": 5
+  }
+}

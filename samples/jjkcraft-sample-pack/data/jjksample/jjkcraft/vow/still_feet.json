@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjksample.still_feet",
+  "description": "vow.jjksample.still_feet.desc",
+  "restriction": "no_sprint",
+  "weight": 2.5
+}

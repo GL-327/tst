@@ -1,0 +1,6 @@
+{
+  "entities": ["minecraft:elder_guardian", "minecraft:breeze"],
+  "grade": "jjkcraft:grade_2",
+  "capacity": 260,
+  "regen_multiplier": 1.2
+}

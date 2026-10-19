@@ -1,0 +1,14 @@
+{
+  "rank": 6,
+  "name": "grade.jjkcraft.special_grade",
+  "color": "#C0392B",
+  "ce_multiplier": 5.0,
+  "technique_slots": 6,
+  "tool_durability": 640,
+  "domain_tier": 2,
+  "special": true,
+  "trials": [
+    { "id": "jjkcraft:unbound_ritual", "type": "unbound_ritual", "grade": "jjkcraft:grade_1", "count": 1 }
+  ],
+  "perks": { "sense_range": 64, "regen_bonus": 0.45, "black_flash_bonus": 4.0 }
+}

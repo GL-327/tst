@@ -1,0 +1,14 @@
+{
+  "technique.jjksample.ember_lance": "Ember Lance",
+  "technique.jjksample.ember_lance.desc": "A fast, piercing lance of burning cursed energy.",
+  "technique.jjksample.riverstep": "Riverstep",
+  "technique.jjksample.riverstep.desc": "A short step along your facing. Under Still Feet it carries half again as far.",
+  "domain.jjksample.ashen_court": "Ashen Court",
+  "domain.jjksample.ashen_court.desc": "Burning ash hangs in the air: everyone inside is slowed, singed every second, and recovers CE at half speed.",
+  "vow.jjksample.still_feet": "Still Feet",
+  "vow.jjksample.still_feet.desc": "Never sprint. Riverstep reaches further under it.",
+  "culling_rule.jjksample.first_blood": "The first time a participant scores, they earn %s more points.",
+  "culling_rule.jjksample.first_blood.name": "First Blood",
+  "culling.jjksample.first_blood": "%s of %s drew first blood (%s points).",
+  "item.jjksample.bonewood_staff.desc": "Retuned by the sample pack: lends Ember Lance at a tenth off."
+}

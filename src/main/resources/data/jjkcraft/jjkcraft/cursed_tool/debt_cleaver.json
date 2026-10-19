@@ -1,0 +1,9 @@
+{
+  "item": "jjkcraft:debt_cleaver",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_3",
+  "technique": "jjkcraft:cleave",
+  "on_hit": "siphon",
+  "amount": 6,
+  "description": "item.jjkcraft.debt_cleaver.desc"
+}

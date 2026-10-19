@@ -1,0 +1,44 @@
+{
+  "name": "curse.jjkcraft.salt_lantern",
+  "description": "curse.jjkcraft.salt_lantern.desc",
+  "lore": "curse.jjkcraft.salt_lantern.lore",
+  "entity": "jjkcraft:salt_lantern",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 26,
+    "armor": 0,
+    "speed": 0.23,
+    "attack_damage": 4,
+    "ce_capacity": 60
+  },
+  "spawn": {
+    "weight": 10,
+    "min_fear": 20
+  },
+  "resistances": {
+    "minecraft:magic": 0.5,
+    "minecraft:drown": 2.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/salt_lantern",
+    "texture": "jjkcraft:textures/entity/salt_lantern.png",
+    "animation": "jjkcraft:entity/salt_lantern"
+  },
+  "mechanic": "jjkcraft:salt_lantern",
+  "parameters": {
+    "beam_range": 16,
+    "charge_ticks": 30,
+    "aim_lock_ticks": 8,
+    "beam_interval": 100,
+    "beam_damage": 2,
+    "burn_per_ce": 0.05,
+    "drain_fraction": 0.08,
+    "burn_seconds": 2,
+    "snuff_threshold": 6,
+    "snuff_ticks": 80
+  },
+  "codex": {
+    "color": "#E8D27A",
+    "unlock_kills": 3
+  }
+}

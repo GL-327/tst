@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.thousand_lances",
+  "description": "technique.jjkcraft.thousand_lances.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 140,
+    "cooldown": 700,
+    "range": 32.0,
+    "mode": "toggle",
+    "upkeep": 0,
+    "max_duration": 60
+  },
+  "behavior": {
+    "type": "jjkcraft:barrage",
+    "radius": 5,
+    "strike_radius": 1.6,
+    "damage": 2.5,
+    "interval": 2
+  },
+  "visuals": {
+    "color": "#5E8CFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.4,
+    "hit_stop": 0,
+    "trail": "beam",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/thousand_lances.png",
+  "innate_weight": 1,
+  "mastery_uses": 30
+}

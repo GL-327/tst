@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjksample.riverstep",
+  "description": "technique.jjksample.riverstep.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 8,
+    "cooldown": 40
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 4,
+    "invulnerable_ticks": 4
+  },
+  "visuals": {
+    "color": "#5EC8E8",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "trail": "line"
+  },
+  "icon": "jjksample:textures/gui/technique/riverstep.png",
+  "vow_modifiers": [
+    {
+      "vow": "jjksample:still_feet",
+      "range": 1.5
+    }
+  ]
+}

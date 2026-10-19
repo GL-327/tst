@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.cursed_speech_crumble_away",
+  "description": "technique.jjkcraft.cursed_speech_crumble_away.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 28,
+    "cooldown": 160,
+    "range": 7.0
+  },
+  "behavior": {
+    "type": "jjkcraft:cursed_speech",
+    "command": "knockdown",
+    "radius": 7,
+    "duration": 30,
+    "damage": 4,
+    "strain": 0.9
+  },
+  "visuals": {
+    "color": "#C9A15E",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.speech",
+    "shake": 0.5,
+    "hit_stop": 0,
+    "trail": "shout"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_speech_crumble_away.png",
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

@@ -1,0 +1,21 @@
+{
+  "text": "culling_rule.jjkcraft.blade_law",
+  "duration_days": 2,
+  "order": 26,
+  "warden_edict": "steel",
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "participant",
+        "cause": "melee"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

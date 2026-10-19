@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjkcraft.night_covenant",
+  "description": "vow.jjkcraft.night_covenant.desc",
+  "restriction": "night_only",
+  "weight": 3
+}

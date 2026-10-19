@@ -1,0 +1,28 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    120,
+    64,
+    40
+  ],
+  "radius": 32,
+  "layout": "ruins",
+  "name": "site.jjkcraft.modulo.inhuman_makyo",
+  "npcs": [
+    {
+      "character": "yuka",
+      "offset": [
+        -20,
+        0,
+        -18
+      ]
+    }
+  ],
+  "markers": {
+    "boss": [
+      0,
+      0,
+      0
+    ]
+  }
+}

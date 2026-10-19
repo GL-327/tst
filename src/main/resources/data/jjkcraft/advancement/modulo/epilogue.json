@@ -1,0 +1,27 @@
+{
+  "parent": "jjkcraft:modulo/root",
+  "criteria": {
+    "epilogue": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.jjkcraft.modulo.epilogue.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "jjkcraft:yuji_cursed_object"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.jjkcraft.modulo.epilogue.title"
+    }
+  },
+  "requirements": [
+    [
+      "epilogue"
+    ]
+  ]
+}

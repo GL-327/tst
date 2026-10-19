@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_toad",
+  "description": "technique.jjkcraft.ten_shadows_toad.desc",
+  "category": "summon",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 55,
+    "cooldown": 500
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:toad",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#7A8A7A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_toad.png",
+  "innate_weight": 3,
+  "mastery_uses": 30
+}

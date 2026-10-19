@@ -1,0 +1,19 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -230,
+    64,
+    140
+  ],
+  "radius": 16,
+  "layout": "warehouse",
+  "name": "site.jjkcraft.modulo.kyoto_warehouse",
+  "npcs": [],
+  "markers": {
+    "boss": [
+      0,
+      0,
+      0
+    ]
+  }
+}

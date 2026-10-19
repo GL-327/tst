@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjkcraft.grounded_oath",
+  "description": "vow.jjkcraft.grounded_oath.desc",
+  "restriction": "no_jump",
+  "weight": 3
+}

@@ -1,0 +1,39 @@
+{
+  "name": "curse.jjkcraft.echo_mimic",
+  "description": "curse.jjkcraft.echo_mimic.desc",
+  "lore": "curse.jjkcraft.echo_mimic.lore",
+  "entity": "jjkcraft:echo_mimic",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 30,
+    "armor": 2,
+    "speed": 0.27,
+    "attack_damage": 5,
+    "ce_capacity": 120,
+    "regen_multiplier": 1.5
+  },
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 12,
+    "min_fear": 15
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/echo_mimic",
+    "texture": "jjkcraft:textures/entity/echo_mimic.png",
+    "animation": "jjkcraft:entity/echo_mimic"
+  },
+  "mechanic": "jjkcraft:echo",
+  "parameters": {
+    "echo_length": 5,
+    "echo_delay": 60
+  },
+  "codex": {
+    "color": "#9FD8E8",
+    "unlock_kills": 3
+  }
+}

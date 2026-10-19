@@ -1,0 +1,20 @@
+{
+  "name": "entity.jjkcraft.modulo.masaki_takeda",
+  "behavior": "masaki_takeda",
+  "skin": "masaki_takeda",
+  "health": 170,
+  "armor": 6,
+  "damage": 6,
+  "speed": 0.3,
+  "color": "red",
+  "params": {
+    "reveal_range": 4,
+    "needle_interval": 70,
+    "needle_windup": 14,
+    "needle_damage": 5,
+    "hide_below": 0.5,
+    "tear_hits": 3,
+    "stun_ticks": 60,
+    "hide_ticks": 160
+  }
+}

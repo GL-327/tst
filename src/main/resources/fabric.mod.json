@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "jjkcraft",
+  "version": "${version}",
+  "name": "Jujutsu Craft",
+  "description": "Cursed energy, cursed techniques, sorcerer grades, Domain Expansions, original curses and a Culling Game event.",
+  "authors": ["Jujutsu Craft contributors"],
+  "license": "All-Rights-Reserved",
+  "icon": "assets/jjkcraft/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.jjkcraft.JjkCraft"],
+    "client": ["com.jjkcraft.client.JjkCraftClient"],
+    "modmenu": ["com.jjkcraft.client.compat.JjkModMenu"],
+    "jade": ["com.jjkcraft.client.compat.JjkJadePlugin"]
+  },
+  "mixins": [
+    "jjkcraft.mixins.json",
+    {
+      "config": "jjkcraft.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": ">=0.163.0",
+    "geckolib": ">=5.5.7",
+    "cloth-config": ">=26.3.159"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

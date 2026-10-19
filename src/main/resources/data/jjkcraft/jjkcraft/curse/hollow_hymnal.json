@@ -1,0 +1,44 @@
+{
+  "name": "curse.jjkcraft.hollow_hymnal",
+  "description": "curse.jjkcraft.hollow_hymnal.desc",
+  "lore": "curse.jjkcraft.hollow_hymnal.lore",
+  "entity": "jjkcraft:hollow_hymnal",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 16,
+    "armor": 0,
+    "speed": 0.25,
+    "attack_damage": 3,
+    "ce_capacity": 40,
+    "drain_on_hit": 3
+  },
+  "spawn": {
+    "weight": 30,
+    "min_fear": 0,
+    "group_max": 2,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:sonic_boom": 2.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/hollow_hymnal",
+    "texture": "jjkcraft:textures/entity/hollow_hymnal.png",
+    "animation": "jjkcraft:entity/hollow_hymnal"
+  },
+  "mechanic": "jjkcraft:hymnal",
+  "parameters": {
+    "hymn_radius": 5,
+    "hymn_charge": 24,
+    "hymn_stun": 30,
+    "hymn_interval": 120,
+    "silence_duration": 200
+  },
+  "codex": {
+    "color": "#BEA0DC",
+    "unlock_kills": 3
+  }
+}

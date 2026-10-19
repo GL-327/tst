@@ -1,0 +1,26 @@
+{
+  "name": "domain.jjkcraft.sevenfold_recitation",
+  "description": "domain.jjkcraft.sevenfold_recitation.desc",
+  "grade": "jjkcraft:grade_1",
+  "cast_cost": 140,
+  "upkeep": 16,
+  "radius": 12,
+  "max_duration": 400,
+  "clash_priority": 2,
+  "behaviors": [
+    {
+      "type": "jjkcraft:repetition",
+      "repeats": 7,
+      "interval": 40,
+      "damage": 5,
+      "effect": "minecraft:weakness",
+      "effect_ticks": 60
+    }
+  ],
+  "visuals": {
+    "color": "#76C7A5",
+    "secondary": "#E9E3D5",
+    "dome": "#08140F",
+    "ambience": "rings"
+  }
+}

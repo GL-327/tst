@@ -1,0 +1,30 @@
+{
+  "name": "domain.modulo.reverse_transcendence",
+  "description": "domain.modulo.reverse_transcendence.desc",
+  "grade": "jjkcraft:special_grade",
+  "cast_cost": 200,
+  "upkeep": 0,
+  "radius": 16,
+  "max_duration": 400,
+  "clash_priority": 5,
+  "behaviors": [
+    {
+      "type": "jjkcraft:sure_hit_damage",
+      "interval": 20,
+      "damage": 2
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "minecraft:slowness",
+      "duration": 40,
+      "amplifier": 0
+    }
+  ],
+  "visuals": {
+    "color": "#F6F1D3",
+    "secondary": "#1A1A1A",
+    "dome": "#0D0C0A",
+    "ambience": "rings"
+  },
+  "innate_weight": 0
+}

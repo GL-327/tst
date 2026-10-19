@@ -1,0 +1,24 @@
+{
+  "text": "culling_rule.jjkcraft.open_tally",
+  "text_args": [
+    "1",
+    "60"
+  ],
+  "base": true,
+  "order": 7,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:action",
+        "action": "reveal"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:reveal",
+          "cost": 1,
+          "seconds": 60
+        }
+      ]
+    }
+  ]
+}

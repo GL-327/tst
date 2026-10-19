@@ -1,0 +1,58 @@
+{
+  "name": "curse.jjkcraft.tidewash",
+  "description": "curse.jjkcraft.tidewash.desc",
+  "lore": "curse.jjkcraft.tidewash.lore",
+  "entity": "jjkcraft:tidewash",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 60,
+    "armor": 4,
+    "speed": 0.25,
+    "attack_damage": 8,
+    "ce_capacity": 140,
+    "drain_on_hit": 6,
+    "knockback_resistance": 0.3
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 8,
+    "min_fear": 30,
+    "dimensions": [
+      "minecraft:overworld"
+    ],
+    "water": true
+  },
+  "resistances": {
+    "minecraft:drown": 0.0,
+    "minecraft:on_fire": 0.5,
+    "minecraft:lightning_bolt": 2.0,
+    "minecraft:freeze": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/tidewash",
+    "texture": "jjkcraft:textures/entity/tidewash.png",
+    "animation": "jjkcraft:entity/tidewash"
+  },
+  "mechanic": "jjkcraft:tidewash",
+  "parameters": {
+    "wet_regen": 1.5,
+    "dry_damage_taken": 1.25,
+    "flood_range": 10,
+    "flood_radius": 2,
+    "flood_ticks": 200,
+    "flood_interval": 300,
+    "arm_reach": 7,
+    "arm_windup": 16,
+    "grab_interval": 140,
+    "pull_strength": 0.9,
+    "grab_slow_ticks": 60,
+    "breath_stolen": 120,
+    "grab_damage": 4
+  },
+  "codex": {
+    "color": "#3F8FA8",
+    "unlock_kills": 4
+  }
+}

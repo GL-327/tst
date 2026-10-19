@@ -1,0 +1,28 @@
+{
+  "name": "domain.jjkcraft.malevolent_shrine",
+  "description": "domain.jjkcraft.malevolent_shrine.desc",
+  "grade": "jjkcraft:grade_1",
+  "cast_cost": 140,
+  "upkeep": 20,
+  "radius": 12,
+  "clash_priority": 2,
+  "behaviors": [
+    {
+      "type": "jjkcraft:sure_hit_damage",
+      "interval": 10,
+      "damage": 1.5
+    },
+    {
+      "type": "jjkcraft:caster_attribute",
+      "attribute": "minecraft:attack_speed",
+      "amount": 0.5,
+      "operation": "add_multiplied_base"
+    }
+  ],
+  "visuals": {
+    "color": "#E0303F",
+    "secondary": "#F2C14E",
+    "dome": "#2A0A10",
+    "ambience": "blades"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "criteria": {
+    "boarded": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "modulo:naunax"
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:gui/advancements/backgrounds/stone",
+    "description": {
+      "translate": "advancements.jjkcraft.modulo.root.description"
+    },
+    "icon": {
+      "id": "jjkcraft:mul"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.jjkcraft.modulo.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "boarded"
+    ]
+  ]
+}

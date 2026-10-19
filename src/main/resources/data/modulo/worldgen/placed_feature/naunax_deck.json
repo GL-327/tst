@@ -1,0 +1,8 @@
+{
+  "feature": "modulo:naunax_deck",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

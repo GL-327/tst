@@ -1,0 +1,30 @@
+{
+  "dimension": "modulo:naunax",
+  "center": [
+    40,
+    64,
+    0
+  ],
+  "radius": 12,
+  "layout": "mul_core",
+  "name": "site.jjkcraft.modulo.naunax_core",
+  "npcs": [
+    {
+      "character": "jabaloma",
+      "offset": [
+        0,
+        0,
+        8
+      ]
+    },
+    {
+      "character": "mino",
+      "offset": [
+        3,
+        0,
+        8
+      ]
+    }
+  ],
+  "markers": {}
+}

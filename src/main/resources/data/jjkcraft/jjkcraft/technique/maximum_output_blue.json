@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.maximum_output_blue",
+  "description": "technique.jjkcraft.maximum_output_blue.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:special_grade",
+  "cast": {
+    "cost": 200,
+    "cooldown": 900,
+    "range": 24.0,
+    "mode": "toggle",
+    "upkeep": 0,
+    "max_duration": 50
+  },
+  "behavior": {
+    "type": "jjkcraft:singularity",
+    "distance": 12,
+    "radius": 10,
+    "pull_ticks": 40,
+    "strength": 0.25,
+    "damage": 48,
+    "blast_radius": 6
+  },
+  "visuals": {
+    "color": "#9B6BFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.merge",
+    "shake": 1.4,
+    "hit_stop": 5,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/maximum_output_blue.png",
+  "innate_weight": 1,
+  "mastery_uses": 30
+}

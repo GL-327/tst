@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "jjkcraft:mul_ore",
+    "jjkcraft:naunax_hull",
+    "jjkcraft:naunax_deck_plate",
+    "jjkcraft:mul_conduit",
+    "jjkcraft:hard_light"
+  ]
+}

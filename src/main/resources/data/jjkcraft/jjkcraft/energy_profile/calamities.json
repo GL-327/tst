@@ -1,0 +1,6 @@
+{
+  "entities": ["minecraft:warden", "minecraft:wither", "minecraft:ender_dragon"],
+  "grade": "jjkcraft:grade_1",
+  "capacity": 600,
+  "regen_multiplier": 1.5
+}

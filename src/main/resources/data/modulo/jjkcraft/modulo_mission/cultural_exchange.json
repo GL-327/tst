@@ -1,0 +1,74 @@
+{
+  "order": 6,
+  "title": "mission.jjkcraft.modulo.cultural_exchange",
+  "summary": "mission.jjkcraft.modulo.cultural_exchange.summary",
+  "chapters": "11",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.cultural_exchange.beach",
+      "site": "modulo:kyoto_beach",
+      "radius": 14,
+      "intro": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.cultural_exchange.intro"
+        }
+      ]
+    },
+    {
+      "type": "deliver",
+      "objective": "objective.jjkcraft.modulo.cultural_exchange.catch",
+      "site": "modulo:kyoto_beach",
+      "item": "jjkcraft:wancha_octopus",
+      "count": 1,
+      "npc": "tsurugi",
+      "spawns": [
+        {
+          "entity": "jjkcraft:wancha_octopus",
+          "count": 4,
+          "radius": 9
+        }
+      ],
+      "lines": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.cultural_exchange.catch_1"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.cultural_exchange.party",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "kyoko_tomoe",
+      "lines": [
+        {
+          "speaker": "kyoko_tomoe",
+          "text": "dialogue.jjkcraft.modulo.cultural_exchange.party_1"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.cultural_exchange.party_2"
+        },
+        {
+          "speaker": "kyoko_tomoe",
+          "text": "dialogue.jjkcraft.modulo.cultural_exchange.party_3"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 300,
+    "items": [
+      {
+        "item": "jjkcraft:takoyaki",
+        "count": 6
+      },
+      {
+        "item": "jjkcraft:gravity_harness",
+        "count": 1
+      }
+    ]
+  }
+}

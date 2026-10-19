@@ -1,0 +1,80 @@
+{
+  "order": 3,
+  "title": "mission.jjkcraft.modulo.swimming_through_the_forest",
+  "summary": "mission.jjkcraft.modulo.swimming_through_the_forest.summary",
+  "chapters": "3",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.swimming_through_the_forest.river",
+      "site": "modulo:gifu_river",
+      "radius": 14,
+      "intro": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.intro"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.swimming_through_the_forest.osada",
+      "site": "modulo:gifu_river",
+      "npc": "osada",
+      "lines": [
+        {
+          "speaker": "osada",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.osada_1"
+        },
+        {
+          "speaker": "osada",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.osada_2"
+        },
+        {
+          "speaker": "osada",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.osada_3"
+        },
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.osada_4"
+        }
+      ]
+    },
+    {
+      "type": "defeat",
+      "objective": "objective.jjkcraft.modulo.swimming_through_the_forest.tiger",
+      "site": "modulo:gifu_river",
+      "boss": "modulo:toranosuke",
+      "allies": [
+        "tsurugi"
+      ]
+    },
+    {
+      "type": "deliver",
+      "objective": "objective.jjkcraft.modulo.swimming_through_the_forest.cub",
+      "site": "modulo:gifu_river",
+      "item": "jjkcraft:tiger_cub",
+      "count": 1,
+      "npc": "osada",
+      "lines": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.cub_1"
+        },
+        {
+          "speaker": "osada",
+          "text": "dialogue.jjkcraft.modulo.swimming_through_the_forest.cub_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 400,
+    "items": [
+      {
+        "item": "jjkcraft:high_purity_mul",
+        "count": 1
+      }
+    ]
+  }
+}

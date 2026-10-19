@@ -1,0 +1,6 @@
+{
+  "name": "vow.jjkcraft.half_vessel",
+  "description": "vow.jjkcraft.half_vessel.desc",
+  "restriction": "halved_reserve",
+  "weight": 5
+}

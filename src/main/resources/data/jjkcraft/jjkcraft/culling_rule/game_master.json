@@ -1,0 +1,21 @@
+{
+  "text": "culling_rule.jjkcraft.game_master",
+  "text_args": [
+    "config:rule_cost"
+  ],
+  "base": true,
+  "order": 5,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:action",
+        "action": "negotiate"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:negotiate"
+        }
+      ]
+    }
+  ]
+}

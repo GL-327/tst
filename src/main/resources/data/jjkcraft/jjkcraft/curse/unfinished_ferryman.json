@@ -1,0 +1,59 @@
+{
+  "name": "curse.jjkcraft.unfinished_ferryman",
+  "description": "curse.jjkcraft.unfinished_ferryman.desc",
+  "lore": "curse.jjkcraft.unfinished_ferryman.lore",
+  "entity": "jjkcraft:unfinished_ferryman",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 480,
+    "armor": 12,
+    "speed": 0.26,
+    "attack_damage": 13,
+    "ce_capacity": 600,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 12,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.9
+  },
+  "techniques": [
+    "jjkcraft:seeking_grudge_bolt",
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 1,
+    "min_fear": 95,
+    "max_light": 4,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:drown": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/unfinished_ferryman",
+    "texture": "jjkcraft:textures/entity/unfinished_ferryman.png",
+    "animation": "jjkcraft:entity/unfinished_ferryman",
+    "scale": 1.5
+  },
+  "mechanic": "jjkcraft:ferryman",
+  "parameters": {
+    "arena_radius": 22,
+    "first_crossing": 200,
+    "crossing_ticks": 200,
+    "crossing_ticks_second": 260,
+    "interval": 600,
+    "interval_second": 400,
+    "pull": 0.06,
+    "pull_second": 0.075,
+    "ferry_damage": 8,
+    "wither_ticks": 100,
+    "leash": 6,
+    "sweep_damage": 5,
+    "bar_range": 48
+  },
+  "codex": {
+    "color": "#7FA0B0",
+    "unlock_kills": 1
+  }
+}

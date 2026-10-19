@@ -1,0 +1,10 @@
+{
+  "item": "jjkcraft:split_soul_katana",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "technique": "jjkcraft:dismantle",
+  "cost_multiplier": 0.75,
+  "description": "item.jjkcraft.split_soul_katana.desc",
+  "medium": true,
+  "durability_per_ce": 0.1
+}

@@ -1,0 +1,44 @@
+{
+  "name": "curse.jjkcraft.vow_kin",
+  "description": "curse.jjkcraft.vow_kin.desc",
+  "lore": "curse.jjkcraft.vow_kin.lore",
+  "entity": "jjkcraft:vow_kin",
+  "grade": "jjkcraft:grade_1",
+  "stats": {
+    "health": 110,
+    "armor": 6,
+    "speed": 0.29,
+    "attack_damage": 9,
+    "ce_capacity": 220,
+    "drain_on_hit": 8,
+    "follow_range": 32.0
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 3,
+    "min_fear": 45,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/vow_kin",
+    "texture": "jjkcraft:textures/entity/vow_kin.png",
+    "animation": "jjkcraft:entity/vow_kin"
+  },
+  "mechanic": "jjkcraft:vow_kin",
+  "parameters": {
+    "hunt_range": 24,
+    "damage_per_point": 0.08,
+    "flee_ticks": 100
+  },
+  "codex": {
+    "color": "#B08D57",
+    "unlock_kills": 3
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.night_truce",
+  "order": 24,
+  "conflicts": [
+    "jjkcraft:night_hunt"
+  ],
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "participant",
+        "night_only": true
+      },
+      "then": [
+        {
+          "type": "jjkcraft:deduct_points",
+          "scale": "victim"
+        }
+      ]
+    }
+  ]
+}

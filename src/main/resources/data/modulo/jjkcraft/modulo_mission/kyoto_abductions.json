@@ -1,0 +1,92 @@
+{
+  "order": 2,
+  "title": "mission.jjkcraft.modulo.kyoto_abductions",
+  "summary": "mission.jjkcraft.modulo.kyoto_abductions.summary",
+  "chapters": "1",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.path_1",
+      "site": "modulo:kyoto_alley",
+      "marker": "path_1",
+      "radius": 2.5,
+      "intro": [
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.intro_1"
+        },
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.intro_2"
+        }
+      ]
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.path_2",
+      "site": "modulo:kyoto_alley",
+      "marker": "path_2",
+      "radius": 2.5
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.path_3",
+      "site": "modulo:kyoto_alley",
+      "marker": "path_3",
+      "radius": 2.5,
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.hands"
+        }
+      ]
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.warehouse",
+      "site": "modulo:kyoto_warehouse",
+      "radius": 12
+    },
+    {
+      "type": "defeat",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.fight",
+      "site": "modulo:kyoto_warehouse",
+      "boss": "modulo:trafficker",
+      "allies": [
+        "yuka",
+        "tsurugi"
+      ],
+      "intro": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.fight"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.kyoto_abductions.report",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "usami",
+      "lines": [
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.report_1"
+        },
+        {
+          "speaker": "usami",
+          "text": "dialogue.jjkcraft.modulo.kyoto_abductions.report_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 400,
+    "items": [
+      {
+        "item": "jjkcraft:mul",
+        "count": 2
+      }
+    ]
+  }
+}

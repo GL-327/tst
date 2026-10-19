@@ -1,0 +1,62 @@
+{
+  "order": 10,
+  "title": "mission.jjkcraft.modulo.ritual_of_harmony",
+  "summary": "mission.jjkcraft.modulo.ritual_of_harmony.summary",
+  "chapters": "20-23",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.ritual_of_harmony.makyo",
+      "site": "modulo:inhuman_makyo",
+      "radius": 20,
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.intro"
+        }
+      ]
+    },
+    {
+      "type": "defeat",
+      "objective": "objective.jjkcraft.modulo.ritual_of_harmony.dabura",
+      "site": "modulo:inhuman_makyo",
+      "boss": "modulo:dabura",
+      "allies": [
+        "tsurugi"
+      ],
+      "intro": [
+        {
+          "speaker": "dabura",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.fight_1"
+        },
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.fight_2"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.ritual_of_harmony.ritual",
+      "npc": "maru",
+      "lines": [
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.ritual_1"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.ritual_2"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.ritual_of_harmony.ritual_3"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 1500,
+    "mul_energy": 100
+  }
+}

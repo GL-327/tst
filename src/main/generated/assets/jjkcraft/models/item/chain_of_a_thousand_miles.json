@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "jjkcraft:item/chain_of_a_thousand_miles"
+  }
+}

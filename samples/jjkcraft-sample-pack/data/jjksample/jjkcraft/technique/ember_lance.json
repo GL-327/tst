@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjksample.ember_lance",
+  "description": "technique.jjksample.ember_lance.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 20,
+    "cooldown": 40,
+    "range": 30.0
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 7,
+    "speed": 2.0,
+    "pierce": true,
+    "lifetime": 30
+  },
+  "visuals": {
+    "color": "#FF8A3D",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjksample:textures/gui/technique/ember_lance.png",
+  "innate_weight": 4
+}

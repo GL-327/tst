@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.rising_star",
+  "text_args": [
+    "50"
+  ],
+  "order": 29,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:points_reached",
+        "points": 50
+      },
+      "then": [
+        {
+          "type": "jjkcraft:message",
+          "key": "culling.jjkcraft.rising_star",
+          "broadcast": true
+        }
+      ]
+    }
+  ]
+}

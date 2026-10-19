@@ -1,0 +1,353 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.ten_mouth_sovereign",
+    "texture_width": 128,
+    "texture_height": 128,
+    "visible_bounds_width": 4,
+    "visible_bounds_height": 4,
+    "visible_bounds_offset": [
+     0,
+     1.5,
+     0
+    ]
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "mass",
+     "pivot": [
+      0,
+      14,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -9,
+        4,
+        -6
+       ],
+       "size": [
+        18,
+        18,
+        12
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "head",
+     "pivot": [
+      0,
+      22,
+      0
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        -5,
+        22,
+        -5
+       ],
+       "size": [
+        10,
+        8,
+        10
+       ],
+       "uv": [
+        60,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw0",
+     "pivot": [
+      -7,
+      18,
+      -6.5
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        -9,
+        16.5,
+        -7.5
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        100,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw1",
+     "pivot": [
+      5,
+      16,
+      -6.5
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        3,
+        14.5,
+        -7.5
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        112,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw2",
+     "pivot": [
+      -3,
+      9,
+      -6.5
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        -5,
+        7.5,
+        -7.5
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        0,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw3",
+     "pivot": [
+      7,
+      8,
+      -6.5
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        5,
+        6.5,
+        -7.5
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        12,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw4",
+     "pivot": [
+      -9.5,
+      12,
+      0
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        -11.5,
+        10.5,
+        -1
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        24,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "jaw5",
+     "pivot": [
+      9.5,
+      12,
+      0
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        7.5,
+        10.5,
+        -1
+       ],
+       "size": [
+        4,
+        3,
+        2
+       ],
+       "uv": [
+        36,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_l",
+     "pivot": [
+      9,
+      18,
+      0
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        9,
+        6,
+        -2
+       ],
+       "size": [
+        4,
+        14,
+        4
+       ],
+       "uv": [
+        48,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_r",
+     "pivot": [
+      -9,
+      18,
+      0
+     ],
+     "parent": "mass",
+     "cubes": [
+      {
+       "origin": [
+        -13,
+        6,
+        -2
+       ],
+       "size": [
+        4,
+        14,
+        4
+       ],
+       "uv": [
+        64,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "pillar_l",
+     "pivot": [
+      -5,
+      4,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -8,
+        0,
+        -3
+       ],
+       "size": [
+        5,
+        6,
+        6
+       ],
+       "uv": [
+        80,
+        30
+       ]
+      }
+     ]
+    },
+    {
+     "name": "pillar_r",
+     "pivot": [
+      5,
+      4,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        3,
+        0,
+        -3
+       ],
+       "size": [
+        5,
+        6,
+        6
+       ],
+       "uv": [
+        102,
+        30
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

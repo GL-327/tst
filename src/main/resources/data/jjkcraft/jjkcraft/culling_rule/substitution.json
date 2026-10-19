@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.substitution",
+  "text_args": [
+    "30"
+  ],
+  "base": true,
+  "order": 8,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:action",
+        "action": "substitute"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:substitute",
+          "cost": 30
+        }
+      ]
+    }
+  ]
+}

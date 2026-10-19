@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.ordinary_bounty",
+  "text_args": [
+    "config:non_sorcerer_points"
+  ],
+  "base": true,
+  "order": 4,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "non_sorcerer"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "scale": "non_sorcerer"
+        }
+      ]
+    }
+  ]
+}

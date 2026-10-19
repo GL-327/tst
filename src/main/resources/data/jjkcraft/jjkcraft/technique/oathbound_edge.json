@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.oathbound_edge",
+  "description": "technique.jjkcraft.oathbound_edge.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 22,
+    "cooldown": 50,
+    "range": 4.5
+  },
+  "behavior": {
+    "type": "jjkcraft:vow_strike",
+    "damage": 9,
+    "per_point": 0.1,
+    "knockback": 0.6
+  },
+  "visuals": {
+    "color": "#F2C14E",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.4,
+    "hit_stop": 2,
+    "trail": "slash",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/oathbound_edge.png",
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:measured_pace",
+      "damage": 1.2
+    }
+  ],
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

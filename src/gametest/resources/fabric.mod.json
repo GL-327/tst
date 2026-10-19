@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "jjkcraft-gametest",
+  "version": "1.0.0",
+  "name": "Jujutsu Craft game tests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "com.jjkcraft.gametest.SmokeGameTest",
+      "com.jjkcraft.gametest.EnergyGameTests",
+      "com.jjkcraft.gametest.ProgressionGameTests",
+      "com.jjkcraft.gametest.TechniqueGameTests",
+      "com.jjkcraft.gametest.CurseGameTests",
+      "com.jjkcraft.gametest.DomainGameTests",
+      "com.jjkcraft.gametest.SorceryGameTests",
+      "com.jjkcraft.gametest.CullingGameTests",
+      "com.jjkcraft.gametest.ArsenalGameTests",
+      "com.jjkcraft.gametest.PerformanceGameTests",
+      "com.jjkcraft.gametest.SamplePackGameTests",
+      "com.jjkcraft.gametest.LegacyIdGameTests",
+      "com.jjkcraft.gametest.ModuloGameTests"
+    ],
+    "fabric-client-gametest": [
+      "com.jjkcraft.gametest.SmokeClientGameTest"
+    ]
+  },
+  "mixins": [
+    "jjkcraft-gametest.mixins.json"
+  ],
+  "depends": {
+    "jjkcraft": "*"
+  }
+}

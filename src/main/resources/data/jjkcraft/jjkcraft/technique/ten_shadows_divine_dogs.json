@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_divine_dogs",
+  "description": "technique.jjkcraft.ten_shadows_divine_dogs.desc",
+  "category": "summon",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 40,
+    "cooldown": 400
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:divine_dog",
+    "count": 2,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#4A3A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_divine_dogs.png",
+  "innate_weight": 5,
+  "mastery_uses": 30
+}

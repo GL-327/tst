@@ -1,0 +1,28 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -300,
+    64,
+    -170
+  ],
+  "radius": 28,
+  "layout": "river",
+  "name": "site.jjkcraft.modulo.gifu_river",
+  "npcs": [
+    {
+      "character": "osada",
+      "offset": [
+        -8,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": {
+    "boss": [
+      0,
+      0,
+      14
+    ]
+  }
+}

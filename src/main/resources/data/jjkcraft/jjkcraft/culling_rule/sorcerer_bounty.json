@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.sorcerer_bounty",
+  "text_args": [
+    "config:sorcerer_points"
+  ],
+  "base": true,
+  "order": 3,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "sorcerer"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "scale": "sorcerer"
+        }
+      ]
+    }
+  ]
+}

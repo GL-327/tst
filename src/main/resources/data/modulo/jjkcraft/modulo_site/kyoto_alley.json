@@ -1,0 +1,38 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -200,
+    64,
+    70
+  ],
+  "radius": 20,
+  "layout": "alley",
+  "name": "site.jjkcraft.modulo.kyoto_alley",
+  "npcs": [
+    {
+      "character": "yuka",
+      "offset": [
+        -16,
+        0,
+        1
+      ]
+    }
+  ],
+  "markers": {
+    "path_1": [
+      -10,
+      0,
+      0
+    ],
+    "path_2": [
+      0,
+      0,
+      0
+    ],
+    "path_3": [
+      12,
+      0,
+      0
+    ]
+  }
+}

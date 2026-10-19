@@ -1,0 +1,41 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    -110,
+    64,
+    -150
+  ],
+  "radius": 26,
+  "layout": "school",
+  "name": "site.jjkcraft.modulo.shuei_elementary",
+  "npcs": [
+    {
+      "character": "masayoshi",
+      "offset": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "character": "cross",
+      "offset": [
+        10,
+        0,
+        -2
+      ]
+    }
+  ],
+  "markers": {
+    "boss": [
+      -17,
+      0,
+      7
+    ],
+    "pool": [
+      9,
+      0,
+      10
+    ]
+  }
+}

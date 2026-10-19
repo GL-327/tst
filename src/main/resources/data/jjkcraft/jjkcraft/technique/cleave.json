@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.cleave",
+  "description": "technique.jjkcraft.cleave.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 40,
+    "range": 5.0
+  },
+  "behavior": {
+    "type": "jjkcraft:arc_slash",
+    "damage": 6,
+    "arc": 140,
+    "ce_scaling": 0.6,
+    "knockback": 0.5
+  },
+  "visuals": {
+    "color": "#E0303F",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.25,
+    "hit_stop": 1,
+    "trail": "slash",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cleave.png",
+  "innate_weight": 8,
+  "mastery_uses": 50
+}

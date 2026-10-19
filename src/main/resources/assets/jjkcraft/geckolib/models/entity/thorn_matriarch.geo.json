@@ -1,0 +1,272 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.thorn_matriarch",
+    "texture_width": 128,
+    "texture_height": 128,
+    "visible_bounds_width": 4,
+    "visible_bounds_height": 4,
+    "visible_bounds_offset": [
+     0,
+     1.5,
+     0
+    ]
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "trunk",
+     "pivot": [
+      0,
+      0,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -5,
+        0,
+        -4
+       ],
+       "size": [
+        10,
+        20,
+        8
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "head",
+     "pivot": [
+      0,
+      20,
+      0
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        -4,
+        20,
+        -4
+       ],
+       "size": [
+        8,
+        8,
+        8
+       ],
+       "uv": [
+        36,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "crown",
+     "pivot": [
+      0,
+      28,
+      0
+     ],
+     "parent": "head",
+     "cubes": [
+      {
+       "origin": [
+        -6,
+        28,
+        -6
+       ],
+       "size": [
+        12,
+        4,
+        12
+       ],
+       "uv": [
+        68,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_l",
+     "pivot": [
+      -5,
+      18,
+      0
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        -9,
+        4,
+        -2
+       ],
+       "size": [
+        4,
+        14,
+        4
+       ],
+       "uv": [
+        0,
+        28
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_r",
+     "pivot": [
+      5,
+      18,
+      0
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        5,
+        4,
+        -2
+       ],
+       "size": [
+        4,
+        14,
+        4
+       ],
+       "uv": [
+        16,
+        28
+       ]
+      }
+     ]
+    },
+    {
+     "name": "root0",
+     "pivot": [
+      6.0,
+      1,
+      0.0
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        5.0,
+        0,
+        -1.0
+       ],
+       "size": [
+        2,
+        3,
+        6
+       ],
+       "uv": [
+        32,
+        28
+       ]
+      }
+     ]
+    },
+    {
+     "name": "root1",
+     "pivot": [
+      -0.17519713380773289,
+      1,
+      5.997441618249031
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        -1.175197133807733,
+        0,
+        4.997441618249031
+       ],
+       "size": [
+        2,
+        3,
+        6
+       ],
+       "uv": [
+        48,
+        28
+       ]
+      }
+     ]
+    },
+    {
+     "name": "root2",
+     "pivot": [
+      -5.989768654768518,
+      1,
+      -0.35024486056548054
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        -6.989768654768518,
+        0,
+        -1.3502448605654807
+       ],
+       "size": [
+        2,
+        3,
+        6
+       ],
+       "uv": [
+        64,
+        28
+       ]
+      }
+     ]
+    },
+    {
+     "name": "root3",
+     "pivot": [
+      -0.07433198077734336,
+      1,
+      -5.999539545384605
+     ],
+     "parent": "trunk",
+     "cubes": [
+      {
+       "origin": [
+        -1.0743319807773433,
+        0,
+        -6.999539545384605
+       ],
+       "size": [
+        2,
+        3,
+        6
+       ],
+       "uv": [
+        80,
+        28
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "entity.jjkcraft.modulo.dabura",
+  "behavior": "dabura",
+  "skin": "dabura",
+  "health": 520,
+  "armor": 14,
+  "damage": 12,
+  "speed": 0.32,
+  "scale": 1.15,
+  "color": "white",
+  "params": {
+    "beam_interval": 70,
+    "beam_windup": 20,
+    "beam_damage": 9,
+    "beam_range": 32,
+    "pillar_below": 0.75,
+    "pillar_count": 5,
+    "pin_ticks": 70,
+    "domain_below": 0.5,
+    "darkness_below": 0.3,
+    "darkness_charge": 100,
+    "darkness_damage": 22,
+    "darkness_radius": 18,
+    "darkness_interval": 300,
+    "yield_below": 0.05,
+    "arena_radius": 28
+  }
+}

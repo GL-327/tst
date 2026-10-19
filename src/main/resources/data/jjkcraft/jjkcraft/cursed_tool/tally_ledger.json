@@ -1,0 +1,7 @@
+{
+  "item": "jjkcraft:tally_ledger",
+  "kind": "ledger",
+  "grade": "jjkcraft:grade_4",
+  "amount": 5,
+  "description": "item.jjkcraft.tally_ledger.desc"
+}

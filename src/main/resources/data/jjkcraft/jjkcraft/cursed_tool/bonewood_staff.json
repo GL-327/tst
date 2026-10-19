@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:bonewood_staff",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_4",
+  "technique": "jjkcraft:grudge_bolt",
+  "cost_multiplier": 0.8,
+  "description": "item.jjkcraft.bonewood_staff.desc"
+}

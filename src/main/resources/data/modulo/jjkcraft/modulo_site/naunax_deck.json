@@ -1,0 +1,29 @@
+{
+  "dimension": "modulo:naunax",
+  "center": [
+    0,
+    64,
+    0
+  ],
+  "radius": 14,
+  "layout": "deck_hall",
+  "name": "site.jjkcraft.modulo.naunax_deck",
+  "npcs": [],
+  "markers": {
+    "arrival": [
+      0,
+      0,
+      5
+    ],
+    "gate_earth": [
+      -9,
+      0,
+      0
+    ],
+    "gate_tokyo": [
+      9,
+      0,
+      0
+    ]
+  }
+}

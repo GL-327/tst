@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.grudge_bolt",
+  "description": "technique.jjkcraft.grudge_bolt.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 20,
+    "range": 40.0
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 6,
+    "speed": 1.6,
+    "size": 0.35,
+    "lifetime": 40
+  },
+  "visuals": {
+    "color": "#53E0FF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/grudge_bolt.png",
+  "innate_weight": 12,
+  "mastery_uses": 50,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

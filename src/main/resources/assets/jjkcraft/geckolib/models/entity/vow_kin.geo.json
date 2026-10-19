@@ -1,0 +1,218 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.vow_kin",
+    "texture_width": 128,
+    "texture_height": 128,
+    "visible_bounds_width": 4,
+    "visible_bounds_height": 4,
+    "visible_bounds_offset": [
+     0,
+     1.5,
+     0
+    ]
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "torso",
+     "pivot": [
+      0,
+      22,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -4,
+        12,
+        -2
+       ],
+       "size": [
+        8,
+        12,
+        4
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "head",
+     "pivot": [
+      0,
+      24,
+      0
+     ],
+     "parent": "torso",
+     "cubes": [
+      {
+       "origin": [
+        -3.5,
+        24,
+        -3.5
+       ],
+       "size": [
+        7,
+        8,
+        7
+       ],
+       "uv": [
+        24,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "knot",
+     "pivot": [
+      0,
+      32,
+      0
+     ],
+     "parent": "head",
+     "cubes": [
+      {
+       "origin": [
+        -1,
+        32,
+        -1
+       ],
+       "size": [
+        2,
+        4,
+        2
+       ],
+       "uv": [
+        52,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_l",
+     "pivot": [
+      5,
+      22,
+      0
+     ],
+     "parent": "torso",
+     "cubes": [
+      {
+       "origin": [
+        4,
+        8,
+        -1.5
+       ],
+       "size": [
+        3,
+        15,
+        3
+       ],
+       "uv": [
+        60,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "arm_r",
+     "pivot": [
+      -5,
+      22,
+      0
+     ],
+     "parent": "torso",
+     "cubes": [
+      {
+       "origin": [
+        -7,
+        8,
+        -1.5
+       ],
+       "size": [
+        3,
+        15,
+        3
+       ],
+       "uv": [
+        72,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "leg_l",
+     "pivot": [
+      2,
+      12,
+      0
+     ],
+     "parent": "torso",
+     "cubes": [
+      {
+       "origin": [
+        0.5,
+        0,
+        -1.5
+       ],
+       "size": [
+        3,
+        12,
+        3
+       ],
+       "uv": [
+        84,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "leg_r",
+     "pivot": [
+      -2,
+      12,
+      0
+     ],
+     "parent": "torso",
+     "cubes": [
+      {
+       "origin": [
+        -3.5,
+        0,
+        -1.5
+       ],
+       "size": [
+        3,
+        12,
+        3
+       ],
+       "uv": [
+        96,
+        0
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

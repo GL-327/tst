@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.cursed_speech_blast_away",
+  "description": "technique.jjkcraft.cursed_speech_blast_away.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 20,
+    "cooldown": 120,
+    "range": 8.0
+  },
+  "behavior": {
+    "type": "jjkcraft:cursed_speech",
+    "command": "leap",
+    "radius": 8,
+    "duration": 20,
+    "strain": 0.5
+  },
+  "visuals": {
+    "color": "#D8C08A",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.speech",
+    "shake": 0.3,
+    "hit_stop": 0,
+    "trail": "shout"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_speech_blast_away.png",
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

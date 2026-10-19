@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:bonewood_staff",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_4",
+  "technique": "jjksample:ember_lance",
+  "cost_multiplier": 0.9,
+  "description": "item.jjksample.bonewood_staff.desc"
+}

@@ -1,0 +1,17 @@
+{
+  "rank": 5,
+  "name": "grade.jjkcraft.grade_1",
+  "color": "#E67E22",
+  "ce_multiplier": 3.6,
+  "technique_slots": 6,
+  "tool_durability": 448,
+  "domain_tier": 1,
+  "xp_required": 9000,
+  "min_control": 0.50,
+  "trials": [
+    { "id": "jjkcraft:defeat_grade_2_more", "type": "defeat_curse", "grade": "jjkcraft:grade_2", "count": 6 },
+    { "id": "jjkcraft:master_two", "type": "master_techniques", "count": 2 },
+    { "id": "jjkcraft:culling_points", "type": "culling_points", "count": 20 }
+  ],
+  "perks": { "sense_range": 40, "regen_bonus": 0.30, "black_flash_bonus": 3.0 }
+}

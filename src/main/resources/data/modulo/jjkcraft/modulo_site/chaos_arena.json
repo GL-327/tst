@@ -1,0 +1,28 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    140,
+    64,
+    170
+  ],
+  "radius": 20,
+  "layout": "arena",
+  "name": "site.jjkcraft.modulo.chaos_arena",
+  "npcs": [
+    {
+      "character": "tsurugi",
+      "offset": [
+        -8,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": {
+    "boss": [
+      6,
+      0,
+      0
+    ]
+  }
+}

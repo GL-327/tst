@@ -1,0 +1,30 @@
+{
+  "dimension": "modulo:tokyo_2086",
+  "center": [
+    60,
+    64,
+    -60
+  ],
+  "radius": 18,
+  "layout": "ruins",
+  "name": "site.jjkcraft.modulo.tokyo_barrier",
+  "npcs": [
+    {
+      "character": "usami",
+      "offset": [
+        -3,
+        0,
+        0
+      ]
+    },
+    {
+      "character": "dabura",
+      "offset": [
+        4,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": {}
+}

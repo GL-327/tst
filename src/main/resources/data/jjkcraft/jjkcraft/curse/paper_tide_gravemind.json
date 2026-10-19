@@ -1,0 +1,51 @@
+{
+  "name": "curse.jjkcraft.paper_tide_gravemind",
+  "description": "curse.jjkcraft.paper_tide_gravemind.desc",
+  "lore": "curse.jjkcraft.paper_tide_gravemind.lore",
+  "entity": "jjkcraft:paper_tide_gravemind",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 420,
+    "armor": 10,
+    "speed": 0.24,
+    "attack_damage": 12,
+    "ce_capacity": 600,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 12,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.7
+  },
+  "techniques": [
+    "jjkcraft:cleave",
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 1,
+    "min_fear": 95,
+    "max_light": 4
+  },
+  "model": {
+    "geo": "jjkcraft:entity/paper_tide_gravemind",
+    "texture": "jjkcraft:textures/entity/paper_tide_gravemind.png",
+    "animation": "jjkcraft:entity/paper_tide_gravemind",
+    "scale": 1.3
+  },
+  "mechanic": "jjkcraft:paper_tide",
+  "parameters": {
+    "first_fold_hits": 4,
+    "second_fold_hits": 8,
+    "first_fold": 0.6,
+    "second_fold": 0.25,
+    "forget_ticks": 600,
+    "tide_range": 9,
+    "tide_windup": 22,
+    "tide_interval": 120,
+    "tide_damage": 7,
+    "tide_bind_ticks": 30,
+    "bar_range": 48
+  },
+  "codex": {
+    "color": "#E8E0C8",
+    "unlock_kills": 1
+  }
+}

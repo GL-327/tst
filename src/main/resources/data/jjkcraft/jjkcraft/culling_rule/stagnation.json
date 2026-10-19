@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.stagnation",
+  "text_args": [
+    "3"
+  ],
+  "base": true,
+  "order": 9,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:idle",
+        "days": 3
+      },
+      "then": [
+        {
+          "type": "jjkcraft:cap_energy",
+          "fraction": 0.5
+        }
+      ]
+    }
+  ]
+}

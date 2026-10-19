@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.reversal_red",
+  "description": "technique.jjkcraft.reversal_red.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 30,
+    "cooldown": 120,
+    "range": 20.0
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": -1.6,
+    "radius": 4.0,
+    "duration": 30,
+    "damage_per_second": 3,
+    "burst_damage": 24,
+    "burst_radius": 5
+  },
+  "visuals": {
+    "color": "#FF3D4E",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.repel",
+    "shake": 0.3,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/reversal_red.png",
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

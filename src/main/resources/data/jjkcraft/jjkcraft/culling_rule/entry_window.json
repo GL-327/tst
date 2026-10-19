@@ -1,0 +1,20 @@
+{
+  "text": "culling_rule.jjkcraft.entry_window",
+  "text_args": [
+    "config:entry_days"
+  ],
+  "base": true,
+  "order": 1,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:deadline"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:remove_technique"
+        }
+      ]
+    }
+  ]
+}

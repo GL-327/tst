@@ -1,0 +1,27 @@
+{
+  "text": "culling_rule.jjkcraft.one_way_entry",
+  "base": true,
+  "order": 2,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:enter"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:join"
+        }
+      ]
+    },
+    {
+      "when": {
+        "type": "jjkcraft:leave"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:confine"
+        }
+      ]
+    }
+  ]
+}

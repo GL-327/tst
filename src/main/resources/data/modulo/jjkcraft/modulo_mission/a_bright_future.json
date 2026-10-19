@@ -1,0 +1,45 @@
+{
+  "order": 11,
+  "title": "mission.jjkcraft.modulo.a_bright_future",
+  "summary": "mission.jjkcraft.modulo.a_bright_future.summary",
+  "chapters": "24-25",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.a_bright_future.kyoto",
+      "site": "modulo:kyoto_jujutsu_high",
+      "radius": 14
+    },
+    {
+      "type": "sequence",
+      "objective": "objective.jjkcraft.modulo.a_bright_future.watch",
+      "sequence": "epilogue",
+      "seconds": 32
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.a_bright_future.kyoko",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "kyoko_tomoe",
+      "lines": [
+        {
+          "speaker": "kyoko_tomoe",
+          "text": "dialogue.jjkcraft.modulo.a_bright_future.kyoko_1"
+        },
+        {
+          "speaker": "kyoko_tomoe",
+          "text": "dialogue.jjkcraft.modulo.a_bright_future.kyoko_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "advancement": "jjkcraft:modulo/epilogue",
+    "items": [
+      {
+        "item": "jjkcraft:yuji_cursed_object",
+        "count": 1
+      }
+    ]
+  }
+}

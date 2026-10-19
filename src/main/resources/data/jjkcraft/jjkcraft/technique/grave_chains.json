@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.grave_chains",
+  "description": "technique.jjkcraft.grave_chains.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 16,
+    "cooldown": 100,
+    "range": 16.0
+  },
+  "behavior": {
+    "type": "jjkcraft:bind",
+    "duration": 50,
+    "damage": 2
+  },
+  "visuals": {
+    "color": "#B08D57",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.chain",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "chain",
+    "hit_sound": "jjkcraft:technique.chain"
+  },
+  "icon": "jjkcraft:textures/gui/technique/grave_chains.png",
+  "innate_weight": 6,
+  "mastery_uses": 50
+}

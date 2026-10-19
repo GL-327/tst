@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.lapse_blue",
+  "description": "technique.jjkcraft.lapse_blue.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 30,
+    "cooldown": 120,
+    "range": 20.0
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 1.2,
+    "radius": 4.0,
+    "duration": 50,
+    "damage_per_second": 2,
+    "burst_damage": 24,
+    "burst_radius": 5
+  },
+  "visuals": {
+    "color": "#3D8BFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/lapse_blue.png",
+  "innate_weight": 3,
+  "mastery_uses": 50
+}

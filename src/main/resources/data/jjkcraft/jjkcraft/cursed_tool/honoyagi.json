@@ -1,0 +1,12 @@
+{
+  "item": "jjkcraft:honoyagi",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_2",
+  "technique": "jjkcraft:batto_sword_drawing",
+  "cost_multiplier": 1,
+  "on_hit": "ignite",
+  "amount": 3,
+  "description": "item.jjkcraft.honoyagi.desc",
+  "medium": true,
+  "durability_per_ce": 0.1
+}

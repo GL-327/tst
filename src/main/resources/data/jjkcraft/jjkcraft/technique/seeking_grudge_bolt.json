@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.seeking_grudge_bolt",
+  "description": "technique.jjkcraft.seeking_grudge_bolt.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 18,
+    "cooldown": 30,
+    "range": 48.0
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 5,
+    "speed": 1.1,
+    "homing": true,
+    "homing_strength": 0.25,
+    "size": 0.3,
+    "lifetime": 80
+  },
+  "visuals": {
+    "color": "#A8F0FF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.1,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/seeking_grudge_bolt.png",
+  "innate_weight": 6,
+  "mastery_uses": 50
+}

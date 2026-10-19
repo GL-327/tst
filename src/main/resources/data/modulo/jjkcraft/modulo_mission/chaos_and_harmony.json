@@ -1,0 +1,88 @@
+{
+  "order": 9,
+  "title": "mission.jjkcraft.modulo.chaos_and_harmony",
+  "summary": "mission.jjkcraft.modulo.chaos_and_harmony.summary",
+  "chapters": "14, 16-21",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.chaos_and_harmony.arena",
+      "site": "modulo:chaos_arena",
+      "radius": 14,
+      "intro": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.chaos_and_harmony.intro"
+        }
+      ]
+    },
+    {
+      "type": "choice",
+      "objective": "objective.jjkcraft.modulo.chaos_and_harmony.choose",
+      "site": "modulo:chaos_arena",
+      "npc": "tsurugi",
+      "flag": "chaos_and_harmony",
+      "options": [
+        "duel",
+        "stand_aside"
+      ]
+    },
+    {
+      "type": "defeat",
+      "objective": "objective.jjkcraft.modulo.chaos_and_harmony.duel",
+      "site": "modulo:chaos_arena",
+      "boss": "modulo:maru_duel",
+      "when": {
+        "flag": "chaos_and_harmony",
+        "value": "duel"
+      },
+      "intro": [
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.chaos_and_harmony.duel"
+        }
+      ]
+    },
+    {
+      "type": "defend",
+      "objective": "objective.jjkcraft.modulo.chaos_and_harmony.watch",
+      "site": "modulo:chaos_arena",
+      "seconds": 45,
+      "when": {
+        "flag": "chaos_and_harmony",
+        "value": "stand_aside"
+      },
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.chaos_and_harmony.watch"
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.chaos_and_harmony.after",
+      "site": "modulo:chaos_arena",
+      "npc": "tsurugi",
+      "lines": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.chaos_and_harmony.after_1"
+        },
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.chaos_and_harmony.after_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 800,
+    "items": [
+      {
+        "item": "jjkcraft:honoyagi",
+        "count": 1
+      }
+    ]
+  }
+}

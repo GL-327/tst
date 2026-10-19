@@ -1,0 +1,49 @@
+{
+  "name": "domain.jjkcraft.idle_death_gamble",
+  "description": "domain.jjkcraft.idle_death_gamble.desc",
+  "grade": "jjkcraft:grade_1",
+  "cast_cost": 130,
+  "upkeep": 18,
+  "radius": 12,
+  "clash_priority": 1,
+  "behaviors": [
+    {
+      "type": "jjkcraft:gamble",
+      "spin_interval": 10,
+      "jackpot_streak": 3,
+      "jackpot_ticks": 200,
+      "outcomes": [
+        {
+          "kind": "damage",
+          "weight": 30,
+          "amount": 3
+        },
+        {
+          "kind": "heal",
+          "weight": 15,
+          "amount": 3
+        },
+        {
+          "kind": "energy",
+          "weight": 20,
+          "amount": 15
+        },
+        {
+          "kind": "stun",
+          "weight": 10,
+          "amount": 30
+        },
+        {
+          "kind": "whiff",
+          "weight": 25
+        }
+      ]
+    }
+  ],
+  "visuals": {
+    "color": "#F2C14E",
+    "secondary": "#E0303F",
+    "dome": "#1A1208",
+    "ambience": "lanterns"
+  }
+}

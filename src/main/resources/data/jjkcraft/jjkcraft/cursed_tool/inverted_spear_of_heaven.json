@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:inverted_spear_of_heaven",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "on_hit": "dispel",
+  "amount": 15,
+  "description": "item.jjkcraft.inverted_spear_of_heaven.desc"
+}

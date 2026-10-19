@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.straw_doll_resonance",
+  "description": "technique.jjkcraft.straw_doll_resonance.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 26,
+    "cooldown": 300,
+    "range": 12.0
+  },
+  "behavior": {
+    "type": "jjkcraft:straw_doll",
+    "damage": 5,
+    "nails": 3,
+    "duration": 600
+  },
+  "visuals": {
+    "color": "#C0302F",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.chain",
+    "shake": 0.2,
+    "hit_stop": 2,
+    "trail": "line",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/straw_doll_resonance.png",
+  "innate_weight": 4,
+  "mastery_uses": 50
+}

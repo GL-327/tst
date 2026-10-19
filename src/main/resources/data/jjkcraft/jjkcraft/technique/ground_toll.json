@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ground_toll",
+  "description": "technique.jjkcraft.ground_toll.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 160
+  },
+  "behavior": {
+    "type": "jjkcraft:shockwave",
+    "radius": 6,
+    "damage": 8,
+    "launch": 0.6
+  },
+  "visuals": {
+    "color": "#9A7A48",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.strike",
+    "shake": 0.7,
+    "hit_stop": 2,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ground_toll.png",
+  "innate_weight": 4,
+  "mastery_uses": 50
+}

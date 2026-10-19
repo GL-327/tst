@@ -1,0 +1,26 @@
+{
+  "text": "culling_rule.jjksample.first_blood",
+  "text_args": [
+    "10"
+  ],
+  "order": 40,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:points_reached",
+        "points": 1
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "amount": 10
+        },
+        {
+          "type": "jjkcraft:message",
+          "key": "culling.jjksample.first_blood",
+          "broadcast": true
+        }
+      ]
+    }
+  ]
+}

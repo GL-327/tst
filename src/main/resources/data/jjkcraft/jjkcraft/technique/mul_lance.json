@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.mul_lance",
+  "description": "technique.jjkcraft.mul_lance.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 0,
+    "cooldown": 30,
+    "range": 40,
+    "mul_cost": 25
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 10,
+    "speed": 1.8,
+    "size": 0.3,
+    "lifetime": 30,
+    "pierce": true
+  },
+  "visuals": {
+    "color": "#7CF2A8",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.2,
+    "hit_stop": 1,
+    "trail": "beam",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mul_lance.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -1,0 +1,15 @@
+{
+  "rank": 1,
+  "name": "grade.jjkcraft.grade_3",
+  "color": "#6FA8DC",
+  "ce_multiplier": 1.4,
+  "technique_slots": 3,
+  "tool_durability": 160,
+  "domain_tier": 0,
+  "xp_required": 300,
+  "min_control": 0.30,
+  "trials": [
+    { "id": "jjkcraft:defeat_grade_4", "type": "defeat_curse", "grade": "jjkcraft:grade_4", "count": 5 }
+  ],
+  "perks": { "sense_range": 16, "regen_bonus": 0.05, "black_flash_bonus": 0.5 }
+}

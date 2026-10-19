@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.infinity",
+  "description": "technique.jjkcraft.infinity.desc",
+  "category": "passive",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 8,
+    "cooldown": 20,
+    "mode": "toggle",
+    "upkeep": 1.5
+  },
+  "behavior": {
+    "type": "jjkcraft:infinity",
+    "radius": 6,
+    "slow": 0.55
+  },
+  "visuals": {
+    "color": "#76C7A5",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.barrier",
+    "shake": 0.0,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/infinity.png",
+  "innate_weight": 4,
+  "mastery_uses": 50
+}

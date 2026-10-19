@@ -1,0 +1,26 @@
+{
+  "name": "technique.jjkcraft.ink_step",
+  "description": "technique.jjkcraft.ink_step.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 10,
+    "cooldown": 60
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 6,
+    "invulnerable_ticks": 6
+  },
+  "visuals": {
+    "color": "#3A3A5A",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.1,
+    "hit_stop": 0,
+    "trail": "line"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ink_step.png",
+  "innate_weight": 8,
+  "mastery_uses": 50
+}

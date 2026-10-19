@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jjkcraft:item/ledger_crawler_spawn_egg"
+  }
+}

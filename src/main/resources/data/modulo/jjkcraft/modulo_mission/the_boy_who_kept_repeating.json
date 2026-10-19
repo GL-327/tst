@@ -1,0 +1,83 @@
+{
+  "order": 4,
+  "title": "mission.jjkcraft.modulo.the_boy_who_kept_repeating",
+  "summary": "mission.jjkcraft.modulo.the_boy_who_kept_repeating.summary",
+  "chapters": "4-6",
+  "stages": [
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.the_boy_who_kept_repeating.mino",
+      "site": "modulo:kyoto_jujutsu_high",
+      "npc": "mino",
+      "lines": [
+        {
+          "speaker": "mino",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.mino_1"
+        },
+        {
+          "speaker": "mino",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.mino_2"
+        }
+      ]
+    },
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.the_boy_who_kept_repeating.school",
+      "site": "modulo:shuei_elementary",
+      "radius": 16
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.the_boy_who_kept_repeating.boy",
+      "site": "modulo:shuei_elementary",
+      "npc": "masayoshi",
+      "lines": [
+        {
+          "speaker": "masayoshi",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.boy_1"
+        },
+        {
+          "speaker": "masayoshi",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.boy_2"
+        },
+        {
+          "speaker": "maru",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.boy_3"
+        },
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.boy_4"
+        }
+      ]
+    },
+    {
+      "type": "defeat",
+      "objective": "objective.jjkcraft.modulo.the_boy_who_kept_repeating.fight",
+      "site": "modulo:shuei_elementary",
+      "boss": "modulo:masaki_takeda",
+      "allies": [
+        "yuka",
+        "tsurugi"
+      ],
+      "intro": [
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.fight_1"
+        },
+        {
+          "speaker": "tsurugi",
+          "text": "dialogue.jjkcraft.modulo.the_boy_who_kept_repeating.fight_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 600,
+    "items": [
+      {
+        "item": "jjkcraft:mul_ward",
+        "count": 1
+      }
+    ]
+  }
+}

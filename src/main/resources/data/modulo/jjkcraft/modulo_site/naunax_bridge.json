@@ -1,0 +1,30 @@
+{
+  "dimension": "modulo:naunax",
+  "center": [
+    0,
+    64,
+    -40
+  ],
+  "radius": 12,
+  "layout": "meeting_room",
+  "name": "site.jjkcraft.modulo.naunax_bridge",
+  "npcs": [
+    {
+      "character": "maru",
+      "offset": [
+        0,
+        0,
+        -3
+      ]
+    },
+    {
+      "character": "jabaloma",
+      "offset": [
+        3,
+        0,
+        -4
+      ]
+    }
+  ],
+  "markers": {}
+}

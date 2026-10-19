@@ -1,0 +1,61 @@
+{
+  "name": "curse.jjkcraft.gravebound_gate",
+  "description": "curse.jjkcraft.gravebound_gate.desc",
+  "lore": "curse.jjkcraft.gravebound_gate.lore",
+  "entity": "jjkcraft:gravebound_gate",
+  "grade": "jjkcraft:grade_1",
+  "stats": {
+    "health": 300,
+    "armor": 10,
+    "speed": 0.0,
+    "attack_damage": 10,
+    "ce_capacity": 400,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 8,
+    "follow_range": 32.0,
+    "knockback_resistance": 1.0
+  },
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 1,
+    "min_fear": 80,
+    "max_light": 15,
+    "dimensions": [
+      "minecraft:overworld"
+    ]
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:drown": 0.0,
+    "minecraft:explosion": 0.5,
+    "minecraft:player_explosion": 0.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/gravebound_gate",
+    "texture": "jjkcraft:textures/entity/gravebound_gate.png",
+    "animation": "jjkcraft:entity/gravebound_gate"
+  },
+  "mechanic": "jjkcraft:gate",
+  "parameters": {
+    "arena_radius": 14,
+    "arena_ticks": 900,
+    "max_minions": 3,
+    "summon_interval": 220,
+    "pull_radius": 16,
+    "pull_strength": 1.1,
+    "pull_interval": 140,
+    "maw_radius": 2.5,
+    "maw_damage": 4,
+    "guarded_damage_taken": 0.35,
+    "bar_range": 40,
+    "phase_two_arena_scale": 0.65,
+    "graves": 6,
+    "grave_damage": 3
+  },
+  "codex": {
+    "color": "#5E4B7A",
+    "unlock_kills": 3
+  }
+}

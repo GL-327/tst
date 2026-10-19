@@ -1,0 +1,68 @@
+{
+  "order": 8,
+  "title": "mission.jjkcraft.modulo.forbidden_technique",
+  "summary": "mission.jjkcraft.modulo.forbidden_technique.summary",
+  "chapters": "15-19",
+  "stages": [
+    {
+      "type": "travel",
+      "objective": "objective.jjkcraft.modulo.forbidden_technique.makyo",
+      "site": "modulo:inhuman_makyo",
+      "radius": 20,
+      "intro": [
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.forbidden_technique.intro_1"
+        },
+        {
+          "speaker": "narrator",
+          "text": "dialogue.jjkcraft.modulo.forbidden_technique.intro_2"
+        }
+      ]
+    },
+    {
+      "type": "defend",
+      "objective": "objective.jjkcraft.modulo.forbidden_technique.hold",
+      "site": "modulo:inhuman_makyo",
+      "seconds": 300,
+      "boss": "modulo:dabura_scene",
+      "protect": "yuka",
+      "spawns": [
+        {
+          "entity": "jjkcraft:hollow_hymnal",
+          "count": 3,
+          "radius": 24
+        },
+        {
+          "entity": "jjkcraft:wick_moth",
+          "count": 3,
+          "radius": 24
+        },
+        {
+          "entity": "jjkcraft:pale_stilt",
+          "count": 1,
+          "radius": 24
+        }
+      ]
+    },
+    {
+      "type": "talk",
+      "objective": "objective.jjkcraft.modulo.forbidden_technique.yuka",
+      "site": "modulo:inhuman_makyo",
+      "npc": "yuka",
+      "lines": [
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.forbidden_technique.yuka_1"
+        },
+        {
+          "speaker": "yuka",
+          "text": "dialogue.jjkcraft.modulo.forbidden_technique.yuka_2"
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "grade_xp": 800
+  }
+}

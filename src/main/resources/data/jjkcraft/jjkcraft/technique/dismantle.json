@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.dismantle",
+  "description": "technique.jjkcraft.dismantle.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 16,
+    "cooldown": 36,
+    "range": 12.0
+  },
+  "behavior": {
+    "type": "jjkcraft:line_cut",
+    "damage": 9,
+    "width": 0.35,
+    "pierce": 0.45
+  },
+  "visuals": {
+    "color": "#F2C14E",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.2,
+    "hit_stop": 1,
+    "trail": "line",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/dismantle.png",
+  "innate_weight": 7,
+  "mastery_uses": 50,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:bare_skin",
+      "damage": 1.3
+    }
+  ]
+}

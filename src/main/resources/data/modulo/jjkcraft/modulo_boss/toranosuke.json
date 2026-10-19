@@ -1,0 +1,15 @@
+{
+  "name": "entity.jjkcraft.modulo.toranosuke",
+  "behavior": "toranosuke",
+  "skin": "toranosuke",
+  "health": 110,
+  "armor": 4,
+  "damage": 7,
+  "speed": 0.36,
+  "color": "yellow",
+  "params": {
+    "pounce_interval": 90,
+    "windup": 16,
+    "pounce_damage": 8
+  }
+}

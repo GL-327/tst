@@ -1,0 +1,36 @@
+{
+  "name": "domain.jjkcraft.authentic_mutual_love",
+  "description": "domain.jjkcraft.authentic_mutual_love.desc",
+  "grade": "jjkcraft:special_grade",
+  "cast_cost": 200,
+  "upkeep": 24,
+  "radius": 14,
+  "clash_priority": 3,
+  "behaviors": [
+    {
+      "type": "jjkcraft:arsenal",
+      "slots": 4,
+      "cost_multiplier": 0.5,
+      "fallback": [
+        "jjkcraft:cleave",
+        "jjkcraft:grudge_bolt",
+        "jjkcraft:dismantle",
+        "jjkcraft:grave_chains"
+      ]
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "minecraft:slowness",
+      "amplifier": 1,
+      "duration": 30,
+      "interval": 20
+    }
+  ],
+  "visuals": {
+    "color": "#C7A8FF",
+    "secondary": "#F2EEE6",
+    "dome": "#10101A",
+    "ambience": "arsenal"
+  },
+  "innate_weight": 4
+}

@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.lacquer_ward",
+  "description": "technique.jjkcraft.lacquer_ward.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 6,
+    "cooldown": 40,
+    "mode": "channel",
+    "upkeep": 3,
+    "max_duration": 400
+  },
+  "behavior": {
+    "type": "jjkcraft:barrier",
+    "block": 0.7,
+    "arc": 150,
+    "ce_per_damage": 0.6
+  },
+  "visuals": {
+    "color": "#E9E3D5",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.barrier",
+    "shake": 0.0,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.barrier"
+  },
+  "icon": "jjkcraft:textures/gui/technique/lacquer_ward.png",
+  "innate_weight": 6,
+  "mastery_uses": 50
+}

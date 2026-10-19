@@ -1,0 +1,18 @@
+{
+  "name": "entity.jjkcraft.modulo.maru_duel",
+  "behavior": "maru_duel",
+  "skin": "maru",
+  "health": 240,
+  "armor": 10,
+  "damage": 8,
+  "speed": 0.34,
+  "color": "green",
+  "params": {
+    "inversion_interval": 220,
+    "inversion_tell": 40,
+    "inversion_ticks": 80,
+    "arena_radius": 22,
+    "gaze_interval": 110,
+    "yield_below": 0.15
+  }
+}

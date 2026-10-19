@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.idle_transfiguration",
+  "description": "technique.jjkcraft.idle_transfiguration.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 24,
+    "cooldown": 240,
+    "range": 6.0
+  },
+  "behavior": {
+    "type": "jjkcraft:idle_transfiguration",
+    "self_ticks": 400,
+    "other_ticks": 200
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/idle_transfiguration.png",
+  "innate_weight": 4,
+  "mastery_uses": 50
+}

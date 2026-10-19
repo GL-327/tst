@@ -1,0 +1,11 @@
+{
+  "name": "entity.jjkcraft.modulo.skin_guardian",
+  "behavior": "minion",
+  "skin": "skin_guardian",
+  "health": 60,
+  "armor": 6,
+  "damage": 6,
+  "speed": 0.28,
+  "scale": 1.3,
+  "color": "red"
+}

@@ -1,0 +1,26 @@
+{
+  "type": "modulo:naunax",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "modulo:naunax_hold",
+      "features": true,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "jjkcraft:naunax_hull",
+          "height": 62
+        },
+        {
+          "block": "jjkcraft:naunax_deck_plate",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

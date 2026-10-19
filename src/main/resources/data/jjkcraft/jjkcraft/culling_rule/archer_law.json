@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.archer_law",
+  "duration_days": 2,
+  "order": 27,
+  "warden_edict": "distance",
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:kill",
+        "victim": "participant",
+        "cause": "projectile",
+        "min_distance": 8
+      },
+      "then": [
+        {
+          "type": "jjkcraft:award_points",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

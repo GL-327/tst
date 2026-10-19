@@ -1,0 +1,30 @@
+{
+  "name": "domain.jjkcraft.ten_mouth_throat",
+  "description": "domain.jjkcraft.ten_mouth_throat.desc",
+  "grade": "jjkcraft:special_grade",
+  "cast_cost": 200,
+  "upkeep": 12,
+  "radius": 18,
+  "max_duration": 900,
+  "clash_priority": 5,
+  "behaviors": [
+    {
+      "type": "jjkcraft:sure_hit_damage",
+      "interval": 20,
+      "damage": 2
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "jjkcraft:stunned",
+      "duration": 15,
+      "interval": 60
+    }
+  ],
+  "visuals": {
+    "color": "#C0392B",
+    "secondary": "#F2C14E",
+    "dome": "#1A0508",
+    "ambience": "glyphs"
+  },
+  "innate_weight": 0
+}

@@ -1,0 +1,35 @@
+{
+  "name": "domain.jjksample.ashen_court",
+  "description": "domain.jjksample.ashen_court.desc",
+  "grade": "jjkcraft:grade_1",
+  "cast_cost": 130,
+  "upkeep": 18,
+  "radius": 11,
+  "max_duration": 600,
+  "clash_priority": 1,
+  "behaviors": [
+    {
+      "type": "jjkcraft:sure_hit_damage",
+      "interval": 20,
+      "damage": 2
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "minecraft:slowness",
+      "amplifier": 1,
+      "duration": 40,
+      "interval": 20
+    },
+    {
+      "type": "jjkcraft:suppress_regen",
+      "multiplier": 0.5
+    }
+  ],
+  "visuals": {
+    "color": "#C8642E",
+    "secondary": "#F2D2A0",
+    "dome": "#1E0E08",
+    "ambience": "lanterns"
+  },
+  "innate_weight": 5
+}

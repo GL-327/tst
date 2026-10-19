@@ -1,0 +1,22 @@
+{
+  "text": "culling_rule.jjkcraft.shared_ledger",
+  "text_args": [
+    "5"
+  ],
+  "base": true,
+  "order": 6,
+  "clauses": [
+    {
+      "when": {
+        "type": "jjkcraft:action",
+        "action": "transfer"
+      },
+      "then": [
+        {
+          "type": "jjkcraft:transfer_points",
+          "step": 5
+        }
+      ]
+    }
+  ]
+}

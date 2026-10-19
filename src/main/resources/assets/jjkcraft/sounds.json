@@ -1,0 +1,367 @@
+{
+  "energy.overexert": {
+    "sounds": [
+      {
+        "name": "jjkcraft:energy/overexert_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:energy/overexert_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.energy.overexert"
+  },
+  "grade.promote": {
+    "sounds": [
+      {
+        "name": "jjkcraft:grade/promote",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.grade.promote"
+  },
+  "ui.click": {
+    "sounds": [
+      {
+        "name": "jjkcraft:ui/click_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:ui/click_2",
+        "stream": false
+      }
+    ]
+  },
+  "ui.open": {
+    "sounds": [
+      {
+        "name": "jjkcraft:ui/open_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:ui/open_2",
+        "stream": false
+      }
+    ]
+  },
+  "technique.cast": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/cast_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/cast_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/cast_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.cast"
+  },
+  "technique.strike": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/strike_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/strike_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/strike_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.strike"
+  },
+  "technique.black_flash": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/black_flash_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/black_flash_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.black_flash"
+  },
+  "technique.bolt_fire": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/bolt_fire_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/bolt_fire_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/bolt_fire_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.bolt_fire"
+  },
+  "technique.bolt_hit": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/bolt_hit_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/bolt_hit_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.bolt_hit"
+  },
+  "technique.slash": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/slash_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/slash_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/slash_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.slash"
+  },
+  "technique.attract": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/attract_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/attract_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.attract"
+  },
+  "technique.repel": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/repel_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/repel_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.repel"
+  },
+  "technique.merge": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/merge",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.merge"
+  },
+  "technique.speech": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/speech_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/speech_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/speech_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.speech"
+  },
+  "technique.heal": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/heal_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/heal_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.heal"
+  },
+  "technique.chain": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/chain_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/chain_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.chain"
+  },
+  "technique.barrier": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/barrier_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/barrier_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.barrier"
+  },
+  "technique.summon": {
+    "sounds": [
+      {
+        "name": "jjkcraft:technique/summon_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:technique/summon_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.technique.summon"
+  },
+  "domain.open": {
+    "sounds": [
+      {
+        "name": "jjkcraft:domain/open",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.domain.open"
+  },
+  "domain.ambient": {
+    "sounds": [
+      {
+        "name": "jjkcraft:domain/ambient",
+        "stream": true
+      }
+    ]
+  },
+  "domain.close": {
+    "sounds": [
+      {
+        "name": "jjkcraft:domain/close",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.domain.close"
+  },
+  "domain.clash": {
+    "sounds": [
+      {
+        "name": "jjkcraft:domain/clash",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.domain.clash"
+  },
+  "curse.spawn": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/spawn_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/spawn_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.spawn"
+  },
+  "curse.hurt": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/hurt_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/hurt_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/hurt_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.hurt"
+  },
+  "curse.death": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/death_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/death_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.death"
+  },
+  "curse.ambient": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/ambient_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/ambient_2",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/ambient_3",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.ambient"
+  },
+  "curse.toll": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/toll_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/toll_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.toll"
+  },
+  "curse.roar": {
+    "sounds": [
+      {
+        "name": "jjkcraft:curse/roar_1",
+        "stream": false
+      },
+      {
+        "name": "jjkcraft:curse/roar_2",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.jjkcraft.curse.roar"
+  }
+}

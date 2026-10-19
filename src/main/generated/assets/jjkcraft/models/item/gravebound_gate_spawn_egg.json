@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jjkcraft:item/gravebound_gate_spawn_egg"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "curse.jjkcraft.gilded_mimic",
+  "description": "curse.jjkcraft.gilded_mimic.desc",
+  "lore": "curse.jjkcraft.gilded_mimic.lore",
+  "entity": "jjkcraft:gilded_mimic",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 32,
+    "armor": 6,
+    "speed": 0.24,
+    "attack_damage": 5,
+    "ce_capacity": 70,
+    "drain_on_hit": 4,
+    "follow_range": 20.0,
+    "knockback_resistance": 0.6
+  },
+  "spawn": {
+    "weight": 10,
+    "min_fear": 15,
+    "max_light": 7
+  },
+  "model": {
+    "geo": "jjkcraft:entity/gilded_mimic",
+    "texture": "jjkcraft:textures/entity/gilded_mimic.png",
+    "animation": "jjkcraft:entity/gilded_mimic",
+    "disguise": {
+      "geo": "jjkcraft:entity/gilded_mimic_disguise",
+      "texture": "jjkcraft:textures/entity/gilded_mimic_disguise.png"
+    }
+  },
+  "mechanic": "jjkcraft:mimic",
+  "parameters": {
+    "wake_distance": 2.5,
+    "look_distance": 5,
+    "grab_range": 6,
+    "lash_windup": 12,
+    "lash_interval": 160,
+    "grab_ticks": 60,
+    "grab_damage": 2,
+    "drag_strength": 0.35,
+    "back_speed": 0.12,
+    "break_damage": 6,
+    "settle_ticks": 240,
+    "chest_damage_taken": 0.5
+  },
+  "codex": {
+    "color": "#D9A441",
+    "unlock_kills": 6
+  }
+}
