@@ -184,7 +184,7 @@ public final class TechniqueService {
 
 	public static void init() {
         CursedEnergy.addRegenModifier(caster->CHARGES.containsKey(caster.getUUID())?0:1);
-		ServerPlayNetworking.registerGlobalReceiver(CastPayload.TYPE, (payload, context) -> {if(payload.cancelled())cancelCharge(context.player());else onCastKey(context.player(), payload.slot(), payload.pressed());});
+		ServerPlayNetworking.registerGlobalReceiver(CastPayload.TYPE, (payload, context) -> {if(payload.cancelled())cancelKey(context.player(),payload.slot());else onCastKey(context.player(), payload.slot(), payload.pressed());});
 		ServerPlayNetworking.registerGlobalReceiver(CastTechniquePayload.TYPE, (payload, context) -> onQuickCast(context.player(), payload.technique()));
 		ServerPlayNetworking.registerGlobalReceiver(SetLoadoutPayload.TYPE, (payload, context) -> {
 			if (LOADOUT_LIMIT.tryAcquire(context.player().getUUID(), context.player().level().getGameTime())) {
@@ -360,11 +360,7 @@ public final class TechniqueService {
                 if(result!=CastFailure.NONE)feedback(player,charge.slot,result);
                 return;
             }
-            PENDING.removeIf(p->p.ctx().caster().getUUID().equals(player.getUUID())&&p.definition().cast().mode()==CastMode.CHANNEL&&(requestedSlot<0||p.slot()==requestedSlot));
-			Active active = ACTIVE.get(player.getUUID());
-			if (active != null && active.definition.cast().mode() == CastMode.CHANNEL && (requestedSlot<0 || active.slot==requestedSlot)) {
-				stop(player);
-			}
+            releaseChannel(player,requestedSlot);
 
 			return;
 		}
@@ -390,6 +386,16 @@ public final class TechniqueService {
 		}
 	}
 
+    private static void releaseChannel(ServerPlayer player,int slot){
+        PENDING.removeIf(p->p.ctx().caster().getUUID().equals(player.getUUID())&&p.definition().cast().mode()==CastMode.CHANNEL&&(slot<0||p.slot()==slot));
+        Active active=ACTIVE.get(player.getUUID());
+        if(active!=null&&active.definition.cast().mode()==CastMode.CHANNEL&&(slot<0||active.slot==slot))stop(player);
+    }
+    public static void cancelKey(ServerPlayer player,int slot){
+        Charge charge=CHARGES.get(player.getUUID());
+        if(charge!=null&&(slot<0||charge.slot==slot))cancelCharge(player);
+        releaseChannel(player,slot);
+    }
 	public static void onQuickCast(ServerPlayer player, Identifier id) {
 		if (!player.isAlive() || player.isSpectator() || !allowRequest(player)) {
 			return;
@@ -442,6 +448,7 @@ public final class TechniqueService {
         if(CHARGES.containsKey(player.getUUID())||PENDING.stream().anyMatch(p->p.ctx().caster()==player))return CastFailure.BUSY;
         var found=Techniques.get(player.registryAccess(),id);if(found.isEmpty())return CastFailure.NOT_KNOWN;
         var d=Personalization.definition(player,id,found.get());
+        if(!d.cast().chargeable())return cast(player,id,slot);
         var active=ACTIVE.get(player.getUUID());
         if(active!=null&&active.id.equals(id)){stop(player);return CastFailure.NONE;}
         CastFailure failure=check(player,id,d);if(failure!=CastFailure.NONE)return failure;
@@ -522,7 +529,7 @@ public final class TechniqueService {
         double scale=.5+.5*q;var c=d.cast();
         int mode=d.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?b.filter():0;
         var tuning=new TechniqueTuning((int)Math.round(q*100),(int)Math.round(scale*100),(int)Math.round((.6+.4*q)*100),(int)Math.round(scale*100),100,mode);
-        var cast=new TechniqueDefinition.Cast(c.cost(),c.cooldown(),Math.max(0,c.castTime()-held),c.range()*scale,c.mode(),c.upkeep()*Math.max(.5,q),c.maxDuration()==0?0:Math.max(1,(int)(c.maxDuration()*scale)),c.mulCost());
+        var cast=new TechniqueDefinition.Cast(c.cost(),c.cooldown(),Math.max(0,c.castTime()-held),c.range()*scale,c.mode(),c.upkeep()*Math.max(.5,q),c.maxDuration()==0?0:Math.max(1,(int)(c.maxDuration()*scale)),c.mulCost(),c.chargeable());
         return new TechniqueDefinition(d.name(),d.description(),d.category(),d.grade(),cast,TunedBehaviors.apply(d.behavior(),tuning),d.visuals(),d.icon(),d.vowModifiers(),d.innateWeight(),d.masteryUses());
     }
 	public static CastFailure check(LivingEntity caster, Identifier id, TechniqueDefinition definition) {

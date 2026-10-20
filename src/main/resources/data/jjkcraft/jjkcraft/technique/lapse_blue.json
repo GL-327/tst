@@ -6,7 +6,8 @@
   "cast": {
     "cost": 30,
     "cooldown": 120,
-    "range": 20.0
+    "range": 20.0,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:field",

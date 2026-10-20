@@ -42,7 +42,7 @@ public record TechniqueTuning(int output, int reach, int area, int duration, int
         var cast=new TechniqueDefinition.Cast(Math.min(100000,c.cost()*cost),
             c.cooldown()==0?0:Math.max(1,(int)Math.round(c.cooldown()*cooldown/100.0*pact.recovery())),(details.windup()<0?c.castTime():details.windup())+pact.windup(),
             Math.min(256,c.range()*reach/100.0),c.mode(),Math.min(10000,c.upkeep()*cost),
-            c.maxDuration()==0?0:Math.max(1,(int)Math.round(c.maxDuration()*duration/100.0)),Math.min(100000,c.mulCost()*cost));
+            c.maxDuration()==0?0:Math.max(1,(int)Math.round(c.maxDuration()*duration/100.0)),Math.min(100000,c.mulCost()*cost),c.chargeable());
         var v=raw.visuals();var trail=details.expression().trail()==0?v.trail():TechniqueDefinition.Trail.values()[details.expression().trail()-1];
         var visual=new TechniqueDefinition.Visuals(details.color()<0?v.color():details.color(),v.particle(),v.sound(),v.hitSound(),v.shake(),v.hitStop(),trail);
         return new TechniqueDefinition(details.title().isEmpty()?raw.name():details.title(),raw.description(),raw.category(),raw.grade(),cast,

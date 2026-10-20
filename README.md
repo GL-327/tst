@@ -3,8 +3,10 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.11.0-preview.** Hold a power key to charge, then release to cast: up to 100%,
-or 200% for Hollow Purple. Charging rapidly consumes CE, especially without Six Eyes.
+**Status: 1.11.1-preview.** Suitable moves such as Blue, Red, Purple, Piercing Blood and
+Granite Blast support holding to charge, then releasing to cast: up to 100%, or 200%
+for Hollow Purple. Other moves use their normal press, toggle or held-channel controls.
+Tooltips and the loadout show each casting style. Charging rapidly consumes CE, especially without Six Eyes.
 Blue pulls real terrain into its core; Purple, destructive slashes and blasts damage blocks.
 See [charging and terrain controls](docs/CHARGING.md) for costs, cancellation and server settings.
 

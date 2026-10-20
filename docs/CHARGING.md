@@ -1,8 +1,13 @@
-# Charging and terrain, 1.11.0-preview
+# Charging and terrain, 1.11.1-preview
 
-Hold your selected-power key (R by default), or a direct skill key in combat mode,
-then release to cast. All learned techniques use this path, including utility moves,
-summons and personalised expressions. A quick tap releases at 25%; a three-second hold
+Only suitable moves support charging. Tooltips and the loadout label each move's casting
+style. Charging applies to eighteen moves: Lapse Blue, Reversal Red, Hollow Purple,
+Maximum Output Blue, Piercing Blood, Maximum Uzumaki, Granite Blast, Granite Cannon,
+Furnace, Perfect Sphere, Ice Lance, Icefall, Water Lance, Mul Lance, Darkness Nova,
+Chaos Fracture, Eye Blast and Volcanic Burst.
+
+For these moves, hold your selected-power key (R by default), or a direct skill key in
+combat mode, then release to cast. A quick tap releases at 25%; a three-second hold
 reaches 100%. Hollow Purple can continue to 200% after seven seconds. These percentages
 multiply your personalised output, grade and vows. Charging also scales supported area,
 reach, force and duration; it does not change which ability you equipped.
@@ -20,9 +25,18 @@ disconnecting or exhausting CE cancels the charge. Spent energy is not refunded 
 power fires. One charge per player is allowed. Changing power bank does not change the
 slot attached to a held key. A charge has a twenty-second safety timeout.
 
-Release starts a channel/toggle; press that power again to stop it. Ongoing effects still
-pay their normal upkeep and obey duration limits. The technique wheel performs a quick
-tap. Server/AI direct casts retain their explicit authored timing and normal output.
+Other moves activate on press at their normal output, with any authored windup. Summons,
+fusions, swaps, movement, melee hits, body changes and utility skills do not require charging.
+Infinity and other ordinary toggles switch on/off with a press. Healing and guard channels
+start on press, sustain while held, and stop on release or when opening a menu.
+Chargeable lasting moves, such as Maximum Output Blue, start on release; another press
+stops them. Ongoing effects still pay upkeep and obey duration limits.
+The wheel performs a quick tap for chargeable moves and normal activation for other moves.
+Server/AI direct casts retain their explicit authored timing and normal output.
+
+Charging is an authored `cast.chargeable` opt-in, defaulting to false for old/new datapack
+moves that omit it. Personalisation preserves this flag. After rerunning content generators,
+run `python tools/charge_profiles.py`; `--check` audits the curated roster without writing.
 
 Blue and Maximum Output Blue tear nearby destructible blocks out of the world and pull
 visible block debris into the core. Purple carves through its flight corridor and stops

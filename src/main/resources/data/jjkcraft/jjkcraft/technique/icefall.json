@@ -6,7 +6,8 @@
   "cast": {
     "cost": 60,
     "cooldown": 300,
-    "range": 12
+    "range": 12,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:manga_ability",

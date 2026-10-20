@@ -1,5 +1,27 @@
 # Test report
 
+## 1.11.1-preview, 2026-10-20
+
+All **127 unit tests and 212 server scenarios passed** in
+`build/selective-charge-server.log`. New checks confirm only eighteen authored moves
+charge; ordinary summons activate on press and are not replaced on release; Boogie
+Woogie swaps immediately; Infinity toggles immediately and survives menu cancellation;
+guard channels start on press and stop on release/menu. Charging flags survive every
+technique's personalisation, and older/datapack cast definitions default to false.
+
+The native run passed in `build/selective-charge-native.log`: real R taps toggle Infinity
+and summon Divine Dogs without charging, guard sustains while held and ends on release,
+and Blue/Purple still charge to 100%/200% with CE drain and terrain effects. Client
+registries receive the charge opt-in. Eight screenshots are preserved in
+`build/selective-charge-screenshots`; the normal-activation label was reviewed at compact
+GUI scale. A final two-pixel description adjustment keeps room for text below that label.
+`tools/charge_profiles.py --check`, ZIP/version checks, all 169 packaged move definitions,
+the 18/151 casting split and exclusion of test classes passed. Runtime logs and worlds
+are excluded from the commit.
+
+Final artifact: `build/libs/jjkcraft-1.11.1-preview.jar`, **4,851,039 bytes**; SHA-256
+`9cb574aa5bb851eb555e45b8dccd42682a6945619bf0e99a4779424aadfdf08e`.
+
 ## 1.11.0-preview, 2026-10-20
 
 All **127 unit tests and 208 server scenarios passed** in

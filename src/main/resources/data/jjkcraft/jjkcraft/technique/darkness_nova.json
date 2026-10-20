@@ -6,7 +6,8 @@
   "cast": {
     "cost": 130,
     "cooldown": 220,
-    "range": 8
+    "range": 8,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:shockwave",

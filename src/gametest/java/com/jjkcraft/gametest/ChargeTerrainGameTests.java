@@ -28,9 +28,36 @@ public final class ChargeTerrainGameTests {
         boolean old=com.jjkcraft.config.JjkConfig.server().casting.terrainDamage;
         try{com.jjkcraft.config.JjkConfig.server().casting.terrainDamage=false;h.getLevel().setBlockAndUpdate(pos.above(),Blocks.OAK_LOG.defaultBlockState());h.assertTrue(TechniqueTerrain.sphere(ctx(p,"lapse_blue"),Vec3.atCenterOf(pos.above()),1,16,true)==0&&h.getLevel().getBlockState(pos.above()).is(Blocks.OAK_LOG),"server can disable terrain damage");}finally{com.jjkcraft.config.JjkConfig.server().casting.terrainDamage=old;}h.succeed();
     }
-    @GameTest(environment="jjkcraft:expansion",padding=24,maxTicks=50) public void releasedChannelRunsAndSecondPressStopsIt(GameTestHelper h){
-        var p=player(h);bind(p,"lacquer_ward");TechniqueService.onCastKey(p,0,true);TechniqueService.onCastKey(p,0,false);
-        h.runAfterDelay(5,()->{h.assertTrue(TechniqueService.active(p).isPresent(),"release starts the charged channel");TechniqueService.onCastKey(p,0,true);h.assertTrue(TechniqueService.active(p).isEmpty(),"second press toggles it off");h.succeed();});
+    @GameTest(environment="jjkcraft:expansion",padding=24) public void ordinaryChannelStartsOnPressAndStopsOnReleaseOrMenu(GameTestHelper h){
+        var p=player(h);bind(p,"lacquer_ward");TechniqueService.onCastKey(p,0,true);
+        h.assertTrue(TechniqueService.active(p).isPresent()&&TechniqueService.chargePercent(p)==0,"guard channels immediately at normal output");
+        TechniqueService.onCastKey(p,1,false);h.assertTrue(TechniqueService.active(p).isPresent(),"unrelated release keeps channel");
+        TechniqueService.onCastKey(p,0,false);h.assertTrue(TechniqueService.active(p).isEmpty(),"release ends channel");
+        TechniqueService.resetCooldowns(p);TechniqueService.onCastKey(p,0,true);TechniqueService.cancelKey(p,0);h.assertTrue(TechniqueService.active(p).isEmpty(),"menu cancels a held channel");h.succeed();
+    }
+    @GameTest(environment="jjkcraft:expansion",padding=24) public void chargeProfilesDefaultToNormalAndSurvivePersonalisation(GameTestHelper h){
+        var p=player(h);int count=0;
+        for(var entry:Techniques.all(p.registryAccess())){
+            var d=entry.definition();if(d.cast().chargeable())count++;
+            var tuned=TechniqueTuning.DEFAULT.with(0,150).with(4,80).apply(d);
+            h.assertTrue(tuned.cast().chargeable()==d.cast().chargeable(),"personalisation preserves authored charging for "+entry.id());
+            if(d.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.FusionBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.HealBehavior)h.assertFalse(d.cast().chargeable(),"summons, fusion, movement and healing do not charge");
+        }
+        h.assertTrue(count==18,"only eighteen suitable moves opt into charging");
+        var json=com.google.gson.JsonParser.parseString("{\"cost\":10,\"cooldown\":20}");
+        h.assertFalse(TechniqueDefinition.Cast.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE,json).getOrThrow().chargeable(),"old and datapack moves default to normal activation");h.succeed();
+    }
+    @GameTest(environment="jjkcraft:expansion",padding=24,maxTicks=60) public void summonsActivateOnPressAndHoldingNeverRecastsThem(GameTestHelper h){
+        var p=player(h);bind(p,"ten_shadows_divine_dogs");TechniqueService.onCastKey(p,0,true);
+        var owned=com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(h.getLevel(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p);h.assertTrue(owned.size()==2&&TechniqueService.chargePercent(p)==0,"summons appear on press without charge");
+        var ids=owned.stream().map(net.minecraft.world.entity.Entity::getUUID).collect(java.util.stream.Collectors.toSet());
+        h.runAfterDelay(12,()->{TechniqueService.onCastKey(p,0,false);var after=com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(h.getLevel(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p);h.assertTrue(after.size()==2&&after.stream().allMatch(e->ids.contains(e.getUUID())),"holding or releasing neither replaces nor duplicates summons");h.succeed();});
+    }
+    @GameTest(environment="jjkcraft:expansion",padding=24) public void infinityTogglesImmediatelyAndMenuLeavesItRunning(GameTestHelper h){
+        var p=player(h);bind(p,"infinity");TechniqueService.onCastKey(p,0,true);h.assertTrue(TechniqueService.active(p).isPresent()&&TechniqueService.chargePercent(p)==0,"Infinity is an immediate toggle");TechniqueService.onCastKey(p,0,false);TechniqueService.cancelKey(p,0);h.assertTrue(TechniqueService.active(p).isPresent(),"release and menu leave toggles running");TechniqueService.onCastKey(p,0,true);h.assertTrue(TechniqueService.active(p).isEmpty(),"next press toggles off");h.succeed();
+    }
+    @GameTest(environment="jjkcraft:expansion",padding=24) public void boogieWoogieSwapsOnPressWithoutCharging(GameTestHelper h){
+        var p=player(h);bind(p,"boogie_woogie");var target=h.spawn(net.minecraft.world.entity.EntityTypes.ZOMBIE,new Vec3(2.5,1,5.5));target.setNoAi(true);var destination=target.position();TechniqueService.onCastKey(p,0,true);h.assertTrue(p.position().distanceToSqr(destination)<.01&&TechniqueService.chargePercent(p)==0,"swap occurs on the key press");TechniqueService.onCastKey(p,0,false);h.assertTrue(p.position().distanceToSqr(destination)<.01,"release never swaps back");h.succeed();
     }
     private static ServerPlayer player(GameTestHelper h){
         var p=TestPlayers.fresh(h);p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);

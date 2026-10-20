@@ -62,8 +62,10 @@ public record TechniqueDefinition(
 	 * @param upkeep      CE per second while a channel or toggle is active
 	 * @param maxDuration max ticks a channel or toggle stays active (0: no limit)
 	 * @param mulCost     Mul energy per cast, paid besides the CE cost (the Modulo expansion; 0: none)
+     * @param chargeable supports holding the cast key to build output before release; opt-in
 	 */
-	public record Cast(double cost, int cooldown, int castTime, double range, CastMode mode, double upkeep, int maxDuration, double mulCost) {
+	public record Cast(double cost, int cooldown, int castTime, double range, CastMode mode, double upkeep, int maxDuration, double mulCost, boolean chargeable) {
+        public Cast(double cost,int cooldown,int castTime,double range,CastMode mode,double upkeep,int maxDuration,double mulCost){this(cost,cooldown,castTime,range,mode,upkeep,maxDuration,mulCost,false);}
 		public static final Codec<Cast> CODEC = RecordCodecBuilder.create(i -> i.group(
 				Codec.doubleRange(0, 100_000).fieldOf("cost").forGetter(Cast::cost),
 				Codec.intRange(0, 72_000).fieldOf("cooldown").forGetter(Cast::cooldown),
@@ -72,7 +74,8 @@ public record TechniqueDefinition(
 				CastMode.CODEC.optionalFieldOf("mode", CastMode.INSTANT).forGetter(Cast::mode),
 				Codec.doubleRange(0, 10_000).optionalFieldOf("upkeep", 0.0).forGetter(Cast::upkeep),
 				Codec.intRange(0, 72_000).optionalFieldOf("max_duration", 0).forGetter(Cast::maxDuration),
-				Codec.doubleRange(0, 100_000).optionalFieldOf("mul_cost", 0.0).forGetter(Cast::mulCost)
+				Codec.doubleRange(0, 100_000).optionalFieldOf("mul_cost", 0.0).forGetter(Cast::mulCost),
+                Codec.BOOL.optionalFieldOf("chargeable",false).forGetter(Cast::chargeable)
 		).apply(i, Cast::new));
 	}
 

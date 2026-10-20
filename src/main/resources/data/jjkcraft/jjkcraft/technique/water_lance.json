@@ -6,7 +6,8 @@
   "cast": {
     "cost": 22,
     "cooldown": 100,
-    "range": 12
+    "range": 12,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:projectile",

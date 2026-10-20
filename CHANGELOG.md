@@ -5,6 +5,17 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.11.1-preview, 2026-10-20
+
+- Charging is now opt-in per move: eighteen appropriate high-output, compression and
+  elemental attacks support it; 151 moves use normal activation. Blue, Red and Purple,
+  Piercing Blood, Granite Blast, Furnace and Maximum Uzumaki retain charging.
+- Summons, fusions, swaps, movement, ordinary melee, body changes and utility skills
+  activate on press at normal output. Infinity toggles on press; guard/healing channels
+  start immediately while held and stop on release or menus.
+- Added casting-style labels to shared technique tooltips and the loadout. Personalisation
+  preserves the authored charge flag; datapack moves default to ordinary activation.
+
 ## 1.11.0-preview, 2026-10-20
 
 - Shared server-owned hold/release charging for every player technique: 25% taps, 100%

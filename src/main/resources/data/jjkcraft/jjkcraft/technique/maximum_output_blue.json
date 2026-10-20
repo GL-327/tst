@@ -9,7 +9,8 @@
     "range": 24.0,
     "mode": "toggle",
     "upkeep": 0,
-    "max_duration": 50
+    "max_duration": 50,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:singularity",

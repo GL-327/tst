@@ -139,8 +139,9 @@ public final class LoadoutScreen extends JjkScreen {
         Identifier shown=selected!=null?selected:ClientTechniques.state().slot(selectedSlot).orElse(null);
         if(shown!=null)ClientTechniques.definition(shown).ifPresent(d->{
             Ink.text(g,Ink.fit(Component.translatable(d.name()),panelW()/2-18),right(),contentY()+109,Palette.gold(),1);
+            Ink.text(g,Ink.fit(TechniqueTooltip.activation(d),panelW()/2-18),right(),contentY()+144,Palette.energyHigh(),1);
             if(mx>=right()&&my>=contentY()+18&&my<contentY()+119)g.setComponentTooltipForNextFrame(Ink.font(),TechniqueTooltip.lines(shown,d),mx,my);
-            int yy=contentY()+149,maxY=panelY()+panelH()-34;
+            int yy=contentY()+156,maxY=panelY()+panelH()-34;
             for(var line:Ink.font().split(Component.translatable(d.description()),listWidth()-5)){
                 if(yy+9>maxY)break;g.text(Ink.font(),line,right(),yy,Palette.TEXT_DIM,true);yy+=11;
             }

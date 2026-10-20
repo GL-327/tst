@@ -1747,5 +1747,9 @@
   "entity.jjkcraft.paper_heron": "Paper Heron",
   "entity.jjkcraft.lantern_moth": "Lantern Moth",
   "entity.jjkcraft.iron_tortoise": "Iron Tortoise",
-  "entity.jjkcraft.grave_hound": "Grave Hound"
+  "entity.jjkcraft.grave_hound": "Grave Hound",
+  "tooltip.jjkcraft.activation.charge": "Hold to charge; release to cast",
+  "tooltip.jjkcraft.activation.press": "Press to activate",
+  "tooltip.jjkcraft.activation.channel": "Hold to sustain; release to stop",
+  "tooltip.jjkcraft.activation.toggle": "Press to toggle on / off"
 }

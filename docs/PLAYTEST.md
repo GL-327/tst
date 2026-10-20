@@ -1,9 +1,11 @@
-# Playing 1.11.0-preview
+# Playing 1.11.1-preview
 
-Hold R or a direct power key to charge, release to cast. Three seconds reaches 100%;
+For chargeable moves, hold R or a direct power key, then release to cast. Three seconds reaches 100%;
 Hollow Purple reaches 200% after seven seconds. Watch the CE/s meter: long holds are
-expensive, especially without Six Eyes. Release starts channels; press again to stop.
-Opening a screen cancels. See [charging and terrain](CHARGING.md) for details.
+expensive, especially without Six Eyes. Other moves activate on press: summons, swaps,
+movement, melee and utility do not charge. Infinity toggles on press; healing/guard
+channels start on press and stop on release. Tooltips and the loadout show the casting
+style. Opening a screen cancels charging or held channels. See [charging and terrain](CHARGING.md).
 
 Auto Combat is ON by default. Hold M1 while in combat mode to let it choose simple attacks
 and defensive responses. It reacts conservatively and attacks more slowly than precise manual

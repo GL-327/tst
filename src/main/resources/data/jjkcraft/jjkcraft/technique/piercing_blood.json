@@ -7,7 +7,8 @@
     "cost": 100,
     "cooldown": 600,
     "cast_time": 30,
-    "range": 32.0
+    "range": 32.0,
+    "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:line_cut",

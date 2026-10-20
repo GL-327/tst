@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 
 import com.jjkcraft.client.state.ClientProgress;
@@ -43,6 +44,7 @@ public final class TechniqueTooltip {
 				.map(g -> (Component) Component.translatable(g.name())).orElse(Component.literal(def.grade().toString()));
 		lines.add(Component.translatable("tooltip.jjkcraft.grade", grade).withColor(gradeOk ? Palette.good() : Palette.danger()));
 		lines.add(Component.translatable("tooltip.jjkcraft.mode." + def.cast().mode().getSerializedName()).withColor(Palette.TEXT_DIM));
+        lines.add(activation(def).withColor(def.cast().chargeable()?Palette.gold():Palette.energyHigh()));
 		int wrap=Math.max(110,Math.min(250,net.minecraft.client.Minecraft.getInstance().getWindow().getGuiScaledWidth()-28));
 		for(var line:Ink.font().split(Component.translatable(def.description()),wrap)){
 			var text=new StringBuilder();line.accept((index,style,point)->{text.appendCodePoint(point);return true;});
@@ -59,4 +61,7 @@ public final class TechniqueTooltip {
 	private static String fmt(double v) {
 		return v == Math.floor(v) ? String.valueOf((long) v) : String.format(Locale.ROOT, "%.1f", v);
 	}
+    public static MutableComponent activation(TechniqueDefinition def){
+        return Component.translatable(def.cast().chargeable()?"tooltip.jjkcraft.activation.charge":def.cast().mode()==CastMode.CHANNEL?"tooltip.jjkcraft.activation.channel":def.cast().mode()==CastMode.TOGGLE?"tooltip.jjkcraft.activation.toggle":"tooltip.jjkcraft.activation.press");
+    }
 }
