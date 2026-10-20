@@ -1,0 +1,10 @@
+{
+  "name": "trait.jjkcraft.fragile_conduit",
+  "description": "trait.jjkcraft.fragile_conduit.desc",
+  "category": "physical",
+  "weight": 4,
+  "capacity": 2.0,
+  "regen": 1.2,
+  "health": -8,
+  "speed": -0.12
+}

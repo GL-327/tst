@@ -1,0 +1,40 @@
+{
+  "name": "technique.jjkcraft.mirror_shards",
+  "description": "technique.jjkcraft.mirror_shards.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 44,
+    "cooldown": 100,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 4,
+    "speed": 1.5,
+    "count": 6,
+    "spread": 12,
+    "size": 0.3,
+    "lifetime": 40,
+    "blast_radius": 0
+  },
+  "visuals": {
+    "color": "#A9D7D7",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mirror_shards.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

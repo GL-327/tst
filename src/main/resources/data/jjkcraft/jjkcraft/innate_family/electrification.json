@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.electrification",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 7,
+  "techniques": [
+    "jjkcraft:charge_transfer",
+    "jjkcraft:lightning_discharge",
+    "jjkcraft:return_stroke",
+    "jjkcraft:electric_armor"
+  ],
+  "domain": ""
+}

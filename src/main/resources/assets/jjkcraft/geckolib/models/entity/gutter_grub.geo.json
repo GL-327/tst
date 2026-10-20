@@ -1,0 +1,261 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.gutter_grub",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            8,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                4,
+                -7
+              ],
+              "size": [
+                10,
+                8,
+                14
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sack",
+          "pivot": [
+            0,
+            5,
+            2
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -3.5,
+                1,
+                -1
+              ],
+              "size": [
+                7,
+                4,
+                7
+              ],
+              "uv": [
+                48,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            9,
+            -7
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                6,
+                -12
+              ],
+              "size": [
+                6,
+                5,
+                5
+              ],
+              "uv": [
+                76,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -1,
+                6,
+                -14
+              ],
+              "size": [
+                2,
+                2,
+                2
+              ],
+              "uv": [
+                98,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg0",
+          "pivot": [
+            -4,
+            4,
+            -5
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -5.5,
+                0,
+                -6.5
+              ],
+              "size": [
+                3,
+                4,
+                3
+              ],
+              "uv": [
+                106,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg1",
+          "pivot": [
+            4,
+            4,
+            -5
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                2.5,
+                0,
+                -6.5
+              ],
+              "size": [
+                3,
+                4,
+                3
+              ],
+              "uv": [
+                0,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg2",
+          "pivot": [
+            -4,
+            4,
+            5
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -5.5,
+                0,
+                3.5
+              ],
+              "size": [
+                3,
+                4,
+                3
+              ],
+              "uv": [
+                12,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg3",
+          "pivot": [
+            4,
+            4,
+            5
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                2.5,
+                0,
+                3.5
+              ],
+              "size": [
+                3,
+                4,
+                3
+              ],
+              "uv": [
+                24,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "name": "fear_crest",
+          "pivot": [
+            0,
+            15,
+            0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                14,
+                -3
+              ],
+              "size": [
+                3,
+                4,
+                2
+              ],
+              "uv": [
+                36,
+                22
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

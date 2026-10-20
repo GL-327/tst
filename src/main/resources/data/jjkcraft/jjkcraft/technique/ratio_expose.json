@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.ratio_expose",
+  "description": "technique.jjkcraft.ratio_expose.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 100,
+    "range": 14
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "ratio_expose",
+    "damage": 3,
+    "duration": 140,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#D8B96A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ratio_expose.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

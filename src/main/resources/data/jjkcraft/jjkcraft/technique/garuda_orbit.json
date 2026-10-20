@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.garuda_orbit",
+  "description": "technique.jjkcraft.garuda_orbit.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 44,
+    "cooldown": 240,
+    "range": 10
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0.08,
+    "radius": 4,
+    "duration": 120,
+    "damage_per_second": 4,
+    "burst_damage": 0,
+    "burst_radius": 0
+  },
+  "visuals": {
+    "color": "#F0CA4F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/garuda_orbit.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

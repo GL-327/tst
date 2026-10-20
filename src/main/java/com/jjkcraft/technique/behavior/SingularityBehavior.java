@@ -61,6 +61,7 @@ public record SingularityBehavior(double distance, double radius, int pullTicks,
 			}
 
 			if (ticksActive % 5 == 0) {
+                com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,star,radius,16,true);
 				ctx.fx(TechniqueFxPayload.Phase.FIELD, star, new Vec3(radius, 6, 1), List.of());
 			}
 
@@ -68,6 +69,7 @@ public record SingularityBehavior(double distance, double radius, int pullTicks,
 		}
 
 		List<LivingEntity> caught = ctx.enemiesInRadius(star, blastRadius);
+        com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,star,blastRadius,64,false);
 		for (LivingEntity enemy : caught) {
 			ctx.hurtSplit(enemy, damage * ctx.power(), 0.7);
 			ctx.knockback(enemy, star, 1.6);

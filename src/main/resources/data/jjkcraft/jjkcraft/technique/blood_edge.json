@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.blood_edge",
+  "description": "technique.jjkcraft.blood_edge.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 15,
+    "cooldown": 40,
+    "range": 5.0
+  },
+  "behavior": {
+    "type": "jjkcraft:arc_slash",
+    "damage": 7,
+    "arc": 100,
+    "ce_scaling": 0,
+    "knockback": 0.2
+  },
+  "visuals": {
+    "color": "#B91C38",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.25,
+    "hit_stop": 1,
+    "trail": "slash",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blood_edge.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

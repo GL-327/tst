@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:ink_sac",
+    "minecraft:glowstone_dust",
+    "minecraft:copper_ingot",
+    "minecraft:clay_ball"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:venom_tether"
+    }
+  }
+}

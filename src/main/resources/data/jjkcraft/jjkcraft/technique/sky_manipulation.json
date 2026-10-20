@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.sky_manipulation",
+  "description": "technique.jjkcraft.sky_manipulation.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 15,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "repel",
+    "damage": 3,
+    "duration": 60,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#A9C9F4",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/sky_manipulation.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

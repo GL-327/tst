@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.rustjaw_pup",
+  "description": "curse.jjkcraft.rustjaw_pup.desc",
+  "lore": "curse.jjkcraft.rustjaw_pup.lore",
+  "entity": "jjkcraft:rustjaw_pup",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 20,
+    "armor": 0,
+    "speed": 0.22,
+    "attack_damage": 2.9,
+    "ce_capacity": 35,
+    "follow_range": 22
+  },
+  "techniques": [
+    "jjkcraft:blood_edge"
+  ],
+  "spawn": {
+    "weight": 9,
+    "min_fear": 24,
+    "group_min": 2,
+    "group_max": 3,
+    "max_light": 10
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/rustjaw_pup",
+    "texture": "jjkcraft:textures/entity/rustjaw_pup.png",
+    "animation": "jjkcraft:entity/rustjaw_pup",
+    "scale": 0.76
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#BA7E56",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ],
+  "loot_table": "jjkcraft:entities/rustjaw_pup"
+}

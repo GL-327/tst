@@ -112,6 +112,17 @@ public final class DomainService {
 	}
 
 	public static void init() {
+		net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AFTER_DAMAGE.register((entity,source,base,taken,blocked)->{
+			var d=BY_CASTER.get(entity.getUUID());if(d==null||taken<=0)return;
+			double damage=((Number)d.memory().getOrDefault("caster_damage",0.0)).doubleValue()+taken;d.memory().put("caster_damage",damage);
+			if(damage>=entity.getMaxHealth()*(d.phase()==ActiveDomain.Phase.OPENING?0.18:0.55))d.requestClose();
+		});
+		com.jjkcraft.damage.DamageModifiers.add((level,target,source,amount)->{
+            if(!(source.getEntity() instanceof LivingEntity attacker)||source.is(com.jjkcraft.damage.JjkDamageTypes.SURE_HIT))return amount;
+			for(var d:BY_CASTER.values())if(d.level()==level&&d.hasBarrier()&&d.phase()==ActiveDomain.Phase.ACTIVE&&attacker!=d.caster()&&d.contains(target)&&!d.contains(attacker)){
+				d.damageBarrier(amount);worldVersion++;return 0;
+			}return amount;
+		});
 		ServerPlayNetworking.registerGlobalReceiver(DomainActionPayload.TYPE, (payload, context) -> onAction(context.player(), payload.action()));
 		ServerTickEvents.END_SERVER_TICK.register(DomainService::tick);
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -208,6 +219,7 @@ public final class DomainService {
 
 	/** Gives a player at a domain-capable grade a domain they can cast, if they have none. */
 	public static void grantIfEligible(ServerPlayer player) {
+        if(com.jjkcraft.awakening.CharacterAwakening.get(player).path().equals("creative_custom"))return;
 		SorcererProgress progress = Progression.get(player);
 		if (!progress.awakened() || progress.heavenlyRestricted() || !gradeAllowsDomains(player)) {
 			return;
@@ -219,6 +231,18 @@ public final class DomainService {
 		}
 
 		int rank = Grades.rank(player.registryAccess(), progress.grade());
+		var family = com.jjkcraft.awakening.CharacterAwakening.family(player);
+		if (!com.jjkcraft.awakening.CharacterAwakening.get(player).path().equals("legacy") && family.isPresent() && family.get().domain().isEmpty()) return;
+		// Existing characters retain the original Grade 1 domain pool after family migration.
+		if (!com.jjkcraft.awakening.CharacterAwakening.get(player).path().equals("legacy")
+				&& family.isPresent() && !family.get().domain().isEmpty()) {
+			Identifier familyDomain = Identifier.tryParse(family.get().domain());
+			if (familyDomain != null && Domains.get(player.registryAccess(), familyDomain)
+					.map(d -> Grades.rank(player.registryAccess(), d.grade()) <= rank).orElse(false)) {
+				setState(player, state.withKnown(Optional.of(familyDomain)));
+			}
+			return;
+		}
 		List<Domains.Entry> options = Domains.all(player.registryAccess()).stream()
 				.filter(e -> e.definition().innateWeight() > 0 && Grades.rank(player.registryAccess(), e.definition().grade()) <= rank)
 				.toList();
@@ -339,6 +363,10 @@ public final class DomainService {
 		ActiveDomain domain = new ActiveDomain(nextInstance++, caster, level, domainId, definition, variant, caster.position(), radius,
 				DomainMath.power(variant, domainPoints));
 		BY_CASTER.put(caster.getUUID(), domain);
+		if(caster instanceof ServerPlayer p){
+			var pose=new com.jjkcraft.network.payload.CombatPosePayload(caster.getId(),"cast_domain",level.getGameTime(),ActiveDomain.OPENING_TICKS,3,8,-1,0);
+			JjkNetworking.send(p,pose);for(var viewer:net.fabricmc.fabric.api.networking.v1.PlayerLookup.tracking(caster))JjkNetworking.send(viewer,pose);
+		}
 		dropSimple(caster);
 		worldVersion++;
 
@@ -444,6 +472,7 @@ public final class DomainService {
 		domain.refreshInside();
 		switch (domain.phase()) {
 			case OPENING -> {
+				if(domain.closeRequested()||com.jjkcraft.combat.CursedCombat.knockedDown(caster)){close(domain);return;}
 				if (inPhase % 4 == 0) {
 					level.sendParticles(JjkParticles.of(JjkParticles.DOMAIN_SHARD, domain.definition().visuals().color(), 1.2f),
 							domain.center().x, domain.center().y + 1, domain.center().z, 12, domain.radius() / 3, 1.5, domain.radius() / 3, 0.05);
@@ -496,6 +525,7 @@ public final class DomainService {
 	}
 
 	private static void takeHold(ActiveDomain domain) {
+		domain.memory().put("caster_damage",0.0);
 		domain.setPhase(ActiveDomain.Phase.ACTIVE);
 		domain.markHeld();
 		if (domain.hasBarrier()) {
@@ -819,7 +849,7 @@ public final class DomainService {
 		for (ActiveDomain d : BY_CASTER.values()) {
 			if (d.level() == player.level() && d.center().distanceTo(player.position()) < SYNC_RANGE + d.radius()) {
 				views.add(new DomainWorldPayload.View(d.id(), d.caster().getId(), d.domainId(), d.center().x, d.center().y, d.center().z,
-						(float) d.radius(), d.variant().ordinal(), d.phase().ordinal(), d.phaseStart(), d.openedAt()));
+						(float) d.radius(), d.variant().ordinal(), d.phase().ordinal(), d.phaseStart(), d.openedAt(),d.integrity()));
 			}
 		}
 

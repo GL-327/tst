@@ -29,7 +29,8 @@ import com.jjkcraft.technique.TechniqueBehaviors;
  * @param gravity        downward acceleration per tick
  */
 public record ProjectileBehavior(double damage, double speed, boolean homing, double homingStrength, double blastRadius,
-		boolean pierce, float size, int lifetime, double gravity, int count, double spread) implements TechniqueBehavior {
+		boolean pierce, float size, int lifetime, double gravity, int count, double spread, int burnSeconds) implements TechniqueBehavior {
+	public ProjectileBehavior(double damage,double speed,boolean homing,double homingStrength,double blastRadius,boolean pierce,float size,int lifetime,double gravity,int count,double spread){this(damage,speed,homing,homingStrength,blastRadius,pierce,size,lifetime,gravity,count,spread,0);}
 	public static final MapCodec<ProjectileBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
 			Codec.doubleRange(0, 10_000).fieldOf("damage").forGetter(ProjectileBehavior::damage),
 			Codec.doubleRange(0.05, 8).fieldOf("speed").forGetter(ProjectileBehavior::speed),
@@ -41,7 +42,8 @@ public record ProjectileBehavior(double damage, double speed, boolean homing, do
 			Codec.intRange(1, 1200).optionalFieldOf("lifetime", 60).forGetter(ProjectileBehavior::lifetime),
 			Codec.doubleRange(0, 1).optionalFieldOf("gravity", 0.0).forGetter(ProjectileBehavior::gravity),
 			Codec.intRange(1, 12).optionalFieldOf("count", 1).forGetter(ProjectileBehavior::count),
-			Codec.doubleRange(0, 90).optionalFieldOf("spread", 0.0).forGetter(ProjectileBehavior::spread)
+			Codec.doubleRange(0, 90).optionalFieldOf("spread", 0.0).forGetter(ProjectileBehavior::spread),
+			Codec.intRange(0,20).optionalFieldOf("burn_seconds",0).forGetter(ProjectileBehavior::burnSeconds)
 	).apply(i, ProjectileBehavior::new));
 
 	@Override
@@ -57,9 +59,13 @@ public record ProjectileBehavior(double damage, double speed, boolean homing, do
 			// A volley fans out evenly across the spread, centred on the aim.
 			double yaw = count == 1 ? 0 : Math.toRadians((n - (count - 1) / 2.0) * spread / Math.max(1, count - 1) * 2);
 			Vec3 direction = look.yRot((float) yaw);
+			direction=switch(ctx.details().expression().pattern()){
+				case 1->ctx.aim(n*360.0/count,0);case 2->ctx.aim(0,Math.toDegrees(yaw));
+				case 3->n%2==0?ctx.aim(Math.toDegrees(yaw),0):ctx.aim(0,Math.toDegrees(yaw));default->direction;};
 			CursedBoltEntity bolt = new CursedBoltEntity(JjkEntities.CURSED_BOLT, ctx.level());
 			bolt.setPos(start.x, start.y, start.z);
 			bolt.configure(ctx, damage, homing, homingStrength, blastRadius, pierce, lifetime, gravity, size);
+			bolt.burnSeconds(burnSeconds);
 			bolt.setDeltaMovement(direction.scale(speed));
 			ctx.level().addFreshEntity(bolt);
 		}

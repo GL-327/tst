@@ -1,0 +1,43 @@
+{
+  "name": "curse.jjkcraft.railcrawler",
+  "description": "curse.jjkcraft.railcrawler.desc",
+  "lore": "curse.jjkcraft.railcrawler.lore",
+  "entity": "jjkcraft:railcrawler",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 23,
+    "armor": 2,
+    "speed": 0.228,
+    "attack_damage": 2.5,
+    "ce_capacity": 30
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 15,
+    "max_light": 15,
+    "group_min": 1,
+    "group_max": 3
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/railcrawler",
+    "texture": "jjkcraft:textures/entity/railcrawler.png",
+    "animation": "jjkcraft:entity/railcrawler"
+  },
+  "mechanic": "jjkcraft:ledger",
+  "parameters": {
+    "max_tally": 8,
+    "damage_per_mark": 0.15
+  },
+  "codex": {
+    "color": "#8C6BB6",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/ledger_crawler",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

@@ -25,8 +25,10 @@ import com.jjkcraft.JjkCraft;
  * @param targets   ids of entities hit
  * @param power     relative strength, for scaling visuals (1 = normal)
  */
-public record TechniqueFxPayload(int caster, Identifier technique, Phase phase, Vec3 origin, Vec3 direction, List<Integer> targets, float power)
+public record TechniqueFxPayload(int caster, Identifier technique, Phase phase, Vec3 origin, Vec3 direction, List<Integer> targets, float power,int color,int trail)
 		implements CustomPacketPayload {
+	public TechniqueFxPayload(int caster,Identifier technique,Phase phase,Vec3 origin,Vec3 direction,List<Integer> targets,float power){this(caster,technique,phase,origin,direction,targets,power,-1);}
+	public TechniqueFxPayload(int caster,Identifier technique,Phase phase,Vec3 origin,Vec3 direction,List<Integer> targets,float power,int color){this(caster,technique,phase,origin,direction,targets,power,color,-1);}
 	public static final Type<TechniqueFxPayload> TYPE = new Type<>(JjkCraft.id("technique_fx"));
 
 	public enum Phase {
@@ -43,7 +45,7 @@ public record TechniqueFxPayload(int caster, Identifier technique, Phase phase, 
 			Vec3.STREAM_CODEC, TechniqueFxPayload::origin,
 			Vec3.STREAM_CODEC, TechniqueFxPayload::direction,
 			ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list(64)), TechniqueFxPayload::targets,
-			ByteBufCodecs.FLOAT, TechniqueFxPayload::power,
+			ByteBufCodecs.FLOAT, TechniqueFxPayload::power,ByteBufCodecs.VAR_INT,TechniqueFxPayload::color,ByteBufCodecs.VAR_INT,TechniqueFxPayload::trail,
 			TechniqueFxPayload::new);
 
 	@Override

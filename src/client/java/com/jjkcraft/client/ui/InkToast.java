@@ -42,7 +42,7 @@ public final class InkToast implements Toast {
 		int h = height();
 		Ink.panel(g, 0, 0, w, h, accent, 1f);
 		Ink.diamond(g, 12, h / 2, 5, accent);
-		g.text(font, title, 24, 7, Palette.TEXT, true);
-		g.text(font, body, 24, 18, Palette.TEXT_DIM, true);
+		g.text(font, Ink.fit(title,w-30), 24, 7, Palette.TEXT, true);
+		g.text(font, Ink.fit(body,w-30), 24, 18, Palette.TEXT_DIM, true);
 	}
 }

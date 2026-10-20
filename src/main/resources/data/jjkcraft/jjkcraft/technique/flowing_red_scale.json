@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.flowing_red_scale",
+  "description": "technique.jjkcraft.flowing_red_scale.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 20,
+    "cooldown": 240,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "flowing_blood",
+    "damage": 0,
+    "duration": 180,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#B91C38",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/flowing_red_scale.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

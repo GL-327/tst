@@ -1,0 +1,36 @@
+{
+  "name": "technique.jjkcraft.thread_sever",
+  "description": "technique.jjkcraft.thread_sever.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 29,
+    "cooldown": 60,
+    "range": 20
+  },
+  "behavior": {
+    "type": "jjkcraft:line_cut",
+    "damage": 10,
+    "width": 0.4,
+    "pierce": 0.25
+  },
+  "visuals": {
+    "color": "#BD6C9C",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/thread_sever.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

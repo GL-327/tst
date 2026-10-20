@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.brain_transplant",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 4,
+  "techniques": [
+    "jjkcraft:brain_transplant",
+    "jjkcraft:antigravity_system",
+    "jjkcraft:gravity_reversal",
+    "jjkcraft:brain_recover"
+  ],
+  "domain": ""
+}

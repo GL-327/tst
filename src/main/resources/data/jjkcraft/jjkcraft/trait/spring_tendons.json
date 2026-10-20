@@ -1,0 +1,9 @@
+{
+  "name": "trait.jjkcraft.spring_tendons",
+  "description": "trait.jjkcraft.spring_tendons.desc",
+  "category": "restriction_zero",
+  "weight": 10,
+  "speed": 0.12,
+  "damage": 2,
+  "health": -6
+}

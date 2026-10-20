@@ -1,0 +1,53 @@
+{
+  "name": "curse.jjkcraft.mirror_wraith",
+  "description": "curse.jjkcraft.mirror_wraith.desc",
+  "lore": "curse.jjkcraft.mirror_wraith.lore",
+  "entity": "jjkcraft:mirror_wraith",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 44,
+    "armor": 8,
+    "speed": 0.238,
+    "attack_damage": 6.6,
+    "ce_capacity": 120,
+    "knockback_resistance": 0.6
+  },
+  "spawn": {
+    "weight": 7,
+    "min_fear": 38,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "resistances": {
+    "minecraft:arrow": 0.5,
+    "minecraft:fall": 0.0,
+    "minecraft:explosion": 1.5,
+    "minecraft:player_explosion": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/mirror_wraith",
+    "texture": "jjkcraft:textures/entity/mirror_wraith.png",
+    "animation": "jjkcraft:entity/mirror_wraith"
+  },
+  "mechanic": "jjkcraft:bell",
+  "parameters": {
+    "wave_radius": 10,
+    "wave_speed": 0.45,
+    "wave_damage": 6,
+    "wave_knockback": 1.0,
+    "swing_ticks": 26,
+    "ringing_ticks": 50,
+    "ringing_damage_taken": 2,
+    "toll_interval": 140
+  },
+  "codex": {
+    "color": "#9C3EA2",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/cracked_bell",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:uppercut"
+  ]
+}

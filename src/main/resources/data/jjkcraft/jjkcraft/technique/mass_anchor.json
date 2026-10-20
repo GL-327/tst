@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.mass_anchor",
+  "description": "technique.jjkcraft.mass_anchor.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 28,
+    "cooldown": 200,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "mass_anchor",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#F0CA4F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mass_anchor.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.echo_collect",
+  "description": "technique.jjkcraft.echo_collect.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 60,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "echo_release",
+    "damage": 7,
+    "duration": 80,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#AE98E0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/echo_collect.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

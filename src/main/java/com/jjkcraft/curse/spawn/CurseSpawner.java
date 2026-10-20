@@ -39,7 +39,7 @@ import com.jjkcraft.fear.Fear;
  * curse nest, which keeps spawning until a player breaks it.
  */
 public final class CurseSpawner {
-	private static final int INTERVAL = 40;
+	private static final int INTERVAL = 120;
 	private static final double NEST_FEAR = 75;
 	private static final double NEST_CHANCE = 0.03;
 
@@ -57,11 +57,12 @@ public final class CurseSpawner {
 		}
 
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			if (player.isSpectator() || player.isCreative()) {
+			if (!player.isAlive() || player.isSpectator() || (player.isCreative() && !config.curses.spawnAroundCreative)) {
 				continue;
 			}
 
 			ServerLevel level = player.level();
+			if (level.dimension().identifier().getNamespace().equals("modulo")) continue;
 			// Curses are monsters: the vanilla spawning rules and Peaceful apply to them too.
 			if (level.getDifficulty() == Difficulty.PEACEFUL || !level.getGameRules().get(GameRules.SPAWN_MOBS)
 					|| !level.getGameRules().get(GameRules.SPAWN_MONSTERS)) {
@@ -69,19 +70,22 @@ public final class CurseSpawner {
 			}
 
 			RandomSource random = level.getRandom();
-			if (random.nextDouble() > 0.35 * config.curses.spawnRateMultiplier) {
+			if (random.nextDouble() > Math.min(1, 0.40 * config.curses.spawnRateMultiplier)) {
 				continue;
 			}
 
 			AABB near = player.getBoundingBox().inflate(64);
-			if (level.getEntitiesOfClass(CurseEntity.class, near).size() >= config.curses.maxCursesPerPlayer) {
+			int budget = config.curses.maxCursesPerPlayer - level.getEntitiesOfClass(CurseEntity.class, near, Entity::isAlive).size();
+			if (budget <= 0) {
 				continue;
 			}
 
+			for (int attempt = 0; attempt < config.curses.spawnAttempts && budget > 0; attempt++) {
 			double angle = random.nextDouble() * Math.PI * 2;
 			double distance = 16 + random.nextDouble() * 24;
 			int x = (int) Math.floor(player.getX() + Math.cos(angle) * distance);
 			int z = (int) Math.floor(player.getZ() + Math.sin(angle) * distance);
+			if (!level.hasChunkAt(new BlockPos(x, (int) player.getY(), z))) continue;
 			Optional<BlockPos> spot = findSpot(level, x, (int) player.getY(), z, random);
 			if (spot.isEmpty()) {
 				continue;
@@ -89,7 +93,8 @@ public final class CurseSpawner {
 
 			double fear = Fear.at(level, spot.get());
 			if (fear < config.curses.fearSpawnThreshold) {
-				continue;
+				if (random.nextDouble() * 100 >= config.curses.calmEncounterPercent) continue;
+				fear = config.curses.fearSpawnThreshold;
 			}
 
 			if (fear >= NEST_FEAR && random.nextDouble() < NEST_CHANCE) {
@@ -98,7 +103,9 @@ public final class CurseSpawner {
 				continue;
 			}
 
-			spawnAt(level, spot.get(), fear, random, false);
+			int born=spawnAt(level, spot.get(), fear, random, false, budget);
+            budget-=born;if(born>0)break;
+			}
 		}
 	}
 
@@ -124,6 +131,10 @@ public final class CurseSpawner {
 
 	/** Spawns a weighted group at {@code pos} for the given fear. Returns how many spawned. */
 	public static int spawnAt(ServerLevel level, BlockPos pos, double fear, RandomSource random, boolean ignoreLight) {
+		return spawnAt(level, pos, fear, random, ignoreLight, 16);
+	}
+
+	private static int spawnAt(ServerLevel level, BlockPos pos, double fear, RandomSource random, boolean ignoreLight, int budget) {
 		Identifier dimension = level.dimension().identifier();
 		boolean inWater = level.getFluidState(pos).isSource();
 		int light = level.getMaxLocalRawBrightness(pos);
@@ -138,7 +149,7 @@ public final class CurseSpawner {
 				continue;
 			}
 
-			double weight = FearMath.spawnWeight(spawn.get().weight(), fear, spawn.get().minFear());
+			double weight = FearMath.spawnWeight(spawn.get().weight(), fear, spawn.get().minFear())*com.jjkcraft.core.fear.CurseEncounterMath.rarity(com.jjkcraft.grade.Grades.rank(level.registryAccess(),entry.definition().grade()));
 			if (weight > 0) {
 				candidates.add(entry);
 				weights.add(weight);
@@ -161,14 +172,24 @@ public final class CurseSpawner {
 		}
 
 		CurseDefinition.Spawn rules = chosen.definition().spawn().orElseThrow();
-		int count = rules.groupMin() + random.nextInt(rules.groupMax() - rules.groupMin() + 1);
+		int rank=com.jjkcraft.grade.Grades.rank(level.registryAccess(),chosen.definition().grade());
+        var nearby=level.getEntitiesOfClass(CurseEntity.class,new AABB(pos).inflate(24),Entity::isAlive);
+        if(nearby.stream().anyMatch(c->com.jjkcraft.core.fear.CurseEncounterMath.solitary(com.jjkcraft.grade.Grades.rank(level.registryAccess(),c.grade()))) || com.jjkcraft.core.fear.CurseEncounterMath.solitary(rank)&&!nearby.isEmpty())return 0;
+        int count = com.jjkcraft.core.fear.CurseEncounterMath.group(rank,random.nextDouble(),budget);
 		int spawned = 0;
-		for (int i = 0; i < count; i++) {
-			BlockPos at = i == 0 ? pos : pos.offset(random.nextInt(5) - 2, 0, random.nextInt(5) - 2);
-			if (spawnOne(level, chosen.definition().entity(), at) != null) {
-				spawned++;
-			}
-		}
+        var used=new java.util.HashSet<BlockPos>();
+        for (int i=0;i<count;i++)for(int attempt=0;attempt<10;attempt++){
+            BlockPos at=i==0&&attempt==0?pos:pos.offset(random.nextInt(9)-4,0,random.nextInt(9)-4);
+            if(!level.hasChunkAt(at))continue;
+            if(!standable(level,at)){if(standable(level,at.above()))at=at.above();else if(standable(level,at.below()))at=at.below();else continue;}
+            if(!used.add(at))continue;
+            Curses.Entry member=chosen;
+            if(rank<3&&i>0&&random.nextFloat()<0.4f){
+                var peers=candidates.stream().filter(c->com.jjkcraft.grade.Grades.rank(level.registryAccess(),c.definition().grade())==rank).toList();
+                if(!peers.isEmpty())member=peers.get(random.nextInt(peers.size()));
+            }
+            if(spawnOne(level,member.definition().entity(),at,true)!=null){spawned++;break;}
+        }
 
 		return spawned;
 	}
@@ -195,6 +216,10 @@ public final class CurseSpawner {
 
 	/** Spawns one curse of the given entity type with the emergence animation. */
 	public static CurseEntity spawnOne(ServerLevel level, Identifier entityType, BlockPos pos) {
+		return spawnOne(level, entityType, pos, false);
+	}
+
+	private static CurseEntity spawnOne(ServerLevel level, Identifier entityType, BlockPos pos, boolean checkCollision) {
 		EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entityType);
 		Entity entity = type.create(level, EntitySpawnReason.NATURAL);
 		if (!(entity instanceof CurseEntity curse)) {
@@ -202,6 +227,7 @@ public final class CurseSpawner {
 		}
 
 		curse.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, level.getRandom().nextFloat() * 360f, 0);
+		if (checkCollision && !level.noCollision(curse)) return null;
 		curse.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.NATURAL, null);
 		level.addFreshEntity(curse);
 		return curse;

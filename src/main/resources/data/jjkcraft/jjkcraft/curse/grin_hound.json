@@ -1,0 +1,47 @@
+{
+  "name": "curse.jjkcraft.grin_hound",
+  "description": "curse.jjkcraft.grin_hound.desc",
+  "lore": "curse.jjkcraft.grin_hound.lore",
+  "entity": "jjkcraft:grin_hound",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 39,
+    "armor": 2,
+    "speed": 0.292,
+    "attack_damage": 4.2,
+    "ce_capacity": 120,
+    "regen_multiplier": 1.5
+  },
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 8,
+    "min_fear": 25,
+    "max_light": 10,
+    "group_min": 1,
+    "group_max": 2
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/grin_hound",
+    "texture": "jjkcraft:textures/entity/grin_hound.png",
+    "animation": "jjkcraft:entity/grin_hound"
+  },
+  "mechanic": "jjkcraft:echo",
+  "parameters": {
+    "echo_length": 5,
+    "echo_delay": 60
+  },
+  "codex": {
+    "color": "#7D55B8",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/echo_mimic",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:heavy"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.brain_recover",
+  "description": "technique.jjkcraft.brain_recover.desc",
+  "category": "healing",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 36,
+    "cooldown": 220,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "brain_recover",
+    "damage": 4,
+    "duration": 100,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#CC7F99",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/brain_recover.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

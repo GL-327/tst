@@ -28,6 +28,8 @@ import com.jjkcraft.technique.TechniqueService;
  * The client draws it as a glowing core with a ribbon trail; size and color are synced.
  */
 public class CursedBoltEntity extends ThrowableProjectile {
+	private int burnSeconds;
+	public void burnSeconds(int seconds){burnSeconds=Math.clamp(seconds,0,20);}
 	private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(CursedBoltEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(CursedBoltEntity.class, EntityDataSerializers.FLOAT);
 
@@ -98,6 +100,7 @@ public class CursedBoltEntity extends ThrowableProjectile {
 			if (homing && tickCount > 0) {
 				steer();
 			}
+            if(pierce)com.jjkcraft.technique.TechniqueTerrain.line(ctx,position(),position().add(getDeltaMovement()),Math.min(3,Math.max(.8,size())));
 		}
 
 		super.tick();
@@ -152,7 +155,8 @@ public class CursedBoltEntity extends ThrowableProjectile {
 		}
 
 		alreadyHit.add(target.getId());
-		ctx.hurt(target, damage * ctx.power(), false);
+		if(burnSeconds>0)target.igniteForSeconds(burnSeconds);
+		ctx.hurtSplit(target,damage*ctx.power(),Math.max(0,ctx.details().penetration())/100.0);
 		if (blastRadius > 0) {
 			explode(hit.getLocation());
 		} else {
@@ -168,22 +172,27 @@ public class CursedBoltEntity extends ThrowableProjectile {
 	protected void onHitBlock(BlockHitResult hit) {
 		super.onHitBlock(hit);
 		if (level() instanceof ServerLevel && ctx != null) {
+            com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,hit.getLocation(),Math.max(.9,Math.min(4,size()+Math.sqrt(ctx.power())*.5)),pierce?24:8,false);
 			if (blastRadius > 0) {
 				explode(hit.getLocation());
 			} else {
 				ctx.fx(TechniqueFxPayload.Phase.HIT, hit.getLocation(), getDeltaMovement().normalize(), List.of());
 			}
+            if(pierce&&level().getBlockState(hit.getBlockPos()).isAir())return;
 		}
 
 		discard();
 	}
 
 	private void explode(Vec3 at) {
+        com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,at,blastRadius,48,false);
 		List<LivingEntity> targets = ctx.enemiesInRadius(at, blastRadius);
 		for (LivingEntity target : targets) {
+			if(burnSeconds>0)target.igniteForSeconds(burnSeconds);
 			if (alreadyHit.add(target.getId())) {
 				double falloff = 1 - 0.5 * Math.min(1, target.position().distanceTo(at) / blastRadius);
-				ctx.hurt(target, damage * ctx.power() * falloff, false);
+				falloff*=ctx.details().expression().falloff(target.position().distanceTo(at),blastRadius);
+				ctx.hurtSplit(target,damage*ctx.power()*falloff,Math.max(0,ctx.details().penetration())/100.0);
 			}
 
 			ctx.knockback(target, at, 0.8);

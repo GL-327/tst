@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.gravity_reversal",
+  "description": "technique.jjkcraft.gravity_reversal.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 55,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "gravity",
+    "damage": 10,
+    "duration": 60,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#49336D",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/gravity_reversal.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

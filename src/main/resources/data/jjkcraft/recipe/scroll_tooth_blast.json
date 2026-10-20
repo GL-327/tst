@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:iron_ingot",
+    "minecraft:gunpowder",
+    "minecraft:feather"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:tooth_blast"
+    }
+  }
+}

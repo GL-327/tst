@@ -92,7 +92,8 @@ public final class BlackFlash {
 				JjkConfig.server().casting.blackFlashExponent);
 		double amount = damage * multiplier;
 		target.damageCooldownTime = 0;
-		target.hurtServer(level, level.damageSources().source(JjkDamageTypes.BLACK_FLASH, striker), (float) amount);
+		if (!target.hurtServer(level, level.damageSources().source(JjkDamageTypes.BLACK_FLASH, striker), (float) amount))
+			return new StrikeHooks.Outcome(true, 0);
 		ctx.knockback(target, striker.position(), 1.4);
 
 		CursedEnergy.restore(striker, CursedEnergy.max(striker) * BlackFlashMath.REFUND_FRACTION);

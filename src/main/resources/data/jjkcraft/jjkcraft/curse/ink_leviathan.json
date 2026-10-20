@@ -1,0 +1,62 @@
+{
+  "name": "curse.jjkcraft.ink_leviathan",
+  "description": "curse.jjkcraft.ink_leviathan.desc",
+  "lore": "curse.jjkcraft.ink_leviathan.lore",
+  "entity": "jjkcraft:ink_leviathan",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 576,
+    "armor": 12,
+    "speed": 0.281,
+    "attack_damage": 11.0,
+    "ce_capacity": 600,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 12,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.9
+  },
+  "techniques": [
+    "jjkcraft:seeking_grudge_bolt",
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 2,
+    "min_fear": 70,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "resistances": {
+    "minecraft:drown": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/ink_leviathan",
+    "texture": "jjkcraft:textures/entity/ink_leviathan.png",
+    "animation": "jjkcraft:entity/ink_leviathan"
+  },
+  "mechanic": "jjkcraft:ferryman",
+  "parameters": {
+    "arena_radius": 22,
+    "first_crossing": 200,
+    "crossing_ticks": 200,
+    "crossing_ticks_second": 260,
+    "interval": 600,
+    "interval_second": 400,
+    "pull": 0.06,
+    "pull_second": 0.075,
+    "ferry_damage": 8,
+    "wither_ticks": 100,
+    "leash": 6,
+    "sweep_damage": 5,
+    "bar_range": 48
+  },
+  "codex": {
+    "color": "#AB2DD7",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/unfinished_ferryman",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

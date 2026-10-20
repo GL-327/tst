@@ -330,13 +330,16 @@ public class CurseEntity extends Monster implements GeoEntity, CursedEnergyUser,
 
 		triggerAnim("action", "attack");
 		if (hit) {
-			double drain = definition().map(d -> d.stats().drainOnHit()).orElse(4.0);
-			double taken = CursedEnergy.drain(living, drain);
-			CursedEnergy.restore(this, taken);
-			mechanic().onAttack(this, level, living);
+			combatLanded(level,living);
 		}
 
 		return hit;
+	}
+	/** The framed and vanilla fallback paths share each species' on-contact mechanic. */
+	public void combatLanded(ServerLevel level,LivingEntity target){
+		double drain=definition().map(d->d.stats().drainOnHit()).orElse(4.0);
+		CursedEnergy.restore(this,CursedEnergy.drain(target,drain));
+		mechanic().onAttack(this,level,target);
 	}
 
 	@Override
@@ -423,6 +426,13 @@ public class CurseEntity extends Monster implements GeoEntity, CursedEnergyUser,
 			return test.setAndContinue(test.isMoving() ? WALK : IDLE);
 		}));
 		controllers.add(new AnimationController<>("action", 2, test -> PlayState.STOP)
+				.triggerableAnim("jab", RawAnimation.begin().thenPlay("jab"))
+                .triggerableAnim("heavy", RawAnimation.begin().thenPlay("heavy"))
+                .triggerableAnim("sweep", RawAnimation.begin().thenPlay("sweep"))
+                .triggerableAnim("uppercut", RawAnimation.begin().thenPlay("uppercut"))
+                .triggerableAnim("guard", RawAnimation.begin().thenPlay("guard"))
+                .triggerableAnim("attack_windup", RawAnimation.begin().thenPlay("attack_windup"))
+				.triggerableAnim("stagger", RawAnimation.begin().thenPlay("stagger"))
 				.triggerableAnim("attack", RawAnimation.begin().thenPlay("attack"))
 				.triggerableAnim("cast", RawAnimation.begin().thenPlay("cast"))
 				.triggerableAnim("hurt", RawAnimation.begin().thenPlay("hurt")));

@@ -1,0 +1,36 @@
+{
+  "name": "technique.jjkcraft.wind_scythe",
+  "description": "technique.jjkcraft.wind_scythe.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 60,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:arc_slash",
+    "damage": 4,
+    "arc": 95,
+    "knockback": 0.45
+  },
+  "visuals": {
+    "color": "#B1D7CE",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/wind_scythe.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

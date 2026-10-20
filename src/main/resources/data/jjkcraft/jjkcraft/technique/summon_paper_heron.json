@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.summon_paper_heron",
+  "description": "technique.jjkcraft.summon_paper_heron.desc",
+  "grade": "jjkcraft:grade_4",
+  "category": "summon",
+  "cast": {
+    "cost": 28,
+    "cooldown": 170,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:paper_heron",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9EC2B2",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/summon_paper_heron.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

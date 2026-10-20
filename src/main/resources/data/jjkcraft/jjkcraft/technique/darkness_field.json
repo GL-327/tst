@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.darkness_field",
+  "description": "technique.jjkcraft.darkness_field.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 45,
+    "cooldown": 120,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0.85,
+    "radius": 5,
+    "duration": 100,
+    "damage_per_second": 3,
+    "burst_damage": 15,
+    "burst_radius": 4
+  },
+  "visuals": {
+    "color": "#7C68BF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/darkness_field.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

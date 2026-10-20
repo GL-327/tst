@@ -34,7 +34,7 @@ import com.jjkcraft.technique.CastFailure;
  */
 public final class DomainMeterHud {
 	public static final int WIDTH = 150;
-	public static final int HEIGHT = 24;
+	public static final int HEIGHT = 34;
 
 	private DomainMeterHud() {
 	}
@@ -42,7 +42,7 @@ public final class DomainMeterHud {
 	public static void extract(GuiGraphicsExtractor g, DeltaTracker delta) {
 		Minecraft mc = Minecraft.getInstance();
 		JjkClientConfig.HudElement cfg = ClientConfig.get().hud.domainMeter;
-		if (!cfg.visible || mc.gui.hud.isHidden() || mc.player == null || mc.level == null) {
+		if (!cfg.visible || mc.gui.hud.isHidden() || mc.gui.screen()!=null || mc.player == null || mc.level == null) {
 			return;
 		}
 
@@ -89,7 +89,7 @@ public final class DomainMeterHud {
 		DomainDefinition def = known.get();
 		int color = 0xFF000000 | def.visuals().color();
 		Ink.panel(g, 0, 0, WIDTH, HEIGHT, color, alpha * 0.8f);
-		Ink.text(g, Component.translatable(def.name()), 6, 3, color, alpha);
+		Ink.text(g, Ink.fit(Component.translatable(def.name()),WIDTH-12), 6, 3, color, alpha);
 
 		long now = Minecraft.getInstance().level.getGameTime();
 		long burnout = ClientDomains.self().burnoutUntil() - now;
@@ -111,7 +111,7 @@ public final class DomainMeterHud {
 		DomainDefinition def = domain.definition().orElse(null);
 		int color = def == null ? Palette.accent() : 0xFF000000 | def.visuals().color();
 		Ink.panel(g, 0, 0, WIDTH, HEIGHT, color, alpha);
-		Ink.text(g, ClientDomains.name(domain), 6, 3, color, alpha);
+		Ink.text(g, Ink.fit(ClientDomains.name(domain),WIDTH-12), 6, 3, color, alpha);
 
 		if (domain.phase() == ActiveDomain.Phase.CLASHING) {
 			float pulse = ClientConfig.reduceFlashing() ? 1 : 0.6f + 0.4f * Mth.sin(Util.getMillis() / 90f);
@@ -122,10 +122,12 @@ public final class DomainMeterHud {
 		if (def != null && ClientEnergy.hasData()) {
 			int points = ClientProgress.hasData() ? ClientProgress.get().growth().domain() : 0;
 			double upkeep = DomainMath.upkeepPerSecond(def.upkeep(), domain.variant(), points, 1);
-			double seconds = upkeep <= 0 ? 99 : ClientEnergy.predicted() / upkeep;
+			double lifetime=Math.max(0,(def.maxDuration()-Math.max(0,Minecraft.getInstance().level.getGameTime()-domain.openedAt()-ActiveDomain.OPENING_TICKS))/20.0);
+			double seconds = Math.min(lifetime,upkeep <= 0 ? lifetime : ClientEnergy.predicted() / upkeep);
 			bar(g, Mth.clamp((float) (seconds / 20.0), 0, 1), color, alpha);
 			Ink.text(g, Component.translatable("hud.jjkcraft.domain_hold", String.format("%.0f", seconds)), 6, 13, Palette.TEXT_DIM, alpha);
 			extras(g, domain, def, alpha);
+			String barrier="Barrier "+Math.round(domain.integrity()*100)+"%";if(domain.barrier())Ink.text(g,barrier,6,23,domain.integrity()<0.35f?Palette.danger():Palette.TEXT_DIM,alpha);
 		}
 	}
 
@@ -133,7 +135,7 @@ public final class DomainMeterHud {
 		DomainDefinition def = domain.definition().orElse(null);
 		int color = def == null ? Palette.danger() : 0xFF000000 | def.visuals().color();
 		Ink.panel(g, 0, 0, WIDTH, HEIGHT, Palette.danger(), alpha);
-		Ink.text(g, ClientDomains.name(domain), 6, 3, color, alpha);
+		Ink.text(g, Ink.fit(ClientDomains.name(domain),WIDTH-12), 6, 3, color, alpha);
 		boolean shielded = ClientDomains.shielded();
 		Component status = Component.translatable(shielded ? "hud.jjkcraft.domain_shielded"
 				: def != null && def.sureHit() ? "hud.jjkcraft.domain_sure_hit" : "hud.jjkcraft.domain_inside");

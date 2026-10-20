@@ -55,7 +55,7 @@ public final class DomainTitle {
 		}
 
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.gui.hud.isHidden()) {
+		if (mc.gui.hud.isHidden()||mc.gui.screen()!=null) {
 			return;
 		}
 
@@ -75,13 +75,14 @@ public final class DomainTitle {
 		Component header = Component.translatable(barrierless ? "hud.jjkcraft.domain_expansion_barrierless" : "hud.jjkcraft.domain_expansion");
 		Ink.centered(g, header, w / 2, cy - 22, Palette.TEXT_DIM, fadeOut * Mth.clamp(t / 300f, 0, 1));
 
-		float scale = 2.5f;
+		float scale = Math.min(2.5f,(w-48f)/Math.max(1,Ink.font().width(name)));
+		long letterMs=Math.min(LETTER_MS,1400/Math.max(1,name.length()));
 		int total = (int) (Ink.font().width(name) * scale);
 		int x = (w - total) / 2;
 		for (int i = 0; i < name.length(); i++) {
 			String letter = name.substring(i, i + 1);
 			int letterW = Ink.font().width(letter);
-			long appear = reduced ? 0 : 200 + i * LETTER_MS;
+			long appear = reduced ? 0 : 200 + i * letterMs;
 			float p = Mth.clamp((t - appear) / 180f, 0, 1);
 			if (p > 0) {
 				float drop = reduced ? 1 : 1 + 1.4f * (1 - p) * (1 - p);
@@ -97,7 +98,7 @@ public final class DomainTitle {
 		}
 
 		// A brush underline that sweeps once the name is written.
-		float sweep = reduced ? 1 : Mth.clamp((t - 200 - name.length() * LETTER_MS) / 500f, 0, 1);
+		float sweep = reduced ? 1 : Mth.clamp((t - 200 - name.length() * letterMs) / 500f, 0, 1);
 		int lineW = (int) (total * sweep);
 		g.fill((w - total) / 2, cy + 18, (w - total) / 2 + lineW, cy + 20, ARGB.multiplyAlpha(color, 0.8f * fadeOut));
 	}

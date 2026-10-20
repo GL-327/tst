@@ -44,6 +44,8 @@ public final class TechniqueBehaviors {
 			.dispatch("type", TechniqueBehavior::type, TechniqueBehaviorType::codec);
 
 	public static final TechniqueBehaviorType<StrikeBehavior> STRIKE = register("strike", StrikeBehavior.CODEC);
+	public static final TechniqueBehaviorType<com.jjkcraft.technique.behavior.FusionBehavior> FUSION=register("fusion",com.jjkcraft.technique.behavior.FusionBehavior.CODEC);
+	public static final TechniqueBehaviorType<com.jjkcraft.technique.behavior.MangaAbilityBehavior> MANGA_ABILITY = register("manga_ability", com.jjkcraft.technique.behavior.MangaAbilityBehavior.CODEC);
 	public static final TechniqueBehaviorType<ProjectileBehavior> PROJECTILE = register("projectile", ProjectileBehavior.CODEC);
 	public static final TechniqueBehaviorType<ArcSlashBehavior> ARC_SLASH = register("arc_slash", ArcSlashBehavior.CODEC);
 	public static final TechniqueBehaviorType<LineCutBehavior> LINE_CUT = register("line_cut", LineCutBehavior.CODEC);

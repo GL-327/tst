@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.ice_lance",
+  "description": "technique.jjkcraft.ice_lance.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 22,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 12,
+    "speed": 1.8,
+    "size": 0.3,
+    "lifetime": 45
+  },
+  "visuals": {
+    "color": "#80D5E2",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ice_lance.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

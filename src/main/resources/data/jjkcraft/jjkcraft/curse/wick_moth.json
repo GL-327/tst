@@ -36,5 +36,9 @@
   "codex": {
     "color": "#FFB547",
     "unlock_kills": 4
-  }
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:uppercut"
+  ]
 }

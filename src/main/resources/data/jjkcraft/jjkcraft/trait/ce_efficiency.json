@@ -1,0 +1,7 @@
+{
+  "name": "trait.jjkcraft.ce_efficiency",
+  "description": "trait.jjkcraft.ce_efficiency.desc",
+  "category": "physical",
+  "weight": 7,
+  "regen": 1.35
+}

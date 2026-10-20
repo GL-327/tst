@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.ten_shadows_divine_dogs",
   "description": "technique.jjkcraft.ten_shadows_divine_dogs.desc",
   "category": "summon",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 40,
     "cooldown": 400

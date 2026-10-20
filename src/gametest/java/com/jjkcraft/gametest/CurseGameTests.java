@@ -339,11 +339,13 @@ public final class CurseGameTests {
 		helper.setBlock(at.above(), lower.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
 	}
 
-	@GameTest(maxTicks = 240)
+	@GameTest(maxTicks = 240,environment="jjkcraft:door_ambush")
 	public void doorframeHunterHidesInADoorAndAmbushes(GameTestHelper helper) {
 		BlockPos at = new BlockPos(5, 1, 5);
 		door(helper, at, false);
 		CurseEntity hunter = curse(helper, CurseEntities.DOORFRAME_HUNTER, 3.5, 1, 5.5);
+		// This scenario tests concealment, not random strolling away from the nearby frame.
+		hunter.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(0);
 		// Other tests share the world: a stray bolt or blast from next door would reveal the hunter and
 		// restart its calm count, so the test keeps it unhurt and unprovoked. The damage check below
 		// calls the mechanic directly.
@@ -393,11 +395,13 @@ public final class CurseGameTests {
 				.thenSucceed();
 	}
 
-	@GameTest(maxTicks = 200)
+	@GameTest(maxTicks = 200,padding=32,environment="jjkcraft:tithe_payment")
 	public void titheBurrowerStealsAndIsPaidOff(GameTestHelper helper) {
 		ServerPlayer player = TestPlayers.fresh(helper);
 		player.getInventory().setItem(9, new ItemStack(Items.DIAMOND, 5));
 		CurseEntity burrower = curse(helper, CurseEntities.TITHE_BURROWER, 3, 1, 3);
+        for(int x=-12;x<=18;x++)for(int z=-12;z<=18;z++)helper.setBlock(new BlockPos(x,0,z),net.minecraft.world.level.block.Blocks.STONE);
+
 		helper.startSequence()
 				.thenIdle(2)
 				.thenExecute(() -> {
@@ -411,7 +415,14 @@ public final class CurseGameTests {
 				})
 				.thenWaitUntil(() -> helper.assertValueEqual(burrower.mechA(), 0, "it surfaces again"))
 				.thenExecute(() -> {
-					ItemEntity tithe = new ItemEntity(helper.getLevel(), burrower.getX() + 1, burrower.getY() + 0.5, burrower.getZ(), new ItemStack(Items.EMERALD));
+					// Payment is the subject here; hold both participants after the random resurfacing.
+					// A resurface can leave the tiny GameTest structure's entity-ticking chunk.
+					Vec3 paymentSpot=Vec3.atBottomCenterOf(helper.absolutePos(new BlockPos(3,1,3)));
+					burrower.teleportTo(paymentSpot.x,paymentSpot.y,paymentSpot.z);
+					burrower.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0);
+					burrower.setDeltaMovement(Vec3.ZERO);
+					ItemEntity tithe = new ItemEntity(helper.getLevel(), burrower.getX(), burrower.getY() + 0.2, burrower.getZ(), new ItemStack(Items.EMERALD));
+					tithe.setNoGravity(true);tithe.setDeltaMovement(Vec3.ZERO);
 					helper.getLevel().addFreshEntity(tithe);
 				})
 				.thenWaitUntil(() -> helper.assertTrue(burrower.isRemoved(), "paid, it leaves"))

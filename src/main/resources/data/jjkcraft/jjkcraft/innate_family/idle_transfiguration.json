@@ -1,0 +1,18 @@
+{
+  "name": "family.jjkcraft.idle_transfiguration",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:idle_transfiguration",
+    "jjkcraft:transfigured_soul",
+    "jjkcraft:soul_multiplicity",
+    "jjkcraft:soul_recall",
+    "jjkcraft:soul_blades",
+    "jjkcraft:soul_touch",
+    "jjkcraft:soul_body",
+    "jjkcraft:soul_detonation",
+    "jjkcraft:soul_dash"
+  ],
+  "domain": "jjkcraft:self_embodiment_of_perfection"
+}

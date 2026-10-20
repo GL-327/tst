@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.construction",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:construction_armor",
+    "jjkcraft:liquid_metal",
+    "jjkcraft:perfect_sphere",
+    "jjkcraft:construction_blades"
+  ],
+  "domain": ""
+}

@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.swap_feint",
+  "description": "technique.jjkcraft.swap_feint.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 55,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 5,
+    "invulnerable_ticks": 4
+  },
+  "visuals": {
+    "color": "#E5BA70",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/swap_feint.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

@@ -30,6 +30,18 @@ class TechniqueStateTest {
 	}
 
 	@Test
+	void oldSavesExpandToTwelveWithoutLosingBindings() {
+		TechniqueState state = TechniqueState.normalized(Optional.of(PALM), List.of(BOLT, CHAINS),
+				List.of(Optional.of(PALM), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(BOLT), Optional.of(CHAINS)),
+				5, Map.of(), Map.of());
+		assertEquals(12, state.loadout().size());
+		assertEquals(3, state.known().size(), "old learned moves remain available for loadout changes");
+		assertTrue(state.selected() < 12);
+		assertEquals(Optional.of(BOLT),state.slot(4));
+        assertEquals(Optional.of(CHAINS),state.slot(5));
+	}
+
+	@Test
 	void autoSlotFillsOnlyUsableSlots() {
 		TechniqueState state = TechniqueState.EMPTY.withInnate(PALM).withLearned(BOLT).withLearned(CHAINS).withAutoSlotted(2);
 		assertEquals(Optional.of(PALM), state.slot(0));

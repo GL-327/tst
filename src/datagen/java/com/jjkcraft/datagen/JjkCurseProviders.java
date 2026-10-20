@@ -166,6 +166,7 @@ final class JjkCurseProviders {
 
 		@Override
 		public void generateBlockStateModels(BlockModelGenerators blocks) {
+			blocks.createTrivialCube(com.jjkcraft.death.SoulSystem.RELIQUARY);
 			blocks.createTrivialCube(JjkBlocks.CURSED_ROOT);
 			blocks.createTrivialCube(JjkBlocks.GATE_BARRIER);
 			blocks.createTrivialCube(JjkBlocks.CURSE_NEST);
@@ -184,6 +185,7 @@ final class JjkCurseProviders {
 
 		@Override
 		public void generateItemModels(ItemModelGenerators items) {
+			items.generateFlatItem(com.jjkcraft.death.SoulSystem.OBJECT, ModelTemplates.FLAT_ITEM);
 			items.generateFlatItem(JjkItems.CURSED_ENERGY_SHARD, ModelTemplates.FLAT_ITEM);
 			JjkItems.TROPHIES.values().forEach(item -> items.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
 			JjkItems.SPAWN_EGGS.values().forEach(item -> items.generateFlatItem(item, ModelTemplates.FLAT_ITEM));

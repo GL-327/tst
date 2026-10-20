@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.drain_skitter",
+  "description": "curse.jjkcraft.drain_skitter.desc",
+  "lore": "curse.jjkcraft.drain_skitter.lore",
+  "entity": "jjkcraft:drain_skitter",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 22,
+    "armor": 0,
+    "speed": 0.238,
+    "attack_damage": 2.0,
+    "ce_capacity": 45,
+    "follow_range": 22
+  },
+  "techniques": [
+    "jjkcraft:water_lance"
+  ],
+  "spawn": {
+    "weight": 9,
+    "min_fear": 24,
+    "group_min": 2,
+    "group_max": 3,
+    "max_light": 10
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/drain_skitter",
+    "texture": "jjkcraft:textures/entity/drain_skitter.png",
+    "animation": "jjkcraft:entity/drain_skitter",
+    "scale": 0.82
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#68A49C",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:hook"
+  ],
+  "loot_table": "jjkcraft:entities/drain_skitter"
+}

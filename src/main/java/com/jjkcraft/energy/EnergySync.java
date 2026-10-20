@@ -47,7 +47,7 @@ public final class EnergySync {
 		double max = CursedEnergy.max(player);
 		double modifier = CursedEnergy.regenModifier(player);
 		EnergyState state = CursedEnergy.state(player);
-		JjkNetworking.send(player, new EnergySyncPayload(state, max, modifier));
+		JjkNetworking.send(player, new EnergySyncPayload(state, max, modifier,CursedEnergy.uncapped(player)));
 		synchronized (EnergySync.class) {
 			LAST_SENT.put(player.getUUID(), new Sent(max, modifier));
 			DIRTY.remove(player.getUUID());

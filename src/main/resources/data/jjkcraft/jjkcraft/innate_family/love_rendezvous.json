@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.love_rendezvous",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 7,
+  "techniques": [
+    "jjkcraft:constellation_mark",
+    "jjkcraft:constellation_attract",
+    "jjkcraft:constellation_repel",
+    "jjkcraft:love_orbit"
+  ],
+  "domain": ""
+}

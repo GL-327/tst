@@ -717,6 +717,9 @@ public final class CullingGame {
 
 	// ---------------------------------------------------------------- kills and points
 
+	/** Hardcore/spirit interception does not emit vanilla AFTER_DEATH, so it reports the kill here. */
+	public static void recordSoulDeath(LivingEntity victim,DamageSource source) { onDeath(victim,source); }
+
 	private static void onDeath(LivingEntity victim, DamageSource source) {
 		if (!enabled() || !(victim.level() instanceof ServerLevel level)) {
 			return;
@@ -744,6 +747,10 @@ public final class CullingGame {
 		}
 
 		LivingEntity killer = source.getEntity() instanceof LivingEntity living ? living : null;
+		if(killer instanceof net.minecraft.world.entity.OwnableEntity ownable && ownable.getOwner() instanceof LivingEntity owner) killer=owner;
+		if(killer instanceof CurseEntity controlled && com.jjkcraft.awakening.ControlledCurses.controlled(controlled)) {
+			try { killer=server.getPlayerList().getPlayer(UUID.fromString(controlled.getAttachedOrCreate(com.jjkcraft.awakening.ControlledCurses.OWNER))); } catch(IllegalArgumentException ignored) { killer=null; }
+		}
 		Participant scorer = killer == null ? null : state.active(killer.getUUID());
 		if (scorer == null || killer == victim) {
 			return;
@@ -1127,6 +1134,12 @@ public final class CullingGame {
 		if (!LIMITER.tryAcquire(player.getUUID(), player.level().getGameTime())) {
 			return;
 		}
+		if (payload.action().equals("enter")) { enterColony(player,payload.colony()); return; }
+		if (payload.action().equals("begin")) {
+			if(enabled() && player.isAlive() && !player.isSpectator() && Progression.get(player).awakened() && !state(player.level().getServer()).running)
+				start(player.level().getServer().overworld(),player.level().getServer().overworld().getRespawnData().globalPos().pos(),config().colonies,config().colonyRadius,config().colonyDistance);
+			return;
+		}
 
 		RuleEvent.Action action;
 		try {
@@ -1136,6 +1149,17 @@ public final class CullingGame {
 		}
 
 		request(player, action, payload.target().orElse(null), payload.amount(), payload.rule().orElse(null), payload.colony());
+	}
+
+	/** Explicitly accepts the colony's rules before travel; spectators and existing entrants cannot use it to escape. */
+	public static boolean enterColony(ServerPlayer player,int colonyId) {
+		var server=player.level().getServer();var game=state(server);
+		if(!enabled() || !game.running || !player.isAlive() || player.isSpectator() || game.active(player.getUUID())!=null)return false;
+		var colony=game.colony(colonyId).orElse(null);var level=colony==null?null:server.getLevel(colony.dimension);if(level==null)return false;
+		level.getChunkAt(colony.center);var ground=level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,colony.center);
+		game.participants.remove(player.getUUID());colony.residents.remove(player.getUUID());
+		player.teleportTo(level,ground.getX()+2.5,ground.getY()+1,ground.getZ()+2.5,Set.of(),player.getYRot(),0,true);
+		join(player,colonyId);SENT.remove(player.getUUID());return game.active(player.getUUID())!=null;
 	}
 
 	/** A participant's request: allowed only if some rule in force answers it. Public for tests. */
@@ -1251,6 +1275,8 @@ public final class CullingGame {
 
 	public static boolean nearMaster(ServerPlayer player) {
 		CullingState state = state(player.level().getServer());
+		// Every participant has a personal Kogane; M can negotiate away from the centre NPC.
+		if(state.running && player.isAlive() && !player.isSpectator() && state.active(player.getUUID())!=null)return true;
 		Optional<Colony> colony = state.colonyAt(player.level().dimension(), player.getX(), player.getY(), player.getZ());
 		if (colony.isEmpty() || colony.get().master == null) {
 			return false;

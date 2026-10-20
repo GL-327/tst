@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:crying_obsidian"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "count": 1,
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:darkness_field"
+    }
+  }
+}

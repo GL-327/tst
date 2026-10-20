@@ -28,7 +28,8 @@ public enum CastFailure {
 	/** A Binding Vow forbids it. */
 	VOW,
 	/** The technique also costs Mul energy (the Modulo expansion) and the caster has too little. */
-	NOT_ENOUGH_MUL;
+	NOT_ENOUGH_MUL,
+	NOT_ENOUGH_HEALTH;
 
 	public static final StreamCodec<ByteBuf, CastFailure> STREAM_CODEC =
 			ByteBufCodecs.idMapper(i -> values()[Math.floorMod(i, values().length)], CastFailure::ordinal);

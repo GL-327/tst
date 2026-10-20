@@ -7,6 +7,10 @@ package com.jjkcraft.core.energy;
 public final class EnergyMath {
 	private EnergyMath() {
 	}
+	/** No gameplay storage cap. A finite reference fixes the gain per second instead of compounding the bank. */
+	public static EnergyState advanceUnbounded(EnergyState state,double reference,long now,EnergyParams params,double modifier){
+		return advance(state,Double.MAX_VALUE,now,params,modifier*(reference/Double.MAX_VALUE));
+	}
 
 	/** Result of a spend attempt. {@code state} is unchanged (but advanced) when {@code success} is false. */
 	public record SpendResult(EnergyState state, boolean success, boolean triggeredOverexertion) {

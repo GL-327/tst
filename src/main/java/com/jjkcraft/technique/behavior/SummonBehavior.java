@@ -1,5 +1,7 @@
 package com.jjkcraft.technique.behavior;
 
+import java.util.List;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -39,8 +41,13 @@ public record SummonBehavior(Identifier entity, int count, int lifetime) impleme
 	@Override
 	public CastResult cast(CastContext ctx) {
 		EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entity);
+		var owned=ShikigamiEntity.ownedBy(ctx.level(),ShikigamiEntity.class,ctx.caster());
+		long retained=owned.stream().filter(e->e.getType()!=type||type==com.jjkcraft.entity.JjkEntities.TRANSFIGURED_SOUL).count();
+		if(retained+count>12)return CastResult.miss(ctx.caster().position());
+		boolean souls=type==com.jjkcraft.entity.JjkEntities.TRANSFIGURED_SOUL;
+		if(souls&&ShikigamiEntity.ownedBy(ctx.level(),com.jjkcraft.entity.shikigami.TransfiguredSoulEntity.class,ctx.caster()).size()+count>6)return CastResult.miss(ctx.caster().position());
 		for (ShikigamiEntity old : ShikigamiEntity.ownedBy(ctx.level(), ShikigamiEntity.class, ctx.caster())) {
-			if (old.getType() == type) {
+			if (old.getType() == type && !souls) {
 				old.dissolve(ctx.level());
 			}
 		}
@@ -56,8 +63,14 @@ public record SummonBehavior(Identifier entity, int count, int lifetime) impleme
 			Vec3 spot = at.add(Math.cos(angle) * 1.6, 0.1, Math.sin(angle) * 1.6);
 			summon.snapTo(spot.x, spot.y, spot.z, ctx.caster().getYRot(), 0);
 			summon.bind(ctx.caster(), lifetime, ctx.power());
+			var expression=ctx.details().expression();
+			var health=summon.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
+			if(health!=null){health.setBaseValue(health.getBaseValue()*expression.vitality()/100.0);summon.setHealth(summon.getMaxHealth());}
+			for(var attribute:List.of(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED,net.minecraft.world.entity.ai.attributes.Attributes.FLYING_SPEED)){
+				var speed=summon.getAttribute(attribute);if(speed!=null)speed.setBaseValue(speed.getBaseValue()*expression.mobility()/100.0);
+			}
 			ctx.level().addFreshEntity(summon);
-			ctx.fx(TechniqueFxPayload.Phase.BURST, spot);
+			ctx.fx(TechniqueFxPayload.Phase.BURST, spot, new Vec3(1, 0, 0), List.of(summon));
 		}
 
 		return CastResult.done(at);

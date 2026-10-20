@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.straw_stitch",
+  "description": "technique.jjkcraft.straw_stitch.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 20,
+    "cooldown": 110,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "straw_stitch",
+    "damage": 3,
+    "duration": 70,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#C0302F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/straw_stitch.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

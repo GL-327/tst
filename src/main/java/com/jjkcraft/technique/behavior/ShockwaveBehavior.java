@@ -33,6 +33,7 @@ public record ShockwaveBehavior(double radius, double damage, double launch) imp
 	@Override
 	public CastResult cast(CastContext ctx) {
 		Vec3 center = ctx.caster().position();
+        com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,center,Math.min(radius,2+Math.sqrt(ctx.power())),48,false);
 		List<LivingEntity> hit = ctx.enemiesInRadius(center, radius);
 		for (LivingEntity enemy : hit) {
 			double falloff = 1 - 0.5 * Math.min(1, enemy.distanceTo(ctx.caster()) / radius);

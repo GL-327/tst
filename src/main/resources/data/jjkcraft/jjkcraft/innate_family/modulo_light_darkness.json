@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.modulo_light_darkness",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 8,
+  "techniques": [
+    "jjkcraft:light_ray",
+    "jjkcraft:darkness_field",
+    "jjkcraft:twin_radiance",
+    "jjkcraft:darkness_nova",
+    "jjkcraft:radiant_shards"
+  ],
+  "domain": ""
+}

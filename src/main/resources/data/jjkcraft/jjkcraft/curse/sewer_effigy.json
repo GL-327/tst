@@ -1,0 +1,52 @@
+{
+  "name": "curse.jjkcraft.sewer_effigy",
+  "description": "curse.jjkcraft.sewer_effigy.desc",
+  "lore": "curse.jjkcraft.sewer_effigy.lore",
+  "entity": "jjkcraft:sewer_effigy",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 36,
+    "armor": 0,
+    "speed": 0.218,
+    "attack_damage": 3.4,
+    "ce_capacity": 60
+  },
+  "spawn": {
+    "weight": 7,
+    "min_fear": 25,
+    "max_light": 10,
+    "group_min": 1,
+    "group_max": 2
+  },
+  "resistances": {
+    "minecraft:magic": 0.5,
+    "minecraft:drown": 2.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/sewer_effigy",
+    "texture": "jjkcraft:textures/entity/sewer_effigy.png",
+    "animation": "jjkcraft:entity/sewer_effigy"
+  },
+  "mechanic": "jjkcraft:salt_lantern",
+  "parameters": {
+    "beam_range": 16,
+    "charge_ticks": 30,
+    "aim_lock_ticks": 8,
+    "beam_interval": 100,
+    "beam_damage": 2,
+    "burn_per_ce": 0.05,
+    "drain_fraction": 0.08,
+    "burn_seconds": 2,
+    "snuff_threshold": 6,
+    "snuff_ticks": 80
+  },
+  "codex": {
+    "color": "#7D55B8",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/salt_lantern",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

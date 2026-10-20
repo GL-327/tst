@@ -39,5 +39,9 @@
   "codex": {
     "color": "#E0303F",
     "unlock_kills": 1
-  }
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:hook"
+  ]
 }

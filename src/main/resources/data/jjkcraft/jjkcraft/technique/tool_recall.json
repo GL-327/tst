@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.tool_recall",
+  "description": "technique.jjkcraft.tool_recall.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 170,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "tool_recall",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#B1D7CE",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/tool_recall.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

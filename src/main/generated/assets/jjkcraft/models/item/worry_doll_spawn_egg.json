@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jjkcraft:item/worry_doll_spawn_egg"
+  }
+}

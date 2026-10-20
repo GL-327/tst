@@ -49,6 +49,7 @@ public record FieldBehavior(double strength, double radius, int duration, double
 	public CastResult cast(CastContext ctx) {
 		Optional<LivingEntity> target = ctx.rayTarget(ctx.range(), 0.5);
 		Vec3 center = target.map(t -> t.position().add(0, t.getBbHeight() / 2, 0)).orElseGet(() -> ctx.blockLimit(ctx.range()));
+		if(ctx.details().center()==1)center=ctx.caster().position().add(0,1,0);
 		SpatialFields.place(ctx, center, radius, strength, damagePerSecond, burstDamage, burstRadius, duration);
 		ctx.fx(TechniqueFxPayload.Phase.FIELD, center, new Vec3(radius, duration, strength), target.map(List::of).orElse(List.of()));
 		return target.isPresent() ? CastResult.hit(List.of(target.get()), center) : CastResult.done(center);

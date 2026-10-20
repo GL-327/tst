@@ -25,7 +25,7 @@ import com.jjkcraft.technique.TechniqueDefinition;
 import com.jjkcraft.technique.TechniqueState;
 
 /**
- * The technique hotbar: up to six slots stacked vertically. Each slot shows the icon, a cooldown
+ * The technique hotbar: up to four slots stacked vertically. Each slot shows the icon, a cooldown
  * ring and dark sweep, a red "!" when CE is too low, the active glow for channels and toggles,
  * and a brief shake with a reason when the server refuses a cast.
  */
@@ -44,8 +44,18 @@ public final class TechniqueHotbarHud {
 			return;
 		}
 
-		int slots = Math.min(TechniqueState.SLOTS, ClientTechniques.usableSlots());
-		int height = slots * SLOT + (slots - 1) * GAP + 12;
+		int slots = 4; int bank=JjkKeys.bankStart();
+        var charge=ClientTechniques.charge();
+        if(charge.slot()>=0){
+            int cx=mc.getWindow().getGuiScaledWidth()/2,cy=mc.getWindow().getGuiScaledHeight()-112;
+            int color=charge.percent()>100?0xFFB56BFF:Palette.accent();
+            Ink.panel(g,cx-90,cy,180,27,color,.92f);
+            Ink.text(g,"CHARGE "+charge.percent()+"% / "+charge.maximum()+"%",cx-82,cy+3,color,1);
+            Ink.text(g,String.format(java.util.Locale.ROOT,"%.1f CE/s  |  Release to cast",charge.cePerSecond()),cx-82,cy+13,Palette.TEXT_DIM,1);
+            g.fill(cx-82,cy+23,cx+82,cy+25,0xFF292333);
+            g.fill(cx-82,cy+23,cx-82+(int)(164*charge.percent()/(double)charge.maximum()),cy+25,color);
+        }
+		int height = slots * SLOT + (slots - 1) * GAP + 24;
 		int width = SLOT + 8;
 		float alpha = cfg.opacity();
 		HudLayout.push(g, cfg, width, height);
@@ -55,15 +65,17 @@ public final class TechniqueHotbarHud {
 		for (int i = 0; i < slots; i++) {
 			int x = 4;
 			int y = 4 + i * (SLOT + GAP);
-			CastFailure failure = ClientTechniques.recentFailure(i);
+			int absolute=bank+i; CastFailure failure = ClientTechniques.recentFailure(absolute);
 			if (failure != CastFailure.NONE && !ClientConfig.reducedMotion()) {
 				x += (int) (Mth.sin(Util.getMillis() / 25f) * 2 * (1 - ClientTechniques.feedbackAge()));
 			}
 
-			slot(g, x, y, i, state.slot(i), i == state.selected(), failure, alpha);
+			slot(g, x, y, absolute, state.slot(absolute), absolute == state.selected(), failure, alpha);
 		}
 
-		String key = JjkKeys.CAST.getTranslatedKeyMessage().getString();
+		g.pose().pushMatrix();g.pose().translate(3,height-20);g.pose().scale(0.5f,0.5f);
+		Ink.text(g,"BANK "+(bank/4+1)+" "+JjkKeys.BANK.getTranslatedKeyMessage().getString(),0,0,Palette.gold(),alpha);g.pose().popMatrix();
+        String key = (com.jjkcraft.client.combat.CombatClient.enabled()?JjkKeys.SKILLS[state.selected()%4]:JjkKeys.CAST).getTranslatedKeyMessage().getString();
 		g.pose().pushMatrix();
 		g.pose().translate(4, height - 8);
 		g.pose().scale(0.5f, 0.5f);
@@ -114,7 +126,8 @@ public final class TechniqueHotbarHud {
 		g.pose().pushMatrix();
 		g.pose().translate(x + 2, y + SLOT - 6);
 		g.pose().scale(0.5f, 0.5f);
-		Ink.text(g, String.valueOf(index + 1), 0, 0, selected ? Palette.gold() : Palette.TEXT_DIM, alpha);
+		Component binding=com.jjkcraft.client.combat.CombatClient.enabled()?JjkKeys.SKILLS[index%4].getTranslatedKeyMessage():Component.literal(String.valueOf(index+1));
+		Ink.text(g, Ink.fit(binding,38), 0, 0, selected ? Palette.gold() : Palette.TEXT_DIM, alpha);
 		g.pose().popMatrix();
 
 		if (failure != CastFailure.NONE && selected) {

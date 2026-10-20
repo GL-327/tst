@@ -47,12 +47,18 @@ public final class TechniqueFxClient {
 		}
 
 		TechniqueDefinition def = found.get();
+		if(fx.trail()>=0){var v=def.visuals();var trail=TechniqueDefinition.Trail.values()[Math.min(TechniqueDefinition.Trail.values().length-1,fx.trail())];
+			def=new TechniqueDefinition(def.name(),def.description(),def.category(),def.grade(),def.cast(),def.behavior(),new TechniqueDefinition.Visuals(v.color(),v.particle(),v.sound(),v.hitSound(),v.shake(),v.hitStop(),trail),def.icon(),def.vowModifiers(),def.innateWeight(),def.masteryUses());}
+		if (def.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior && fx.phase() == TechniqueFxPayload.Phase.BURST)
+			for (int summoned : fx.targets()) AdvancedFx.summon(fx.caster(), summoned);
+		if (fx.technique().getPath().equals("projection_sorcery") && fx.phase() == TechniqueFxPayload.Phase.BURST) AdvancedFx.projection(fx.caster());
 		TechniqueDefinition.Visuals v = def.visuals();
-		int color = v.color();
+		int color = fx.color()<0?v.color():fx.color();
 		ParticleOptions particle = particle(v, color, 1f);
 		Entity caster = mc.level.getEntity(fx.caster());
 		float now = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		boolean involvesMe = mc.player != null && (fx.caster() == mc.player.getId() || fx.targets().contains(mc.player.getId()));
+		SignatureFx.event(fx,color,now);
 
 		switch (fx.phase()) {
 			case WINDUP -> windup(caster, def, color);

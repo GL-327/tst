@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.granite_charge",
+  "description": "technique.jjkcraft.granite_charge.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 170,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "granite_charge",
+    "damage": 0,
+    "duration": 140,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#D2C6F0",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/granite_charge.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

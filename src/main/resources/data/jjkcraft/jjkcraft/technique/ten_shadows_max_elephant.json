@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_max_elephant",
+  "description": "technique.jjkcraft.ten_shadows_max_elephant.desc",
+  "grade": "jjkcraft:grade_2",
+  "category": "summon",
+  "cast": {
+    "cost": 55,
+    "cooldown": 180,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:max_elephant",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_max_elephant.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

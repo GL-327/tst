@@ -38,6 +38,7 @@ public record LineCutBehavior(double damage, double width, double pierce) implem
 
 	@Override
 	public CastResult cast(CastContext ctx) {
+        com.jjkcraft.technique.TechniqueTerrain.line(ctx,ctx.eye(),ctx.eye().add(ctx.look().scale(ctx.range())),width);
 		List<LivingEntity> targets = ctx.enemiesOnLine(ctx.range(), width);
 		for (LivingEntity target : targets) {
 			ctx.hurtSplit(target, damage * ctx.power(), pierce);

@@ -49,6 +49,7 @@ public final class ClientFx {
 	/** Share of requested particles to actually spawn, from the VFX level. */
 	public static float vfxScale() {
 		return switch (ClientConfig.get().vfx.level) {
+			case OFF -> 0;
 			case LOW -> 0.3f;
 			case MEDIUM -> 0.65f;
 			case HIGH -> 1f;
@@ -57,6 +58,7 @@ public final class ClientFx {
 
 	/** How many of {@code requested} particles to spawn at {@code at}, after the VFX level, distance LOD and the per-tick budget. */
 	public static int budget(int requested, Vec3 at) {
+		if (ClientConfig.effectsOff()) return 0;
 		Minecraft mc = Minecraft.getInstance();
 		double distance = mc.gameRenderer.mainCamera().position().distanceTo(at);
 		double lod = distance < 16 ? 1 : 16 / distance;

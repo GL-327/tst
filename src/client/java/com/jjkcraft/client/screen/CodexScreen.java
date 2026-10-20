@@ -50,6 +50,8 @@ public final class CodexScreen extends JjkScreen {
 		super(Component.translatable("screen.jjkcraft.codex"));
 	}
 
+	public CodexScreen(Identifier selected){this();this.selected=selected;}
+
 	@Override
 	protected void initContent() {
 		entries.clear();

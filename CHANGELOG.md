@@ -5,6 +5,156 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.11.0-preview, 2026-10-20
+
+- Shared server-owned hold/release charging for every player technique: 25% taps, 100%
+  normal cap and 200% Hollow Purple. Output, supported area/reach/force/duration and CE
+  consumption scale with charge. Six Eyes strongly reduces ongoing charge drain.
+- Added a live charge percentage and CE-per-second meter. Cancel safely on menus, stun,
+  edits, exhaustion, death, disconnect and dimension changes. Channels start on release
+  and stop on a second press; existing windup counts time already held.
+- Blue and Maximum Output Blue pull real nearby blocks into visible transient debris.
+  Purple drills its flight corridor; destructive projectiles, slashes, shockwaves and
+  spatial-field collisions damage terrain. Bounded server budgets, container/unbreakable
+  protection, claim vetoes, mobGriefing and a server terrain switch are supported.
+
+## 1.10.0-preview, 2026-10-20
+
+- Fixed the Creative editor's null family rendering crash. Both server replies and client
+  rendering validate missing/empty family IDs; native tests select and apply a different family.
+- Defensive mass/armor buffs cap at Resistance III. Old overpowered effects are repaired on
+  login; character replacement clears stale death-menu protection and previous defensive effects.
+  Maximum Creative presets learn RCT with automatic healing off, still configurable in Skills.
+- New birth reserves are 350–550 with independent regen levels 4–6. One-time old survival-save
+  migration preserves training and luck order. Explicit Creative settings remain unchanged.
+- Added all remaining Ten Shadows summons, Divine Dogs: Totality, Well’s Unknown Abyss,
+  Agito and configurable two-to-four-creature fusion recipes. Fusions consume actual owned
+  component summons and inherit their mechanics; invalid casts leave components intact.
+- Added 18 owned shikigami types with original geometry, UV art and animation, 22 powers and
+  two families (169 powers, 31 families total). The additional roster includes Moon Dregs,
+  Garuda, Rika and four original familiars. Summon ownership has a twelve-body cap.
+- Added the Divine Chalice, extremely rare player-kill boss loot and an expensive endgame
+  recipe. Deliberate sneak-use consumes one item for a different family and clears technique
+  progress while preserving the body, grade, growth, birth potential and universal skills.
+- Bounded support healing, non-stacking guardian interception and Mahoraga adaptation capped
+  at 60% prevent new summon combinations from granting immunity.
+
+## 1.9.0-preview, 2026-10-20
+
+- 52 additional moves; all 29 innate families now contain at least four individual abilities.
+- Idle Transfiguration has nine moves, including additive owned soul servants, a six-soul cap,
+  recall, tuned vitality/mobility/count/lifetime, body forms, soul contact and detonation.
+- Attack input preserves clicks that begin and end between ticks, including inverted mouse
+  controls and default-on Auto Combat. Vanilla Attack/Use mappings remain authoritative.
+- Larger shared screens, clearer cards and controls, a family/move browser, inline loadout
+  descriptions and a direct personalization section chooser.
+- Creative character drafts offer exact grade, XP, four growth paths, birth/trained/stored CE,
+  regeneration, attributes, body form, individual learned moves/mastery, domain and universal skills.
+  Optional Auto Calamity defaults off; the maximum preset is explicit. Server ACKs confirm saves;
+  validation rejects invalid/spoofed edits before mutation. Custom choices survive login unchanged.
+- Furnace projectiles carry actual fire, retained by personal tuning. New movement/healing
+  abilities respect personal vows; soul summoning and detonation exclude the owner and their allies.
+
+## 1.8.0-preview, 2026-10-20
+
+- Twelve slots at every grade, three four-power banks, unique bindings and old-save expansion.
+- Ten optional per-expression vows, real restrictions, x5 output for forsaking ordinary combat,
+  combined output capped at x12, and a persistent 60-second seal after casting.
+- Manual light/heavy/block keys with double-tap specials, default-on Auto Combat assistance,
+  preserved vanilla Q/E/F/hotbar behavior, and reliable quick taps between render ticks.
+- Hostile mobs and Culling entrants use framed contact; curse attacks retain species mechanics,
+  CE drain and reactive guard behavior. Added five combat clips to the existing rigs.
+- Twelve new low-grade species, reduced natural encounter rate, weak mixed packs and isolated
+  Grade 2+ encounters. New entities have dedicated models, palettes, spawn eggs, loot and codex entries.
+- Twenty-four powers in eight families: Electrification, Granite Blast, Love Rendezvous,
+  Explosive Flesh, Tool Manipulation, and original Echo Ledger, Mercury Mirror and Mourning Thread.
+  Added craftable scrolls and private, expiring charge/echo/star marks and stored-force counters.
+
+## 1.7.0-preview, 2026-10-20
+
+- Fixed native mouse handling in the loadout and wheel: all four cleared slots can be selected
+  and refilled. Removing the last equipped copy of an active channel stops it.
+- Converted Modulo to sandbox content: no missions, Descent, boarding, story tracker or expedition
+  pact. Legacy story saves return to normal play. Added Harmony / Chaos and Light / Darkness
+  families with eight grade-scaled abilities and eight ordinary scroll recipes.
+- Expanded personalization to eight pages and 32 controls: aim offsets, gravity, turn rate,
+  projectile size and patterns, pulses, summon count/health/movement, impact lift, edge falloff,
+  health sacrifice, recoil, dash directions, RGB colors and trail selection. Applicable mechanical
+  changes have CE trade-offs. Other players see the caster's chosen trail.
+- Old tuning saves retain defaults; custom expressions persist independently for each player.
+
+## 1.6.0-preview, 2026-10-19
+
+- Four-hit combat chain, buffered follow-ups, airborne/crouched finishers, knockdowns,
+  a paid evasive escape with a ten-second cooldown, contact bursts, parry flashes and impact audio.
+- Direct skill keys 1–4 in combat, F block, and a dedicated binding editor. Shared defaults
+  preserve inventory behavior outside combat. Releasing another slot no longer cancels a channel.
+- Searchable Moves catalogue; slot selection uses immediate local state and dragging requires
+  actual movement, preventing accidental equips. Each move occupies one of four slots.
+- Workshop sliders and exact-value fields, normalized previews, server save acknowledgements,
+  timeout/rejection feedback, and synchronized numeric/slider values.
+- Rebuilt all 40 curse material atlases with deliberate planes, sockets, folds, bone and cleaner
+  emissive masks; wounded/critical variants retain the same UVs. Material-specific technique accents.
+- Domain interiors, visible barrier damage and breach, hand-sign interruption, and collapse under
+  sustained caster damage. Ordinary guard/dodge no longer cancels sure-hits; Simple Domain still does.
+
+## 1.5.0-preview, 2026-10-19
+
+- Creative-only, server-validated family picker: Calamity grade, all family moves mastered,
+  maximum Growth, matching domain and learned reinforcement/RCT; optional Mechamaru restriction.
+- Four workshop pages with 1/5/25-point precision, projectile count/speed/spread/homing,
+  armor penetration, force, preparation time, field placement, target classes, names,
+  eight color choices and editable presets. Advanced delivery has actual CE trade-offs.
+- Independent, persistent regeneration levels (1–10, 0.6–2.4x), visible in Practice.
+  Smaller current capacities purchase larger reserve gains at lower XP prices.
+- Mechamaru's restriction trades health/mobility for an uncapped CE bank. It starts empty,
+  regenerates at a fixed working-output rate and does not receive free energy from Fill.
+
+## 1.4.0-preview, 2026-10-19
+
+- Persistent per-character technique tuning: output, reach, area, duration and cooldown,
+  with server-enforced CE trade-offs. Infinity offers projectile/contact/combined filters.
+- Independent 100–3000 birth CE reserves; XP-funded training and existing grade/Output growth.
+- Learnable universal reinforcement and RCT, with output/healing controls and no slots used.
+- Body/armor combat poses, first-person transforms, observer synchronization and casting gestures.
+- Technique-colored UI, workshop previews, a Practice screen, safe teleport destinations,
+  and duplicate-windup prevention.
+
+## 1.3.0-preview, 2026-10-19
+
+- Fixed family hotbars filled with unrelated punch/teleport powers; existing family
+  characters repair themselves on login. Blood Manipulation has a full blood-themed path.
+- Four equipped moves maximum, including the quick-cast wheel; old learned libraries stay.
+- Normal vanilla respawn points, pact-gated colony reincarnation, cursed-spirit lives in
+  both modes, and a different innate family after exorcism.
+- Fifteen independent physical/clan attributes with persistent rolls and a Traits screen.
+- Brain Transplant's consumed fallen hosts, rendered bodies, host health and borrowed moves.
+- Cursed Spirit Manipulation absorption/storage/ownership and stock-consuming Uzumaki.
+- Expanded to 63 techniques, 19 families and nine domains; NPCs use coherent families.
+- Explicit Culling colony entry, personal Kogane negotiation, summon kill credit, optional
+  last-survivor ending, and normal-respawn release from colony confinement.
+- Modulo enabled by default, Grade 2 access and colony Vessel expedition agreements.
+
+## 1.2.0-preview, 2026-10-19
+
+A combined playable checkpoint of the continuation work; it does not certify completion
+of every Phase 2-7 acceptance item. See docs/IMPLEMENTATION.md for remaining work.
+
+- Explicit, persistent Inherit / Random awakening across nine families, server-side roll
+  validation, grade-based family unlocks, a rare Six Eyes trait, and legacy character migration.
+- Named, paginated technique loadout with costs, cooldowns, requirements and six visible slots.
+- Twenty added curse variants (forty total), original procedural assets, glow/damage/LOD
+  resources and windup/stagger animation states. Four spawn attempts, a sixteen-curse local
+  cap, weak ambient encounters and Creative encounters by default.
+- Six server-framed melee moves, height-aware guard/parry, guard breaks, dash, stun,
+  combos, Ratio openings, Black Flash integration and rebindable combat controls.
+- Survival death choices, identity-tagged cursed objects and reliquaries, colony Vessels,
+  revival, Awakening Rites, Vessel traits and initial Kenjaku/Sukuna pact paths.
+- Budgeted world effects, aura shells, pose echoes, summoning tendrils, Projection pose
+  sampling, native noise dissolve and accessibility controls.
+- Eleven added server integration tests and seven added unit tests. Hardened the client
+  persistence test by pausing regeneration so load time cannot change its expected value.
+
 ## 1.1.0 (Phases 0 and 1: canon naming and the Modulo expansion), 2026-10-19
 
 ### Phase 1: the Modulo expansion

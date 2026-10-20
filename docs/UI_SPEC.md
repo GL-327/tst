@@ -1,3 +1,15 @@
+> Current 1.9.0-preview: shared panels expand to 560 × 320 within the available GUI viewport.
+> Moves includes a family/ability browser, inline move details and twelve slots. Personalize has
+> a direct ten-section chooser. Creative has seven draft workspaces with acknowledged server saves,
+> optional Auto Calamity and exact character settings. See ATELIER.md for the current workflow.
+> The prior milestone descriptions below remain historical.
+
+> Current 1.8.0-preview: twelve slots in the loadout and wheel, three compact HUD banks,
+> ten personalization pages including two vow pages, and default-on Auto Combat with
+> configurable manual controls. Vanilla Q/E/F and hotbar keys keep their actions. Modulo
+> story UI stays disabled. Older milestone descriptions below are historical; PLAYTEST.md
+> documents the current controls.
+
 # UI specification
 
 Every HUD element and screen in Jujutsu Craft, what it shows, where it sits, and how the options

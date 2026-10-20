@@ -54,7 +54,7 @@ public final class NaunaxDescent {
 
 	/** Whether this player may see and board the Descent: the expansion is on and they reached the grade. */
 	public static boolean eligible(ServerPlayer player) {
-		if (!Modulo.enabled()) {
+		if (!Modulo.storyEnabled()) {
 			return false;
 		}
 
@@ -64,6 +64,7 @@ public final class NaunaxDescent {
 	}
 
 	public static boolean active(MinecraftServer server) {
+		if(!Modulo.storyEnabled())return false;
 		ModuloState state = Modulo.state(server);
 		return state.descentPos.isPresent() && ModuloMath.descentActive(state.descentStart, state.descentLength, now(server));
 	}
@@ -111,6 +112,7 @@ public final class NaunaxDescent {
 
 	/** Starts a Descent above the badlands nearest to {@code near} (or above {@code near} itself without any). */
 	public static BlockPos start(MinecraftServer server, BlockPos near) {
+		if(!Modulo.storyEnabled())return near;
 		ServerLevel overworld = server.overworld();
 		BlockPos at = near;
 		Pair<BlockPos, Holder<Biome>> badlands = overworld.findClosestBiome3d(biome -> biome.is(BiomeTags.IS_BADLANDS), near,
@@ -128,6 +130,7 @@ public final class NaunaxDescent {
 
 	/** Starts a Descent with its ramp's foot exactly at {@code foot} (commands and tests). */
 	public static BlockPos start(MinecraftServer server, BlockPos foot, long lengthTicks) {
+		if(!Modulo.storyEnabled())return foot;
 		ModuloState state = Modulo.state(server);
 		long now = now(server);
 		state.descentStart = now;

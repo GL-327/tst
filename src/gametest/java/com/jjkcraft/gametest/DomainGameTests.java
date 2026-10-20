@@ -120,6 +120,18 @@ public final class DomainGameTests {
 		helper.succeed();
 	}
 
+	@GameTest
+	public void inheritedLimitlessWaitsForItsOwnDomain(GameTestHelper helper) {
+		ServerPlayer player = sorcerer(helper, "grade_2");
+		player.setAttached(com.jjkcraft.awakening.CharacterAwakening.RECORD,
+				new com.jjkcraft.awakening.AwakeningRecord("inherit", "jjkcraft:limitless", "Gojo", false, 0));
+		Progression.setGrade(player, id("grade_1"));
+		helper.assertTrue(DomainService.state(player).known().isEmpty(), "Limitless waits for Unlimited Void's grade");
+		Progression.setGrade(player, id("special_grade"));
+		helper.assertValueEqual(DomainService.state(player).known(), Optional.of(id("unlimited_void")), "Limitless grants Unlimited Void");
+		helper.succeed();
+	}
+
 	@GameTest(padding = PAD, maxTicks = 120)
 	public void sureHitCutsThroughArmor(GameTestHelper helper) {
 		ServerPlayer caster = sorcerer(helper, "grade_1");

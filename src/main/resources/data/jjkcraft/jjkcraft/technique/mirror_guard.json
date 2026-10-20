@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.mirror_guard",
+  "description": "technique.jjkcraft.mirror_guard.desc",
+  "category": "passive",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 15,
+    "cooldown": 60,
+    "range": 4
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "mirror_guard",
+    "damage": 0,
+    "duration": 80,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#A9D7D7",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mirror_guard.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

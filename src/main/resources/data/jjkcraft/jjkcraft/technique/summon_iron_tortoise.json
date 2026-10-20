@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.summon_iron_tortoise",
+  "description": "technique.jjkcraft.summon_iron_tortoise.desc",
+  "grade": "jjkcraft:grade_3",
+  "category": "summon",
+  "cast": {
+    "cost": 28,
+    "cooldown": 170,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:iron_tortoise",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9EC2B2",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/summon_iron_tortoise.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

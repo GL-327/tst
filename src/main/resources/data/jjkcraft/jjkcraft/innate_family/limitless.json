@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.limitless",
+  "clan": "Gojo",
+  "inherited_weight": 4,
+  "random_weight": 0,
+  "techniques": [
+    "jjkcraft:lapse_blue",
+    "jjkcraft:infinity",
+    "jjkcraft:reversal_red",
+    "jjkcraft:hollow_purple",
+    "jjkcraft:maximum_output_blue",
+    "jjkcraft:blue_orbit"
+  ],
+  "domain": "jjkcraft:unlimited_void"
+}

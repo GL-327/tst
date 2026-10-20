@@ -8,6 +8,9 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 /** Client-only settings, stored in {@code config/jjkcraft-client.json5}. */
 @Config(name = "jjkcraft-client")
 public class JjkClientConfig implements ConfigData {
+    @Comment("Assist attack choice and defensive reactions while holding attack. Manual hit/block inputs take priority.")
+    public boolean autoCombat = true;
+    public boolean creativeAutoCalamity = false;
 	@ConfigEntry.Gui.CollapsibleObject
 	public Hud hud = new Hud();
 
@@ -27,7 +30,7 @@ public class JjkClientConfig implements ConfigData {
 	}
 
 	public enum VfxLevel {
-		LOW, MEDIUM, HIGH
+		OFF, LOW, MEDIUM, HIGH
 	}
 
 	/** Position, scale, opacity and visibility of one HUD element. */
@@ -86,6 +89,16 @@ public class JjkClientConfig implements ConfigData {
 	}
 
 	public static class Vfx {
+		public VfxLevel aura = VfxLevel.HIGH;
+		public VfxLevel trails = VfxLevel.HIGH;
+		public VfxLevel afterimages = VfxLevel.HIGH;
+		public VfxLevel impacts = VfxLevel.HIGH;
+		public VfxLevel domains = VfxLevel.HIGH;
+		public VfxLevel healing = VfxLevel.HIGH;
+		public VfxLevel environment = VfxLevel.MEDIUM;
+		public int maxWorldQuads = 4000;
+		public int maxEffectMillis = 3;
+		public boolean logProfiling = false;
 		@ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
 		@Comment("LOW lowers particle counts, overlay rates and effect distance.")
 		public VfxLevel level = VfxLevel.HIGH;

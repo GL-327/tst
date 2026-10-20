@@ -1,0 +1,40 @@
+{
+  "name": "technique.jjkcraft.granite_blast",
+  "description": "technique.jjkcraft.granite_blast.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 60,
+    "range": 32
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 7,
+    "speed": 2,
+    "count": 1,
+    "spread": 0,
+    "size": 0.3,
+    "lifetime": 40,
+    "blast_radius": 1.5
+  },
+  "visuals": {
+    "color": "#D2C6F0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/granite_blast.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

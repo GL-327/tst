@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.flower_field",
+  "description": "technique.jjkcraft.flower_field.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 55,
+    "cooldown": 320,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "roots",
+    "damage": 5,
+    "duration": 90,
+    "radius": 9
+  },
+  "visuals": {
+    "color": "#B7849C",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/flower_field.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

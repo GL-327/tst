@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.harmony_step",
+  "description": "technique.jjkcraft.harmony_step.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 8,
+    "cooldown": 35,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 6,
+    "invulnerable_ticks": 3
+  },
+  "visuals": {
+    "color": "#76DDD0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.1,
+    "hit_stop": 0,
+    "trail": "line"
+  },
+  "icon": "jjkcraft:textures/gui/technique/harmony_step.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

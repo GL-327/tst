@@ -40,5 +40,9 @@
   "codex": {
     "color": "#BEA0DC",
     "unlock_kills": 3
-  }
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:uppercut"
+  ]
 }

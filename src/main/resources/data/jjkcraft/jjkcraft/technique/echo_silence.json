@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.echo_silence",
+  "description": "technique.jjkcraft.echo_silence.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 170,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "echo_silence",
+    "damage": 4,
+    "duration": 12,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#AE98E0",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/echo_silence.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

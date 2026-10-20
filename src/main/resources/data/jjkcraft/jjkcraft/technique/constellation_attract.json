@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.constellation_attract",
+  "description": "technique.jjkcraft.constellation_attract.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 35,
+    "cooldown": 60,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "star_pull",
+    "damage": 5,
+    "duration": 80,
+    "radius": 9
+  },
+  "visuals": {
+    "color": "#E69CB9",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/constellation_attract.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

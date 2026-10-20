@@ -1,5 +1,24 @@
 # Mixins
 
+1.8.0-preview removes the inventory-key interception mixin. Vanilla Q/E/F and hotbar keys
+are never consumed; direct powers use separate configurable defaults.
+
+`MobCombatMixin` injects at `Mob.doHurtTarget` to defer hostile melee and Culling entrant
+contact into shared startup/active/recovery windows. Curse entities retain their specialized
+brain path. Fabric has no event for replacing a mob's attempted melee strike before contact.
+`CombatPoseMixin` now also applies received humanoid mob poses. The existing entity render
+extraction hook associates render states with entity ids through weak keys.
+
+The GameTest-only `IntegratedServerShutdownMixin` queues 26.3's new blocking player cleanup
+during test disconnect. Fabric's phased test threads otherwise deadlock: the render thread waits
+in `IntegratedServer.halt` while the server waits at Fabric's phase barrier. This mixin belongs
+to the test mod and is absent from the distributed jar. Normal shutdown still saves the world.
+
+1.4.0-preview adds `CombatPoseMixin` at the end of `HumanoidModel.setupAnim` for player
+and armor pose keyframes, and `CombatHandsMixin` around `submitArmWithItem` for balanced
+first-person transforms. Both use server pose snapshots; Fabric has no equivalent pose
+replacement hook. The real client test exercises each move and verifies changed model limbs.
+
 The mod uses Fabric events and APIs wherever they exist, and a mixin only where none does. Every
 mixin is listed here with what it changes and why no event or API could do it. The check was made
 against Fabric API 0.163.0+26.3 and Minecraft 26.3 on 2026-10-18.
@@ -38,3 +57,21 @@ for the Reverse Cursed Technique save), HUD (`HudElementRegistry`), networking
 (`PayloadTypeRegistry`), entity data (the attachment API), key bindings (`KeyMappingHelper`),
 registry aliases for renamed ids (`Registry.addAlias` from Fabric's registry sync, 1.1.0), and the
 Iris and Jade integrations (their own APIs).
+
+## 1.2.0-preview: ProjectionPoseMixin
+
+Client-only TAIL injection in LivingEntityRenderer.extractRenderState(LivingEntity,
+LivingEntityRenderState,float). Quantizes only active Projection Sorcery poses to 24 fps;
+reduced motion bypasses it. Fabric has no equivalent event for replacing completed
+living render state. The existing common mixins remain unchanged.
+
+## 1.3.0-preview: BodyFormMixin
+
+Client RETURN injection into EntityRenderDispatcher.extractEntity retains the original
+AvatarRenderState and associates it with a cached host proxy's state. A HEAD injection
+into submit redirects only visible geometry to that proxy. Keeping the Avatar state is
+required by Minecraft's local-player extraction and first-person hand pipeline. Proxies
+have an assigned entity id and are never Players, preventing recursive form extraction.
+World changes/disconnects clear proxy entity caches; render-state associations use weak
+keys. First-person hands retain the player's arm model. Fabric has no equivalent event
+for replacing the whole submitted entity model.

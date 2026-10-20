@@ -473,3 +473,11 @@ Each one is checked at the milestone named, and this list is updated.
 - **Canon corrections:** where the brief and the wiki disagree, the wiki wins, and the difference
   is recorded in `docs/NAMING.md` (for example, Chimera Shadow Garden is Megumi Fushiguro's
   domain, not Geto's).
+
+## 2026-10-19 playable checkpoint
+
+Version 1.2.0-preview combines initial implementations from the continuation phases.
+The dependency order was adjusted to establish awakening and encounter density before
+combat/death/client overlays. This preview is separate from the original 2.0.0 release
+acceptance gate; all remaining manual, multiplayer, renderer, canon-mechanic and art
+acceptance items are tracked in docs/IMPLEMENTATION.md and its linked notes.

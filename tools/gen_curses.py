@@ -97,17 +97,25 @@ class Model:
                 "west": (u + dd + w, v + dd, dd, h), "south": (u + 2 * dd + w, v + dd, w, h),
             }
             for face, (x, y, fw, fh) in regions.items():
-                shade = {"top": 1.12, "bottom": 0.7, "north": 1.0, "south": 0.9, "east": 0.85, "west": 0.85}[face]
+                shade = {"top": 1.18, "bottom": 0.64, "north": 1.0, "south": 0.83, "east": 0.77, "west": 0.91}[face]
                 for px in range(fw):
                     for py in range(fh):
-                        n = rnd.uniform(-0.09, 0.09)
-                        grad = 1 - 0.18 * (py / max(1, fh - 1))
-                        col = tuple(max(0, min(255, int(c * shade * grad * (1 + n)))) for c in base)
+                        # Broad painted planes, restrained stepped shading and material seams.
+                        # Independent bright noise used to obscure the face and silhouette.
+                        edge=min(px,fw-1-px,py,fh-1-py)
+                        bevel=0.78 if edge==0 else 1.05 if edge==1 else 1.0
+                        grad=1.08-0.22*(py/max(1,fh-1))
+                        bands=0.96 if (py//3+px//6)%5==0 else 1.0
+                        lift=10 if max(base)<90 else 0
+                        col=tuple(max(0,min(255,int((c+lift)*shade*grad*bevel*bands)//4*4)) for c in base)
                         img.putpixel((x + px, y + py), col + (255,))
-                # sparse accent veins
-                for _ in range(max(1, fw * fh // 14)):
-                    px, py = rnd.randrange(fw), rnd.randrange(fh)
-                    img.putpixel((x + px, y + py), accent + (255,))
+                if fw>4 and fh>5:
+                    seam=tuple(max(0,int(c*0.5)) for c in base)+(255,)
+                    d.line((x+1,y+fh-2,x+fw-2,y+fh-2),fill=seam)
+                    if kind in ('bone','mask','horn'):
+                        d.line((x+fw//2,y+2,x+fw//2-1,y+fh-3),fill=seam)
+                    elif kind in ('cloth','paper'):
+                        for fold in range(2,fw-1,4):d.line((x+fold,y+2,x+fold,y+fh-3),fill=seam)
             fx, fy, fw, fh = regions["north"]
             for feature in features:
                 draw_feature(d, feature, fx, fy, fw, fh, accent, rnd)
@@ -118,8 +126,9 @@ def draw_feature(d, feature, x, y, w, h, accent, rnd):
     if feature == "eyes":
         ey = y + max(1, h // 3)
         for ex in (x + w // 4, x + w - 1 - w // 4):
-            d.rectangle((ex - 1 if w > 6 else ex, ey, ex, ey + (1 if h > 5 else 0)), fill=(250, 245, 230, 255))
-            d.point((ex, ey), fill=(10, 8, 12, 255))
+            d.rectangle((ex-1,ey-1,ex+1,ey+1),fill=(12,10,18,255))
+            d.point((ex,ey),fill=accent+(255,))
+            if w>8:d.point((ex-1,ey),fill=(248,232,196,255))
     elif feature == "many_eyes":
         for _ in range(max(3, w * h // 10)):
             ex, ey = x + rnd.randrange(max(1, w)), y + rnd.randrange(max(1, h))
@@ -129,6 +138,7 @@ def draw_feature(d, feature, x, y, w, h, accent, rnd):
         d.rectangle((x + 1, my, x + w - 2, my + max(1, h // 6)), fill=(20, 4, 8, 255))
         for tx in range(x + 1, x + w - 1, 2):
             d.point((tx, my), fill=(235, 230, 210, 255))
+            if h>7:d.point((tx+1,my+max(1,h//6)),fill=(194,179,157,255))
     elif feature == "glow":
         d.rectangle((x + w // 2 - 1, y + h // 2 - 1, x + w // 2 + 1, y + h // 2 + 1), fill=accent + (255,))
     elif feature == "mask":

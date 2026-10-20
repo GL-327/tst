@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.thin_ice_breaker",
+  "description": "technique.jjkcraft.thin_ice_breaker.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 32,
+    "cooldown": 120,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:line_cut",
+    "damage": 16,
+    "width": 1.2,
+    "pierce": 0.5
+  },
+  "visuals": {
+    "color": "#A9C9F4",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "beam",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/thin_ice_breaker.png",
+  "innate_weight": 0,
+  "mastery_uses": 30
+}

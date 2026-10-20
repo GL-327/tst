@@ -29,6 +29,8 @@ import com.jjkcraft.client.config.ClientConfig;
 public final class WorldFx {
 	/** Geometry budget per frame. */
 	private static final int MAX_QUADS = 6000;
+	private static long profileNanos, profilePeak;
+	private static int profileFrames, profileQuads;
 
 	/** One effect. Returns false when finished. */
 	public interface Effect {
@@ -43,6 +45,9 @@ public final class WorldFx {
 		final float time;
 		final boolean low;
 		int quads;
+		private float opacity=1;
+		public void opacity(float value){opacity=Math.clamp(value,0,1);}
+		final long began = System.nanoTime();
 
 		Frame(PoseStack.Pose pose, VertexConsumer buffer, Vec3 camera, float time, boolean low) {
 			this.pose = pose;
@@ -62,12 +67,13 @@ public final class WorldFx {
 		}
 
 		public boolean budgetLeft() {
-			return quads < MAX_QUADS;
+			return quads < Math.min(MAX_QUADS, Math.max(100, ClientConfig.get().vfx.maxWorldQuads))
+				&& System.nanoTime() - began < Math.clamp(ClientConfig.get().vfx.maxEffectMillis, 1, 10) * 1_000_000L;
 		}
 
 		/** A double-sided quad from four world points. */
 		public void quad(Vec3 a, Vec3 b, Vec3 c, Vec3 d, int colorA, int colorB) {
-			if (quads >= MAX_QUADS) {
+			if (!budgetLeft()) {
 				return;
 			}
 
@@ -96,6 +102,7 @@ public final class WorldFx {
 		}
 
 		private void vertex(Vec3 p, int color) {
+			if(opacity<1)color=ARGB.multiplyAlpha(color,opacity);
 			buffer.addVertex(pose, (float) (p.x - camera.x), (float) (p.y - camera.y), (float) (p.z - camera.z)).setColor(color);
 		}
 	}
@@ -110,6 +117,7 @@ public final class WorldFx {
 	}
 
 	public static void add(Effect effect) {
+		if (ClientConfig.effectsOff()) return;
 		if (EFFECTS.size() < 256) {
 			EFFECTS.add(effect);
 		}
@@ -120,6 +128,7 @@ public final class WorldFx {
 	}
 
 	private static void render(LevelRenderContext context) {
+		if (ClientConfig.effectsOff()) { clear(); return; }
 		Minecraft mc = Minecraft.getInstance();
 		if (EFFECTS.isEmpty() || mc.level == null) {
 			return;
@@ -135,6 +144,12 @@ public final class WorldFx {
 				if (!it.next().render(frame)) {
 					it.remove();
 				}
+			}
+			long elapsed = System.nanoTime() - frame.began;
+			profileNanos += elapsed; profilePeak = Math.max(profilePeak, elapsed); profileQuads = Math.max(profileQuads, frame.quads);
+			if (++profileFrames >= 300) {
+				if (ClientConfig.get().vfx.logProfiling) com.jjkcraft.JjkCraft.LOGGER.info("VFX profile: frames={} mean_cpu_ms={} peak_cpu_ms={} peak_quads={} active={}", profileFrames, profileNanos / (profileFrames * 1_000_000.0), profilePeak / 1_000_000.0, profileQuads, EFFECTS.size());
+				profileFrames = profileQuads = 0; profileNanos = profilePeak = 0;
 			}
 		});
 	}

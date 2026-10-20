@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.curse_manipulation",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 7,
+  "techniques": [
+    "jjkcraft:cursed_spirit_manipulation",
+    "jjkcraft:maximum_uzumaki",
+    "jjkcraft:curse_recall",
+    "jjkcraft:curse_command"
+  ],
+  "domain": ""
+}

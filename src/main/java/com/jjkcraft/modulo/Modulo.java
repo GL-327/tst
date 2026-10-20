@@ -65,13 +65,18 @@ public final class Modulo {
 		PayloadTypeRegistry.serverboundPlay().register(ModuloPayloads.Choose.TYPE, ModuloPayloads.Choose.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(ModuloPayloads.Choose.TYPE, (payload, context) -> Missions.onChoose(context.player(), payload.option()));
 
-		NaunaxDescent.init();
 		ModuloTravel.init();
 		ModuloTechniques.init();
-		Missions.init();
 		ModuloCommands.init();
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> SYNC.markDirty(handler.getPlayer()));
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			var p=handler.getPlayer();if(isModuloLevel(p.level()))ModuloTravel.leave(p);
+			if(!progress(p).equals(ModuloProgress.EMPTY))setProgress(p,ModuloProgress.EMPTY);
+			SYNC.markDirty(p);
+		});
 	}
+
+	/** Modulo is a collection of sandbox abilities. Legacy story data is retained only for save compatibility. */
+	public static boolean storyEnabled(){return false;}
 
 	public static boolean enabled() {
 		return JjkConfig.server().modulo.enabled;
@@ -108,6 +113,7 @@ public final class Modulo {
 	}
 
 	public static ModuloPayloads.View view(ServerPlayer player) {
+		if(!storyEnabled())return new ModuloPayloads.View(enabled(),MulEnergy.get(player),MulEnergy.max(),"",List.of(0,0),"",List.of(),Optional.empty(),"",Optional.empty(),0,false,false);
 		if (!enabled()) {
 			return ModuloPayloads.View.EMPTY;
 		}

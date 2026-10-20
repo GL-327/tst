@@ -33,6 +33,22 @@ final class JjkEnglishLangProvider extends FabricLanguageProvider {
 		LangEntries.all(b);
 		ModuloLang.add(b);
 		ModuloDataLang.add(b);
+		ExpandedLang.add(b);
+		ExpansionLang.add(b);
+		ArsenalLang.add(b);
+		SandboxLang.add(b);
+		b.add("technique.jjkcraft.blood_edge", "Blood Manipulation: Blood Edge");
+		b.add("technique.jjkcraft.blood_edge.desc", "Harden blood into a close-range cutting edge. Sweep a narrow arc in front of you.");
+		b.add("technique.jjkcraft.blood_needle", "Blood Manipulation: Blood Needle");
+		b.add("technique.jjkcraft.blood_needle.desc", "Compress blood into a narrow crimson projectile. A precise, low-cost Blood Manipulation attack.");
+		b.add("key.jjkcraft.combat", "Toggle Cursed Combat");
+		b.add("key.jjkcraft.dash", "Dash");
+		b.add("key.jjkcraft.block", "Block / Parry");
+		for(int slot=1;slot<=4;slot++)b.add("key.jjkcraft.skill_"+slot,"Technique Slot "+slot);
+		b.add("key.jjkcraft.lock_on", "Lock on");
+		b.add("item.jjkcraft.soul_object", "Cursed Object");
+		b.add("block.jjkcraft.soul_reliquary", "Cursed Object");
+		b.add("entity.jjkcraft.vessel", "Vessel");
 	}
 
 	private static void configLabels(TranslationBuilder b, Class<?> configClass, String title) {

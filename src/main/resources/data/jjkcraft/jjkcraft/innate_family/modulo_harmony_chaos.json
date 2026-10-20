@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.modulo_harmony_chaos",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 8,
+  "techniques": [
+    "jjkcraft:harmony_step",
+    "jjkcraft:chaos_twist",
+    "jjkcraft:harmony_field",
+    "jjkcraft:chaos_fracture",
+    "jjkcraft:harmony_restore"
+  ],
+  "domain": ""
+}

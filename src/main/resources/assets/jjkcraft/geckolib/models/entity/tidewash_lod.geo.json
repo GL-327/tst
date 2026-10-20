@@ -1,0 +1,191 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.tidewash",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "mass",
+          "pivot": [
+            0,
+            6,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -7,
+                0,
+                -6
+              ],
+              "size": [
+                14,
+                12,
+                12
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "crest",
+          "pivot": [
+            0,
+            12,
+            0
+          ],
+          "parent": "mass",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                12,
+                -4
+              ],
+              "size": [
+                10,
+                6,
+                8
+              ],
+              "uv": [
+                52,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm_l",
+          "pivot": [
+            -7,
+            10,
+            0
+          ],
+          "parent": "mass",
+          "cubes": [
+            {
+              "origin": [
+                -24,
+                8,
+                -1.5
+              ],
+              "size": [
+                17,
+                3,
+                3
+              ],
+              "uv": [
+                88,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm_r",
+          "pivot": [
+            7,
+            10,
+            0
+          ],
+          "parent": "mass",
+          "cubes": [
+            {
+              "origin": [
+                7,
+                8,
+                -1.5
+              ],
+              "size": [
+                17,
+                3,
+                3
+              ],
+              "uv": [
+                0,
+                24
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hand_l",
+          "pivot": [
+            -24,
+            9,
+            0
+          ],
+          "parent": "arm_l",
+          "cubes": [
+            {
+              "origin": [
+                -28,
+                6,
+                -3
+              ],
+              "size": [
+                4,
+                6,
+                6
+              ],
+              "uv": [
+                40,
+                24
+              ]
+            }
+          ]
+        },
+        {
+          "name": "hand_r",
+          "pivot": [
+            24,
+            9,
+            0
+          ],
+          "parent": "arm_r",
+          "cubes": [
+            {
+              "origin": [
+                24,
+                6,
+                -3
+              ],
+              "size": [
+                4,
+                6,
+                6
+              ],
+              "uv": [
+                60,
+                24
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

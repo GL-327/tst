@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.charge_transfer",
+  "description": "technique.jjkcraft.charge_transfer.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 9,
+    "cooldown": 60,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "charge_mark",
+    "damage": 3,
+    "duration": 80,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#8BDAF0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/charge_transfer.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

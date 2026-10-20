@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.harmony_field",
+  "description": "technique.jjkcraft.harmony_field.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 40,
+    "cooldown": 120,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0.6,
+    "radius": 5,
+    "duration": 100,
+    "damage_per_second": 2,
+    "burst_damage": 12,
+    "burst_radius": 4
+  },
+  "visuals": {
+    "color": "#76DDD0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/harmony_field.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

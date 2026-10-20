@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.frame_rush",
+  "description": "technique.jjkcraft.frame_rush.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 65,
+    "range": 8
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 8,
+    "invulnerable_ticks": 3
+  },
+  "visuals": {
+    "color": "#D0D0E0",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/frame_rush.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

@@ -43,6 +43,7 @@ public class CullingScreen extends JjkScreen {
 	private int amount = 5;
 	private int targetColony = -1;
 	private int scroll;
+	private boolean enterArmed;
 
 	public CullingScreen() {
 		super(Component.translatable("screen.jjkcraft.culling"));
@@ -69,6 +70,14 @@ public class CullingScreen extends JjkScreen {
 		CullingPayloads.Me me = ClientCulling.me();
 		int bottom = panelY() + panelH() - 20;
 		int rx = panelX() + panelW() - 150;
+		if(page==Page.MAP && !me.participant()) {
+			if(!ClientCulling.view().running()) addRenderableWidget(new InkButton(panelX()+8,bottom,200,16,Component.literal("Start a new Culling Game"),b->{travel("begin",-1);minecraft.gui.setScreen(null);}));
+			else {
+				if(targetColony<0 && !ClientCulling.view().colonies().isEmpty())targetColony=ClientCulling.view().colonies().getFirst().id();
+				addRenderableWidget(new InkButton(panelX()+8,bottom,100,16,Component.literal("Next colony"),b->{targetColony=nextColony();enterArmed=false;rebuildWidgets();}));
+				addRenderableWidget(new InkButton(panelX()+112,bottom,panelW()-120,16,Component.literal(enterArmed?"Confirm entry: barrier will bind you":"Enter "+ClientCulling.colonyName(targetColony).getString()),b->{if(!enterArmed){enterArmed=true;rebuildWidgets();}else{travel("enter",targetColony);minecraft.gui.setScreen(null);}}));
+			}
+		}
 		if (page == Page.BOARD && me.participant()) {
 			boardActions(rx, contentY() + 70);
 		} else if (page == Page.NEGOTIATE && me.participant()) {
@@ -133,6 +142,7 @@ public class CullingScreen extends JjkScreen {
 		ClientPlayNetworking.send(new CullingPayloads.Action(action.getSerializedName(), Optional.ofNullable(target), amount, Optional.ofNullable(rule),
 				colony));
 	}
+	private static void travel(String action,int colony) { ClientPlayNetworking.send(new CullingPayloads.Action(action,Optional.empty(),0,Optional.empty(),colony)); }
 
 	// ---------------------------------------------------------------- drawing
 
@@ -143,7 +153,7 @@ public class CullingScreen extends JjkScreen {
 		int y = contentY() + 18;
 		Ink.text(g, header(view), x, y, ClientCulling.ACCENT, 1f);
 		int top = y + 13;
-		int bottom = panelY() + panelH() - 6;
+		int bottom = panelY() + panelH() - (page==Page.MAP && !ClientCulling.me().participant()?27:6);
 		if (!view.running() && view.colonies().isEmpty()) {
 			if (view.ended()) {
 				results(g, view, x, top);

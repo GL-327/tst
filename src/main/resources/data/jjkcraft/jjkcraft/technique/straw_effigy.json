@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.straw_effigy",
+  "description": "technique.jjkcraft.straw_effigy.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 48,
+    "cooldown": 280,
+    "range": 22
+  },
+  "behavior": {
+    "type": "jjkcraft:straw_doll",
+    "damage": 7,
+    "nails": 6,
+    "duration": 1000
+  },
+  "visuals": {
+    "color": "#C0302F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/straw_effigy.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

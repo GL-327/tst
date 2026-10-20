@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.static_mite",
+  "description": "curse.jjkcraft.static_mite.desc",
+  "lore": "curse.jjkcraft.static_mite.lore",
+  "entity": "jjkcraft:static_mite",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 16,
+    "armor": 0,
+    "speed": 0.274,
+    "attack_damage": 2.0,
+    "ce_capacity": 65,
+    "follow_range": 22
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 10,
+    "group_min": 2,
+    "group_max": 4,
+    "max_light": 10
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/static_mite",
+    "texture": "jjkcraft:textures/entity/static_mite.png",
+    "animation": "jjkcraft:entity/static_mite",
+    "scale": 0.63
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#84B9E0",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:hook"
+  ],
+  "techniques": [
+    "jjkcraft:blood_needle"
+  ],
+  "loot_table": "jjkcraft:entities/static_mite"
+}

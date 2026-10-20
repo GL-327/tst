@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.soul_detonation",
+  "description": "technique.jjkcraft.soul_detonation.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:special_grade",
+  "cast": {
+    "cost": 70,
+    "cooldown": 300,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "soul_detonate",
+    "damage": 9,
+    "duration": 1,
+    "radius": 3
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/soul_detonation.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

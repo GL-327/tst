@@ -40,6 +40,8 @@ public class JjkServerConfig implements ConfigData {
 	public Modulo modulo = new Modulo();
 
 	public static class Systems {
+		@Comment("Use framed Cursed Combat for awakened players and curse melee. C toggles it per player.")
+		public boolean cursedCombat = true;
 		@Comment("Enable the Culling Game event (colonies, points, rules).")
 		public boolean cullingGame = true;
 		@Comment("Allow Domain Expansions and Simple Domains.")
@@ -64,6 +66,12 @@ public class JjkServerConfig implements ConfigData {
 	}
 
 	public static class Death {
+		@Comment("Enable Survival death choices, cursed objects, Vessels and hardcore pacts.")
+		public boolean choices = true;
+		public int objectMinutes = 20;
+		public boolean newCharacterOnLoss = true;
+		public int vesselCost = 50;
+		public int possessionThreshold = 3;
 		@Comment("KEEP (default), PARTIAL or RESET_TECHNIQUES. See README.")
 		public DeathPolicy policy = DeathPolicy.KEEP;
 		@Comment("Percent of max CE a player has after respawning.")
@@ -75,6 +83,12 @@ public class JjkServerConfig implements ConfigData {
 	}
 
 	public static class Progression {
+		@Comment("Culling Game points charged by a colony Vessel for an Awakening Rite.")
+		public int riteCost = 100;
+		@Comment("Allow choosing an innate family instead of the Inherit/Random paths. Server owned.")
+		public boolean allowTechniqueChoice = false;
+		@Comment("Chance of Six Eyes for a Gojo awakening, in percent.")
+		public double sixEyesChancePercent = 1.0;
 		@Comment("Awaken players (roll an innate technique or Heavenly Restriction) the first time they join.")
 		public boolean awakenOnFirstJoin = true;
 		@Comment("Chance (percent) that awakening rolls Heavenly Restriction instead of a technique.")
@@ -84,6 +98,8 @@ public class JjkServerConfig implements ConfigData {
 	}
 
 	public static class Casting {
+        @Comment("Allow destructive techniques to damage terrain. Containers, unbreakable blocks and block-break event claims are protected; mobs respect mobGriefing.")
+        public boolean terrainDamage = true;
 		@Comment("Max cast requests a client may send per second before the rest are dropped.")
 		public double maxCastRequestsPerSecond = 8.0;
 		@Comment("Chance (percent) that a reinforced strike becomes a Black Flash before modifiers.")
@@ -123,9 +139,15 @@ public class JjkServerConfig implements ConfigData {
 		@Comment("Multiplier on fear-driven curse spawn rates.")
 		public double spawnRateMultiplier = 1.0;
 		@Comment("Max naturally spawned curses near a single player.")
-		public int maxCursesPerPlayer = 8;
+		public int maxCursesPerPlayer = 12;
+		@Comment("Spawn encounters around Creative players too; curses still do not target them.")
+		public boolean spawnAroundCreative = true;
+		@Comment("Candidate locations checked every six seconds per player. Loaded chunks only.")
+		public int spawnAttempts = 4;
 		@Comment("Fear value (0-100) a chunk section must reach before curses can spawn there.")
-		public double fearSpawnThreshold = 35.0;
+		public double fearSpawnThreshold = 20.0;
+		@Comment("Chance per attempt of a weak ambient encounter in a calm area, as a percentage.")
+		public double calmEncounterPercent = 8.0;
 	}
 
 	public static class CullingGame {
@@ -140,7 +162,7 @@ public class JjkServerConfig implements ConfigData {
 		@Comment("End condition: game ends after this many in-game days (0 = no day limit).")
 		public int endAfterDays = 60;
 		@Comment("End condition: game ends when one colony has this many or fewer players left (0 = off).")
-		public int endWhenPlayersLeft = 1;
+		public int endWhenPlayersLeft = 0;
 		@Comment("Penalty when the entry window passes without joining: REMOVE_TECHNIQUE or NONE.")
 		public String missedEntryPenalty = "REMOVE_TECHNIQUE";
 		@Comment("Start the game by itself, around world spawn, when the first awakened player joins a world where it has not run yet.")
@@ -172,6 +194,10 @@ public class JjkServerConfig implements ConfigData {
 		energy.overexertThresholdPercent = clamp(energy.overexertThresholdPercent, 0, 100);
 		energy.overexertSeconds = clamp(energy.overexertSeconds, 0, 120);
 		death.respawnEnergyPercent = clamp(death.respawnEnergyPercent, 0, 100);
+		death.objectMinutes = Math.clamp(death.objectMinutes, 1, 120);
+		death.vesselCost = Math.clamp(death.vesselCost, 0, 10000);
+		death.possessionThreshold = Math.clamp(death.possessionThreshold, 1, 20);
+		progression.riteCost = Math.clamp(progression.riteCost, 0, 10000);
 		death.partialXpLossPercent = clamp(death.partialXpLossPercent, 0, 100);
 		death.partialMasteryLossPercent = clamp(death.partialMasteryLossPercent, 0, 100);
 		if (death.policy == null) {
@@ -179,6 +205,7 @@ public class JjkServerConfig implements ConfigData {
 		}
 
 		progression.heavenlyRestrictionChancePercent = clamp(progression.heavenlyRestrictionChancePercent, 0, 100);
+		progression.sixEyesChancePercent = clamp(progression.sixEyesChancePercent, 0, 100);
 		progression.gradeXpMultiplier = clamp(progression.gradeXpMultiplier, 0, 100);
 		casting.maxCastRequestsPerSecond = clamp(casting.maxCastRequestsPerSecond, 1, 100);
 		casting.blackFlashBaseChancePercent = clamp(casting.blackFlashBaseChancePercent, 0, 100);
@@ -195,7 +222,9 @@ public class JjkServerConfig implements ConfigData {
 		domains.simpleDomainBlockPercent = clamp(domains.simpleDomainBlockPercent, 0, 100);
 		curses.spawnRateMultiplier = clamp(curses.spawnRateMultiplier, 0, 20);
 		curses.maxCursesPerPlayer = (int) clamp(curses.maxCursesPerPlayer, 0, 64);
+		curses.spawnAttempts = (int) clamp(curses.spawnAttempts, 1, 12);
 		curses.fearSpawnThreshold = clamp(curses.fearSpawnThreshold, 0, 100);
+		curses.calmEncounterPercent = clamp(curses.calmEncounterPercent, 0, 100);
 		cullingGame.sorcererPoints = (int) clamp(cullingGame.sorcererPoints, 0, 1000);
 		cullingGame.nonSorcererPoints = (int) clamp(cullingGame.nonSorcererPoints, 0, 1000);
 		cullingGame.ruleCost = (int) clamp(cullingGame.ruleCost, 1, 100_000);
@@ -221,8 +250,8 @@ public class JjkServerConfig implements ConfigData {
 
 	/** The Modulo expansion (docs/MODULO.md). */
 	public static class Modulo {
-		@Comment("Turn on the Modulo expansion: the Naunax Descent, its two dimensions, Mul energy and the eleven missions. Off by default.")
-		public boolean enabled = false;
+		@Comment("Integrated Modulo world events, Mul energy and story missions. Enabled by default.")
+		public boolean enabled = true;
 		@Comment("Mul energy made for each point of cursed energy poured into Mul.")
 		public double mulEnergyRatio = 0.5;
 		@Comment("Most Mul energy a player can hold.")
@@ -230,13 +259,13 @@ public class JjkServerConfig implements ConfigData {
 		@Comment("Play the epilogue sequence at the end of the last mission. Off skips the sequence; the rewards are still given.")
 		public boolean epilogue = true;
 		@Comment("Lowest grade that sees the Naunax Descent.")
-		public String descentMinGrade = "jjkcraft:grade_1";
+		public String descentMinGrade = "jjkcraft:grade_2";
 		@Comment("Game days between one Naunax Descent and the next.")
 		public int descentIntervalDays = 3;
 		@Comment("Real minutes the Naunax stays over the badlands.")
 		public int descentMinutes = 10;
 		@Comment("How far from the first eligible player to look for badlands, in blocks.")
-		public int descentSearchRadius = 3200;
+		public int descentSearchRadius = 512;
 		@Comment("Share of a boss's base health added for each fighter past the first.")
 		public double bossHealthPerExtraPlayer = 0.6;
 	}

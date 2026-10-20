@@ -1,0 +1,48 @@
+{
+  "name": "curse.jjkcraft.shriek_vessel",
+  "description": "curse.jjkcraft.shriek_vessel.desc",
+  "lore": "curse.jjkcraft.shriek_vessel.lore",
+  "entity": "jjkcraft:shriek_vessel",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 18,
+    "armor": 0,
+    "speed": 0.27,
+    "attack_damage": 2.5,
+    "ce_capacity": 40,
+    "drain_on_hit": 3
+  },
+  "spawn": {
+    "weight": 10,
+    "min_fear": 15,
+    "max_light": 15,
+    "group_min": 1,
+    "group_max": 3
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:sonic_boom": 2.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/shriek_vessel",
+    "texture": "jjkcraft:textures/entity/shriek_vessel.png",
+    "animation": "jjkcraft:entity/shriek_vessel"
+  },
+  "mechanic": "jjkcraft:hymnal",
+  "parameters": {
+    "hymn_radius": 5,
+    "hymn_charge": 24,
+    "hymn_stun": 30,
+    "hymn_interval": 120,
+    "silence_duration": 200
+  },
+  "codex": {
+    "color": "#8C6BB6",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/hollow_hymnal",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:heavy"
+  ]
+}

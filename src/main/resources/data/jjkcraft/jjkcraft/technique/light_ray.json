@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.light_ray",
+  "description": "technique.jjkcraft.light_ray.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 10,
+    "cooldown": 25,
+    "range": 40
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 4,
+    "speed": 2.2,
+    "size": 0.2,
+    "lifetime": 28
+  },
+  "visuals": {
+    "color": "#FFF0BF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/light_ray.png",
+  "innate_weight": 0,
+  "mastery_uses": 50,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

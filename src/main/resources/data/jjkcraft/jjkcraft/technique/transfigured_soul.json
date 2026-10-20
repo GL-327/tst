@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.transfigured_soul",
+  "description": "technique.jjkcraft.transfigured_soul.desc",
+  "category": "summon",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 28,
+    "cooldown": 100,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:transfigured_soul",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/transfigured_soul.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

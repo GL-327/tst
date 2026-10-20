@@ -1,0 +1,8 @@
+{
+  "name": "trait.jjkcraft.silent_stride",
+  "description": "trait.jjkcraft.silent_stride.desc",
+  "category": "restriction_zero",
+  "weight": 20,
+  "speed": 0.2,
+  "health": -4
+}

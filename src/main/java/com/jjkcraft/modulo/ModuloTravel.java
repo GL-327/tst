@@ -39,8 +39,11 @@ public final class ModuloTravel {
 
 	/** Boards the Naunax from wherever the player stands; leaving later brings them back here. */
 	public static boolean board(ServerPlayer player) {
-		if (!Modulo.enabled()) {
+		if (!Modulo.storyEnabled()) {
 			return false;
+		}
+		if(com.jjkcraft.culling.CullingGame.state(player.level().getServer()).active(player.getUUID())!=null) {
+			player.sendSystemMessage(Component.literal("An active Culling participant needs a Vessel's expedition release agreement."),true);return false;
 		}
 
 		GlobalPos from = GlobalPos.of(player.level().dimension(), player.blockPosition());
@@ -53,7 +56,7 @@ public final class ModuloTravel {
 
 	/** Back to the ship's arrival hall (the beacon, or Maru's Harmony). Only after a first boarding. */
 	public static boolean toShip(ServerPlayer player) {
-		if (!Modulo.enabled() || !Modulo.progress(player).boarded()) {
+		if (!Modulo.storyEnabled() || !Modulo.progress(player).boarded()) {
 			return false;
 		}
 
@@ -65,7 +68,7 @@ public final class ModuloTravel {
 	}
 
 	public static boolean toTokyo(ServerPlayer player) {
-		return Modulo.enabled() && toSite(player, TOKYO_SITE, "arrival");
+		return Modulo.storyEnabled() && toSite(player, TOKYO_SITE, "arrival");
 	}
 
 	/** Out of the expansion: to where the player boarded, or their respawn point. */
@@ -81,6 +84,7 @@ public final class ModuloTravel {
 
 	/** A player stepped on a gate pad. Gates rest for a few seconds after use so arrival pads don't bounce you back. */
 	public static void throughGate(ServerPlayer player, NaunaxGateBlock.Destination destination) {
+		if(!Modulo.storyEnabled())return;
 		long now = player.level().getServer().overworld().getGameTime();
 		Long last = LAST_GATE.get(player.getUUID());
 		if (last != null && now - last < GATE_COOLDOWN_TICKS) {
@@ -106,6 +110,7 @@ public final class ModuloTravel {
 	}
 
 	public static boolean toSite(ServerPlayer player, Identifier siteId, String marker) {
+		if(!Modulo.storyEnabled())return false;
 		Optional<SiteDefinition> site = SiteBuilder.ensure(player.level().getServer(), siteId);
 		if (site.isEmpty()) {
 			player.sendSystemMessage(Component.translatable("message.jjkcraft.modulo.no_site", siteId.toString()));

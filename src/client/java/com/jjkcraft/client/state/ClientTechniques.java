@@ -25,6 +25,10 @@ public final class ClientTechniques {
 	private static int feedbackSlot = -2;
 	private static CastFailure feedback = CastFailure.NONE;
 	private static long feedbackAt;
+    private static com.jjkcraft.network.payload.ChargePayload charge=new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);
+    private static long chargeAt;
+    public static void accept(com.jjkcraft.network.payload.ChargePayload payload){charge=payload;chargeAt=System.currentTimeMillis();}
+    public static com.jjkcraft.network.payload.ChargePayload charge(){return System.currentTimeMillis()-chargeAt<1500?charge:new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);}
 
 	private ClientTechniques() {
 	}
@@ -41,6 +45,7 @@ public final class ClientTechniques {
 	}
 
 	public static void reset() {
+        charge=new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);
 		state = TechniqueState.EMPTY;
 		active = Optional.empty();
 		feedback = CastFailure.NONE;
@@ -68,7 +73,7 @@ public final class ClientTechniques {
 	}
 
 	public static Optional<TechniqueDefinition> definition(Identifier id) {
-		return ClientProgress.registries().flatMap(r -> Techniques.get(r, id));
+		return ClientProgress.registries().flatMap(r -> Techniques.get(r, id)).map(ClientPersonalization.get(id)::apply);
 	}
 
 	/** Known techniques that exist in the current registry, innate first. */
@@ -85,7 +90,7 @@ public final class ClientTechniques {
 	}
 
 	public static int usableSlots() {
-		return ClientProgress.grade().map(g -> g.techniqueSlots()).orElse(2);
+		return TechniqueState.SLOTS;
 	}
 
 	/** Remaining cooldown as a fraction of the full cooldown (1 = just cast, 0 = ready). */
@@ -106,7 +111,7 @@ public final class ClientTechniques {
 
 	/** The CE cost the player would pay, without vow modifiers (shown in tooltips). */
 	public static double cost(Identifier id) {
-		return definition(id).map(d -> TechniqueMath.cost(d.cast().cost(), ClientProgress.get().growth().control(), mastered(id), 1.0)).orElse(0.0);
+		return definition(id).map(d -> TechniqueMath.cost(d.cast().cost(), ClientProgress.get().growth().control(), mastered(id), ClientAwakening.view().record().sixEyes()?0.75:1.0)).orElse(0.0);
 	}
 
 	public static boolean affordable(Identifier id) {

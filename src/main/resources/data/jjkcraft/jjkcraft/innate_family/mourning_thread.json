@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.mourning_thread",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 7,
+  "techniques": [
+    "jjkcraft:mourning_thread",
+    "jjkcraft:thread_sever",
+    "jjkcraft:funeral_loom",
+    "jjkcraft:thread_snare"
+  ],
+  "domain": ""
+}

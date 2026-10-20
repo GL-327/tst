@@ -87,14 +87,11 @@ public final class GrowthTreeScreen extends JjkScreen {
 
 			// Effect summary.
 			int textY = nodeTop + 10 * step + 2;
-			for (Component lineText : effect(path, points)) {
-				g.pose().pushMatrix();
-				g.pose().translate(cx + 4, textY);
-				g.pose().scale(0.75f, 0.75f);
-				Ink.text(g, lineText, 0, 0, Palette.TEXT, 1f);
-				g.pose().popMatrix();
-				textY += 8;
-			}
+            for (Component lineText : effect(path, points)) {
+                for(var line:Ink.font().split(lineText,colW-14)){
+                    g.text(Ink.font(),line,cx+4,textY,Palette.TEXT_DIM,true);textY+=10;
+                }
+            }
 		}
 	}
 

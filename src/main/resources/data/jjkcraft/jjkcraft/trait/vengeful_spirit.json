@@ -1,0 +1,10 @@
+{
+  "name": "trait.jjkcraft.vengeful_spirit",
+  "description": "trait.jjkcraft.vengeful_spirit.desc",
+  "category": "spirit",
+  "weight": 0,
+  "capacity": 1.25,
+  "regen": 1.4,
+  "health": 6,
+  "armor": 2
+}

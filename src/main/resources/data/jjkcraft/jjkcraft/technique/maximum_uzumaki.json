@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.maximum_uzumaki",
+  "description": "technique.jjkcraft.maximum_uzumaki.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 80,
+    "cooldown": 600,
+    "range": 30
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "uzumaki",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#551479",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/maximum_uzumaki.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

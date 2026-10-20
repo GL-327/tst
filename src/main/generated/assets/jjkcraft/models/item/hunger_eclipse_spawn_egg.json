@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jjkcraft:item/hunger_eclipse_spawn_egg"
+  }
+}

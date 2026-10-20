@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.elephant_surge",
+  "description": "technique.jjkcraft.elephant_surge.desc",
+  "grade": "jjkcraft:grade_2",
+  "category": "area",
+  "cast": {
+    "cost": 32,
+    "cooldown": 140,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:shockwave",
+    "radius": 5,
+    "damage": 7,
+    "launch": 0.2
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/elephant_surge.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

@@ -3,22 +3,53 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.1.0.** Milestones M0 to M9 (1.0.0), the canon naming pass (Phase 0) and the optional
-Modulo expansion (Phase 1) are built and covered by automated tests. Nobody has played it by hand
-yet, so feel and balance come from tests and numbers; see Known issues. Phases 2 to 7 (visual
-effects, curses, combat, awakening, death and cursed objects, release) are planned in
-`docs/DESIGN.md` section 8.
+**Status: 1.11.0-preview.** Hold a power key to charge, then release to cast: up to 100%,
+or 200% for Hollow Purple. Charging rapidly consumes CE, especially without Six Eyes.
+Blue pulls real terrain into its core; Purple, destructive slashes and blasts damage blocks.
+See [charging and terrain controls](docs/CHARGING.md) for costs, cancellation and server settings.
+
+Twelve power slots are available from awakening, with one move
+per slot and three banks of four. Each power has an independent expression and ten optional
+binding-vow restrictions. Forsaking ordinary combat grants that power x5 output; restrictions
+persist when switching slots, and casting seals vow changes for one minute.
+
+Every family has at least four distinct moves. Ten Shadows now includes all ten summons,
+Totality, Well’s Unknown Abyss, Agito and configurable two-to-four-component chimeras.
+There are 18 new owned shikigami types and 22 new powers, including Moon Dregs, Garuda,
+Rika and an original Moonlit Menagerie. See [the summoning guide](docs/MENAGERIE.md).
+
+Starting CE is **350–550**, with independent regeneration levels **4–6**. Older survival
+potential migrates once; custom Creative values remain exact. Lower reserves still train
+more cheaply. Creative selection handles missing family data safely, clears stale death
+protection and removes old defensive technique effects; defensive buffs cannot reach immunity.
+The optional maximum Creative preset learns RCT with automatic healing off.
+
+The extremely rare **Divine Chalice** replaces the innate family and clears technique mastery,
+expressions, equipped moves, captured spirits, summons, fusion recipes and the old domain.
+It preserves body/clan attributes, grade, growth, CE potential/training and universal skills.
+Rare high-grade boss drops and an expensive endgame recipe are documented in the guide.
+
+Auto Combat is on by default: holding attack chooses coarse attacks/defensive responses.
+Manual hit keys offer faster timing, double-tap uppercuts/sweeps and deliberate parries.
+Vanilla Q/E/F and the normal hotbar keys remain available. Hostile melee mobs share server
+frame windows, and curses have distinct combat clips and reactive guards.
+
+There are now **169 powers across 31 families, 52 curse species, 16 body/clan attributes and
+nine domains**. Twelve new species broaden the weak curse roster. Natural encounters are
+less frequent, weak curses appear in small mixed packs, and Grade 2+ curses spawn alone
+with space around them. See [the play guide](docs/PLAYTEST.md), [new powers and vows](docs/ARSENAL.md)
+and [scope](docs/EXPANSION.md). The build remains a preview requiring human balance testing.
 
 **Names and art.** Powers, techniques, domains, clans and terms that exist in Jujutsu Kaisen use
 their canon names, checked on the Jujutsu Kaisen Wiki (`docs/NAMING.md`). Content with no
-canon counterpart, such as the 20 curses and the Culling Warden, has original names. All art,
+canon counterpart, such as the 52 curses and the Culling Warden, has original names. All art,
 sounds and models are original, made by the scripts in `tools/`; the mod contains no official
 Jujutsu Kaisen assets.
 
 ## Installing
 
 1. Install Fabric Loader 0.19.5 or newer for Minecraft 26.3.
-2. Put these in `mods/`: `jjkcraft-1.1.0.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
+2. Put these in `mods/`: `jjkcraft-1.8.0-preview.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
    or newer, Cloth Config 26.3.159 or newer. Mod Menu is optional (it adds a config button).
 3. Install it on both the client and the server for multiplayer.
 
@@ -30,21 +61,21 @@ Jujutsu Kaisen assets.
 - **Grades**, Grade 4 to Special Grade, earned with grade experience, measured stats (Output,
   Control) and trials, with a promotion ceremony. A growth tree (Output, Control, Efficiency,
   Domain). Heavenly Restriction is a rare roll at awakening: no CE, a stronger body.
-- **30 cursed techniques** across ten categories, among them Cursed Technique Lapse: Blue and
+- **95 cursed techniques** across ten categories, among them Cursed Technique Lapse: Blue and
   Reversal: Red (they burst when they meet), Hollow Purple, Infinity, Cleave and Dismantle, Cursed
   Speech (Don't Move, Crumble Away, Blast Away), Straw Doll Technique: Resonance, Idle
   Transfiguration, Projection Sorcery, Reverse Cursed Technique and Positive Energy Output, the
   Ten Shadows' Divine Dogs, Nue and Toad, and three ultimates, one per top grade (Piercing Blood,
   Thousand Lances, Maximum Output: Blue), plus original techniques such as Grudge Bolt.
-  One innate technique is rolled at awakening; more come from scrolls and cursed tools. A six-slot
-  hotbar, a technique wheel and a drag-and-drop loadout.
+  Choose Inherit for a clan family or Random for the general pool. Family moves unlock with grade; more techniques come from scrolls and cursed tools. A twelve-slot
+  loadout, a technique wheel and a drag-and-drop loadout.
 - **Black Flash** (a chance on the reinforced strike, for 1.9x to 3.8x and "the zone"), **Reverse
   Cursed Technique** (awakened at the edge of death: healing, a once-a-while save), **Binding Vows**
   (swear restrictions for power in the Vow Builder; break them and pay).
-- **Domain Expansion**: six domains (Malevolent Shrine, Unlimited Void, Chimera Shadow Garden, Idle
-  Death Gamble, Authentic Mutual Love, and the original Sevenfold Recitation), barrierless and
-  Simple Domains, clashes decided by CE, burnout, and a full opening sequence.
-- **20 original curses**, Grade 4 to Special Grade, each with one telegraphed mechanic and a
+- **Domain Expansion**: nine domains, including Malevolent Shrine, Unlimited Void, Chimera Shadow
+  Garden, Idle Death Gamble, Authentic Mutual Love and the disaster-curses' domains; barrierless
+  and Simple Domains, clashes, burnout, interior scenery and breakable barriers.
+- **52 original curses**, Grade 4 to Special Grade, each with one telegraphed mechanic and a
   counter, born from a fear field that rises with darkness and death. Nests, trophies, a codex
   with 3D previews, sensing through walls.
 - **The Culling Game**: colonies behind barriers around spawn; awakened sorcerers have 19 days to
@@ -56,19 +87,17 @@ Jujutsu Kaisen assets.
   Miles), a cursed object (the Withered Digit), a flight gourd, a rule-bound points ledger, technique scrolls.
 - **The Special Grade path**: the Unbound Ritual (a mastered innate technique, an active vow, and a
   special-grade curse killed inside your own domain).
-- **The Modulo expansion** (optional, off by default; `docs/MODULO.md`): 2086, the Simurian ship
-  Naunax over the badlands. Every few days a Descent lowers a ramp of light that Grade 1 and higher
-  sorcerers can board. Two dimensions (the Naunax and Tokyo 2086), eleven missions that follow the
-  Jujutsu Kaisen Modulo story with its characters (Maru, Cross, Yuka and Tsurugi Okkotsu, Kou Usami,
-  Dabura Karaba and others), boss fights against Toranosuke, Masaki Takeda, Maru and Dabura,
-  Mahoraga adapting to whatever hurts it, a branch choice, and an epilogue. Mul, the Simurian ore,
-  turns cursed energy into Mul energy for Simurian gear and Mul techniques; cursed tools can be
-  used as mediums that spend durability instead of CE. A mission tracker, Mul meter and dialogue
-  on the HUD.
+- **Modulo sandbox powers** (`docs/MODULO.md`): Harmony / Chaos and Light / Darkness families,
+  with eight moves available through Random awakening, the Creative picker and craftable scrolls.
+  Existing Mul energy and Simurian gear remain. No story missions, boarding events, expedition
+  choices or forced travel run; old story saves migrate back to ordinary play on joining.
 
-Keys (all rebindable): J profile, R cast, V next slot, G technique wheel (hold), B sensing, K
-Domain Expansion (sneak + K: barrierless), N Simple Domain, H Reverse Cursed Technique auto-heal,
-M Culling Game map. Screens and HUD are described in `docs/UI_SPEC.md`.
+Keys are editable in Minecraft Controls and J -> Moves -> Bindings. **U** light hit
+(double tap: uppercut), **I** heavy hit (double tap: sweep), **O** block/parry, **Left Alt**
+dash/evasive, **F7** Auto Combat toggle. Hold M1 for Auto Combat assistance. Q/E/F keep
+vanilla behavior. The four direct power keys use **Numpad 1-4**; R casts the selected move,
+V cycles slots, and G opens the twelve-power wheel. The bank key is configurable in Bindings.
+J opens the profile; K expands a domain, N uses Simple Domain, H toggles RCT, M opens Culling.
 
 ## Content packs
 
@@ -84,8 +113,8 @@ pack for their names.
 numbers, death policy (KEEP, PARTIAL, RESET_TECHNIQUES), Black Flash and Reverse chances, domain and Simple
 Domain numbers, curse spawn rates and caps, every Culling Game number (entry window, point
 values, rule cost, colonies, entrants, end condition, auto-start), and the Modulo expansion
-(`modulo.enabled`, off by default; Mul ratio and pool; the epilogue; the Descent's minimum grade,
-interval, length and search radius; boss health per extra player). `config/jjkcraft-client.json5`
+(`modulo.enabled`, on by default; Mul ratio and pool; boss health per extra player).
+Legacy story settings are ignored. `config/jjkcraft-client.json5`
 (client): HUD positions, scale, opacity and visibility per element, VFX level, shake, hit-stop,
 reduced motion, reduced flashing, a colourblind palette, UI scale and the sound mix.
 
@@ -182,9 +211,7 @@ runs" under Building and running.
 - Data-only curses must reuse one of the mod's curse entity types.
 - The license is not chosen yet. `fabric.mod.json` says All-Rights-Reserved until the owner
   picks one.
-- The Modulo expansion has been checked by GameTests and screenshots only: the missions'
-  pacing, the boss fights' difficulty and how the ship looks in the sky need someone to play
-  them (`docs/TEST_REPORT.md`, Phase 1). Its sites are built from blocks by code and are plain.
+- The new Modulo powers and expression combinations still need human balance testing.
 
 ## Documentation
 
@@ -192,8 +219,7 @@ runs" under Building and running.
 - `docs/NAMING.md`: canon names, their wiki sources, renamed ids and how old worlds still load
 - `docs/AUDIT.md`: the state of the mod at the start of the 1.1.0 work
 - `docs/MIXINS.md`: every mixin and why no event or API could do its job
-- `docs/MODULO.md`: the Modulo expansion: its canon basis and sources, where the brief and the wiki
-  differ, the design, missions and config
+- `docs/MODULO.md`: sandbox abilities, scroll recipes and migration from old story saves
 - `docs/SCHEMAS.md`: every data file format, with examples
 - `docs/BALANCE.md`: numbers and the reasoning behind them, and the balance test's budgets
 - `docs/UI_SPEC.md`: every HUD element and screen

@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.disaster_tides",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 8,
+  "techniques": [
+    "jjkcraft:disaster_tides",
+    "jjkcraft:water_lance",
+    "jjkcraft:tide_prison",
+    "jjkcraft:tidal_guard"
+  ],
+  "domain": "jjkcraft:horizon_of_the_captivating_skandha"
+}

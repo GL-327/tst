@@ -38,13 +38,14 @@ public class InkButton extends Button {
 		int y = getY();
 		int w = getWidth();
 		int h = getHeight();
-		g.fill(x, y, x + w, y + h, active ? (hot ? 0xF0201C2A : 0xE0141219) : 0xC0101014);
+		g.fill(x, y, x + w, y + h, active ? (hot || selected ? 0xFF26334A : 0xF0172030) : 0xD0101520);
 		g.outline(x, y, w, h, hot || selected ? accent : Palette.INK_EDGE);
 		if (selected || hot) {
+			g.fill(x,y,x+2,y+h,accent);
 			g.fill(x + 2, y + h - 2, x + w - 2, y + h - 1, ARGB.multiplyAlpha(accent, selected ? 1f : 0.6f));
 		}
 
 		int color = !active ? Palette.muted() : hot || selected ? Palette.TEXT : Palette.TEXT_DIM;
-		g.centeredText(Ink.font(), getMessage(), x + w / 2, y + (h - 8) / 2, color);
+		g.centeredText(Ink.font(), Ink.fit(getMessage(),Math.max(1,w-6)), x + w / 2, y + (h - 8) / 2, color);
 	}
 }

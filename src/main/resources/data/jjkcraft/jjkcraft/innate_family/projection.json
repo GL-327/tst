@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.projection",
+  "clan": "Zen'in",
+  "inherited_weight": 35,
+  "random_weight": 0,
+  "techniques": [
+    "jjkcraft:projection_sorcery",
+    "jjkcraft:frame_rush",
+    "jjkcraft:frame_lock",
+    "jjkcraft:projection_overclock",
+    "jjkcraft:frame_crash"
+  ],
+  "domain": ""
+}

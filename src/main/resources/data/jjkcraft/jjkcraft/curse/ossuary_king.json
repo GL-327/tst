@@ -1,0 +1,59 @@
+{
+  "name": "curse.jjkcraft.ossuary_king",
+  "description": "curse.jjkcraft.ossuary_king.desc",
+  "lore": "curse.jjkcraft.ossuary_king.lore",
+  "entity": "jjkcraft:ossuary_king",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 640,
+    "armor": 14,
+    "speed": 0.259,
+    "attack_damage": 17.6,
+    "ce_capacity": 800,
+    "regen_multiplier": 2.5,
+    "drain_on_hit": 16,
+    "follow_range": 48.0,
+    "knockback_resistance": 1.0
+  },
+  "techniques": [
+    "jjkcraft:cursed_speech_dont_move",
+    "jjkcraft:cursed_speech_crumble_away",
+    "jjkcraft:cursed_speech_blast_away"
+  ],
+  "model": {
+    "geo": "jjkcraft:entity/ossuary_king",
+    "texture": "jjkcraft:textures/entity/ossuary_king.png",
+    "animation": "jjkcraft:entity/ossuary_king"
+  },
+  "mechanic": "jjkcraft:sovereign",
+  "parameters": {
+    "chorus_radius": 12,
+    "chorus_windup": 24,
+    "chorus_interval": 160,
+    "chorus_stun": 24,
+    "chorus_damage": 5,
+    "bite_range": 18,
+    "bite_radius": 1.8,
+    "bite_windup": 28,
+    "bite_interval": 100,
+    "bite_damage": 10,
+    "bite_hold": 40,
+    "bar_range": 64
+  },
+  "codex": {
+    "color": "#AB2DD7",
+    "unlock_kills": 3
+  },
+  "spawn": {
+    "weight": 3,
+    "min_fear": 70,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "loot_table": "jjkcraft:entities/ten_mouth_sovereign",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:heavy"
+  ]
+}

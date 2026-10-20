@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.construction_blades",
+  "description": "technique.jjkcraft.construction_blades.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 35,
+    "cooldown": 150,
+    "range": 26
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 3,
+    "count": 5,
+    "speed": 1.5,
+    "spread": 18,
+    "size": 0.35,
+    "lifetime": 50,
+    "blast_radius": 0,
+    "burn_seconds": 0
+  },
+  "visuals": {
+    "color": "#A79572",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb"
+  },
+  "icon": "jjkcraft:textures/gui/technique/construction_blades.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

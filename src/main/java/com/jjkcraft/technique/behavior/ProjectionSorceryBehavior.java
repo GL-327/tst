@@ -59,6 +59,7 @@ public record ProjectionSorceryBehavior(double radius, int skipTicks, double bli
 			}
 
 			if (caster instanceof ServerPlayer player) {
+				if(!ctx.level().noCollision(caster,caster.getBoundingBox().move(to.subtract(from))))to=from;
 				player.teleportTo(to.x, to.y, to.z);
 			} else {
 				caster.teleportTo(to.x, to.y, to.z);

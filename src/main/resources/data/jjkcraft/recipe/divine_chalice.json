@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SNS",
+    "ECE",
+    "TNT"
+  ],
+  "key": {
+    "S": "minecraft:netherite_ingot",
+    "N": "minecraft:nether_star",
+    "E": "minecraft:echo_shard",
+    "C": "minecraft:dragon_breath",
+    "T": "jjkcraft:sovereign_tooth"
+  },
+  "result": {
+    "id": "jjkcraft:divine_chalice",
+    "count": 1
+  }
+}

@@ -12,14 +12,17 @@ import com.jjkcraft.JjkCraft;
  * Client to server: the cast key went down or up. The server decides everything else.
  *
  * @param slot    hotbar slot, or -1 for the selected slot
- * @param pressed true on press, false on release (ends channels)
+ * @param pressed true to begin charging, false to release
+ * @param cancelled cancel without firing when leaving gameplay
  */
-public record CastPayload(int slot, boolean pressed) implements CustomPacketPayload {
+public record CastPayload(int slot, boolean pressed, boolean cancelled) implements CustomPacketPayload {
+    public CastPayload(int slot,boolean pressed){this(slot,pressed,false);}
 	public static final Type<CastPayload> TYPE = new Type<>(JjkCraft.id("cast"));
 
 	public static final StreamCodec<ByteBuf, CastPayload> CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, CastPayload::slot,
 			ByteBufCodecs.BOOL, CastPayload::pressed,
+			ByteBufCodecs.BOOL, CastPayload::cancelled,
 			CastPayload::new);
 
 	@Override

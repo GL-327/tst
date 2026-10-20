@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.chimera_fusion",
+  "description": "technique.jjkcraft.chimera_fusion.desc",
+  "grade": "jjkcraft:grade_1",
+  "category": "summon",
+  "cast": {
+    "cost": 90,
+    "cooldown": 260,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:fusion",
+    "components": [],
+    "result": "jjkcraft:custom_chimera",
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/chimera_fusion.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

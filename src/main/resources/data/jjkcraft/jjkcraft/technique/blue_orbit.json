@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.blue_orbit",
+  "description": "technique.jjkcraft.blue_orbit.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 35,
+    "cooldown": 200,
+    "range": 20
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0.11,
+    "radius": 4,
+    "duration": 140,
+    "damage_per_second": 3,
+    "burst_damage": 0,
+    "burst_radius": 0
+  },
+  "visuals": {
+    "color": "#3D8BFF",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blue_orbit.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

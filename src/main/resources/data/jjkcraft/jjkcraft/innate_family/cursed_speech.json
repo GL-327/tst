@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.cursed_speech",
+  "clan": "Inumaki",
+  "inherited_weight": 35,
+  "random_weight": 0,
+  "techniques": [
+    "jjkcraft:cursed_speech_dont_move",
+    "jjkcraft:cursed_speech_crumble_away",
+    "jjkcraft:cursed_speech_blast_away",
+    "jjkcraft:cursed_speech_sleep"
+  ],
+  "domain": ""
+}

@@ -20,7 +20,7 @@ import com.jjkcraft.client.state.ClientTechniques;
 import com.jjkcraft.network.payload.CastPayload;
 import com.jjkcraft.network.payload.SelectSlotPayload;
 
-/** Every key the mod uses. All are rebindable in Controls; defaults avoid vanilla bindings. */
+/** Rebindable casting and combat keys, independent of vanilla inventory/hotbar defaults. */
 public final class JjkKeys {
 	public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(JjkCraft.id("main"));
 
@@ -33,6 +33,19 @@ public final class JjkKeys {
 	public static final KeyMapping SIMPLE_DOMAIN = key("simple_domain", InputConstants.KEY_N);
 	public static final KeyMapping REVERSE = key("reverse", InputConstants.KEY_H);
 	public static final KeyMapping CULLING = key("culling", InputConstants.KEY_M);
+	public static final KeyMapping COMBAT = key("combat", InputConstants.KEY_Y);
+	public static final KeyMapping DASH = key("dash", InputConstants.KEY_LALT);
+	public static final KeyMapping LOCK_ON = key("lock_on", InputConstants.KEY_Z);
+	public static final KeyMapping AUTO_COMBAT = key("auto_combat",InputConstants.KEY_F7);
+    public static final KeyMapping BANK = key("bank",InputConstants.KEY_BACKSLASH);
+    public static final KeyMapping LIGHT = key("light_hit",InputConstants.KEY_U);
+    public static final KeyMapping HEAVY = key("heavy_hit",InputConstants.KEY_I);
+    public static final KeyMapping BLOCK = key("block",InputConstants.KEY_O);
+	public static final KeyMapping[] SKILLS={key("skill_1",InputConstants.KEY_NUMPAD1),key("skill_2",InputConstants.KEY_NUMPAD2),key("skill_3",InputConstants.KEY_NUMPAD3),key("skill_4",InputConstants.KEY_NUMPAD4)};
+	private static final boolean[] skillDown=new boolean[4];
+	private static int heldCastSlot=-1;
+    private static final int[] heldSkillSlots={-1,-1,-1,-1};
+    public static int bankStart(){return (ClientTechniques.state().selected()/4)*4;}
 
 	/** Extra per-tick key handlers added by later systems (sense, domains). */
 	private static final List<Consumer<Minecraft>> HANDLERS = new ArrayList<>();
@@ -47,9 +60,11 @@ public final class JjkKeys {
 
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(JjkKeys::tick);
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((h,m)->{castWasDown=false;heldCastSlot=-1;java.util.Arrays.fill(skillDown,false);});
 	}
 
-	private static void tick(Minecraft mc) {
+	public static boolean clicked(KeyMapping key){boolean any=false;while(key.consumeClick())any=true;return any;}
+    private static void tick(Minecraft mc) {
 		boolean inGame = mc.player != null && mc.gui.screen() == null;
 
 		while (PROFILE.consumeClick()) {
@@ -58,13 +73,23 @@ public final class JjkKeys {
 			}
 		}
 
-		// Cast: send press and release so channelled techniques end when the key comes up.
-		boolean castDown = CAST.isDown() && inGame;
+		// Keep real key edges, including quick taps, so the server owns charge duration and release.
+		boolean castDown = CAST.isDown() && inGame; boolean tapped=clicked(CAST);
+        if(tapped&&!castDown&&!castWasDown&&inGame){int slot=ClientTechniques.state().selected();ClientPlayNetworking.send(new CastPayload(slot,true));ClientPlayNetworking.send(new CastPayload(slot,false));}
 		if (castDown != castWasDown && mc.player != null) {
-			ClientPlayNetworking.send(new CastPayload(-1, castDown));
+			if(castDown)heldCastSlot=ClientTechniques.state().selected();
+			ClientPlayNetworking.send(new CastPayload(heldCastSlot, castDown,!inGame));
 		}
 
 		castWasDown = castDown;
+		while(BANK.consumeClick())if(inGame)ClientPlayNetworking.send(new SelectSlotPayload((bankStart()+4)%com.jjkcraft.technique.TechniqueState.SLOTS));
+        for(int slot=0;slot<4;slot++){
+			boolean down=inGame&&com.jjkcraft.client.combat.CombatClient.enabled()&&SKILLS[slot].isDown();
+            boolean tap=clicked(SKILLS[slot]);
+            if(tap&&!down&&!skillDown[slot]&&inGame&&com.jjkcraft.client.combat.CombatClient.enabled()){int target=bankStart()+slot;ClientPlayNetworking.send(new SelectSlotPayload(target));ClientPlayNetworking.send(new CastPayload(target,true));ClientPlayNetworking.send(new CastPayload(target,false));}
+			if(down!=skillDown[slot]&&mc.player!=null){if(down){heldSkillSlots[slot]=bankStart()+slot;ClientPlayNetworking.send(new SelectSlotPayload(heldSkillSlots[slot]));}ClientPlayNetworking.send(new CastPayload(heldSkillSlots[slot],down,!inGame));}
+			skillDown[slot]=down;
+		}
 		while (CAST.consumeClick()) {
 			// Presses are handled through isDown above; drain the queue.
 		}

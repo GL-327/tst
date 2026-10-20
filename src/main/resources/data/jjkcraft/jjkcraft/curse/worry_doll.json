@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.worry_doll",
+  "description": "curse.jjkcraft.worry_doll.desc",
+  "lore": "curse.jjkcraft.worry_doll.lore",
+  "entity": "jjkcraft:worry_doll",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 26,
+    "armor": 0,
+    "speed": 0.274,
+    "attack_damage": 2.9,
+    "ce_capacity": 65,
+    "follow_range": 22
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 9,
+    "min_fear": 24,
+    "group_min": 2,
+    "group_max": 3,
+    "max_light": 10
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/worry_doll",
+    "texture": "jjkcraft:textures/entity/worry_doll.png",
+    "animation": "jjkcraft:entity/worry_doll",
+    "scale": 0.78
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#B48DBB",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ],
+  "loot_table": "jjkcraft:entities/worry_doll"
+}

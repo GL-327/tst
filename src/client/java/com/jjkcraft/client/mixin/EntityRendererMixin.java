@@ -16,7 +16,8 @@ import com.jjkcraft.client.state.ClientSensing;
 public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
 	@Inject(method = "extractRenderState", at = @At("TAIL"))
 	private void jjkcraft$senseOutline(T entity, S state, float partialTicks, CallbackInfo ci) {
-		if (state.outlineColor == 0) {
+		com.jjkcraft.client.combat.CombatAnimations.identify(state,entity.getId());
+        if (state.outlineColor == 0) {
 			int color = ClientSensing.outlineColor(entity);
 			if (color != 0) {
 				state.outlineColor = color;

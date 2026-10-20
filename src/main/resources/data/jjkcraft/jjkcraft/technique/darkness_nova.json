@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.darkness_nova",
+  "description": "technique.jjkcraft.darkness_nova.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:special_grade",
+  "cast": {
+    "cost": 130,
+    "cooldown": 220,
+    "range": 8
+  },
+  "behavior": {
+    "type": "jjkcraft:shockwave",
+    "radius": 8,
+    "damage": 17,
+    "launch": 0.55
+  },
+  "visuals": {
+    "color": "#7C68BF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/darkness_nova.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

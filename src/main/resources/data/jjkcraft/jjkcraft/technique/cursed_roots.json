@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.cursed_roots",
+  "description": "technique.jjkcraft.cursed_roots.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 16,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "roots",
+    "damage": 3,
+    "duration": 50,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#6B9F50",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_roots.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

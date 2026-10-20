@@ -91,9 +91,13 @@ public class EntrantEntity extends PathfinderMob implements CursedEnergyUser, Gr
 		techniques.clear();
 		if (sorcerer) {
 			grade = JjkCraft.id(random.nextInt(3) == 0 ? "grade_2" : "grade_3");
-			List<String> pool = new ArrayList<>(TECHNIQUE_POOL);
-			for (int i = 0; i < 2 && !pool.isEmpty(); i++) {
-				techniques.add(JjkCraft.id(pool.remove(random.nextInt(pool.size()))));
+			var registry=level().registryAccess().lookupOrThrow(com.jjkcraft.awakening.CharacterAwakening.FAMILIES);
+			var families=registry.keySet().stream().sorted().filter(id->!id.getPath().equals("brain_transplant") && !id.getPath().equals("curse_manipulation")).toList();
+			int pick=com.jjkcraft.core.progress.WeightedRoll.index(families.stream().map(id->Math.max(1,registry.getValue(id).inheritedWeight()+registry.getValue(id).randomWeight())).toList(),random.nextDouble());
+			if(pick>=0) {
+				int rank=com.jjkcraft.grade.Grades.rank(level().registryAccess(),grade);
+				registry.getValue(families.get(pick)).techniques().stream().filter(id->Techniques.get(level().registryAccess(),id)
+						.map(d->com.jjkcraft.grade.Grades.rank(level().registryAccess(),d.grade())<=rank).orElse(false)).limit(3).forEach(techniques::add);
 			}
 
 			getAttribute(Attributes.MAX_HEALTH).setBaseValue(32);

@@ -14,6 +14,9 @@ import com.jjkcraft.JjkCraft;
 
 /** Entity types. Curses are registered by {@code CurseEntities}. */
 public final class JjkEntities {
+	public static final EntityType<com.jjkcraft.entity.shikigami.TransfiguredSoulEntity> TRANSFIGURED_SOUL = register("transfigured_soul",
+			EntityType.Builder.<com.jjkcraft.entity.shikigami.TransfiguredSoulEntity>of(com.jjkcraft.entity.shikigami.TransfiguredSoulEntity::new,MobCategory.MISC)
+					.sized(0.65f,1.55f).clientTrackingRange(10).noSave().noSummon().noLootTable());
 	public static final EntityType<CursedBoltEntity> CURSED_BOLT = register("cursed_bolt",
 			EntityType.Builder.<CursedBoltEntity>of(CursedBoltEntity::new, MobCategory.MISC)
 					.sized(0.4f, 0.4f).clientTrackingRange(8).updateInterval(1).noSave().noSummon().noLootTable());
@@ -38,6 +41,8 @@ public final class JjkEntities {
 	}
 
 	public static void init() {
+		com.jjkcraft.entity.shikigami.ShadowBeasts.init();
+		FabricDefaultAttributeRegistry.register(TRANSFIGURED_SOUL,com.jjkcraft.entity.shikigami.TransfiguredSoulEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHADOW_DIVINE_DOG, ShadowDivineDogEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(DIVINE_DOG, com.jjkcraft.entity.shikigami.DivineDogEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(NUE, com.jjkcraft.entity.shikigami.NueEntity.createAttributes());

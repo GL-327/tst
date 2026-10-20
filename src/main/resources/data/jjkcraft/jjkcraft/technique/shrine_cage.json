@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.shrine_cage",
+  "description": "technique.jjkcraft.shrine_cage.desc",
+  "category": "area",
+  "grade": "jjkcraft:special_grade",
+  "cast": {
+    "cost": 60,
+    "cooldown": 260,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0,
+    "radius": 4,
+    "duration": 100,
+    "damage_per_second": 6,
+    "burst_damage": 0,
+    "burst_radius": 0
+  },
+  "visuals": {
+    "color": "#E0303F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/shrine_cage.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

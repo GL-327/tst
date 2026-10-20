@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_great_serpent",
+  "description": "technique.jjkcraft.ten_shadows_great_serpent.desc",
+  "grade": "jjkcraft:grade_3",
+  "category": "summon",
+  "cast": {
+    "cost": 32,
+    "cooldown": 180,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:great_serpent",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_great_serpent.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

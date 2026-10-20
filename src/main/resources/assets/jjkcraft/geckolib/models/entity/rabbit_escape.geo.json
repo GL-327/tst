@@ -1,0 +1,245 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.rabbit_escape",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            6.0,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                3,
+                -4.0
+              ],
+              "size": [
+                6,
+                6,
+                8
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            7,
+            -4.0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -2.5,
+                4,
+                -9.0
+              ],
+              "size": [
+                5,
+                5,
+                5
+              ],
+              "uv": [
+                28,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg0",
+          "pivot": [
+            -2.0,
+            3,
+            -2.6666666666666665
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                0,
+                -3.6666666666666665
+              ],
+              "size": [
+                2,
+                4,
+                3
+              ],
+              "uv": [
+                48,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg1",
+          "pivot": [
+            2.0,
+            3,
+            -2.6666666666666665
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                1.0,
+                0,
+                -3.6666666666666665
+              ],
+              "size": [
+                2,
+                4,
+                3
+              ],
+              "uv": [
+                58,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg2",
+          "pivot": [
+            -2.0,
+            3,
+            2.6666666666666665
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -3.0,
+                0,
+                1.6666666666666665
+              ],
+              "size": [
+                2,
+                4,
+                3
+              ],
+              "uv": [
+                68,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg3",
+          "pivot": [
+            2.0,
+            3,
+            2.6666666666666665
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                1.0,
+                0,
+                1.6666666666666665
+              ],
+              "size": [
+                2,
+                4,
+                3
+              ],
+              "uv": [
+                78,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ear-1",
+          "pivot": [
+            -2,
+            9,
+            -4.0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                9,
+                -4.0
+              ],
+              "size": [
+                1,
+                8,
+                2
+              ],
+              "uv": [
+                88,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ear1",
+          "pivot": [
+            2,
+            9,
+            -4.0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                2,
+                9,
+                -4.0
+              ],
+              "size": [
+                1,
+                8,
+                2
+              ],
+              "uv": [
+                94,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

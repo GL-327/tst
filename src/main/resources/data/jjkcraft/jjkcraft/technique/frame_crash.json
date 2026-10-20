@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.frame_crash",
+  "description": "technique.jjkcraft.frame_crash.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 35,
+    "cooldown": 170,
+    "range": 22
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 5,
+    "count": 5,
+    "speed": 1.5,
+    "spread": 18,
+    "size": 0.35,
+    "lifetime": 50,
+    "blast_radius": 0,
+    "burn_seconds": 0
+  },
+  "visuals": {
+    "color": "#D0D0E0",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb"
+  },
+  "icon": "jjkcraft:textures/gui/technique/frame_crash.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

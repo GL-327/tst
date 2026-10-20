@@ -1,0 +1,9 @@
+{
+  "name": "Sukuna Pact",
+  "price": 0,
+  "offering": "jjkcraft:cursed_energy_shard",
+  "offering_count": 12,
+  "fingers": 5,
+  "approved_vows": ["jjkcraft:grounded_oath"],
+  "offering_required": true
+}

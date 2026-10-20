@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.funeral_loom",
+  "description": "technique.jjkcraft.funeral_loom.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 60,
+    "cooldown": 150,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "roots",
+    "damage": 6,
+    "duration": 50,
+    "radius": 6
+  },
+  "visuals": {
+    "color": "#BD6C9C",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/funeral_loom.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

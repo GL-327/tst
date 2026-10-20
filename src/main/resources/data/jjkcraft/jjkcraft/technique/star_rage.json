@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.star_rage",
+  "description": "technique.jjkcraft.star_rage.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 220,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "mass",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#F0CA4F",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/star_rage.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

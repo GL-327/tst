@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.construction_armor",
+  "description": "technique.jjkcraft.construction_armor.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 20,
+    "cooldown": 260,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "armor",
+    "damage": 0,
+    "duration": 200,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#A79572",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/construction_armor.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

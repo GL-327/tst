@@ -1,0 +1,299 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.porcelain_nipper",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "post",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0,
+                -1.5
+              ],
+              "size": [
+                3,
+                14,
+                3
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "lamp",
+          "pivot": [
+            0,
+            16,
+            0
+          ],
+          "parent": "post",
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                14,
+                -4
+              ],
+              "size": [
+                8,
+                9,
+                8
+              ],
+              "uv": [
+                12,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cap",
+          "pivot": [
+            0,
+            23,
+            0
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                23,
+                -5
+              ],
+              "size": [
+                10,
+                2,
+                10
+              ],
+              "uv": [
+                44,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bar0",
+          "pivot": [
+            -4,
+            18,
+            -4
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                -4.5,
+                14,
+                -4.5
+              ],
+              "size": [
+                1,
+                9,
+                1
+              ],
+              "uv": [
+                84,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bar1",
+          "pivot": [
+            4,
+            18,
+            -4
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                3.5,
+                14,
+                -4.5
+              ],
+              "size": [
+                1,
+                9,
+                1
+              ],
+              "uv": [
+                88,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bar2",
+          "pivot": [
+            -4,
+            18,
+            4
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                -4.5,
+                14,
+                3.5
+              ],
+              "size": [
+                1,
+                9,
+                1
+              ],
+              "uv": [
+                92,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bar3",
+          "pivot": [
+            4,
+            18,
+            4
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                3.5,
+                14,
+                3.5
+              ],
+              "size": [
+                1,
+                9,
+                1
+              ],
+              "uv": [
+                96,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "foot_l",
+          "pivot": [
+            -2,
+            0,
+            0
+          ],
+          "parent": "post",
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                0,
+                -2
+              ],
+              "size": [
+                3,
+                2,
+                4
+              ],
+              "uv": [
+                100,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "foot_r",
+          "pivot": [
+            2,
+            0,
+            0
+          ],
+          "parent": "post",
+          "cubes": [
+            {
+              "origin": [
+                1,
+                0,
+                -2
+              ],
+              "size": [
+                3,
+                2,
+                4
+              ],
+              "uv": [
+                114,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "fear_crest",
+          "pivot": [
+            0,
+            15,
+            0
+          ],
+          "parent": "lamp",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                14,
+                -3
+              ],
+              "size": [
+                3,
+                4,
+                2
+              ],
+              "uv": [
+                0,
+                17
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

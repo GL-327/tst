@@ -5,6 +5,7 @@
   "mixins": [
     "GameTestServerMixin"
   ],
+  "client": ["IntegratedServerShutdownMixin"],
   "injectors": {
     "defaultRequire": 1
   }

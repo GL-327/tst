@@ -39,6 +39,7 @@ public final class CastContext {
 	private final TechniqueDefinition technique;
 	private final double power;
 	private final double rangeMultiplier;
+	private final TechniqueDetails details;
 	/** Per-cast state for channel and toggle behaviors (a stored aim point, a counter). */
 	public final java.util.Map<String, Object> memory = new java.util.HashMap<>();
 
@@ -49,6 +50,7 @@ public final class CastContext {
 		this.technique = technique;
 		this.power = power;
 		this.rangeMultiplier = rangeMultiplier;
+		this.details=Personalization.get(caster,techniqueId).details();
 	}
 
 	public LivingEntity caster() {
@@ -71,6 +73,7 @@ public final class CastContext {
 	public double power() {
 		return power;
 	}
+	public TechniqueDetails details(){return details;}
 
 	/** The technique's range after vow modifiers. */
 	public double range() {
@@ -82,7 +85,12 @@ public final class CastContext {
 	}
 
 	public Vec3 look() {
-		return caster.getLookAngle();
+		return aim(0,0);
+	}
+	public Vec3 aim(double yawOffset,double pitchOffset){
+		double yaw=Math.toRadians(caster.getYRot()+details.expression().yaw()+yawOffset);
+		double pitch=Math.toRadians(Math.clamp(caster.getXRot()+details.expression().pitch()+pitchOffset,-89,89));
+		return new Vec3(-Math.sin(yaw)*Math.cos(pitch),-Math.sin(pitch),Math.cos(yaw)*Math.cos(pitch));
 	}
 
 	public long now() {
@@ -93,6 +101,10 @@ public final class CastContext {
 
 	/** True for anything a technique may harm: living, not the caster, not an ally or the caster's pet. */
 	public boolean isEnemy(Entity entity) {
+		if(details.targeting()==1 && !(entity instanceof com.jjkcraft.curse.CurseEntity))return false;
+		if(details.targeting()==2 && !(entity instanceof net.minecraft.world.entity.player.Player))return false;
+		if(details.targeting()==3 && entity instanceof net.minecraft.world.entity.player.Player)return false;
+		if(level.getAttachedOrCreate(com.jjkcraft.awakening.BodyTransfer.BODIES).containsKey(entity.getUUID().toString())) return false;
 		if (!(entity instanceof LivingEntity living) || entity == caster || !living.isAlive() || living.isSpectator()) {
 			return false;
 		}
@@ -180,7 +192,10 @@ public final class CastContext {
 			return false;
 		}
 
-		return target.hurtServer(level, source(piercing), (float) amount);
+		boolean hit=target.hurtServer(level, source(piercing), (float) amount);
+		if(hit&&details.expression().lift()!=0&&!java.util.Objects.equals(memory.get("lift:"+target.getId()),now())){
+			memory.put("lift:"+target.getId(),now());target.setDeltaMovement(target.getDeltaMovement().add(0,details.expression().lift()/200.0,0));target.needsSync=true;
+		}return hit;
 	}
 
 	/** Deals damage split between armored and armor-ignoring parts. */

@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.straw_doll",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 35,
+  "techniques": [
+    "jjkcraft:straw_doll_resonance",
+    "jjkcraft:straw_nail_volley",
+    "jjkcraft:straw_hairpin",
+    "jjkcraft:straw_stitch",
+    "jjkcraft:straw_effigy"
+  ],
+  "domain": ""
+}

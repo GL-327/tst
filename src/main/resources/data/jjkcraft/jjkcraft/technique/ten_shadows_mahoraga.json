@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_mahoraga",
+  "description": "technique.jjkcraft.ten_shadows_mahoraga.desc",
+  "grade": "jjkcraft:special_grade",
+  "category": "summon",
+  "cast": {
+    "cost": 160,
+    "cooldown": 300,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:shadow_mahoraga",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_mahoraga.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

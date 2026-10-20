@@ -1,0 +1,49 @@
+{
+  "name": "curse.jjkcraft.veil_weaver",
+  "description": "curse.jjkcraft.veil_weaver.desc",
+  "lore": "curse.jjkcraft.veil_weaver.lore",
+  "entity": "jjkcraft:veil_weaver",
+  "grade": "jjkcraft:grade_1",
+  "stats": {
+    "health": 132,
+    "armor": 6,
+    "speed": 0.275,
+    "attack_damage": 7.6,
+    "ce_capacity": 220,
+    "drain_on_hit": 8,
+    "follow_range": 32.0
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 3,
+    "min_fear": 50,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/veil_weaver",
+    "texture": "jjkcraft:textures/entity/veil_weaver.png",
+    "animation": "jjkcraft:entity/veil_weaver"
+  },
+  "mechanic": "jjkcraft:vow_kin",
+  "parameters": {
+    "hunt_range": 24,
+    "damage_per_point": 0.08,
+    "flee_ticks": 100
+  },
+  "codex": {
+    "color": "#BE2D54",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/vow_kin",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

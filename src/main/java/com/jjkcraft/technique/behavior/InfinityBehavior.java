@@ -25,11 +25,13 @@ import com.jjkcraft.technique.TechniqueBehaviors;
  * @param slow     velocity multiplier applied each tick to incoming projectiles
  * @param minSpeed projectiles are not slowed below this speed (blocks per tick)
  */
-public record InfinityBehavior(double radius, double slow, double minSpeed) implements TechniqueBehavior {
+public record InfinityBehavior(double radius, double slow, double minSpeed, int filter) implements TechniqueBehavior {
+	public InfinityBehavior(double radius,double slow,double minSpeed){this(radius,slow,minSpeed,0);}
 	public static final MapCodec<InfinityBehavior> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
 			Codec.doubleRange(1, 32).fieldOf("radius").forGetter(InfinityBehavior::radius),
 			Codec.doubleRange(0, 1).fieldOf("slow").forGetter(InfinityBehavior::slow),
-			Codec.doubleRange(0, 4).optionalFieldOf("min_speed", 0.05).forGetter(InfinityBehavior::minSpeed)
+			Codec.doubleRange(0, 4).optionalFieldOf("min_speed", 0.05).forGetter(InfinityBehavior::minSpeed),
+			Codec.intRange(0,2).optionalFieldOf("filter",0).forGetter(InfinityBehavior::filter)
 	).apply(i, InfinityBehavior::new));
 
 	@Override
@@ -47,7 +49,7 @@ public record InfinityBehavior(double radius, double slow, double minSpeed) impl
 	public boolean tick(CastContext ctx, int ticksActive) {
 		Vec3 center = ctx.caster().position().add(0, ctx.caster().getBbHeight() / 2, 0);
 		AABB box = AABB.ofSize(center, radius * 2, radius * 2, radius * 2);
-		for (Projectile projectile : ctx.level().getEntitiesOfClass(Projectile.class, box, p -> p.getOwner() != ctx.caster())) {
+		if(filter!=1)for (Projectile projectile : ctx.level().getEntitiesOfClass(Projectile.class, box, p -> p.getOwner() != ctx.caster())) {
 			Vec3 velocity = projectile.getDeltaMovement();
 			Vec3 toCaster = center.subtract(projectile.position());
 			if (velocity.lengthSqr() < minSpeed * minSpeed || toCaster.length() > radius || velocity.dot(toCaster) <= 0) {
@@ -56,6 +58,14 @@ public record InfinityBehavior(double radius, double slow, double minSpeed) impl
 
 			projectile.setDeltaMovement(velocity.scale(slow));
 			projectile.needsSync = true;
+		}
+		if(filter!=0)for(var enemy:ctx.enemiesInRadius(center,radius)) {
+			Vec3 away=enemy.position().subtract(ctx.caster().position()).multiply(1,0,1);
+			if(away.lengthSqr()<0.001)continue;
+			Vec3 velocity=enemy.getDeltaMovement();
+			if(velocity.dot(away)<0)enemy.setDeltaMovement(velocity.scale(slow));
+			enemy.setDeltaMovement(enemy.getDeltaMovement().add(away.normalize().scale(Math.min(0.18,0.05*ctx.power()))));
+			enemy.needsSync=true;
 		}
 
 		return true;

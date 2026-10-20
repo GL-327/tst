@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.soul_dash",
+  "description": "technique.jjkcraft.soul_dash.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 16,
+    "cooldown": 65,
+    "range": 7
+  },
+  "behavior": {
+    "type": "jjkcraft:dash",
+    "distance": 7,
+    "invulnerable_ticks": 5
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/soul_dash.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

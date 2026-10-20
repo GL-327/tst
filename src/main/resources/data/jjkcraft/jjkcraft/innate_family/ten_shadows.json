@@ -1,0 +1,27 @@
+{
+  "name": "family.jjkcraft.ten_shadows",
+  "clan": "Zen'in",
+  "inherited_weight": 3,
+  "random_weight": 0,
+  "techniques": [
+    "jjkcraft:ten_shadows_divine_dogs",
+    "jjkcraft:ten_shadows_nue",
+    "jjkcraft:ten_shadows_toad",
+    "jjkcraft:shadow_escape",
+    "jjkcraft:shadow_recall",
+    "jjkcraft:shadow_siphon",
+    "jjkcraft:ten_shadows_great_serpent",
+    "jjkcraft:ten_shadows_max_elephant",
+    "jjkcraft:ten_shadows_rabbit_escape",
+    "jjkcraft:ten_shadows_round_deer",
+    "jjkcraft:ten_shadows_piercing_ox",
+    "jjkcraft:ten_shadows_tiger_funeral",
+    "jjkcraft:ten_shadows_mahoraga",
+    "jjkcraft:divine_dog_totality",
+    "jjkcraft:well_unknown_abyss",
+    "jjkcraft:merged_beast_agito",
+    "jjkcraft:chimera_fusion",
+    "jjkcraft:elephant_surge"
+  ],
+  "domain": "jjkcraft:chimera_shadow_garden"
+}

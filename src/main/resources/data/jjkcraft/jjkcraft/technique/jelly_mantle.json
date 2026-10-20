@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.jelly_mantle",
+  "description": "technique.jjkcraft.jelly_mantle.desc",
+  "grade": "jjkcraft:grade_2",
+  "category": "utility",
+  "cast": {
+    "cost": 30,
+    "cooldown": 180,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "armor",
+    "duration": 120,
+    "radius": 1
+  },
+  "visuals": {
+    "color": "#C393DB",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/jelly_mantle.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

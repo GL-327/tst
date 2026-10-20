@@ -33,13 +33,25 @@ public record DashBehavior(double distance, int invulnerableTicks) implements Te
 	public CastResult cast(CastContext ctx) {
 		LivingEntity caster = ctx.caster();
 		Vec3 from = caster.position();
-		Vec3 limit = ctx.blockLimit(distance);
-		Vec3 step = new Vec3(limit.x - from.x, 0, limit.z - from.z);
+		int mode=ctx.details().expression().dash();
+		Vec3 direction=switch(mode){case 1->ctx.look().scale(-1);case 2->ctx.look().yRot((float)(Math.PI/2));case 3->ctx.look().yRot((float)(-Math.PI/2));case 4->new Vec3(0,1,0);case 5->new Vec3(0,-1,0);default->ctx.look();};
+		if(mode<4)direction=direction.multiply(1,0,1);direction=direction.normalize();
+		var ray=ctx.level().clip(new net.minecraft.world.level.ClipContext(ctx.eye(),ctx.eye().add(direction.scale(distance)),net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,caster));
+		double length=ray.getType()==net.minecraft.world.phys.HitResult.Type.MISS?distance:Math.max(0,ray.getLocation().distanceTo(ctx.eye())-0.5);
+		Vec3 step=direction.scale(length);
 		if (step.length() < 0.8) {
 			return CastResult.miss(from);
 		}
 
-		Vec3 to = from.add(step.normalize().scale(step.length() - 0.5));
+		Vec3 safe=Vec3.ZERO;
+		for(double n=0.25;n<=step.length();n+=0.25){Vec3 candidate=direction.scale(n);if(!ctx.level().noCollision(caster,caster.getBoundingBox().move(candidate)))break;safe=candidate;}
+		if(safe.length()<0.5)return CastResult.miss(from);
+		Vec3 to = from.add(safe);
+		// Eye-ray clearance alone does not guarantee that the feet/body fit at the destination.
+		Vec3 delta=to.subtract(from);
+		while(delta.length()>0.5 && !ctx.level().noCollision(caster,caster.getBoundingBox().move(delta)))delta=delta.subtract(delta.normalize().scale(0.25));
+		if(delta.length()<=0.5)return CastResult.miss(from);
+		to=from.add(delta);
 		if (caster instanceof ServerPlayer player) {
 			player.teleportTo(to.x, to.y, to.z);
 		} else {

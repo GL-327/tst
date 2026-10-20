@@ -49,6 +49,11 @@ public final class ModuloCommands {
 	}
 
 	private static LiteralArgumentBuilder<CommandSourceStack> build(LiteralArgumentBuilder<CommandSourceStack> root) {
+		if(!Modulo.storyEnabled())return root.then(Commands.literal("modulo")
+			.then(players("leave",ModuloTravel::leave))
+			.then(Commands.literal("mul").then(Commands.argument("amount",DoubleArgumentType.doubleArg(0,100_000))
+				.executes(ctx->each(ctx,null,p->MulEnergy.set(p,DoubleArgumentType.getDouble(ctx,"amount"))))
+				.then(Commands.argument("targets",EntityArgument.players()).executes(ctx->each(ctx,EntityArgument.getPlayers(ctx,"targets"),p->MulEnergy.set(p,DoubleArgumentType.getDouble(ctx,"amount"))))))));
 		return root.then(Commands.literal("modulo")
 				.then(Commands.literal("descent")
 						.then(Commands.literal("start")

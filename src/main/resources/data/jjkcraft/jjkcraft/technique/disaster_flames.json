@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.disaster_flames",
+  "description": "technique.jjkcraft.disaster_flames.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "flames",
+    "damage": 5,
+    "duration": 60,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#F35A28",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/disaster_flames.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

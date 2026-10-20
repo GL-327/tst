@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.perfect_sphere",
+  "description": "technique.jjkcraft.perfect_sphere.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:special_grade",
+  "cast": {
+    "cost": 160,
+    "cooldown": 700,
+    "range": 20
+  },
+  "behavior": {
+    "type": "jjkcraft:line_cut",
+    "damage": 28,
+    "width": 1.2,
+    "pierce": 1
+  },
+  "visuals": {
+    "color": "#A79572",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "beam",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/perfect_sphere.png",
+  "innate_weight": 0,
+  "mastery_uses": 30
+}

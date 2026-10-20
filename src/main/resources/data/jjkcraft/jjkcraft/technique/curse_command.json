@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.curse_command",
+  "description": "technique.jjkcraft.curse_command.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 6,
+    "cooldown": 35,
+    "range": 28
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "curse_command",
+    "damage": 0,
+    "duration": 80,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#7F3FA3",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/curse_command.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

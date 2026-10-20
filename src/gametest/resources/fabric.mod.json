@@ -18,7 +18,17 @@
       "com.jjkcraft.gametest.PerformanceGameTests",
       "com.jjkcraft.gametest.SamplePackGameTests",
       "com.jjkcraft.gametest.LegacyIdGameTests",
-      "com.jjkcraft.gametest.ModuloGameTests"
+      "com.jjkcraft.gametest.ModuloGameTests",
+      "com.jjkcraft.gametest.CompletionGameTests",
+      "com.jjkcraft.gametest.ExpansionGameTests",
+      "com.jjkcraft.gametest.PersonalizationGameTests",
+      "com.jjkcraft.gametest.DeepSorceryGameTests",
+      "com.jjkcraft.gametest.QualityGameTests",
+      "com.jjkcraft.gametest.SandboxGameTests",
+      "com.jjkcraft.gametest.ArsenalExpansionGameTests",
+      "com.jjkcraft.gametest.AtelierGameTests",
+      "com.jjkcraft.gametest.MenagerieGameTests",
+      "com.jjkcraft.gametest.ChargeTerrainGameTests"
     ],
     "fabric-client-gametest": [
       "com.jjkcraft.gametest.SmokeClientGameTest"

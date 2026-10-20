@@ -41,6 +41,7 @@ public record ArcSlashBehavior(double damage, double arc, double ceScaling, doub
 
 	@Override
 	public CastResult cast(CastContext ctx) {
+        for(int i=-2;i<=2;i++)com.jjkcraft.technique.TechniqueTerrain.line(ctx,ctx.eye(),ctx.eye().add(ctx.aim(i*arc/4,0).scale(ctx.range())),.8);
 		List<LivingEntity> targets = ctx.enemiesInCone(ctx.range(), arc);
 		for (LivingEntity target : targets) {
 			double ce = CursedEnergy.isCapable(target) ? CursedEnergy.current(target) : 0;

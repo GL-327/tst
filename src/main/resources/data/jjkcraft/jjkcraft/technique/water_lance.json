@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.water_lance",
+  "description": "technique.jjkcraft.water_lance.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 22,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 11,
+    "speed": 1.8,
+    "size": 0.3,
+    "lifetime": 45
+  },
+  "visuals": {
+    "color": "#3CAAC5",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/water_lance.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

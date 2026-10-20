@@ -110,32 +110,13 @@ public class ModuloGameTests {
 	}
 
 	@GameTest
-	public void onlyAGradeOnePlayerSeesTheDescentAndBoardingTakesThemAboard(GameTestHelper helper) {
-		MinecraftServer server = on(helper);
-		ServerPlayer low = TestPlayers.fresh(helper);
-		helper.assertFalse(NaunaxDescent.eligible(low), "a Grade 4 does not see the Naunax");
-		ServerPlayer player = gradeOne(helper);
-		helper.assertTrue(NaunaxDescent.eligible(player), "a Grade 1 does");
-
-		BlockPos foot = helper.absolutePos(new BlockPos(1, 1, 1));
-		NaunaxDescent.start(server, foot, 200);
-		helper.assertTrue(NaunaxDescent.active(server), "the Descent is on");
-		helper.assertValueEqual(Modulo.view(player).descent().orElse(null), foot, "the player is shown the ramp's foot");
-
-		BlockPos from = player.blockPosition();
-		helper.assertTrue(ModuloTravel.board(player), "boarding works");
-		helper.assertTrue(player.level().dimension() == Modulo.NAUNAX, "the player is aboard the Naunax");
-		ModuloProgress progress = Modulo.progress(player);
-		helper.assertTrue(progress.boarded(), "boarding is remembered");
-		helper.assertValueEqual(progress.returnTo().map(GlobalPos::pos).orElse(null), from, "and where they came from");
-
-		ModuloTravel.leave(player);
-		helper.assertTrue(player.level().dimension() == Level.OVERWORLD, "leaving brings them home");
-		NaunaxDescent.end(server);
-		helper.assertFalse(NaunaxDescent.active(server), "the Descent can end");
-		player.level().removePlayerImmediately(player, Entity.RemovalReason.DISCARDED);
-		done(helper);
-	}
+	public void gradeChangesNeverOfferStoryBoarding(GameTestHelper helper) {
+        var server=on(helper);var player=gradeOne(helper);var before=player.position();
+        helper.assertFalse(NaunaxDescent.eligible(player),"no expedition offered");
+        NaunaxDescent.start(server,helper.absolutePos(new BlockPos(2,1,2)),200);
+        helper.assertFalse(NaunaxDescent.active(server)||ModuloTravel.board(player),"story boarding disabled");
+        helper.assertValueEqual(player.position(),before,"player stays in the normal world");done(helper);
+    }
 
 	@GameTest
 	public void pouringCursedEnergyIntoMulMakesMulEnergyAtTheRatio(GameTestHelper helper) {
@@ -224,7 +205,7 @@ public class ModuloGameTests {
 	}
 
 	@GameTest
-	public void daburasHealthGrowsWithFightersAndTheWinIsShared(GameTestHelper helper) {
+	public void daburasStandaloneHealthScalesWithoutQuestProgress(GameTestHelper helper) {
 		MinecraftServer server = on(helper);
 		ServerLevel level = helper.getLevel();
 		Identifier mission = modulo("ritual_of_harmony");
@@ -242,91 +223,8 @@ public class ModuloGameTests {
 		dabura.rescale(2);
 		Missions.onBossDefeated(dabura, List.of(a, b));
 		dabura.discard();
-		helper.assertValueEqual(Modulo.progress(a).stage(), 2, "the first fighter moves on");
-		helper.assertValueEqual(Modulo.progress(b).stage(), 2, "and so does the second");
-		done(helper);
-	}
-
-	@GameTest
-	public void theFirstMissionEndsWithMaruAsACompanion(GameTestHelper helper) {
-		on(helper);
-		ServerPlayer player = gradeOne(helper);
-		Identifier mission = modulo("special_grade_incident");
-		Missions.jumpTo(player, mission, 4);
-		ModuloNpcEntity yuka = ModuloEntities.spawnNpc(helper.getLevel(), "yuka", ModuloNpcEntity.Role.SITE, null, null, helper.absolutePos(new BlockPos(1, 1, 1)));
-		for (int i = 0; i < 3; i++) {
-			Missions.onTalk(player, yuka);
-		}
-
-		yuka.discard();
-		ModuloProgress progress = Modulo.progress(player);
-		helper.assertTrue(progress.hasCompleted(mission), "the mission is done after Yuka's last line");
-		helper.assertTrue(progress.companion(), "Maru is a companion");
-		helper.assertTrue(player.getInventory().countItem(ModuloItems.MUL) >= 4, "the reward: Mul");
-		helper.assertTrue(player.getInventory().countItem(ModuloItems.NAUNAX_BEACON) == 1, "and a beacon");
-		helper.assertValueEqual(Missions.current(player).map(Missions.Current::id).orElse(null), modulo("kyoto_abductions"), "the next mission is up");
-		done(helper);
-	}
-
-	@GameTest
-	public void theChoiceInChaosAndHarmonyPicksTheBranch(GameTestHelper helper) {
-		MinecraftServer server = on(helper);
-		ServerPlayer player = gradeOne(helper);
-		Identifier mission = modulo("chaos_and_harmony");
-		Missions.jumpTo(player, mission, 1);
-		ModuloNpcEntity tsurugi = ModuloEntities.spawnNpc(helper.getLevel(), "tsurugi", ModuloNpcEntity.Role.SITE, null, null, helper.absolutePos(new BlockPos(1, 1, 1)));
-		Missions.onChoose(player, 1);
-		tsurugi.discard();
-		helper.assertValueEqual(Modulo.progress(player).flag("chaos_and_harmony").orElse(null), "stand_aside", "the choice is saved");
-		Missions.update(server, List.of(player));
-		helper.assertValueEqual(Modulo.progress(player).stage(), 3, "the duel stage is skipped for a player who stood aside");
-		Missions.onChoose(player, 0);
-		helper.assertValueEqual(Modulo.progress(player).flag("chaos_and_harmony").orElse(null), "stand_aside", "a choice cannot be made off its stage");
-		done(helper);
-	}
-
-	@GameTest(maxTicks = 100)
-	public void theEpiloguePlaysOnceAndGrantsItsRewards(GameTestHelper helper) {
-		MinecraftServer server = on(helper);
-		ServerPlayer player = gradeOne(helper);
-		Identifier mission = modulo("a_bright_future");
-		Missions.jumpTo(player, mission, 1);
-		for (int i = 0; i < 80 && Modulo.progress(player).stage() == 1; i++) {
-			Missions.update(server, List.of(player));
-		}
-
-		helper.assertValueEqual(Modulo.progress(player).stage(), 2, "the sequence ran its course");
-		helper.assertTrue(Modulo.progress(player).epilogueSeen(), "and is marked as seen");
-		ModuloNpcEntity kyoko = ModuloEntities.spawnNpc(helper.getLevel(), "kyoko_tomoe", ModuloNpcEntity.Role.SITE, null, null,
-				helper.absolutePos(new BlockPos(1, 1, 1)));
-		Missions.onTalk(player, kyoko);
-		Missions.onTalk(player, kyoko);
-		kyoko.discard();
-		helper.assertTrue(Modulo.progress(player).hasCompleted(mission), "the last mission is done");
-		helper.assertValueEqual(player.getInventory().countItem(ModuloItems.YUJI_CURSED_OBJECT), 1, "Yuji Itadori's Cursed Object is given");
-		helper.assertTrue(Missions.finishedAll(player), "every mission is finished");
-		helper.assertTrue(Missions.current(player).isEmpty(), "so nothing replays the epilogue");
-
-		// Fabric API never grants advancements to fake players, so a mock player in the player list
-		// takes the last step again to show the advancement is granted. It leaves within this tick.
-		ServerPlayer real = helper.makeMockServerPlayerInLevel();
-		try {
-			Progression.setGrade(real, JjkCraft.id("grade_1"));
-			BlockPos at = helper.absolutePos(BlockPos.ZERO.above());
-			real.setPos(at.getX() + 0.5, at.getY(), at.getZ() + 0.5);
-			Missions.jumpTo(real, mission, 2);
-			ModuloNpcEntity again = ModuloEntities.spawnNpc(helper.getLevel(), "kyoko_tomoe", ModuloNpcEntity.Role.SITE, null, null,
-					helper.absolutePos(new BlockPos(1, 1, 1)));
-			Missions.onTalk(real, again);
-			Missions.onTalk(real, again);
-			again.discard();
-			AdvancementHolder advancement = server.getAdvancements().get(JjkCraft.id("modulo/epilogue"));
-			helper.assertTrue(advancement != null, "the epilogue advancement exists");
-			helper.assertTrue(real.getAdvancements().getOrStartProgress(advancement).isDone(), "the advancement is granted");
-		} finally {
-			server.getPlayerList().remove(real);
-		}
-
+		helper.assertValueEqual(Modulo.progress(a).stage(), 0, "standalone fight starts no quest");
+		helper.assertValueEqual(Modulo.progress(b).stage(), 0, "no quest for the second fighter either");
 		done(helper);
 	}
 

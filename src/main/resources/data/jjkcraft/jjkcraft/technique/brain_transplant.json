@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.brain_transplant",
+  "description": "technique.jjkcraft.brain_transplant.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 25,
+    "cooldown": 200,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "body_transfer",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#CC7F99",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/brain_transplant.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -6,7 +6,11 @@
     "CameraMixin",
     "BossHealthOverlayAccessor",
     "ClientLevelMixin",
-    "EntityRendererMixin"
+    "EntityRendererMixin",
+    "ProjectionPoseMixin",
+    "BodyFormMixin",
+    "CombatPoseMixin",
+    "CombatHandsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

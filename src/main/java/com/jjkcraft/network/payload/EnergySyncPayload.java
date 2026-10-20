@@ -14,13 +14,14 @@ import com.jjkcraft.network.JjkStreamCodecs;
  * Server to client: the player's own CE. Sent only when the state, max or regen modifier changes;
  * the client predicts regen in between with the same math as the server.
  */
-public record EnergySyncPayload(EnergyState state, double max, double regenModifier) implements CustomPacketPayload {
+public record EnergySyncPayload(EnergyState state, double max, double regenModifier, boolean uncapped) implements CustomPacketPayload {
+	public EnergySyncPayload(EnergyState state,double max,double regenModifier){this(state,max,regenModifier,false);}
 	public static final Type<EnergySyncPayload> TYPE = new Type<>(JjkCraft.id("energy_sync"));
 
 	public static final StreamCodec<ByteBuf, EnergySyncPayload> CODEC = StreamCodec.composite(
 			JjkStreamCodecs.ENERGY_STATE, EnergySyncPayload::state,
 			ByteBufCodecs.DOUBLE, EnergySyncPayload::max,
-			ByteBufCodecs.DOUBLE, EnergySyncPayload::regenModifier,
+			ByteBufCodecs.DOUBLE, EnergySyncPayload::regenModifier,ByteBufCodecs.BOOL,EnergySyncPayload::uncapped,
 			EnergySyncPayload::new);
 
 	@Override

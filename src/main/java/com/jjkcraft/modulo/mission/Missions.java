@@ -96,7 +96,7 @@ public final class Missions {
 	// ---------------------------------------------------------------- where a player stands
 
 	public static Optional<Current> current(ServerPlayer player) {
-		if (!Modulo.enabled()) {
+		if (!Modulo.storyEnabled()) {
 			return Optional.empty();
 		}
 
@@ -183,6 +183,7 @@ public final class Missions {
 	 * checks, sites, spawns, bosses, companions. Public so GameTests can drive it for fake players.
 	 */
 	public static void update(MinecraftServer server, List<ServerPlayer> players) {
+		if(!Modulo.storyEnabled())return;
 		Map<Identifier, List<ServerPlayer>> bySite = new HashMap<>();
 		for (ServerPlayer player : players) {
 			companion(player);
@@ -401,6 +402,7 @@ public final class Missions {
 
 	/** A player right-clicked a character. */
 	public static void onTalk(ServerPlayer player, ModuloNpcEntity npc) {
+		if(!Modulo.storyEnabled())return;
 		if (npc.ownedBy(player) && player.isShiftKeyDown()) {
 			// Maru's Harmony takes his player to the ship.
 			if (com.jjkcraft.modulo.ModuloTravel.toShip(player)) {
@@ -466,6 +468,7 @@ public final class Missions {
 
 	/** A player picked an option at a choice stage. Checked: right stage, a valid option, the character near, rate limited. */
 	public static void onChoose(ServerPlayer player, int option) {
+		if(!Modulo.storyEnabled())return;
 		if (!CHOOSE_LIMIT.tryAcquire(player.getUUID(), player.level().getGameTime())) {
 			return;
 		}
@@ -529,6 +532,7 @@ public final class Missions {
 
 	/** The current stage is done: the next is the checkpoint, and after the last the mission's rewards. */
 	public static void complete(ServerPlayer player, Current current, boolean announce) {
+		if(!Modulo.storyEnabled())return;
 		ModuloProgress progress = Modulo.progress(player).nextStage();
 		Modulo.setProgress(player, progress);
 		if (announce) {
@@ -599,6 +603,7 @@ public final class Missions {
 
 	/** Sets a player's place in the chain (commands and tests): {@code mission} at {@code stage}, earlier missions done. */
 	public static void jumpTo(ServerPlayer player, Identifier mission, int stage) {
+		if(!Modulo.storyEnabled())return;
 		List<Identifier> done = new ArrayList<>();
 		for (ModuloRegistries.Mission m : ModuloRegistries.missions(player.registryAccess())) {
 			if (m.id().equals(mission)) {

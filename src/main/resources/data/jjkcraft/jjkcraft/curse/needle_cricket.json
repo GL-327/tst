@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.needle_cricket",
+  "description": "curse.jjkcraft.needle_cricket.desc",
+  "lore": "curse.jjkcraft.needle_cricket.lore",
+  "entity": "jjkcraft:needle_cricket",
+  "grade": "jjkcraft:grade_3",
+  "stats": {
+    "health": 24,
+    "armor": 0,
+    "speed": 0.256,
+    "attack_damage": 2.45,
+    "ce_capacity": 55,
+    "follow_range": 22
+  },
+  "techniques": [
+    "jjkcraft:splinter_volley"
+  ],
+  "spawn": {
+    "weight": 9,
+    "min_fear": 24,
+    "group_min": 2,
+    "group_max": 3,
+    "max_light": 10
+  },
+  "resistances": {
+    "jjkcraft:cursed_technique": 0.8
+  },
+  "model": {
+    "geo": "jjkcraft:entity/needle_cricket",
+    "texture": "jjkcraft:textures/entity/needle_cricket.png",
+    "animation": "jjkcraft:entity/needle_cricket",
+    "scale": 0.7
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#A29A64",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:backfist"
+  ],
+  "loot_table": "jjkcraft:entities/needle_cricket"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "technique.jjkcraft.gale_cutter",
+  "description": "technique.jjkcraft.gale_cutter.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 45,
+    "cooldown": 85,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 6,
+    "speed": 2.1,
+    "count": 3,
+    "spread": 12,
+    "size": 0.3,
+    "lifetime": 40,
+    "blast_radius": 0
+  },
+  "visuals": {
+    "color": "#B1D7CE",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/gale_cutter.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

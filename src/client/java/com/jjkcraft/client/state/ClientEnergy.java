@@ -19,6 +19,7 @@ public final class ClientEnergy {
 	private static double max;
 	private static double regenModifier = 1.0;
 	private static boolean received;
+	private static boolean uncapped;
 	private static boolean domainsEnabled = true;
 	private static boolean cullingEnabled = true;
 
@@ -32,6 +33,7 @@ public final class ClientEnergy {
 		boolean first = !received;
 		state = payload.state();
 		max = payload.max();
+		uncapped=payload.uncapped();
 		regenModifier = payload.regenModifier();
 		received = true;
 		if (first) {
@@ -49,6 +51,7 @@ public final class ClientEnergy {
 		params = EnergyParams.DEFAULT;
 		state = EnergyState.EMPTY;
 		max = 0;
+		uncapped=false;
 		regenModifier = 1.0;
 		received = false;
 		displayed = 0;
@@ -61,6 +64,8 @@ public final class ClientEnergy {
 	public static double max() {
 		return max;
 	}
+	public static boolean uncapped(){return uncapped;}
+	public static double regenerationPerSecond(){return max*params.regenFractionPerSecond()*regenModifier;}
 
 	public static EnergyParams params() {
 		return params;
@@ -81,7 +86,7 @@ public final class ClientEnergy {
 
 	/** The predicted current CE right now. */
 	public static double predicted() {
-		return EnergyMath.advance(state, max, gameTime(), params, regenModifier).current();
+		return (uncapped?EnergyMath.advanceUnbounded(state,max,gameTime(),params,regenModifier):EnergyMath.advance(state, max, gameTime(), params, regenModifier)).current();
 	}
 
 	public static boolean overexerted() {
@@ -89,7 +94,7 @@ public final class ClientEnergy {
 	}
 
 	public static boolean regenerating() {
-		return max > 0 && regenModifier > 0 && !overexerted() && predicted() < max - 1e-6;
+		return max > 0 && regenModifier > 0 && !overexerted() && (uncapped||predicted() < max - 1e-6);
 	}
 
 	public static boolean idleBoosted() {

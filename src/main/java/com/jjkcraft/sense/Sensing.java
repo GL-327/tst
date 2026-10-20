@@ -76,7 +76,7 @@ public final class Sensing {
 	}
 
 	public static double range(ServerPlayer player) {
-		return Grades.get(player.registryAccess(), Progression.get(player).grade())
+		return (com.jjkcraft.awakening.CharacterTraits.has(player,"six_eyes")?1.5:1.0) * Grades.get(player.registryAccess(), Progression.get(player).grade())
 				.map(g -> g.perks().senseRange())
 				.orElse(GradeDefinition.Perks.NONE.senseRange());
 	}

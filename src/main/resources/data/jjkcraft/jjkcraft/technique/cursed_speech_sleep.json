@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.cursed_speech_sleep",
+  "description": "technique.jjkcraft.cursed_speech_sleep.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 28,
+    "cooldown": 180,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:cursed_speech",
+    "command": "stop",
+    "radius": 6,
+    "duration": 60,
+    "damage": 0,
+    "strain": 2
+  },
+  "visuals": {
+    "color": "#B08D57",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_speech_sleep.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

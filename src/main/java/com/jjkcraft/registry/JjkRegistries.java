@@ -41,6 +41,10 @@ public final class JjkRegistries {
 	}
 
 	public static void init() {
+		com.jjkcraft.awakening.CharacterAwakening.register();
+		com.jjkcraft.awakening.CharacterTraits.register();
+		com.jjkcraft.combat.CursedCombat.register();
+		com.jjkcraft.death.SoulSystem.register();
 		DynamicRegistries.register(ENERGY_PROFILE, EnergyProfile.CODEC);
 		DynamicRegistries.registerSynced(GRADE, GradeDefinition.CODEC);
 		DynamicRegistries.registerSynced(TECHNIQUE, TechniqueDefinition.CODEC);

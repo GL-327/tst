@@ -60,6 +60,10 @@ public final class ActiveDomain {
 	private long heldAt = -1;
 	ActiveDomain opponent;
 	private boolean closeRequested;
+	private double barrierDamage;
+	public double barrierMaximum(){return 80+radius*2+com.jjkcraft.sorcerer.Progression.gradeRank(caster.registryAccess(),caster)*10;}
+	public float integrity(){return (float)Math.max(0,1-barrierDamage/barrierMaximum());}
+	public void damageBarrier(double damage){barrierDamage+=Math.max(0,damage);if(integrity()<=0)requestClose();}
 
 	ActiveDomain(int id, LivingEntity caster, ServerLevel level, Identifier domainId, DomainDefinition definition, DomainMath.Variant variant,
 			Vec3 center, double radius, double power) {

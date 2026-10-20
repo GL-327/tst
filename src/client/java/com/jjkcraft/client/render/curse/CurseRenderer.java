@@ -27,6 +27,8 @@ public class CurseRenderer extends GeoEntityRenderer<CurseEntity, LivingEntityRe
 	private static final DataTicket<Float> MODEL_SCALE = DataTicket.create("jjkcraft_curse_scale", Float.class);
 	private static final DataTicket<Float> ALPHA = DataTicket.create("jjkcraft_curse_alpha", Float.class);
 	private static final int FULL_BRIGHT = 15728880;
+	private static final DataTicket<Identifier> NOISE = DataTicket.create("jjkcraft_curse_noise", Identifier.class);
+	private static final DataTicket<Identifier> GLOW = DataTicket.create("jjkcraft_curse_glow", Identifier.class);
 
 	public CurseRenderer(EntityRendererProvider.Context context) {
 		super(context, new CurseModel());
@@ -37,6 +39,8 @@ public class CurseRenderer extends GeoEntityRenderer<CurseEntity, LivingEntityRe
 	public void addRenderData(CurseEntity curse, @Nullable Void relatedObject, LivingEntityRenderState renderState, float partialTick) {
 		renderState.addGeckolibData(MODEL_SCALE, curse.definition().map(d -> d.model().scale()).orElse(1f));
 		renderState.addGeckolibData(ALPHA, alpha(curse, partialTick));
+		renderState.addGeckolibData(NOISE, com.jjkcraft.JjkCraft.id("textures/vfx/dissolve_" + curse.grade().getPath() + ".png"));
+		curse.definition().ifPresent(d -> renderState.addGeckolibData(GLOW, d.model().texture().withPath(d.model().texture().getPath().replace(".png", "_glow.png"))));
 	}
 
 	/** 0 to 1: rises over the emergence, falls over the last two thirds of the death animation. */
@@ -77,7 +81,7 @@ public class CurseRenderer extends GeoEntityRenderer<CurseEntity, LivingEntityRe
 	@Override
 	public @Nullable RenderType getRenderType(LivingEntityRenderState renderState, Identifier texture) {
 		if (renderState.getOrDefaultGeckolibData(ALPHA, 1f) < 1f) {
-			return RenderTypes.entityTranslucent(texture);
+			return RenderTypes.entityCutoutDissolve(texture, renderState.getOrDefaultGeckolibData(NOISE, com.jjkcraft.JjkCraft.id("textures/vfx/dissolve_grade_4.png")));
 		}
 
 		return super.getRenderType(renderState, texture);
@@ -87,6 +91,17 @@ public class CurseRenderer extends GeoEntityRenderer<CurseEntity, LivingEntityRe
 	public void submitRenderTasks(RenderPassInfo<LivingEntityRenderState> renderPassInfo, OrderedSubmitNodeCollector renderTasks,
 			@Nullable RenderType renderType) {
 		super.submitRenderTasks(renderPassInfo, renderTasks, renderType);
+		Identifier glow = renderPassInfo.renderState().getGeckolibData(GLOW);
+		if (glow != null && !com.jjkcraft.client.config.ClientConfig.effectsOff()
+				&& net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(glow).isPresent()) {
+			RenderType glowType = renderPassInfo.renderState().getOrDefaultGeckolibData(ALPHA, 1f) < 1f
+					? RenderTypes.entityCutoutDissolve(glow, renderPassInfo.renderState().getGeckolibData(NOISE)) : RenderTypes.entityTranslucentEmissive(glow);
+			int glowColor = ARGB.color(Math.round(255 * renderPassInfo.renderState().getOrDefaultGeckolibData(ALPHA, 1f)), 0xFFFFFF);
+			renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), glowType, (pose, vertices) -> {
+				PoseStack poses = renderPassInfo.poseStack(); poses.pushPose(); poses.last().set(pose);
+				renderPassInfo.renderPosed(() -> renderPassInfo.model().render(renderPassInfo, vertices, FULL_BRIGHT, OverlayTexture.NO_OVERLAY, glowColor)); poses.popPose();
+			});
+		}
 
 		int outline = renderPassInfo.renderState().outlineColor;
 		if (outline == 0 || renderType == null || renderPassInfo.model().isMissingno()) {

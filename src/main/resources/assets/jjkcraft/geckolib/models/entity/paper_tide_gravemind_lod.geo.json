@@ -1,0 +1,272 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.paper_tide_gravemind",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "name": "core",
+          "pivot": [
+            0,
+            16,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                6,
+                -4
+              ],
+              "size": [
+                12,
+                18,
+                8
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            24,
+            0
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                24,
+                -4
+              ],
+              "size": [
+                8,
+                8,
+                8
+              ],
+              "uv": [
+                40,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wheel",
+          "pivot": [
+            0,
+            33,
+            0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                33,
+                -5
+              ],
+              "size": [
+                10,
+                1,
+                10
+              ],
+              "uv": [
+                72,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet0",
+          "pivot": [
+            -8,
+            18,
+            -3
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                -11,
+                8,
+                -3.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                112,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet1",
+          "pivot": [
+            8,
+            18,
+            -3
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                5,
+                8,
+                -3.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                0,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet2",
+          "pivot": [
+            -7,
+            18,
+            4
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                -10,
+                8,
+                3.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                14,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet3",
+          "pivot": [
+            7,
+            18,
+            4
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                4,
+                8,
+                3.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                28,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet4",
+          "pivot": [
+            0,
+            18,
+            6
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                8,
+                5.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                42,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "sheet5",
+          "pivot": [
+            0,
+            18,
+            -6
+          ],
+          "parent": "core",
+          "cubes": [
+            {
+              "origin": [
+                -3,
+                8,
+                -6.5
+              ],
+              "size": [
+                6,
+                14,
+                1
+              ],
+              "uv": [
+                56,
+                26
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.tidal_guard",
+  "description": "technique.jjkcraft.tidal_guard.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 32,
+    "cooldown": 240,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "tidal_guard",
+    "damage": 0,
+    "duration": 180,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#3CAAC5",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/tidal_guard.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

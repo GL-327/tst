@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.tide_prison",
+  "description": "technique.jjkcraft.tide_prison.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 22,
+    "cooldown": 130,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "tide_prison",
+    "damage": 5,
+    "duration": 65,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#3CAAC5",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/tide_prison.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

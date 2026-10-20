@@ -1,0 +1,27 @@
+{
+  "name": "technique.jjkcraft.venom_tether",
+  "description": "technique.jjkcraft.venom_tether.desc",
+  "grade": "jjkcraft:grade_4",
+  "category": "restriction",
+  "cast": {
+    "cost": 20,
+    "cooldown": 120,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:bind",
+    "duration": 45,
+    "damage": 4
+  },
+  "visuals": {
+    "color": "#C393DB",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/venom_tether.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

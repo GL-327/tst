@@ -108,7 +108,15 @@ public final class JjkCraft implements ModInitializer {
 		HeavenlyRestriction.init();
 		Awakening.init();
 		SpatialFields.init();
+        com.jjkcraft.technique.TechniqueTerrain.init();
 		TechniqueService.init();
+		com.jjkcraft.technique.Personalization.init();
+		com.jjkcraft.energy.SorceryPractice.init();
+		com.jjkcraft.awakening.CharacterTraits.init();
+		com.jjkcraft.awakening.BodyTransfer.init();
+		com.jjkcraft.awakening.ControlledCurses.init();
+		com.jjkcraft.entity.shikigami.ShikigamiFusion.init();
+		com.jjkcraft.awakening.CharacterAwakening.init();
 
 		CurseMechanics.init();
 		Fear.init();
@@ -118,11 +126,13 @@ public final class JjkCraft implements ModInitializer {
 		DomainService.init();
 		ArsenalBehavior.init();
 		BlackFlash.init();
+		com.jjkcraft.combat.CursedCombat.init();
 		ReverseTechnique.init();
 		PlayerActions.init();
 		Vows.init();
 		UnboundRitual.init();
 		CullingGame.init();
+		com.jjkcraft.death.SoulSystem.init();
 		com.jjkcraft.item.tool.CursedTools.init();
 		com.jjkcraft.technique.behavior.ThornsAuraBehavior.init();
 

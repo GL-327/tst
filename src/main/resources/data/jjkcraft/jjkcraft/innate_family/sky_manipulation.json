@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.sky_manipulation",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 12,
+  "techniques": [
+    "jjkcraft:sky_manipulation",
+    "jjkcraft:sky_step",
+    "jjkcraft:thin_ice_breaker",
+    "jjkcraft:sky_counter"
+  ],
+  "domain": ""
+}

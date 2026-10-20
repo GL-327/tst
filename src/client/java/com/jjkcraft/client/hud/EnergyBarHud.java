@@ -92,7 +92,7 @@ public final class EnergyBarHud {
 		}
 
 		if (ClientConfig.get().hud.showNumbers) {
-			String label = Math.round(shown) + "/" + Math.round(max);
+			String label = Math.round(shown) + "/" + (ClientEnergy.uncapped()?"∞":Math.round(max));
 			g.pose().pushMatrix();
 			g.pose().translate(BAR_X, BAR_Y + BAR_H + 2);
 			g.pose().scale(0.5f, 0.5f);

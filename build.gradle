@@ -71,6 +71,14 @@ fabricApi {
 // Server GameTests write a JUnit-style report so results can be read without scanning the log.
 loom.runs.named("gameTest") {
 	vmArg "-Dfabric-api.gametest.report-file=${layout.buildDirectory.file('reports/gametest/server.xml').get().asFile.absolutePath}"
+	if(providers.gradleProperty('gameTestFilter').isPresent())vmArg "-Dfabric-api.gametest.filter=${providers.gradleProperty('gameTestFilter').get()}"
+}
+
+// Recheck persistence independently after a completed visual run: -PclientTestFocus=relog.
+loom.runs.named("clientGameTest") {
+	if (providers.gradleProperty('clientTestFocus').isPresent()) {
+		vmArg "-Djjkcraft.clientTestFocus=${providers.gradleProperty('clientTestFocus').get()}"
+	}
 }
 
 // The -PwithCompat value as lower-case jar name prefixes: null without the flag, empty for every jar.

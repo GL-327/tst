@@ -50,6 +50,7 @@ public final class SpatialFields {
 		public Vec3 center() {
 			return center;
 		}
+        public LivingEntity caster(){return ctx.caster();}
 
 		public boolean attracts() {
 			return strength > 0;
@@ -76,6 +77,7 @@ public final class SpatialFields {
 		Field field = new Field(ctx, center, radius, strength, damagePerSecond, burstDamage, burstRadius, duration);
 		List<Field> list = FIELDS.computeIfAbsent(ctx.level(), l -> new ArrayList<>());
 		list.add(field);
+        com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,center,Math.min(radius,2.5+Math.sqrt(ctx.power())*2),24,strength>0);
 		resolveCollisions(ctx.level(), list);
 		return field;
 	}
@@ -99,6 +101,7 @@ public final class SpatialFields {
 				continue;
 			}
 
+            if(now%5==0)com.jjkcraft.technique.TechniqueTerrain.sphere(field.ctx,field.center,Math.min(field.radius,2.5+Math.sqrt(field.ctx.power())*2),12,field.attracts());
 			for (LivingEntity target : field.ctx.enemiesInRadius(field.center, field.radius)) {
 				Vec3 toCenter = field.center.subtract(target.position().add(0, target.getBbHeight() / 2, 0));
 				double distance = Math.max(0.5, toCenter.length());
@@ -106,8 +109,10 @@ public final class SpatialFields {
 				double pull = field.strength * 0.08 * Math.min(1.5, distance / field.radius + 0.3);
 				target.push(toCenter.normalize().scale(pull));
 				target.needsSync = true;
-				if (field.damagePerTick > 0 && now % 10 == 0) {
-					field.ctx.hurt(target, field.damagePerTick * 10 * field.ctx.power(), false);
+				int pulse=field.ctx.details().expression().pulse()==0?10:field.ctx.details().expression().pulse();
+				if (field.damagePerTick > 0 && now % pulse == 0) {
+					target.damageCooldownTime=0;
+					field.ctx.hurt(target, field.damagePerTick * pulse * field.ctx.power()*field.ctx.details().expression().falloff(distance,field.radius), false);
 				}
 			}
 		}
@@ -138,6 +143,7 @@ public final class SpatialFields {
 		Field stronger = attract.burstDamage >= repel.burstDamage ? attract : repel;
 		double radius = Math.max(attract.burstRadius, repel.burstRadius);
 		CastContext ctx = stronger.ctx;
+        com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,at,radius,64,false);
 		List<LivingEntity> hit = ctx.enemiesInRadius(at, radius);
 		for (LivingEntity target : hit) {
 			double falloff = 1 - 0.5 * Math.min(1, target.position().distanceTo(at) / radius);

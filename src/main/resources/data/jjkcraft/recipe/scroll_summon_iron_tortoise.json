@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:ink_sac",
+    "minecraft:glowstone_dust",
+    "minecraft:copper_ingot",
+    "minecraft:quartz"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:summon_iron_tortoise"
+    }
+  }
+}

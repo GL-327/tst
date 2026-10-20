@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.antigravity_system",
+  "description": "technique.jjkcraft.antigravity_system.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 24,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "antigravity",
+    "damage": 0,
+    "duration": 80,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#9373D2",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/antigravity_system.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

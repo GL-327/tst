@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.swap_recall",
+  "description": "technique.jjkcraft.swap_recall.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 22,
+    "cooldown": 100,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "swap_recall",
+    "damage": 0,
+    "duration": 80,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#E5BA70",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/swap_recall.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

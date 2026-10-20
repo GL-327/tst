@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.soul_blades",
+  "description": "technique.jjkcraft.soul_blades.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 20,
+    "cooldown": 140,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "soul_blades",
+    "damage": 0,
+    "duration": 180,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/soul_blades.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

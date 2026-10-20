@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.echo_ledger",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 7,
+  "techniques": [
+    "jjkcraft:echo_brand",
+    "jjkcraft:echo_collect",
+    "jjkcraft:echo_return",
+    "jjkcraft:echo_silence"
+  ],
+  "domain": ""
+}

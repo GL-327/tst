@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.soul_multiplicity",
+  "description": "technique.jjkcraft.soul_multiplicity.desc",
+  "category": "summon",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 65,
+    "cooldown": 240,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:transfigured_soul",
+    "count": 3,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#B07A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/soul_multiplicity.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

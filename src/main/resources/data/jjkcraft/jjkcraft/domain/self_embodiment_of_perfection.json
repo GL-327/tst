@@ -1,0 +1,30 @@
+{
+  "name": "domain.jjkcraft.self_embodiment_of_perfection",
+  "description": "domain.jjkcraft.self_embodiment_of_perfection.desc",
+  "grade": "jjkcraft:special_grade",
+  "cast_cost": 140,
+  "upkeep": 20,
+  "radius": 12,
+  "clash_priority": 2,
+  "behaviors": [
+    {
+      "type": "jjkcraft:sure_hit_damage",
+      "interval": 15,
+      "damage": 2.5
+    },
+    {
+      "type": "jjkcraft:apply_effect",
+      "effect": "minecraft:slowness",
+      "amplifier": 1,
+      "duration": 25,
+      "interval": 20
+    }
+  ],
+  "visuals": {
+    "color": "#B07A6A",
+    "secondary": "#F2C14E",
+    "dome": "#150F1B",
+    "ambience": "glyphs"
+  },
+  "innate_weight": 0
+}

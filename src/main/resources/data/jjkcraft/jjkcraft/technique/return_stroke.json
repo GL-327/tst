@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.return_stroke",
+  "description": "technique.jjkcraft.return_stroke.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 65,
+    "cooldown": 60,
+    "range": 10
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "charge_chain",
+    "damage": 8,
+    "duration": 80,
+    "radius": 10
+  },
+  "visuals": {
+    "color": "#8BDAF0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/return_stroke.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

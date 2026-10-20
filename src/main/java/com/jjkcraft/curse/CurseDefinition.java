@@ -46,7 +46,8 @@ public record CurseDefinition(
 		Model model,
 		Identifier mechanic,
 		Map<String, Double> parameters,
-		Codex codex
+		Codex codex,
+		List<Identifier> combatMoves
 ) {
 	public static final Codec<CurseDefinition> CODEC = RecordCodecBuilder.create(i -> i.group(
 			Codec.STRING.fieldOf("name").forGetter(CurseDefinition::name),
@@ -62,7 +63,8 @@ public record CurseDefinition(
 			Model.CODEC.fieldOf("model").forGetter(CurseDefinition::model),
 			Identifier.CODEC.fieldOf("mechanic").forGetter(CurseDefinition::mechanic),
 			Codec.unboundedMap(Codec.STRING, Codec.DOUBLE).optionalFieldOf("parameters", Map.of()).forGetter(CurseDefinition::parameters),
-			Codex.CODEC.optionalFieldOf("codex", Codex.DEFAULT).forGetter(CurseDefinition::codex)
+			Codex.CODEC.optionalFieldOf("codex", Codex.DEFAULT).forGetter(CurseDefinition::codex),
+			Identifier.CODEC.listOf(0, 16).optionalFieldOf("combat_moves", List.of(com.jjkcraft.JjkCraft.id("jab"))).forGetter(CurseDefinition::combatMoves)
 	).apply(i, CurseDefinition::new));
 
 	public double parameter(String key, double fallback) {
@@ -105,7 +107,7 @@ public record CurseDefinition(
 	 * @param dimensions dimensions it spawns in (empty: any)
 	 */
 	public record Spawn(int weight, double minFear, int groupMin, int groupMax, int maxLight, boolean water, List<Identifier> dimensions) {
-		public static final Codec<Spawn> CODEC = RecordCodecBuilder.create(i -> i.group(
+		public static final Codec<Spawn> CODEC = RecordCodecBuilder.<Spawn>create(i -> i.group(
 				Codec.intRange(1, 1000).fieldOf("weight").forGetter(Spawn::weight),
 				Codec.doubleRange(0, 100).fieldOf("min_fear").forGetter(Spawn::minFear),
 				Codec.intRange(1, 16).optionalFieldOf("group_min", 1).forGetter(Spawn::groupMin),
@@ -113,7 +115,9 @@ public record CurseDefinition(
 				Codec.intRange(0, 15).optionalFieldOf("max_light", 7).forGetter(Spawn::maxLight),
 				Codec.BOOL.optionalFieldOf("water", false).forGetter(Spawn::water),
 				Identifier.CODEC.listOf().optionalFieldOf("dimensions", List.of()).forGetter(Spawn::dimensions)
-		).apply(i, Spawn::new));
+		).apply(i, Spawn::new)).validate(s -> s.groupMax() >= s.groupMin()
+				? com.mojang.serialization.DataResult.success(s)
+				: com.mojang.serialization.DataResult.error(() -> "group_max must be at least group_min"));
 	}
 
 	/** GeckoLib asset ids. Paths follow GeckoLib's layout (models and animations under {@code geckolib/}). */

@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.merged_beast_agito",
+  "description": "technique.jjkcraft.merged_beast_agito.desc",
+  "grade": "jjkcraft:special_grade",
+  "category": "summon",
+  "cast": {
+    "cost": 110,
+    "cooldown": 320,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:fusion",
+    "components": [
+      "jjkcraft:nue",
+      "jjkcraft:great_serpent",
+      "jjkcraft:round_deer",
+      "jjkcraft:tiger_funeral"
+    ],
+    "result": "jjkcraft:agito",
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/merged_beast_agito.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

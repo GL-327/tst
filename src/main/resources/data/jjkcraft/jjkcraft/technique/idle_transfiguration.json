@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.idle_transfiguration",
   "description": "technique.jjkcraft.idle_transfiguration.desc",
   "category": "utility",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 24,
     "cooldown": 240,

@@ -1,0 +1,12 @@
+{
+  "startup": 4,
+  "active": 2,
+  "recovery": 9,
+  "damage": 3,
+  "ce": 2,
+  "height": 1,
+  "reach": 3,
+  "guard_damage": 17,
+  "stun": 16,
+  "knockback": 0.25
+}

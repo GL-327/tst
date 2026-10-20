@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.boogie_woogie",
+  "description": "technique.jjkcraft.boogie_woogie.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 10,
+    "cooldown": 25,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "swap",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#E5BA70",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/boogie_woogie.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

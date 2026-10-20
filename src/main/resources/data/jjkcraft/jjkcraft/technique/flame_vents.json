@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.flame_vents",
+  "description": "technique.jjkcraft.flame_vents.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 32,
+    "cooldown": 230,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "flame_vents",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#F35A28",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/flame_vents.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

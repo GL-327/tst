@@ -9,12 +9,12 @@ import com.jjkcraft.client.config.ClientConfig;
  */
 public final class Palette {
 	/** Panel fill: near-black with a cold tint, like dried ink. */
-	public static final int INK = 0xE0101018;
-	public static final int INK_DEEP = 0xF0080810;
-	public static final int INK_EDGE = 0xFF2A2633;
+	public static final int INK = 0xF00E121D;
+	public static final int INK_DEEP = 0xF0090D16;
+	public static final int INK_EDGE = 0xFF303B50;
 	public static final int PAPER = 0xFFE9E3D5;
 	public static final int TEXT = 0xFFEDE7F6;
-	public static final int TEXT_DIM = 0xFF9A93A8;
+	public static final int TEXT_DIM = 0xFFACB8CE;
 	public static final int SHADOW = 0x90000000;
 
 	private Palette() {
@@ -22,12 +22,12 @@ public final class Palette {
 
 	/** Cursed energy, normal state. */
 	public static int energy() {
-		return cb() ? 0xFF56B4E9 : 0xFF8F5CFF;
+		return cb() ? 0xFF56B4E9 : theme();
 	}
 
 	/** Second stop of the CE gradient. */
 	public static int energyHigh() {
-		return cb() ? 0xFF0072B2 : 0xFF53E0FF;
+		return cb() ? 0xFF0072B2 : lighten(theme());
 	}
 
 	/** Overexertion / danger. */
@@ -51,8 +51,14 @@ public final class Palette {
 
 	/** Cursed accent used for brush strokes and borders. */
 	public static int accent() {
-		return cb() ? 0xFFCC79A7 : 0xFFB0223A;
+		return cb() ? 0xFFCC79A7 : theme();
 	}
+	private static int theme(){
+		var id=com.jjkcraft.client.state.ClientTechniques.state().innate();
+		return id.flatMap(com.jjkcraft.client.state.ClientTechniques::definition)
+			.map(d->0xFF000000|d.visuals().color()).orElse(0xFF9870E8);
+	}
+	private static int lighten(int c){return 0xFF000000|Math.min(255,((c>>16)&255)+55)<<16|Math.min(255,((c>>8)&255)+55)<<8|Math.min(255,(c&255)+55);}
 
 	/** Cooldown / disabled. */
 	public static int muted() {

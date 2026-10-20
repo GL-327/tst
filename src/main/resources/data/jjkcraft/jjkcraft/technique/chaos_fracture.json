@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.chaos_fracture",
+  "description": "technique.jjkcraft.chaos_fracture.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 60,
+    "cooldown": 100,
+    "range": 20
+  },
+  "behavior": {
+    "type": "jjkcraft:line_cut",
+    "damage": 13,
+    "width": 0.5,
+    "pierce": 0.4
+  },
+  "visuals": {
+    "color": "#CD76E8",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.slash",
+    "shake": 0.2,
+    "hit_stop": 1,
+    "trail": "line",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/chaos_fracture.png",
+  "innate_weight": 0,
+  "mastery_uses": 50,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:bare_skin",
+      "damage": 1.3
+    }
+  ]
+}

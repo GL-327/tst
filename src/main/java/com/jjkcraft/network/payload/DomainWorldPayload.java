@@ -20,7 +20,8 @@ public record DomainWorldPayload(List<View> domains, List<SimpleView> simple) im
 
 	/** One open domain. Variant and phase are ordinals of {@code DomainMath.Variant} and {@code ActiveDomain.Phase}. */
 	public record View(int instance, int casterEntity, Identifier domain, double x, double y, double z, float radius, int variant, int phase,
-			long phaseStart, long openedAt) {
+			long phaseStart, long openedAt,float integrity) {
+		public View(int instance,int casterEntity,Identifier domain,double x,double y,double z,float radius,int variant,int phase,long phaseStart,long openedAt){this(instance,casterEntity,domain,x,y,z,radius,variant,phase,phaseStart,openedAt,1);}
 		public static final StreamCodec<ByteBuf, View> CODEC = StreamCodec.of((buf, v) -> {
 			ByteBufCodecs.VAR_INT.encode(buf, v.instance);
 			ByteBufCodecs.VAR_INT.encode(buf, v.casterEntity);
@@ -33,9 +34,10 @@ public record DomainWorldPayload(List<View> domains, List<SimpleView> simple) im
 			buf.writeByte(v.phase);
 			ByteBufCodecs.VAR_LONG.encode(buf, v.phaseStart);
 			ByteBufCodecs.VAR_LONG.encode(buf, v.openedAt);
+			buf.writeFloat(v.integrity);
 		}, buf -> new View(ByteBufCodecs.VAR_INT.decode(buf), ByteBufCodecs.VAR_INT.decode(buf), Identifier.STREAM_CODEC.decode(buf),
 				buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readByte(), buf.readByte(),
-				ByteBufCodecs.VAR_LONG.decode(buf), ByteBufCodecs.VAR_LONG.decode(buf)));
+				ByteBufCodecs.VAR_LONG.decode(buf), ByteBufCodecs.VAR_LONG.decode(buf),buf.readFloat()));
 	}
 
 	/** One Simple Domain, centered on its holder. */

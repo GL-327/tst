@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:ink_sac",
+    "minecraft:lapis_lazuli",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:thread_snare"
+    }
+  }
+}

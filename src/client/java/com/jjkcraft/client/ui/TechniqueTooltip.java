@@ -43,7 +43,11 @@ public final class TechniqueTooltip {
 				.map(g -> (Component) Component.translatable(g.name())).orElse(Component.literal(def.grade().toString()));
 		lines.add(Component.translatable("tooltip.jjkcraft.grade", grade).withColor(gradeOk ? Palette.good() : Palette.danger()));
 		lines.add(Component.translatable("tooltip.jjkcraft.mode." + def.cast().mode().getSerializedName()).withColor(Palette.TEXT_DIM));
-		lines.add(Component.translatable(def.description()).withColor(Palette.TEXT));
+		int wrap=Math.max(110,Math.min(250,net.minecraft.client.Minecraft.getInstance().getWindow().getGuiScaledWidth()-28));
+		for(var line:Ink.font().split(Component.translatable(def.description()),wrap)){
+			var text=new StringBuilder();line.accept((index,style,point)->{text.appendCodePoint(point);return true;});
+			lines.add(Component.literal(text.toString()).withColor(Palette.TEXT));
+		}
 
 		int mastery = ClientTechniques.state().masteryOf(id);
 		lines.add(mastery >= def.masteryUses()

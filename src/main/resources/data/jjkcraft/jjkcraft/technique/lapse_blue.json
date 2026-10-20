@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.lapse_blue",
   "description": "technique.jjkcraft.lapse_blue.desc",
   "category": "area",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 30,
     "cooldown": 120,

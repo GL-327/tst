@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.dustling",
+  "description": "curse.jjkcraft.dustling.desc",
+  "lore": "curse.jjkcraft.dustling.lore",
+  "entity": "jjkcraft:dustling",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 12,
+    "armor": 0,
+    "speed": 0.238,
+    "attack_damage": 2.9,
+    "ce_capacity": 45,
+    "follow_range": 22
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 10,
+    "group_min": 2,
+    "group_max": 4,
+    "max_light": 10
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/dustling",
+    "texture": "jjkcraft:textures/entity/dustling.png",
+    "animation": "jjkcraft:entity/dustling",
+    "scale": 0.5
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#B2A390",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ],
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "loot_table": "jjkcraft:entities/dustling"
+}

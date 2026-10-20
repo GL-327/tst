@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.blood_needle",
+  "description": "technique.jjkcraft.blood_needle.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 10,
+    "cooldown": 20,
+    "range": 40.0
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 5,
+    "speed": 2.2,
+    "size": 0.12,
+    "lifetime": 40
+  },
+  "visuals": {
+    "color": "#B91C38",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "beam",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blood_needle.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

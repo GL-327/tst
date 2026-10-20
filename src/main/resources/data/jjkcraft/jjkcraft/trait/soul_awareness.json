@@ -1,0 +1,8 @@
+{
+  "name": "trait.jjkcraft.soul_awareness",
+  "description": "trait.jjkcraft.soul_awareness.desc",
+  "category": "physical",
+  "weight": 6,
+  "regen": 1.1,
+  "armor": 1
+}

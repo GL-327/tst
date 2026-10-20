@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.ratio_collapse",
+  "description": "technique.jjkcraft.ratio_collapse.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 38,
+    "cooldown": 200,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "ratio_collapse",
+    "damage": 12,
+    "duration": 1,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#D8B96A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ratio_collapse.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

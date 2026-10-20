@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.cursed_spirit_manipulation",
+  "description": "technique.jjkcraft.cursed_spirit_manipulation.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 60,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "curse_manipulation",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#7F3FA3",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/cursed_spirit_manipulation.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

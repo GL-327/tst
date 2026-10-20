@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.disaster_tides",
+  "description": "technique.jjkcraft.disaster_tides.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 16,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "repel",
+    "damage": 5,
+    "duration": 60,
+    "radius": 6
+  },
+  "visuals": {
+    "color": "#3CAAC5",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/disaster_tides.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

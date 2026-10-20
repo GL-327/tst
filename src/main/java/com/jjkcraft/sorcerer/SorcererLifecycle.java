@@ -68,12 +68,13 @@ public final class SorcererLifecycle {
 	/** Applies the death policy to every registered piece of data, then sets the respawn CE. */
 	public static void copyOnDeath(ServerPlayer oldPlayer, ServerPlayer newPlayer) {
 		JjkServerConfig.Death config = JjkConfig.server().death;
+		DeathPolicy policy = config.choices && !com.jjkcraft.death.SoulSystem.state(oldPlayer).phase().equals("alive") ? DeathPolicy.KEEP : config.policy;
 		for (DeathCopier copier : DEATH_COPIERS) {
-			copier.copy(oldPlayer, newPlayer, config.policy, config);
+			copier.copy(oldPlayer, newPlayer, policy, config);
 		}
 
 		double max = CursedEnergy.max(newPlayer);
-		CursedEnergy.set(newPlayer, max * config.respawnEnergyPercent / 100.0);
+		CursedEnergy.set(newPlayer, (CursedEnergy.uncapped(newPlayer)?CursedEnergy.current(oldPlayer):max) * config.respawnEnergyPercent / 100.0);
 	}
 
 	public static void fullSync(ServerPlayer player) {

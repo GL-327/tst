@@ -1,0 +1,37 @@
+{
+  "name": "technique.jjkcraft.broom_flight",
+  "description": "technique.jjkcraft.broom_flight.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 20,
+    "cooldown": 60,
+    "range": 4
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "flight",
+    "damage": 0,
+    "duration": 120,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#B1D7CE",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/broom_flight.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

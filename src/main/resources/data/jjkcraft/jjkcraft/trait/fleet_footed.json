@@ -1,0 +1,7 @@
+{
+  "name": "trait.jjkcraft.fleet_footed",
+  "description": "trait.jjkcraft.fleet_footed.desc",
+  "category": "physical",
+  "weight": 10,
+  "speed": 0.1
+}

@@ -36,6 +36,26 @@ public final class JjkNetworking {
 	}
 
 	public static void init() {
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ChargePayload.TYPE,com.jjkcraft.network.payload.ChargePayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Impact.TYPE,com.jjkcraft.network.payload.CombatPayloads.Impact.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Resources.TYPE,com.jjkcraft.network.payload.CombatPayloads.Resources.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.ShikigamiPayloads.Recipe.TYPE,com.jjkcraft.network.payload.ShikigamiPayloads.Recipe.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ShikigamiPayloads.Reply.TYPE,com.jjkcraft.network.payload.ShikigamiPayloads.Reply.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeEdit.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeEdit.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPosePayload.TYPE,com.jjkcraft.network.payload.CombatPosePayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.Tune.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.Tune.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.Practice.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.Practice.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.View.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.View.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.TraitPayload.TYPE, com.jjkcraft.network.payload.TraitPayload.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.SoulPayloads.Action.TYPE, com.jjkcraft.network.payload.SoulPayloads.Action.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.SoulPayloads.View.TYPE, com.jjkcraft.network.payload.SoulPayloads.View.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Input.TYPE, com.jjkcraft.network.payload.CombatPayloads.Input.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.View.TYPE, com.jjkcraft.network.payload.CombatPayloads.View.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.AwakeningPayloads.Choose.TYPE, com.jjkcraft.network.payload.AwakeningPayloads.Choose.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.AwakeningPayloads.View.TYPE, com.jjkcraft.network.payload.AwakeningPayloads.View.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(EnergySyncPayload.TYPE, EnergySyncPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SettingsPayload.TYPE, SettingsPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(ProgressSyncPayload.TYPE, ProgressSyncPayload.CODEC);

@@ -18,11 +18,17 @@ public final class BlackFlashFx {
 	private static final long DURATION = 380;
 	private static long startedAt = -1;
 	private static long seed;
+	private static final java.util.ArrayDeque<Long> FLASHES = new java.util.ArrayDeque<>();
 
 	private BlackFlashFx() {
 	}
 
 	public static void trigger() {
+		if (ClientConfig.effectsOff() || ClientConfig.effect(ClientConfig.get().vfx.impacts) == 0) return;
+		long now = Util.getMillis();
+		while (!FLASHES.isEmpty() && FLASHES.getFirst() <= now - 1000) FLASHES.removeFirst();
+		if (FLASHES.size() >= 3) return;
+		FLASHES.addLast(now);
 		startedAt = Util.getMillis();
 		seed = startedAt * 31 + 7;
 	}

@@ -43,6 +43,7 @@ public final class CurseBrain {
 	private Vec3 lastSeen;
 	private long lastSeenTick = Long.MIN_VALUE;
 	private boolean fled;
+    private long guardUntil,guardReady;
 
 	public CurseBrain(CurseEntity curse) {
 		this.curse = curse;
@@ -63,6 +64,7 @@ public final class CurseBrain {
 	}
 
 	public void tick(ServerLevel level) {
+		com.jjkcraft.awakening.ControlledCurses.direct(curse);
 		if (attackCooldown > 0) {
 			attackCooldown--;
 		}
@@ -82,6 +84,15 @@ public final class CurseBrain {
 		}
 
 		LivingEntity target = curse.getTarget();
+        if(com.jjkcraft.config.JjkConfig.server().systems.cursedCombat){
+            long tick=level.getGameTime();
+            int rank=Progression.gradeRank(level.registryAccess(),curse);
+            double chance=curse.parameter("guard_chance",rank<=1?0.06:rank<=3?0.14:0.24);
+            if(target!=null&&target.isAlive()&&curse.distanceToSqr(target)<20&&guardReady<=tick&&com.jjkcraft.combat.CursedCombat.attacking(target)&&curse.getRandom().nextFloat()<chance){guardUntil=tick+10;guardReady=tick+60;}
+            if(guardUntil>tick&&target!=null){aimAt(target);if(com.jjkcraft.combat.CursedCombat.guardMob(curse,target.isShiftKeyDown()?0:1)){curse.getNavigation().stop();return;}}
+            else com.jjkcraft.combat.CursedCombat.guardMob(curse,-1);
+            if(com.jjkcraft.combat.CursedCombat.busy(curse)){curse.getNavigation().stop();return;}
+        }
 		long now = level.getGameTime();
 		if (target != null && target.isAlive() && curse.getSensing().hasLineOfSight(target)) {
 			lastSeen = target.position();
@@ -148,8 +159,12 @@ public final class CurseBrain {
 		}
 
 		if (distance <= reach && attackCooldown <= 0 && curse.mechanic().canAttack(curse)) {
-			attackCooldown = 20;
-			curse.doHurtTarget(level, target);
+			attackCooldown = 13 + curse.getRandom().nextInt(8);
+			if (com.jjkcraft.config.JjkConfig.server().systems.cursedCombat) {
+				com.jjkcraft.combat.CursedCombat.startCurse(curse, target);
+			} else {
+				curse.doHurtTarget(level, target);
+			}
 			setState(State.RECOVER, 6);
 		}
 	}

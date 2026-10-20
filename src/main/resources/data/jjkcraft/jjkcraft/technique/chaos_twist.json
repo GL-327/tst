@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.chaos_twist",
+  "description": "technique.jjkcraft.chaos_twist.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 22,
+    "cooldown": 50,
+    "range": 8
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "repel",
+    "damage": 4,
+    "duration": 40,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#CD76E8",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/chaos_twist.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.shrine_furnace",
+  "description": "technique.jjkcraft.shrine_furnace.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 65,
+    "cooldown": 260,
+    "range": 32
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 19,
+    "count": 1,
+    "speed": 1.1,
+    "spread": 0,
+    "size": 0.35,
+    "lifetime": 50,
+    "blast_radius": 4,
+    "burn_seconds": 4
+  },
+  "visuals": {
+    "color": "#E0303F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb"
+  },
+  "icon": "jjkcraft:textures/gui/technique/shrine_furnace.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

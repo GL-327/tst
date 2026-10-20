@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.ratio",
+  "description": "technique.jjkcraft.ratio.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 10,
+    "cooldown": 16,
+    "range": 4.0
+  },
+  "behavior": {
+    "type": "jjkcraft:strike",
+    "damage": 7,
+    "knockback": 0.6,
+    "black_flash": true
+  },
+  "visuals": {
+    "color": "#D8B96A",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.35,
+    "hit_stop": 2,
+    "trail": "none",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ratio.png",
+  "innate_weight": 0,
+  "mastery_uses": 60,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:grounded_oath",
+      "damage": 1.35
+    }
+  ]
+}

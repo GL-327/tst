@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.moonlit_menagerie",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 4,
+  "techniques": [
+    "jjkcraft:summon_paper_heron",
+    "jjkcraft:summon_lantern_moth",
+    "jjkcraft:summon_iron_tortoise",
+    "jjkcraft:summon_grave_hound"
+  ],
+  "domain": ""
+}

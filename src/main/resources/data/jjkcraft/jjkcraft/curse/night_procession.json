@@ -1,0 +1,57 @@
+{
+  "name": "curse.jjkcraft.night_procession",
+  "description": "curse.jjkcraft.night_procession.desc",
+  "lore": "curse.jjkcraft.night_procession.lore",
+  "entity": "jjkcraft:night_procession",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 462,
+    "armor": 10,
+    "speed": 0.228,
+    "attack_damage": 10.2,
+    "ce_capacity": 600,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 12,
+    "follow_range": 40.0,
+    "knockback_resistance": 0.7
+  },
+  "techniques": [
+    "jjkcraft:cleave",
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 2,
+    "min_fear": 70,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "model": {
+    "geo": "jjkcraft:entity/night_procession",
+    "texture": "jjkcraft:textures/entity/night_procession.png",
+    "animation": "jjkcraft:entity/night_procession"
+  },
+  "mechanic": "jjkcraft:paper_tide",
+  "parameters": {
+    "first_fold_hits": 4,
+    "second_fold_hits": 8,
+    "first_fold": 0.6,
+    "second_fold": 0.25,
+    "forget_ticks": 600,
+    "tide_range": 9,
+    "tide_windup": 22,
+    "tide_interval": 120,
+    "tide_damage": 7,
+    "tide_bind_ticks": 30,
+    "bar_range": 48
+  },
+  "codex": {
+    "color": "#AB2DD7",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/paper_tide_gravemind",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

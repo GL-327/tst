@@ -41,6 +41,9 @@ public final class ClientConfig {
 	}
 
 	public static boolean lowVfx() {
-		return get().vfx.level == JjkClientConfig.VfxLevel.LOW;
+		return get().vfx.level.ordinal() <= JjkClientConfig.VfxLevel.LOW.ordinal();
 	}
+
+	public static boolean effectsOff() { return get().vfx.level == JjkClientConfig.VfxLevel.OFF; }
+	public static int effect(JjkClientConfig.VfxLevel level) { return Math.min(get().vfx.level.ordinal(), level == null ? 3 : level.ordinal()); }
 }

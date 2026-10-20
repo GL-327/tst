@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.ratio_overtime",
+  "description": "technique.jjkcraft.ratio_overtime.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 42,
+    "cooldown": 360,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "ratio_overtime",
+    "damage": 0,
+    "duration": 220,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#D8B96A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ratio_overtime.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

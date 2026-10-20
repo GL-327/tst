@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.gutter_grub",
+  "description": "curse.jjkcraft.gutter_grub.desc",
+  "lore": "curse.jjkcraft.gutter_grub.lore",
+  "entity": "jjkcraft:gutter_grub",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 12,
+    "armor": 0,
+    "speed": 0.238,
+    "attack_damage": 2.45,
+    "ce_capacity": 45,
+    "follow_range": 22
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 10,
+    "group_min": 2,
+    "group_max": 4,
+    "max_light": 10
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/gutter_grub",
+    "texture": "jjkcraft:textures/entity/gutter_grub.png",
+    "animation": "jjkcraft:entity/gutter_grub",
+    "scale": 0.62
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#679881",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:backfist"
+  ],
+  "techniques": [
+    "jjkcraft:ground_toll"
+  ],
+  "loot_table": "jjkcraft:entities/gutter_grub"
+}

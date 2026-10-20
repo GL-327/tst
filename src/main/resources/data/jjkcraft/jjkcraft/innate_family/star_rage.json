@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.star_rage",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:star_rage",
+    "jjkcraft:garuda_strike",
+    "jjkcraft:mass_anchor",
+    "jjkcraft:garuda_orbit",
+    "jjkcraft:summon_garuda"
+  ],
+  "domain": ""
+}

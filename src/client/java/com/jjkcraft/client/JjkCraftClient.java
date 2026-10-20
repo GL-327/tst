@@ -95,9 +95,21 @@ public final class JjkCraftClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientConfig.init();
 		JjkKeys.init();
+		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.TYPE,(reply,context)->com.jjkcraft.client.state.ClientPersonalization.accept(reply));
+		com.jjkcraft.client.combat.CombatAnimations.init();
+		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.PersonalizationPayloads.View.TYPE,(payload,context)->com.jjkcraft.client.state.ClientPersonalization.accept(payload));
+		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.TYPE,(payload,context)->com.jjkcraft.client.state.ClientPersonalization.accept(payload));
+		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ShikigamiPayloads.Reply.TYPE,(payload,context)->com.jjkcraft.client.screen.ShikigamiFusionScreen.accept(payload));
+		com.jjkcraft.client.combat.CombatClient.init();
+		com.jjkcraft.client.death.SoulClient.init();
+		com.jjkcraft.client.state.ClientTraits.init();
+		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.AwakeningPayloads.View.TYPE,
+			(payload, context) -> com.jjkcraft.client.state.ClientAwakening.accept(payload));
+		JjkKeys.addHandler(com.jjkcraft.client.state.ClientAwakening::tick);
 		ClientFx.init();
 		Emitters.init();
 		WorldFx.init();
+		com.jjkcraft.client.vfx.AdvancedFx.init();
 		DomainFx.init();
 		CullingFx.init();
 		com.jjkcraft.client.modulo.ModuloClient.init();
@@ -110,6 +122,7 @@ public final class JjkCraftClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(ProgressSyncPayload.TYPE, (payload, context) -> ClientProgress.accept(payload));
 		ClientPlayNetworking.registerGlobalReceiver(PromotionPayload.TYPE, (payload, context) -> PromotionCeremony.start(payload));
 		ClientPlayNetworking.registerGlobalReceiver(TechniqueSyncPayload.TYPE, (payload, context) -> ClientTechniques.accept(payload));
+        ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ChargePayload.TYPE,(payload,context)->ClientTechniques.accept(payload));
 		ClientPlayNetworking.registerGlobalReceiver(CastFeedbackPayload.TYPE, (payload, context) -> {
 			ClientTechniques.accept(payload);
 			ClientDomains.accept(payload);
@@ -126,6 +139,8 @@ public final class JjkCraftClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(CullingPayloads.Event.TYPE, (payload, context) -> ClientCulling.accept(payload));
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
 			ClientEnergy.reset();
+			com.jjkcraft.client.state.ClientPersonalization.reset();
+			com.jjkcraft.client.state.ClientAwakening.reset();
 			ClientProgress.reset();
 			ClientTechniques.reset();
 			ClientSensing.reset();
@@ -142,6 +157,8 @@ public final class JjkCraftClient implements ClientModInitializer {
 		EntityRendererRegistry.register(JjkEntities.SHADOW_DIVINE_DOG, ShadowDivineDogRenderer::new);
 		EntityRendererRegistry.register(CullingEntities.ENTRANT, EntrantRenderer::new);
 		EntityRendererRegistry.register(JjkEntities.DIVINE_DOG, ctx -> new com.jjkcraft.client.render.ShikigamiRenderer<>(ctx, "divine_dog", 0.4f));
+		EntityRendererRegistry.register(JjkEntities.TRANSFIGURED_SOUL,ctx->new com.jjkcraft.client.render.ShikigamiRenderer<>(ctx,"transfigured_soul",0.4f));
+		for(var entry:com.jjkcraft.entity.shikigami.ShadowBeasts.TYPES.entrySet()){String model=entry.getKey().getPath();EntityRendererRegistry.register(entry.getValue(),ctx->new com.jjkcraft.client.render.ShikigamiRenderer<>(ctx,model,0.5f));}
 		EntityRendererRegistry.register(JjkEntities.NUE, ctx -> new com.jjkcraft.client.render.ShikigamiRenderer<>(ctx, "nue", 0.2f));
 		EntityRendererRegistry.register(JjkEntities.TOAD, ctx -> new com.jjkcraft.client.render.ShikigamiRenderer<>(ctx, "toad", 0.7f));
 		com.jjkcraft.client.ui.ToolTooltips.init();
@@ -202,7 +219,8 @@ public final class JjkCraftClient implements ClientModInitializer {
 
 		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.profile"), ProfileScreen.class, ProfileScreen::new));
 		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.growth"), GrowthTreeScreen.class, GrowthTreeScreen::new));
-		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.loadout"), LoadoutScreen.class, LoadoutScreen::new));
+		JjkScreen.addTab(new JjkScreen.Tab(Component.literal("Practice"),com.jjkcraft.client.screen.PracticeScreen.class,com.jjkcraft.client.screen.PracticeScreen::new));
+		JjkScreen.addTab(new JjkScreen.Tab(Component.literal("Moves"), LoadoutScreen.class, LoadoutScreen::new));
 		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.vows"), VowBuilderScreen.class, VowBuilderScreen::new));
 		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.codex"), CodexScreen.class, CodexScreen::new));
 		JjkScreen.addTab(new JjkScreen.Tab(Component.translatable("screen.jjkcraft.culling.tab"), CullingScreen.class, CullingScreen::new));

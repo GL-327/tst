@@ -21,9 +21,9 @@
     "blast_radius": 6
   },
   "visuals": {
-    "color": "#9B6BFF",
+    "color": "#3D8BFF",
     "particle": "jjkcraft:cursed_spark",
-    "sound": "jjkcraft:technique.merge",
+    "sound": "jjkcraft:technique.attract",
     "shake": 1.4,
     "hit_stop": 5,
     "trail": "orb",

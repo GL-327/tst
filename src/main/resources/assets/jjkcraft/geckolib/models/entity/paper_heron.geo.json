@@ -1,0 +1,207 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.paper_heron",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            10,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                5,
+                -2
+              ],
+              "size": [
+                4,
+                11,
+                5
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            16,
+            -2
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                14,
+                -4
+              ],
+              "size": [
+                4,
+                5,
+                4
+              ],
+              "uv": [
+                18,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -1,
+                14,
+                -11
+              ],
+              "size": [
+                2,
+                2,
+                8
+              ],
+              "uv": [
+                34,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg-1",
+          "pivot": [
+            -2,
+            6,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                0,
+                0
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": [
+                54,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg1",
+          "pivot": [
+            2,
+            6,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                2,
+                0,
+                0
+              ],
+              "size": [
+                1,
+                6,
+                1
+              ],
+              "uv": [
+                58,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wing-1",
+          "pivot": [
+            -3,
+            10,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -12,
+                8,
+                0
+              ],
+              "size": [
+                10,
+                1,
+                6
+              ],
+              "uv": [
+                62,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wing1",
+          "pivot": [
+            3,
+            10,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                2,
+                8,
+                0
+              ],
+              "size": [
+                10,
+                1,
+                6
+              ],
+              "uv": [
+                94,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

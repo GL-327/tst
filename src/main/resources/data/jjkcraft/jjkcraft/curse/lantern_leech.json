@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.lantern_leech",
+  "description": "curse.jjkcraft.lantern_leech.desc",
+  "lore": "curse.jjkcraft.lantern_leech.lore",
+  "entity": "jjkcraft:lantern_leech",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 12,
+    "armor": 0,
+    "speed": 0.324,
+    "attack_damage": 1.7,
+    "ce_capacity": 25,
+    "drain_on_hit": 2
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 15,
+    "max_light": 15,
+    "group_min": 1,
+    "group_max": 3
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:in_fire": 1.5,
+    "minecraft:on_fire": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/lantern_leech",
+    "texture": "jjkcraft:textures/entity/lantern_leech.png",
+    "animation": "jjkcraft:entity/lantern_leech"
+  },
+  "mechanic": "jjkcraft:wick",
+  "parameters": {
+    "eat_radius": 6
+  },
+  "codex": {
+    "color": "#8C6BB6",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/wick_moth",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:hook"
+  ]
+}

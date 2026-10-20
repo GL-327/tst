@@ -32,5 +32,9 @@
   "codex": {
     "color": "#E6DCBE",
     "unlock_kills": 3
-  }
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:amethyst_shard",
+    "minecraft:copper_ingot",
+    "minecraft:string",
+    "minecraft:bone"
+  ],
+  "result": {
+    "id": "jjkcraft:technique_scroll",
+    "components": {
+      "jjkcraft:loaded_technique": "jjkcraft:mirror_guard"
+    }
+  }
+}

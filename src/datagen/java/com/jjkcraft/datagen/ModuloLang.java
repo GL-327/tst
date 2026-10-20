@@ -75,7 +75,7 @@ final class ModuloLang {
 		b.add("message.jjkcraft.modulo.mahoraga.adapted", "Mahoraga's wheel turns once more: it has adapted to Light.");
 
 		b.add("objective.jjkcraft.modulo.wait_descent", "Wait for the Naunax Descent, then board the ship");
-		b.add("objective.jjkcraft.modulo.reach_grade", "Reach Grade 1 to see the Naunax Descent");
+		b.add("objective.jjkcraft.modulo.reach_grade", "Grow in grade to join the Naunax expedition");
 		b.add("objective.jjkcraft.modulo.done", "Every Modulo mission is complete");
 
 		b.add("cast_failure.jjkcraft.not_enough_mul", "Not enough Mul energy");

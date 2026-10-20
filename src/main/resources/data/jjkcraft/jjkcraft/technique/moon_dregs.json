@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.moon_dregs",
+  "description": "technique.jjkcraft.moon_dregs.desc",
+  "grade": "jjkcraft:grade_4",
+  "category": "summon",
+  "cast": {
+    "cost": 28,
+    "cooldown": 140,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:moon_dregs",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#C393DB",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/moon_dregs.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

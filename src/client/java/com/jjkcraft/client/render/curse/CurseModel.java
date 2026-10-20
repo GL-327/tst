@@ -55,7 +55,10 @@ public final class CurseModel extends GeoModel<CurseEntity> {
 			return model.disguise().get().geo();
 		}
 
-		return model.geo();
+		var player = net.minecraft.client.Minecraft.getInstance().player;
+		Identifier lod = model.geo().withPath(model.geo().getPath() + "_lod");
+		boolean available = net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(lod.withPath("geckolib/models/" + lod.getPath() + ".geo.json")).isPresent();
+		return available && player != null && curse.distanceToSqr(player) > 32 * 32 ? lod : model.geo();
 	}
 
 	public static Identifier texture(CurseEntity curse) {
@@ -74,7 +77,10 @@ public final class CurseModel extends GeoModel<CurseEntity> {
 			return model.disguise().get().texture();
 		}
 
-		return model.texture();
+		float health = curse.getHealth() / curse.getMaxHealth();
+		String suffix = health < 0.3f ? "_critical.png" : health < 0.65f ? "_wounded.png" : ".png";
+		Identifier damaged = model.texture().withPath(model.texture().getPath().replace(".png", suffix));
+		return net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(damaged).isPresent() ? damaged : model.texture();
 	}
 
 	private static Identifier fallback(CurseEntity curse) {

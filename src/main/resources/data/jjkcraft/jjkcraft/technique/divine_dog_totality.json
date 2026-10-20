@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.divine_dog_totality",
+  "description": "technique.jjkcraft.divine_dog_totality.desc",
+  "grade": "jjkcraft:grade_2",
+  "category": "summon",
+  "cast": {
+    "cost": 45,
+    "cooldown": 240,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:fusion",
+    "components": [
+      "jjkcraft:divine_dog",
+      "jjkcraft:divine_dog"
+    ],
+    "result": "jjkcraft:divine_dog_totality",
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/divine_dog_totality.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

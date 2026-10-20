@@ -20,7 +20,7 @@ import com.jjkcraft.registry.LegacyIds;
  *
  * @param innate    the technique rolled at awakening
  * @param learned   techniques learned later (scrolls, teachers, absorbed curses)
- * @param loadout   the six hotbar slots; empty string ids mean an empty slot
+ * @param loadout   the twelve power slots; empty string ids mean an empty slot
  * @param selected  the selected slot for the cast key
  * @param mastery   landed casts per technique
  * @param cooldowns game time at which each technique is ready again
@@ -33,7 +33,7 @@ public record TechniqueState(
 		Map<Identifier, Integer> mastery,
 		Map<Identifier, Long> cooldowns
 ) {
-	public static final int SLOTS = 6;
+	public static final int SLOTS = 12;
 
 	public static final TechniqueState EMPTY = new TechniqueState(Optional.empty(), List.of(), emptyLoadout(), 0, Map.of(), Map.of());
 

@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.volcanic_burst",
+  "description": "technique.jjkcraft.volcanic_burst.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 65,
+    "cooldown": 300,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "flames",
+    "damage": 18,
+    "duration": 60,
+    "radius": 9
+  },
+  "visuals": {
+    "color": "#F35A28",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/volcanic_burst.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

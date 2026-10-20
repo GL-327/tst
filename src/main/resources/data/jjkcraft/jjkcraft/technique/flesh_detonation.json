@@ -1,0 +1,36 @@
+{
+  "name": "technique.jjkcraft.flesh_detonation",
+  "description": "technique.jjkcraft.flesh_detonation.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 55,
+    "cooldown": 110,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:shockwave",
+    "damage": 13,
+    "radius": 5,
+    "launch": 0.6
+  },
+  "visuals": {
+    "color": "#DB8B72",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/flesh_detonation.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

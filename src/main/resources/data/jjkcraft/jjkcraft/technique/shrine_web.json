@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.shrine_web",
+  "description": "technique.jjkcraft.shrine_web.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 34,
+    "cooldown": 170,
+    "range": 4
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "ratio_collapse",
+    "damage": 10,
+    "duration": 1,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#E0303F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/shrine_web.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

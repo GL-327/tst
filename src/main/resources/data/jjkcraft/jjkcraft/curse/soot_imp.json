@@ -1,0 +1,43 @@
+{
+  "name": "curse.jjkcraft.soot_imp",
+  "description": "curse.jjkcraft.soot_imp.desc",
+  "lore": "curse.jjkcraft.soot_imp.lore",
+  "entity": "jjkcraft:soot_imp",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 14,
+    "armor": 2,
+    "speed": 0.228,
+    "attack_damage": 3.3,
+    "ce_capacity": 30
+  },
+  "spawn": {
+    "weight": 10,
+    "min_fear": 15,
+    "max_light": 15,
+    "group_min": 1,
+    "group_max": 3
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/soot_imp",
+    "texture": "jjkcraft:textures/entity/soot_imp.png",
+    "animation": "jjkcraft:entity/soot_imp"
+  },
+  "mechanic": "jjkcraft:ledger",
+  "parameters": {
+    "max_tally": 8,
+    "damage_per_mark": 0.15
+  },
+  "codex": {
+    "color": "#8C6BB6",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/ledger_crawler",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:uppercut"
+  ]
+}

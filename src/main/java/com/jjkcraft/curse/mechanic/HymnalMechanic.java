@@ -20,6 +20,8 @@ import com.jjkcraft.sound.JjkSounds;
  */
 public final class HymnalMechanic implements CurseMechanic {
 	@Override
+	public boolean canAct(CurseEntity curse) { return curse.mechA() != 1; }
+	@Override
 	public void tick(CurseEntity curse, ServerLevel level) {
 		int state = curse.mechA();
 		if (state == 2) {

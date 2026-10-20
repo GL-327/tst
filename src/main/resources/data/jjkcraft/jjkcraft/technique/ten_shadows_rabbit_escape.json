@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_rabbit_escape",
+  "description": "technique.jjkcraft.ten_shadows_rabbit_escape.desc",
+  "grade": "jjkcraft:grade_4",
+  "category": "summon",
+  "cast": {
+    "cost": 24,
+    "cooldown": 180,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:rabbit_escape",
+    "count": 6,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_rabbit_escape.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

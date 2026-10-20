@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.disaster_plants",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 8,
+  "techniques": [
+    "jjkcraft:cursed_roots",
+    "jjkcraft:wooden_ball",
+    "jjkcraft:flower_field",
+    "jjkcraft:flower_drain"
+  ],
+  "domain": ""
+}

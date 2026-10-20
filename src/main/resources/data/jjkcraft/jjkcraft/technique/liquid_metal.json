@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.liquid_metal",
+  "description": "technique.jjkcraft.liquid_metal.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 24,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 10,
+    "speed": 1.8,
+    "size": 0.3,
+    "lifetime": 45
+  },
+  "visuals": {
+    "color": "#A79572",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/liquid_metal.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

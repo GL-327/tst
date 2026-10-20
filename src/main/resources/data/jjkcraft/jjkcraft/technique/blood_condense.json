@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.blood_condense",
+  "description": "technique.jjkcraft.blood_condense.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 22,
+    "cooldown": 180,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "blood_condense",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#B52E48",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blood_condense.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

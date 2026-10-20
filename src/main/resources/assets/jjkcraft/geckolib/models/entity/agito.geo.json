@@ -1,0 +1,304 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.agito",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            20,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                12,
+                -4
+              ],
+              "size": [
+                12,
+                18,
+                8
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            30,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                29,
+                -4
+              ],
+              "size": [
+                8,
+                9,
+                8
+              ],
+              "uv": [
+                40,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm-1",
+          "pivot": [
+            -7,
+            26,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -9,
+                9,
+                -2
+              ],
+              "size": [
+                4,
+                18,
+                5
+              ],
+              "uv": [
+                72,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg-1",
+          "pivot": [
+            -3,
+            13,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                0,
+                -2
+              ],
+              "size": [
+                4,
+                14,
+                5
+              ],
+              "uv": [
+                90,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm1",
+          "pivot": [
+            7,
+            26,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                5,
+                9,
+                -2
+              ],
+              "size": [
+                4,
+                18,
+                5
+              ],
+              "uv": [
+                108,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg1",
+          "pivot": [
+            3,
+            13,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                1,
+                0,
+                -2
+              ],
+              "size": [
+                4,
+                14,
+                5
+              ],
+              "uv": [
+                0,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "antler-1",
+          "pivot": [
+            -4,
+            34,
+            0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                34,
+                0
+              ],
+              "size": [
+                2,
+                10,
+                2
+              ],
+              "uv": [
+                18,
+                26
+              ]
+            },
+            {
+              "origin": [
+                -8,
+                39,
+                0
+              ],
+              "size": [
+                4,
+                2,
+                2
+              ],
+              "uv": [
+                26,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "antler1",
+          "pivot": [
+            4,
+            34,
+            0
+          ],
+          "parent": "head",
+          "cubes": [
+            {
+              "origin": [
+                4,
+                34,
+                0
+              ],
+              "size": [
+                2,
+                10,
+                2
+              ],
+              "uv": [
+                38,
+                26
+              ]
+            },
+            {
+              "origin": [
+                6,
+                39,
+                0
+              ],
+              "size": [
+                4,
+                2,
+                2
+              ],
+              "uv": [
+                46,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "pivot": [
+            0,
+            12,
+            4
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -2,
+                10,
+                4
+              ],
+              "size": [
+                4,
+                4,
+                13
+              ],
+              "uv": [
+                58,
+                26
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

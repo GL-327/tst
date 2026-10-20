@@ -1,0 +1,416 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.shadow_mahoraga",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 4,
+        "visible_bounds_height": 4,
+        "visible_bounds_offset": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "body",
+          "pivot": [
+            0,
+            20,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -6,
+                12,
+                -4
+              ],
+              "size": [
+                12,
+                18,
+                8
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "head",
+          "pivot": [
+            0,
+            30,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -4,
+                29,
+                -4
+              ],
+              "size": [
+                8,
+                9,
+                8
+              ],
+              "uv": [
+                40,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm-1",
+          "pivot": [
+            -7,
+            26,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                -9,
+                9,
+                -2
+              ],
+              "size": [
+                4,
+                18,
+                5
+              ],
+              "uv": [
+                72,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg-1",
+          "pivot": [
+            -3,
+            13,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                -5,
+                0,
+                -2
+              ],
+              "size": [
+                4,
+                14,
+                5
+              ],
+              "uv": [
+                90,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "arm1",
+          "pivot": [
+            7,
+            26,
+            0
+          ],
+          "parent": "body",
+          "cubes": [
+            {
+              "origin": [
+                5,
+                9,
+                -2
+              ],
+              "size": [
+                4,
+                18,
+                5
+              ],
+              "uv": [
+                108,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "leg1",
+          "pivot": [
+            3,
+            13,
+            0
+          ],
+          "parent": "root",
+          "cubes": [
+            {
+              "origin": [
+                1,
+                0,
+                -2
+              ],
+              "size": [
+                4,
+                14,
+                5
+              ],
+              "uv": [
+                0,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wheel",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "root"
+        },
+        {
+          "name": "spoke0",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                8.0,
+                41,
+                -1.0
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                18,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke1",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                5.3639610306789285,
+                41,
+                5.3639610306789285
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                30,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke2",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                -0.9999999999999994,
+                41,
+                8.0
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                42,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke3",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                -7.363961030678928,
+                41,
+                5.3639610306789285
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                54,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke4",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                -10.0,
+                41,
+                -0.9999999999999989
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                66,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke5",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                -7.363961030678929,
+                41,
+                -7.363961030678928
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                78,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke6",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                -1.0000000000000016,
+                41,
+                -10.0
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                90,
+                26
+              ]
+            }
+          ]
+        },
+        {
+          "name": "spoke7",
+          "pivot": [
+            0,
+            42,
+            0
+          ],
+          "parent": "wheel",
+          "cubes": [
+            {
+              "origin": [
+                5.363961030678926,
+                41,
+                -7.363961030678929
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                102,
+                26
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

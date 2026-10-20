@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.ice_formation",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 12,
+  "techniques": [
+    "jjkcraft:frost_calm",
+    "jjkcraft:ice_lance",
+    "jjkcraft:icefall",
+    "jjkcraft:ice_armor"
+  ],
+  "domain": ""
+}

@@ -130,6 +130,24 @@ public final class TechniqueService {
 	private static final List<CostPayer> COST_PAYERS = new CopyOnWriteArrayList<>();
 	private static final Map<UUID, Active> ACTIVE = new HashMap<>();
 	private static final List<Pending> PENDING = new ArrayList<>();
+    private static final Map<UUID,Charge> CHARGES=new HashMap<>();
+    private static final class Charge {
+        final ServerPlayer player; final Identifier id; final TechniqueDefinition definition;
+        final int slot; final double base; final ServerLevel level; int ticks; double spent;
+        Charge(ServerPlayer p,Identifier id,TechniqueDefinition d,int slot,double base){this.player=p;this.id=id;this.definition=d;this.slot=slot;this.base=base;this.spent=base;this.level=p.level();}
+        boolean purple(){return id.getPath().equals("hollow_purple");}
+        double fraction(){return com.jjkcraft.core.technique.ChargeMath.fraction(ticks,purple());}
+        double drain(){return com.jjkcraft.core.technique.ChargeMath.upkeep(base,ticks,purple(),com.jjkcraft.awakening.CharacterAwakening.get(player).sixEyes());}
+        void sync(){JjkNetworking.send(player,new com.jjkcraft.network.payload.ChargePayload(slot,(int)Math.round(fraction()*100),purple()?200:100,(float)(drain()*20)));}
+    }
+    public static int chargePercent(ServerPlayer p){Charge c=CHARGES.get(p.getUUID());return c==null?0:(int)Math.round(c.fraction()*100);}
+    public static void cancelCharge(LivingEntity caster){
+        if(!CHARGES.containsKey(caster.getUUID()))return;
+        // Settle elapsed energy while suppression still applies; release cannot retroactively regenerate.
+        CursedEnergy.trySpend(caster,0);
+        CHARGES.remove(caster.getUUID());
+        if(caster instanceof ServerPlayer p)JjkNetworking.send(p,new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0));
+    }
 	private static final Map<UUID, Map<Identifier, Long>> MOB_COOLDOWNS = new HashMap<>();
 	private static RateLimiter castLimiter;
 	private static double castLimiterRate;
@@ -165,7 +183,8 @@ public final class TechniqueService {
 	}
 
 	public static void init() {
-		ServerPlayNetworking.registerGlobalReceiver(CastPayload.TYPE, (payload, context) -> onCastKey(context.player(), payload.slot(), payload.pressed()));
+        CursedEnergy.addRegenModifier(caster->CHARGES.containsKey(caster.getUUID())?0:1);
+		ServerPlayNetworking.registerGlobalReceiver(CastPayload.TYPE, (payload, context) -> {if(payload.cancelled())cancelCharge(context.player());else onCastKey(context.player(), payload.slot(), payload.pressed());});
 		ServerPlayNetworking.registerGlobalReceiver(CastTechniquePayload.TYPE, (payload, context) -> onQuickCast(context.player(), payload.technique()));
 		ServerPlayNetworking.registerGlobalReceiver(SetLoadoutPayload.TYPE, (payload, context) -> {
 			if (LOADOUT_LIMIT.tryAcquire(context.player().getUUID(), context.player().level().getGameTime())) {
@@ -179,19 +198,20 @@ public final class TechniqueService {
 		});
 
 		ServerTickEvents.END_SERVER_TICK.register(TechniqueService::tick);
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> stop(handler.getPlayer()));
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(server->{CHARGES.clear();PENDING.clear();ACTIVE.clear();MOB_COOLDOWNS.clear();});
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> cancel(handler.getPlayer()));
 		SorcererLifecycle.addFullSync(SYNC::sendNow);
 		SorcererLifecycle.addDeathCopier((oldPlayer, newPlayer, policy, config) -> {
-			stop(oldPlayer);
+			cancel(oldPlayer);
 			newPlayer.setAttached(JjkAttachments.TECHNIQUES, applyPolicy(get(oldPlayer), policy, config.partialMasteryLossPercent));
 		});
 
 		Awakening.addResetHook(player -> {
-			stop(player);
+			cancel(player);
 			set(player, TechniqueState.EMPTY);
 		});
 		Awakening.addHook((player, heavenly) -> {
-			if (!heavenly) {
+			if (!heavenly && com.jjkcraft.awakening.CharacterAwakening.get(player).family().isEmpty()) {
 				rollInnate(player);
 			}
 		});
@@ -237,7 +257,7 @@ public final class TechniqueService {
 	}
 
 	public static int usableSlots(Player player) {
-		return Grades.get(player.registryAccess(), Progression.get(player).grade()).map(GradeDefinition::techniqueSlots).orElse(2);
+		return TechniqueState.SLOTS;
 	}
 
 	public static boolean knows(Player player, Identifier id) {
@@ -332,8 +352,17 @@ public final class TechniqueService {
 		TechniqueState state = get(player);
 		int slot = requestedSlot < 0 ? state.selected() : requestedSlot;
 		if (!pressed) {
+            Charge charge=CHARGES.get(player.getUUID());
+            if(charge!=null&&(requestedSlot<0||charge.slot==requestedSlot)){
+                cancelCharge(player);
+                if(player.level()!=charge.level||!Personalization.definition(player,charge.id,Techniques.get(player.registryAccess(),charge.id).orElse(charge.definition)).equals(charge.definition))return;
+                CastFailure result=castCharged(player,charge.id,charge.slot,charge.spent,charge.fraction(),charge.ticks);
+                if(result!=CastFailure.NONE)feedback(player,charge.slot,result);
+                return;
+            }
+            PENDING.removeIf(p->p.ctx().caster().getUUID().equals(player.getUUID())&&p.definition().cast().mode()==CastMode.CHANNEL&&(requestedSlot<0||p.slot()==requestedSlot));
 			Active active = ACTIVE.get(player.getUUID());
-			if (active != null && active.definition.cast().mode() == CastMode.CHANNEL) {
+			if (active != null && active.definition.cast().mode() == CastMode.CHANNEL && (requestedSlot<0 || active.slot==requestedSlot)) {
 				stop(player);
 			}
 
@@ -355,7 +384,7 @@ public final class TechniqueService {
 			return;
 		}
 
-		CastFailure failure = cast(player, id.get(), slot);
+		CastFailure failure = beginCharge(player, id.get(), slot);
 		if (failure != CastFailure.NONE) {
 			feedback(player, slot, failure);
 		}
@@ -365,8 +394,14 @@ public final class TechniqueService {
 		if (!player.isAlive() || player.isSpectator() || !allowRequest(player)) {
 			return;
 		}
+		if (get(player).loadout().stream().limit(usableSlots(player)).noneMatch(slot -> slot.filter(id::equals).isPresent())
+				&& !TechniqueSources.grants(player, id)) {
+			feedback(player, -1, CastFailure.EMPTY_SLOT);
+			return;
+		}
 
-		CastFailure failure = cast(player, id, -1);
+		CastFailure failure = beginCharge(player, id, -1);
+		if(failure==CastFailure.NONE&&CHARGES.containsKey(player.getUUID()))onCastKey(player,-1,false);
 		if (failure != CastFailure.NONE) {
 			feedback(player, -1, failure);
 		}
@@ -384,7 +419,11 @@ public final class TechniqueService {
 			return;
 		}
 
-		set(player, get(player).withSlot(slot, id));
+		var next=get(player).withSlot(slot,id);
+        Charge charging=CHARGES.get(player.getUUID());
+        if(charging!=null&&charging.slot>=0&&!next.slot(charging.slot).equals(Optional.of(charging.id)))cancelCharge(player);
+		active(player).filter(a->next.loadout().stream().noneMatch(s->s.filter(a.id()::equals).isPresent())).ifPresent(a->stop(player));
+		set(player,next);
 	}
 
 	public static void selectSlot(ServerPlayer player, int slot) {
@@ -399,8 +438,28 @@ public final class TechniqueService {
 
 	// ---------------------------------------------------------------- casting
 
+    private static CastFailure beginCharge(ServerPlayer player,Identifier id,int slot){
+        if(CHARGES.containsKey(player.getUUID())||PENDING.stream().anyMatch(p->p.ctx().caster()==player))return CastFailure.BUSY;
+        var found=Techniques.get(player.registryAccess(),id);if(found.isEmpty())return CastFailure.NOT_KNOWN;
+        var d=Personalization.definition(player,id,found.get());
+        var active=ACTIVE.get(player.getUUID());
+        if(active!=null&&active.id.equals(id)){stop(player);return CastFailure.NONE;}
+        CastFailure failure=check(player,id,d);if(failure!=CastFailure.NONE)return failure;
+        int sacrifice=Personalization.get(player,id).details().expression().sacrifice();
+        if(!player.isCreative()&&sacrifice>0&&player.getHealth()<=sacrifice+1)return CastFailure.NOT_ENOUGH_HEALTH;
+        double cost=effectiveCost(player,id,d,modifiers(player,id,d));
+        var payer=payer(player,id,d);
+        if(!(payer.isPresent()?payer.get().pay(player,id,d,cost):CursedEnergy.trySpend(player,cost)))return CastFailure.NOT_ENOUGH_ENERGY;
+        Charge charge=new Charge(player,id,d,slot,cost);CHARGES.put(player.getUUID(),charge);charge.sync();
+        TechniqueFx.castPose(new CastContext(player,player.level(),id,d,1,1));
+        return CastFailure.NONE;
+    }
+
 	/** Validates and runs a cast for a player or mob. Returns NONE on success. */
 	public static CastFailure cast(LivingEntity caster, Identifier id, int slot) {
+        return castCharged(caster,id,slot,-1,1,0);
+    }
+    private static CastFailure castCharged(LivingEntity caster, Identifier id, int slot,double prepaid,double charge,int heldTicks) {
 		if (!(caster.level() instanceof ServerLevel level)) {
 			return CastFailure.DISABLED;
 		}
@@ -410,7 +469,9 @@ public final class TechniqueService {
 			return CastFailure.NOT_KNOWN;
 		}
 
-		TechniqueDefinition definition = found.get();
+		TechniqueDefinition definition = Personalization.definition(caster,id,found.get());
+        if(CHARGES.containsKey(caster.getUUID()))return CastFailure.BUSY;
+		if(PENDING.stream().anyMatch(p->p.ctx().caster().getUUID().equals(caster.getUUID())))return CastFailure.BUSY;
 		CastMode mode = definition.cast().mode();
 		Active active = ACTIVE.get(caster.getUUID());
 		if (active != null && mode != CastMode.INSTANT) {
@@ -428,17 +489,25 @@ public final class TechniqueService {
 		}
 
 		Modifiers modifiers = modifiers(caster, id, definition);
+		int sacrifice=Personalization.get(caster,id).details().expression().sacrifice();
+		boolean creative=caster instanceof ServerPlayer p&&p.isCreative();
+		if(!creative&&sacrifice>0&&caster.getHealth()<=sacrifice+1)return CastFailure.NOT_ENOUGH_HEALTH;
 		double cost = effectiveCost(caster, id, definition, modifiers);
 		Optional<CostPayer> payer = payer(caster, id, definition);
-		if (payer.isPresent() ? !payer.get().pay(caster, id, definition, cost) : !CursedEnergy.trySpend(caster, cost)) {
+		if (prepaid<0 && (payer.isPresent() ? !payer.get().pay(caster, id, definition, cost) : !CursedEnergy.trySpend(caster, cost))) {
 			return CastFailure.NOT_ENOUGH_ENERGY;
 		}
 
-		// Output counts CE the caster spent; a medium's energy is the tool's.
-		double spent = payer.isPresent() ? 0 : cost;
+		PersonalPacts.seal(caster,id);
+        // Output counts CE the caster spent; a medium's energy is the tool's.
+		if(!creative&&sacrifice>0)caster.setHealth(caster.getHealth()-sacrifice);
+		double spent = payer.isPresent() ? 0 : prepaid>=0?prepaid:cost;
+        if(prepaid>=0)definition=chargedDefinition(definition,charge,heldTicks);
 
-		CastContext ctx = new CastContext(caster, level, id, definition, power(caster, id, definition, modifiers), modifiers.range());
+		CastContext ctx = new CastContext(caster, level, id, definition, power(caster, id, definition, modifiers)*charge, modifiers.range());
+        ctx.memory.put("charge",charge);
 		playCastSound(ctx);
+		TechniqueFx.castPose(ctx);
 		if (definition.cast().castTime() > 0) {
 			ctx.fx(TechniqueFxPayload.Phase.WINDUP, caster.position(), caster.getLookAngle(), List.of());
 			PENDING.add(new Pending(ctx, id, definition, level.getGameTime() + definition.cast().castTime(), spent, slot));
@@ -449,7 +518,15 @@ public final class TechniqueService {
 		return CastFailure.NONE;
 	}
 
+    private static TechniqueDefinition chargedDefinition(TechniqueDefinition d,double q,int held){
+        double scale=.5+.5*q;var c=d.cast();
+        int mode=d.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?b.filter():0;
+        var tuning=new TechniqueTuning((int)Math.round(q*100),(int)Math.round(scale*100),(int)Math.round((.6+.4*q)*100),(int)Math.round(scale*100),100,mode);
+        var cast=new TechniqueDefinition.Cast(c.cost(),c.cooldown(),Math.max(0,c.castTime()-held),c.range()*scale,c.mode(),c.upkeep()*Math.max(.5,q),c.maxDuration()==0?0:Math.max(1,(int)(c.maxDuration()*scale)),c.mulCost());
+        return new TechniqueDefinition(d.name(),d.description(),d.category(),d.grade(),cast,TunedBehaviors.apply(d.behavior(),tuning),d.visuals(),d.icon(),d.vowModifiers(),d.innateWeight(),d.masteryUses());
+    }
 	public static CastFailure check(LivingEntity caster, Identifier id, TechniqueDefinition definition) {
+        var pactFailure=PersonalPacts.check(caster,id,definition);if(pactFailure!=CastFailure.NONE)return pactFailure;
 		if (caster.hasEffect(JjkEffects.STUNNED)) {
 			return CastFailure.STUNNED;
 		}
@@ -487,6 +564,7 @@ public final class TechniqueService {
 	private static void execute(CastContext ctx, Identifier id, TechniqueDefinition definition, double cost, int slot) {
 		LivingEntity caster = ctx.caster();
 		CastResult result = definition.behavior().cast(ctx);
+		if(ctx.details().expression().recoil()>0){caster.push(ctx.look().scale(-ctx.details().expression().recoil()/150.0));caster.needsSync=true;}
 		if (definition.cast().mode() == CastMode.INSTANT) {
 			startCooldown(caster, id, definition);
 		} else {
@@ -550,7 +628,7 @@ public final class TechniqueService {
 	public static double power(LivingEntity caster, Identifier id, TechniqueDefinition definition, Modifiers modifiers) {
 		int rank = Progression.gradeRank(caster.registryAccess(), caster);
 		int output = caster instanceof Player player ? Progression.get(player).growth().output() : 0;
-		return TechniqueMath.power(rank, output, isMastered(caster, id, definition), modifiers.damage());
+		return TechniqueMath.power(rank, output, isMastered(caster, id, definition), modifiers.damage()) * Personalization.get(caster,id).output()/100.0 * Personalization.get(caster,id).pact().output();
 	}
 
 	public static int effectiveCooldown(LivingEntity caster, TechniqueDefinition definition) {
@@ -593,6 +671,7 @@ public final class TechniqueService {
 			SYNC.markDirty(player);
 		}
 	}
+	public static void cancel(LivingEntity caster){cancelCharge(caster);PENDING.removeIf(p->p.ctx().caster().getUUID().equals(caster.getUUID()));stop(caster);}
 
 	private static void playCastSound(CastContext ctx) {
 		ctx.level().playSound(null, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(),
@@ -604,6 +683,17 @@ public final class TechniqueService {
 	// ---------------------------------------------------------------- ticking
 
 	private static void tick(MinecraftServer server) {
+        for(Charge charge:List.copyOf(CHARGES.values())){
+            var player=charge.player;
+            if(!player.isAlive()||player.isRemoved()||player.isSpectator()||player.level()!=charge.level||charge.ticks>=400||check(player,charge.id,charge.definition)!=CastFailure.NONE||!Personalization.definition(player,charge.id,Techniques.get(player.registryAccess(),charge.id).orElse(charge.definition)).equals(charge.definition)){
+                cancelCharge(player);continue;
+            }
+            charge.ticks++;double drain=charge.drain();var payer=payer(player,charge.id,charge.definition);
+            if(!(payer.isPresent()?payer.get().pay(player,charge.id,charge.definition,drain):CursedEnergy.trySpend(player,drain))){cancelCharge(player);feedback(player,charge.slot,CastFailure.NOT_ENOUGH_ENERGY);continue;}
+            charge.spent+=drain;
+            if(charge.ticks%2==0)charge.sync();
+            if(charge.ticks%8==0)new CastContext(player,player.level(),charge.id,charge.definition,charge.fraction(),1).fx(TechniqueFxPayload.Phase.WINDUP,player.getEyePosition().add(player.getLookAngle().scale(1.2)));
+        }
 		if (!PENDING.isEmpty()) {
 			for (Iterator<Pending> it = PENDING.iterator(); it.hasNext(); ) {
 				Pending pending = it.next();
@@ -615,7 +705,7 @@ public final class TechniqueService {
 
 				if (pending.ctx().level().getGameTime() >= pending.executeAt()) {
 					it.remove();
-					if (!caster.hasEffect(JjkEffects.STUNNED)) {
+					if (!caster.hasEffect(JjkEffects.STUNNED) && PersonalPacts.check(caster,pending.id(),pending.definition())==CastFailure.NONE) {
 						execute(pending.ctx(), pending.id(), pending.definition(), pending.costPaid(), pending.slot());
 					}
 				}
@@ -628,7 +718,7 @@ public final class TechniqueService {
 
 		for (Active active : List.copyOf(ACTIVE.values())) {
 			LivingEntity caster = active.ctx.caster();
-			if (!caster.isAlive() || caster.isRemoved() || caster.hasEffect(JjkEffects.STUNNED)) {
+			if (!caster.isAlive() || caster.isRemoved() || caster.hasEffect(JjkEffects.STUNNED) || PersonalPacts.check(caster,active.id,active.definition)!=CastFailure.NONE) {
 				stop(caster);
 				continue;
 			}

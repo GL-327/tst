@@ -42,7 +42,8 @@ public final class TechniqueWheelScreen extends Screen {
 
 	@Override
 	protected void init() {
-		techniques = ClientTechniques.known();
+		techniques = ClientTechniques.state().loadout().stream().limit(ClientTechniques.usableSlots())
+				.flatMap(Optional::stream).distinct().toList();
 	}
 
 	@Override
@@ -154,10 +155,10 @@ public final class TechniqueWheelScreen extends Screen {
 		}
 
 		Identifier id = techniques.get(hovered);
-		if (event.button() == 0) {
+		if (event.button() == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT) {
 			int slot = ClientTechniques.state().selected();
 			ClientPlayNetworking.send(new SetLoadoutPayload(slot, Optional.of(id)));
-		} else if (event.button() == 1) {
+		} else if (event.button() == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT) {
 			ClientPlayNetworking.send(new CastTechniquePayload(id));
 		}
 

@@ -22,13 +22,14 @@ public final class ClientSorcery {
 	}
 
 	public static void accept(BlackFlashPayload payload) {
+		com.jjkcraft.client.vfx.AdvancedFx.blackFlash(payload.target());
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) {
 			return;
 		}
 
 		boolean mine = payload.striker() == mc.player.getId();
-		ClientFx.hitStop(mine ? 6 : 4, payload.target());
+		ClientFx.hitStop(2, payload.target());
 		if (mine) {
 			zoneUntil = payload.zoneUntil();
 			zoneStacks = payload.zoneStacks();

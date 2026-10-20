@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.mirror_step",
+  "description": "technique.jjkcraft.mirror_step.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 170,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "mirror_step",
+    "damage": 0,
+    "duration": 12,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#A9D7D7",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mirror_step.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

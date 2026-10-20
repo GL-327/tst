@@ -55,7 +55,21 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 		if (!JjkCraft.isInitialized() || !JjkCraftClient.isInitialized()) {
 			throw new AssertionError("jjkcraft entrypoints did not run on the client");
 		}
+		if ("revision".equals(System.getProperty("jjkcraft.clientTestFocus"))) {
+			revision(context);
+			return;
+		}
+		if("personalization".equals(System.getProperty("jjkcraft.clientTestFocus"))){personalization(context);return;}
+		if("deep".equals(System.getProperty("jjkcraft.clientTestFocus"))){deepSorcery(context);return;}
+		if("overhaul".equals(System.getProperty("jjkcraft.clientTestFocus"))){qualityOverhaul(context);return;}
+		if("menagerie".equals(System.getProperty("jjkcraft.clientTestFocus"))){MenagerieClientChecks.run(context);return;}
+        if("charge".equals(System.getProperty("jjkcraft.clientTestFocus"))){ChargeClientChecks.run(context);return;}
+		if("input".equals(System.getProperty("jjkcraft.clientTestFocus"))||"atelier".equals(System.getProperty("jjkcraft.clientTestFocus"))){AtelierClientChecks.run(context);return;}
+		if("arsenal".equals(System.getProperty("jjkcraft.clientTestFocus"))){ArsenalClientChecks.run(context);return;}
+        if("sandbox".equals(System.getProperty("jjkcraft.clientTestFocus"))){sandboxPowers(context);return;}
 
+		double originalRegen = JjkConfig.server().energy.regenPercentPerSecond;
+		try {
 		TestWorldSave save;
 		try (TestSingleplayerContext singleplayer = context.worldBuilder().create()) {
 			singleplayer.getConnection().waitForChunksRender();
@@ -66,6 +80,7 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			context.waitTicks(5);
 			context.takeScreenshot("jjkcraft-smoke-singleplayer");
 
+			if (!"relog".equals(System.getProperty("jjkcraft.clientTestFocus"))) {
 			energyHud(context, singleplayer);
 			screensAndCeremony(context, singleplayer);
 			techniques(context, singleplayer);
@@ -80,7 +95,10 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			}
 
 			dimensionChangeKeepsEnergy(context, singleplayer);
+			}
 
+			// Persistence must not depend on how long this machine takes to render the reopened world.
+			singleplayer.getServer().computeOnServer(server -> JjkConfig.server().energy.regenPercentPerSecond = 0);
 			singleplayer.getServer().runCommand("jjk energy set @a 33");
 			context.waitTicks(2);
 			save = singleplayer.getWorldSave();
@@ -90,11 +108,228 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 		try (TestSingleplayerContext reopened = save.open()) {
 			reopened.getConnection().waitForChunksRender();
 			double after = reopened.getServer().computeOnServer(SmokeClientGameTest::firstPlayerEnergy);
-			if (after < 33 || after > 40) {
-				throw new AssertionError("CE should persist across relog (33 plus a little regen), was " + after);
+			if (Math.abs(after - 33) > 1e-6) {
+				throw new AssertionError("CE should persist across relog with regeneration paused, was " + after);
 			}
 
 			context.waitFor(mc -> ClientEnergy.hasData());
+		}
+		} finally {
+			JjkConfig.server().energy.regenPercentPerSecond = originalRegen;
+		}
+	}
+
+	private static void mouseAt(ClientGameTestContext context,int gx,int gy,int button){
+		var pixel=context.computeOnClient(mc->new double[]{gx*mc.getWindow().getScreenWidth()/(double)mc.gui.screen().width,gy*mc.getWindow().getScreenHeight()/(double)mc.gui.screen().height});
+		context.getInput().setCursorPos(pixel[0],pixel[1]);context.getInput().pressMouse(button);context.waitTicks(2);
+	}
+	private static void sandboxPowers(ClientGameTestContext context){
+		TestWorldSave saved;
+		try(var world=context.worldBuilder().create()){
+			var server=world.getServer();world.getConnection().waitForChunksRender();server.runCommand("gamemode creative @a");server.runCommand("gamerule spawn_mobs false");
+			server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();com.jjkcraft.awakening.CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);com.jjkcraft.technique.TechniqueService.grant(p,JjkCraft.id("grudge_bolt"));com.jjkcraft.technique.TechniqueService.grant(p,JjkCraft.id("ten_shadows_divine_dogs"));return true;});
+			context.waitFor(mc->ClientTechniques.known().contains(JjkCraft.id("grudge_bolt"))&&ClientProgress.get().grade().equals(JjkCraft.id("calamity")));
+			context.waitTicks(40);
+			if(!server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();return p.level().dimension()==net.minecraft.world.level.Level.OVERWORLD&&com.jjkcraft.modulo.mission.Missions.current(p).isEmpty()&&com.jjkcraft.modulo.Modulo.view(p).objective().isEmpty();}))throw new AssertionError("Calamity must stay in ordinary sandbox without a story");
+			context.setScreen(com.jjkcraft.client.screen.LoadoutScreen::new);context.waitTicks(2);
+			for(int slot=0;slot<4;slot++){
+				final int n=slot;var pos=context.computeOnClient(mc->{var sc=mc.gui.screen();int w=Math.min(420,sc.width-16),h=Math.min(236,sc.height-16),x=(sc.width-w)/2,y=(sc.height-h)/2;return new int[]{x+w/2+5+(n%4)*32+14,y+24+18+(n/4)*29+13,x+8+60,y+24+43+12};});
+				mouseAt(context,pos[0],pos[1],com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT);
+				context.waitFor(mc->ClientTechniques.state().slot(n).isEmpty());
+				String[] moves={"grudge_bolt","lapse_blue","infinity","reversal_red"};String key=moves[n];
+				context.runOnClient(mc->{for(var child:mc.gui.screen().children())if(child instanceof net.minecraft.client.gui.components.EditBox box){box.setValue(key);break;}});
+				context.waitTicks(2);mouseAt(context,pos[2],pos[3],com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT);mouseAt(context,pos[0],pos[1],com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT);
+				context.waitFor(mc->ClientTechniques.state().slot(n).filter(JjkCraft.id(key)::equals).isPresent());
+			}
+			context.takeScreenshot("jjkcraft-sandbox-native-four-slot-rebind");
+			for(int page=0;page<8;page++){
+				final int n=page;var id=JjkCraft.id(page==5?"ten_shadows_divine_dogs":"grudge_bolt");context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(id,n));context.waitTicks(2);context.takeScreenshot("jjkcraft-sandbox-expression-page-"+n);
+			}
+			context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("grudge_bolt"),3));
+			context.runOnClient(mc->{for(var child:mc.gui.screen().children())if(child instanceof net.minecraft.client.gui.components.EditBox box){box.setValue("30");break;}});context.waitTicks(1);context.clickScreenButton("Apply tuning");
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("grudge_bolt")).details().expression().yaw()==30);
+			context.setScreen(()->null);
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily(JjkCraft.id("modulo_harmony_chaos"),false));return true;});
+			context.waitFor(mc->ClientTechniques.known().contains(JjkCraft.id("harmony_step")));context.setScreen(com.jjkcraft.client.screen.LoadoutScreen::new);context.waitTicks(2);context.takeScreenshot("jjkcraft-sandbox-modulo-powers");
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.Tune(JjkCraft.id("harmony_step"),com.jjkcraft.technique.TechniqueTuning.DEFAULT.with(16,15).with(31,4).with(15,0x245BBD)));return true;});
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("harmony_step")).details().expression().dash()==4);context.setScreen(()->null);saved=world.getWorldSave();
+		}
+		try(var reopened=saved.open()){
+			reopened.getConnection().waitForChunksRender();context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("harmony_step")).details().expression().dash()==4);
+			if(!context.computeOnClient(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("harmony_step")).details().expression().yaw()==15&&com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("harmony_step")).details().color()==0x245BBD))throw new AssertionError("expanded profile and RGB color survive world reopen");
+		}
+	}
+	private static void qualityOverhaul(ClientGameTestContext context){
+		boolean modulo=JjkConfig.server().modulo.enabled;JjkConfig.server().modulo.enabled=false;
+		try(var world=context.worldBuilder().create()){
+			var server=world.getServer();world.getConnection().waitForChunksRender();server.runCommand("gamemode creative @a");server.runCommand("gamerule spawn_mobs false");server.runCommand("time set noon");
+			server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();com.jjkcraft.awakening.CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);return true;});
+			context.waitFor(mc->ClientTechniques.known().contains(JjkCraft.id("hollow_purple")));
+			context.setScreen(com.jjkcraft.client.screen.LoadoutScreen::new);context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-loadout");
+			context.clickScreenButton("Bindings");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-bindings");
+			context.clickScreenButton(com.jjkcraft.client.JjkKeys.SKILLS[0].getTranslatedKeyMessage().getString());context.getInput().pressKey(com.mojang.blaze3d.platform.InputConstants.KEY_5);context.waitTicks(2);
+			if(!context.computeOnClient(mc->com.jjkcraft.client.JjkKeys.SKILLS[0].saveString().equals("key.keyboard.5")))throw new AssertionError("native key binding edit must update mapping");
+			context.clickScreenButton("Reset bindings");context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("hollow_purple")));
+			context.runOnClient(mc->{for(var child:mc.gui.screen().children())if(child instanceof net.minecraft.client.gui.components.EditBox box){box.setValue("180");break;}});
+			context.waitTicks(1);context.clickScreenButton("Apply tuning");context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("hollow_purple")).output()==180);
+			context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-workshop-saved");
+			context.clickScreenButton("Core >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-delivery");
+			context.clickScreenButton("Delivery >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-control");
+			context.clickScreenButton("Control >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-style");context.setScreen(()->null);
+			server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();com.jjkcraft.technique.TechniqueService.grant(p,JjkCraft.id("ink_step"));com.jjkcraft.technique.TechniqueService.setLoadout(p,0,java.util.Optional.of(JjkCraft.id("ink_step")));p.getInventory().setSelectedSlot(8);return true;});
+			context.waitFor(mc->ClientTechniques.state().slot(0).filter(JjkCraft.id("ink_step")::equals).isPresent());
+			context.runOnClient(mc->mc.player.getInventory().setSelectedSlot(8));context.getInput().holdKey(com.jjkcraft.client.JjkKeys.SKILLS[0]);context.waitTicks(3);context.getInput().releaseKey(com.jjkcraft.client.JjkKeys.SKILLS[0]);context.waitTicks(4);
+			if(!server.computeOnServer(s->com.jjkcraft.technique.TechniqueService.get(s.getPlayerList().getPlayers().getFirst()).masteryOf(JjkCraft.id("ink_step"))>0))throw new AssertionError("1 key must cast the equipped technique");
+			if(!context.computeOnClient(mc->mc.player.getInventory().getSelectedSlot()==8))throw new AssertionError("skill binding must not also change the inventory hotbar");
+			context.runOnClient(mc->mc.gui.hud.getChat().clearMessages(false));server.runCommand("execute as @p at @s run tp @s ~ ~ ~ 0 6");
+			lineup(context,server,new String[]{"ash_oni","hollow_hymnal","salt_lantern"},8,3.5);context.takeScreenshot("jjkcraft-overhaul-curse-materials");server.runCommand("jjk curse clear 64");
+			for(String id:new String[]{"malevolent_shrine","unlimited_void","idle_death_gamble","self_embodiment_of_perfection"}){
+				server.runCommand("jjk domain expand @p jjkcraft:"+id);context.waitTicks(45);
+				context.waitFor(mc->ClientDomains.own().isPresent());context.takeScreenshot("jjkcraft-overhaul-domain-"+id);closeOwn(context,server);
+			}
+			server.runCommand("execute as @p at @s rotated ~ 0 run summon minecraft:husk ^ ^ ^2 {NoAI:1b,PersistenceRequired:1b}");
+			context.getInput().holdKeyFor(o->o.keyAttack,7);context.waitTicks(1);context.takeScreenshot("jjkcraft-overhaul-contact-impact");
+			if(!server.computeOnServer(s->com.jjkcraft.sorcerer.Progression.get(s.getPlayerList().getPlayers().getFirst()).counter("combat_hits")>0))throw new AssertionError("native M1 input must land an authoritative hit");
+			context.waitTicks(25);server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();return com.jjkcraft.combat.CursedCombat.start(p,JjkCraft.id("heavy"),p.getLookAngle());});
+			context.computeOnClient(mc->{mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);return true;});context.waitTicks(4);context.takeScreenshot("jjkcraft-overhaul-heavy-pose");
+		}finally{JjkConfig.server().modulo.enabled=modulo;}
+	}
+	private static void deepSorcery(ClientGameTestContext context){
+		boolean modulo=JjkConfig.server().modulo.enabled;JjkConfig.server().modulo.enabled=false;
+		try{
+		TestWorldSave save;
+		try(var world=context.worldBuilder().create()){
+			world.getConnection().waitForChunksRender();world.getServer().runCommand("gamemode creative @a");
+			context.setScreen(com.jjkcraft.client.screen.CreativeTechniqueScreen::new);context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-creative-picker");
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily(JjkCraft.id("limitless"),false));return true;});
+			context.waitFor(mc->ClientProgress.get().grade().equals(JjkCraft.id("calamity"))&&ClientTechniques.known().contains(JjkCraft.id("hollow_purple")));
+			context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("hollow_purple")));context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-core");
+			context.clickScreenButton("Core >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-delivery");
+			context.clickScreenButton("Delivery >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-control");
+			context.clickScreenButton("Control >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-style");
+			var tune=com.jjkcraft.technique.TechniqueTuning.DEFAULT.with(6,175).with(7,4).with(8,20).with(9,2).with(12,12).with(15,0xD055BB).named("Personal Purple");
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.Tune(JjkCraft.id("hollow_purple"),tune));return true;});
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("hollow_purple")).details().title().equals("Personal Purple"));
+			context.setScreen(com.jjkcraft.client.screen.PracticeScreen::new);context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-regen-and-growth");
+			context.setScreen(()->null);
+			world.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();com.jjkcraft.awakening.CharacterTraits.set(p,new com.jjkcraft.awakening.TraitState(true,java.util.List.of(JjkCraft.id("mechamaru_restriction")),"",java.util.List.of()));CursedEnergy.restore(p,500000);com.jjkcraft.sorcerer.SorcererLifecycle.fullSync(p);return true;});
+			context.waitFor(mc->ClientEnergy.uncapped()&&ClientEnergy.predicted()>100000);
+			context.setScreen(com.jjkcraft.client.screen.PracticeScreen::new);context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-uncapped-bank");context.setScreen(()->null);save=world.getWorldSave();
+		}
+		try(var reopened=save.open()){
+			reopened.getConnection().waitForChunksRender();context.waitFor(mc->ClientEnergy.uncapped()&&ClientEnergy.predicted()>100000);
+			if(!reopened.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();return com.jjkcraft.technique.Personalization.get(p,JjkCraft.id("hollow_purple")).details().title().equals("Personal Purple")&&com.jjkcraft.energy.SorceryPractice.get(p).regenLevel()>0;}))throw new AssertionError("deep tuning, uncapped bank and regeneration persist");
+		}
+		}finally{JjkConfig.server().modulo.enabled=modulo;}
+	}
+	private static void personalization(ClientGameTestContext context) {
+		boolean modulo=JjkConfig.server().modulo.enabled;JjkConfig.server().modulo.enabled=false;
+		try {
+		TestWorldSave save;
+		try(TestSingleplayerContext world=context.worldBuilder().create()){
+			world.getConnection().waitForChunksRender();
+			world.getServer().computeOnServer(server->{
+				var p=server.getPlayerList().getPlayers().getFirst();com.jjkcraft.sorcerer.Awakening.reset(p);
+				p.setAttached(com.jjkcraft.awakening.CharacterAwakening.RECORD,new com.jjkcraft.awakening.AwakeningRecord("inherit","jjkcraft:limitless","Gojo",true,0));
+				com.jjkcraft.sorcerer.Awakening.awaken(p,false);
+				com.jjkcraft.sorcerer.Progression.set(p,com.jjkcraft.sorcerer.Progression.get(p).withGrade(JjkCraft.id("special_grade"),10000));
+				com.jjkcraft.energy.SorceryPractice.set(p,new com.jjkcraft.energy.PracticeState(3000,50,true,false,150,200,90));
+				com.jjkcraft.reverse.ReverseTechnique.set(p,com.jjkcraft.reverse.ReverseTechnique.state(p).withUnlocked(true),false);
+				CursedEnergy.fill(p);com.jjkcraft.sorcerer.SorcererLifecycle.fullSync(p);return true;
+			});
+			world.getServer().runCommand("jjk culling reset");
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.practice().birth()==3000&&ClientTechniques.known().contains(JjkCraft.id("infinity")));
+			context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("infinity")));context.waitTicks(4);
+			context.takeScreenshot("jjkcraft-personal-infinity-workshop");
+			var tuning=new com.jjkcraft.technique.TechniqueTuning(175,100,150,100,50,2);
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.Tune(JjkCraft.id("infinity"),tuning));return true;});
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("infinity")).equals(tuning));
+			context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("infinity")));context.waitTicks(3);
+			context.takeScreenshot("jjkcraft-personal-infinity-customized");
+			context.setScreen(com.jjkcraft.client.screen.PracticeScreen::new);context.waitTicks(3);context.takeScreenshot("jjkcraft-personal-ce-practice");
+			context.setScreen(()->null);
+			world.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();return com.jjkcraft.energy.SorceryPractice.act(p,new com.jjkcraft.network.payload.PersonalizationPayloads.Practice(3,150,200,90));});
+			context.waitTicks(12);
+			if(!world.getServer().computeOnServer(server->com.jjkcraft.energy.SorceryPractice.reinforced(server.getPlayerList().getPlayers().getFirst())))throw new AssertionError("Learned reinforcement must consume CE and activate");
+			context.computeOnClient(mc->{mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);return true;});
+			for(String move:new String[]{"jab","hook","backfist","uppercut","heavy","sweep"}){
+				context.waitTicks(30);
+				world.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();CursedEnergy.fill(p);return com.jjkcraft.combat.CursedCombat.start(p,JjkCraft.id(move),p.getLookAngle());});
+				context.waitTicks(3);
+				if(!context.computeOnClient(mc->{
+					var p=com.jjkcraft.client.combat.CombatAnimations.pose(mc.player.getId());
+					if(p==null||!p.move().equals(move))return false;
+					var model=new net.minecraft.client.model.player.PlayerModel(mc.getEntityModels().bakeLayer(net.minecraft.client.model.geom.ModelLayers.PLAYER),false);
+					var state=new net.minecraft.client.renderer.entity.state.AvatarRenderState();state.id=mc.player.getId();state.ageInTicks=mc.player.tickCount+0.5f;
+					model.setupAnim(state);return Math.abs(model.rightArm.xRot)>0.1||Math.abs(model.leftArm.xRot)>0.1;
+				}))throw new AssertionError("Authoritative "+move+" must change full-body model pose");
+				context.takeScreenshot("jjkcraft-personal-combat-"+move);
+			}
+			context.waitTicks(25);
+			world.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();return com.jjkcraft.technique.TechniqueService.cast(p,JjkCraft.id("lapse_blue"),0);});
+			context.waitTicks(2);
+			if(!context.computeOnClient(mc->{var p=com.jjkcraft.client.combat.CombatAnimations.pose(mc.player.getId());return p!=null&&p.move().equals("cast_area");}))throw new AssertionError("Field casts must animate even without a CAST VFX phase");
+			context.takeScreenshot("jjkcraft-personal-casting-gesture");
+			context.waitTicks(30);
+			context.computeOnClient(mc->{mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);return true;});
+			world.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();return com.jjkcraft.combat.CursedCombat.start(p,JjkCraft.id("heavy"),p.getLookAngle());});
+			context.waitTicks(4);context.takeScreenshot("jjkcraft-personal-first-person-combat");
+			save=world.getWorldSave();
+		}
+		try(TestSingleplayerContext reopened=save.open()){
+			reopened.getConnection().waitForChunksRender();
+			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.practice().birth()==3000);
+			boolean persisted=reopened.getServer().computeOnServer(server->{var p=server.getPlayerList().getPlayers().getFirst();
+				return com.jjkcraft.energy.SorceryPractice.get(p).birth()==3000&&com.jjkcraft.energy.SorceryPractice.get(p).trained()==50
+					&&com.jjkcraft.technique.Personalization.get(p,JjkCraft.id("infinity")).mode()==2;});
+			if(!persisted)throw new AssertionError("Birth potential and personal technique tuning must persist across relog");
+		}
+		}finally{JjkConfig.server().modulo.enabled=modulo;}
+	}
+
+	private static void revision(ClientGameTestContext context) {
+		try (TestSingleplayerContext world = context.worldBuilder().create()) {
+			world.getConnection().waitForChunksRender();
+			world.getServer().computeOnServer(server -> {
+				var p=server.getPlayerList().getPlayers().getFirst();
+				com.jjkcraft.sorcerer.Awakening.reset(p);
+				p.setAttached(com.jjkcraft.awakening.CharacterAwakening.RECORD,
+						new com.jjkcraft.awakening.AwakeningRecord("inherit","jjkcraft:blood_manipulation","Kamo",false,0));
+				com.jjkcraft.sorcerer.Awakening.awaken(p,false);
+				return true;
+			});
+			world.getServer().runCommand("jjk culling reset");
+			context.waitFor(mc -> ClientTechniques.state().slot(0).filter(JjkCraft.id("crimson_binding")::equals).isPresent());
+			context.setScreen(LoadoutScreen::new); context.waitTicks(5);
+			context.takeScreenshot("jjkcraft-revision-blood-loadout");
+			context.setScreen(() -> null);
+			world.getServer().runCommand("spawnpoint @a 10 -60 10");
+			world.getServer().runCommand("kill @a");
+			context.waitFor(mc -> mc.gui.screen() instanceof com.jjkcraft.client.death.SoulScreen);
+			context.waitTicks(2); context.takeScreenshot("jjkcraft-revision-respawn-choices");
+			context.computeOnClient(mc -> { net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.SoulPayloads.Action("respawn")); return true; });
+			context.waitFor(mc -> mc.player != null && mc.player.isAlive() && com.jjkcraft.client.death.SoulClient.view().state().phase().equals("alive"));
+			boolean atRespawn = world.getServer().computeOnServer(server -> {
+				var p=server.getPlayerList().getPlayers().getFirst();
+				return Math.abs(p.getX()-10.5)<3 && Math.abs(p.getZ()-10.5)<3
+						&& com.jjkcraft.technique.TechniqueService.get(p).innate().filter(JjkCraft.id("crimson_binding")::equals).isPresent();
+			});
+			if (!atRespawn) throw new AssertionError("Normal respawn must use the configured vanilla respawn point and retain Blood Manipulation");
+			context.takeScreenshot("jjkcraft-revision-normal-respawn");
+			context.setScreen(com.jjkcraft.client.screen.TraitsScreen::new);context.waitTicks(3);context.takeScreenshot("jjkcraft-revision-traits");context.setScreen(()->null);
+			context.waitTicks(65); // Vanilla respawn protection must expire before another lethal hit.
+			world.getServer().runCommand("kill @a");
+			context.waitFor(mc->mc.gui.screen() instanceof com.jjkcraft.client.death.SoulScreen);
+			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.SoulPayloads.Action("spirit"));return true;});
+			context.waitFor(mc->com.jjkcraft.client.death.SoulClient.view().state().phase().equals("spirit") && !com.jjkcraft.client.state.ClientTraits.own().form().isEmpty());
+			context.computeOnClient(mc->{mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_BACK);return true;});
+			context.waitTicks(10);context.takeScreenshot("jjkcraft-revision-cursed-spirit");
+			context.waitTicks(65);
+			world.getServer().runCommand("kill @a");
+			context.waitFor(mc->mc.player!=null && mc.player.isAlive() && com.jjkcraft.client.death.SoulClient.view().state().phase().equals("alive")
+					&& !com.jjkcraft.client.state.ClientAwakening.view().record().family().equals("jjkcraft:blood_manipulation"));
+			context.takeScreenshot("jjkcraft-revision-spirit-rebirth");
+			context.computeOnClient(mc->{mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);return true;});
 		}
 	}
 
@@ -545,6 +780,10 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 	 * characters and bosses, Mahoraga's wheel, the branch choice and the epilogue.
 	 */
 	private static void modulo(ClientGameTestContext context, TestSingleplayerContext singleplayer) {
+		if(!com.jjkcraft.modulo.Modulo.storyEnabled()){
+			if(!singleplayer.getServer().computeOnServer(s->com.jjkcraft.modulo.Modulo.view(s.getPlayerList().getPlayers().getFirst()).objective().isEmpty()))throw new AssertionError("sandbox must have no mission tracker");
+			context.takeScreenshot("jjkcraft-modulo-sandbox");return;
+		}
 		TestServerContext server = singleplayer.getServer();
 		server.runOnServer(s -> {
 			JjkConfig.server().modulo.enabled = true;

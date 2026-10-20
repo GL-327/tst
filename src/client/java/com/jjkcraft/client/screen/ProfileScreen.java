@@ -73,9 +73,9 @@ public final class ProfileScreen extends JjkScreen {
 		int sw = Math.max(120, panelW() / 3 - 10);
 		Ink.text(g, Component.translatable("screen.jjkcraft.profile.stats"), sx, y, Palette.gold(), 1f);
 		double max = ClientEnergy.max();
-		double regen = max * ClientEnergy.params().regenFractionPerSecond();
+		double regen = ClientEnergy.regenerationPerSecond();
 		int line = y + 12;
-		line = stat(g, sx, line, "screen.jjkcraft.profile.capacity", fmt(max), regen > 0 ? "+" + fmt(regen) + "/s" : "-");
+		line = stat(g, sx, line, "screen.jjkcraft.profile.capacity", ClientEnergy.uncapped()?"∞":fmt(max), regen > 0 ? "+" + fmt(regen) + "/s" : "-");
 		line = stat(g, sx, line, "growth.jjkcraft.output", fmt(p.ceSpentTotal()) + " CE", points(p.growth().output()));
 		line = stat(g, sx, line, "growth.jjkcraft.control",
 				p.castsAttempted() == 0 ? "-" : Math.round(p.controlRatio() * 100) + "%", points(p.growth().control()));

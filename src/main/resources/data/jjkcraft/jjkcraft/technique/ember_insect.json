@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.ember_insect",
+  "description": "technique.jjkcraft.ember_insect.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 14,
+    "cooldown": 100,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 8,
+    "speed": 1.8,
+    "size": 0.3,
+    "lifetime": 45
+  },
+  "visuals": {
+    "color": "#F35A28",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ember_insect.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

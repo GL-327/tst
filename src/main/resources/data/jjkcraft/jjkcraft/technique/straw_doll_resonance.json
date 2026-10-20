@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.straw_doll_resonance",
   "description": "technique.jjkcraft.straw_doll_resonance.desc",
   "category": "restriction",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 26,
     "cooldown": 300,

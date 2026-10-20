@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.moon_dregs",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 3,
+  "techniques": [
+    "jjkcraft:moon_dregs",
+    "jjkcraft:venom_cloud",
+    "jjkcraft:jelly_mantle",
+    "jjkcraft:venom_tether"
+  ],
+  "domain": ""
+}

@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.ice_armor",
+  "description": "technique.jjkcraft.ice_armor.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 34,
+    "cooldown": 240,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "ice_armor",
+    "damage": 0,
+    "duration": 180,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#80D5E2",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ice_armor.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

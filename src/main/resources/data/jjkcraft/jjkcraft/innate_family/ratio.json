@@ -1,0 +1,13 @@
+{
+  "name": "family.jjkcraft.ratio",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 35,
+  "techniques": [
+    "jjkcraft:ratio",
+    "jjkcraft:ratio_expose",
+    "jjkcraft:ratio_collapse",
+    "jjkcraft:ratio_overtime"
+  ],
+  "domain": ""
+}

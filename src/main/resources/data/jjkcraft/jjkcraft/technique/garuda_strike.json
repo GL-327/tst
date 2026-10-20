@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.garuda_strike",
+  "description": "technique.jjkcraft.garuda_strike.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 100,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:strike",
+    "damage": 15,
+    "knockback": 1.3,
+    "black_flash": true
+  },
+  "visuals": {
+    "color": "#F0CA4F",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "none",
+    "hit_sound": "jjkcraft:technique.strike"
+  },
+  "icon": "jjkcraft:textures/gui/technique/garuda_strike.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

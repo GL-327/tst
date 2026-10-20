@@ -1,0 +1,14 @@
+{
+  "name": "family.jjkcraft.blood_manipulation",
+  "clan": "Kamo",
+  "inherited_weight": 35,
+  "random_weight": 0,
+  "techniques": [
+    "jjkcraft:crimson_binding",
+    "jjkcraft:blood_needle",
+    "jjkcraft:flowing_red_scale",
+    "jjkcraft:piercing_blood",
+    "jjkcraft:blood_condense"
+  ],
+  "domain": ""
+}

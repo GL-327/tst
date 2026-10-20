@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.venom_cloud",
+  "description": "technique.jjkcraft.venom_cloud.desc",
+  "grade": "jjkcraft:grade_3",
+  "category": "area",
+  "cast": {
+    "cost": 24,
+    "cooldown": 140,
+    "range": 4
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "poison",
+    "damage": 2,
+    "duration": 70,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#C393DB",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/venom_cloud.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

@@ -25,12 +25,16 @@ bin/
 
 # fabric
 run/
+logs/
+.fabric/
 
 # java
 hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+__pycache__/
+*.pyc
 
 # datagen cache (generated resources themselves are committed)
 src/main/generated/.cache/

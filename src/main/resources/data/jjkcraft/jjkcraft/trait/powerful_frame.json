@@ -1,0 +1,8 @@
+{
+  "name": "trait.jjkcraft.powerful_frame",
+  "description": "trait.jjkcraft.powerful_frame.desc",
+  "category": "physical",
+  "weight": 10,
+  "damage": 1.5,
+  "speed": -0.03
+}

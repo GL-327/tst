@@ -1,0 +1,65 @@
+{
+  "name": "curse.jjkcraft.grief_cathedral",
+  "description": "curse.jjkcraft.grief_cathedral.desc",
+  "lore": "curse.jjkcraft.grief_cathedral.lore",
+  "entity": "jjkcraft:grief_cathedral",
+  "grade": "jjkcraft:special_grade",
+  "stats": {
+    "health": 450,
+    "armor": 10,
+    "speed": 0.0,
+    "attack_damage": 8.5,
+    "ce_capacity": 400,
+    "regen_multiplier": 2.0,
+    "drain_on_hit": 8,
+    "follow_range": 32.0,
+    "knockback_resistance": 1.0
+  },
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "spawn": {
+    "weight": 1,
+    "min_fear": 70,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "resistances": {
+    "minecraft:fall": 0.0,
+    "minecraft:drown": 0.0,
+    "minecraft:explosion": 0.5,
+    "minecraft:player_explosion": 0.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/grief_cathedral",
+    "texture": "jjkcraft:textures/entity/grief_cathedral.png",
+    "animation": "jjkcraft:entity/grief_cathedral"
+  },
+  "mechanic": "jjkcraft:gate",
+  "parameters": {
+    "arena_radius": 14,
+    "arena_ticks": 900,
+    "max_minions": 3,
+    "summon_interval": 220,
+    "pull_radius": 16,
+    "pull_strength": 1.1,
+    "pull_interval": 140,
+    "maw_radius": 2.5,
+    "maw_damage": 4,
+    "guarded_damage_taken": 0.35,
+    "bar_range": 40,
+    "phase_two_arena_scale": 0.65,
+    "graves": 6,
+    "grave_damage": 3
+  },
+  "codex": {
+    "color": "#AB2DD7",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/gravebound_gate",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ]
+}

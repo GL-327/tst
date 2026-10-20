@@ -1,0 +1,35 @@
+{
+  "name": "technique.jjkcraft.mourning_thread",
+  "description": "technique.jjkcraft.mourning_thread.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 60,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:bind",
+    "duration": 35,
+    "damage": 3
+  },
+  "visuals": {
+    "color": "#BD6C9C",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mourning_thread.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

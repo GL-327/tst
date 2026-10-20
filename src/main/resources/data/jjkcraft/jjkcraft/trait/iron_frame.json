@@ -1,0 +1,9 @@
+{
+  "name": "trait.jjkcraft.iron_frame",
+  "description": "trait.jjkcraft.iron_frame.desc",
+  "category": "restriction_zero",
+  "weight": 20,
+  "speed": -0.08,
+  "health": 8,
+  "armor": 4
+}

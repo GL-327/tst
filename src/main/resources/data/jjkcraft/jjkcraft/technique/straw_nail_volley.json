@@ -1,0 +1,33 @@
+{
+  "name": "technique.jjkcraft.straw_nail_volley",
+  "description": "technique.jjkcraft.straw_nail_volley.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 70,
+    "range": 26
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 4,
+    "count": 3,
+    "speed": 1.5,
+    "spread": 18,
+    "size": 0.35,
+    "lifetime": 50,
+    "blast_radius": 0,
+    "burn_seconds": 0
+  },
+  "visuals": {
+    "color": "#C0302F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb"
+  },
+  "icon": "jjkcraft:textures/gui/technique/straw_nail_volley.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

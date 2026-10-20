@@ -1,0 +1,28 @@
+{
+  "name": "technique.jjkcraft.ten_shadows_round_deer",
+  "description": "technique.jjkcraft.ten_shadows_round_deer.desc",
+  "grade": "jjkcraft:grade_2",
+  "category": "summon",
+  "cast": {
+    "cost": 48,
+    "cooldown": 180,
+    "range": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:summon",
+    "entity": "jjkcraft:round_deer",
+    "count": 1,
+    "lifetime": 600
+  },
+  "visuals": {
+    "color": "#9693DA",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.summon",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ten_shadows_round_deer.png",
+  "innate_weight": 0,
+  "mastery_uses": 60
+}

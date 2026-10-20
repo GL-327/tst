@@ -1,0 +1,45 @@
+{
+  "name": "curse.jjkcraft.chalk_biter",
+  "description": "curse.jjkcraft.chalk_biter.desc",
+  "lore": "curse.jjkcraft.chalk_biter.lore",
+  "entity": "jjkcraft:chalk_biter",
+  "grade": "jjkcraft:grade_4",
+  "stats": {
+    "health": 14,
+    "armor": 0,
+    "speed": 0.256,
+    "attack_damage": 2.9,
+    "ce_capacity": 55,
+    "follow_range": 22
+  },
+  "spawn": {
+    "weight": 9,
+    "min_fear": 10,
+    "group_min": 2,
+    "group_max": 4,
+    "max_light": 10
+  },
+  "resistances": {
+    "minecraft:fall": 0.0
+  },
+  "model": {
+    "geo": "jjkcraft:entity/chalk_biter",
+    "texture": "jjkcraft:textures/entity/chalk_biter.png",
+    "animation": "jjkcraft:entity/chalk_biter",
+    "scale": 0.58
+  },
+  "mechanic": "jjkcraft:plain",
+  "parameters": {},
+  "codex": {
+    "color": "#C2C9C5",
+    "unlock_kills": 3
+  },
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:sweep"
+  ],
+  "techniques": [
+    "jjkcraft:grudge_bolt"
+  ],
+  "loot_table": "jjkcraft:entities/chalk_biter"
+}

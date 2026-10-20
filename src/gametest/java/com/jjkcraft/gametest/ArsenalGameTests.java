@@ -88,7 +88,7 @@ public class ArsenalGameTests {
 			}
 		}
 
-		helper.assertValueEqual((int) ultimates, 3, "three ultimates");
+		helper.assertTrue(ultimates >= 3, "the expanded roster retains at least the three original ultimates");
 		for (TechniqueCategory category : TechniqueCategory.values()) {
 			if (category != TechniqueCategory.DOMAIN) {
 				helper.assertTrue(categories.contains(category), "a technique in " + category);
@@ -301,9 +301,10 @@ public class ArsenalGameTests {
 				.thenExecute(() -> {
 					float max = striker.getHealth();
 					striker.doHurtTarget(helper.getLevel(), wearer);
-					helper.assertTrue(striker.getRemainingFireTicks() > 0 && striker.getHealth() < max, "the striker is burned back");
-				})
-				.thenSucceed();
+					helper.assertTrue(com.jjkcraft.combat.CursedCombat.attacking(striker), "the striker starts a telegraphed hit");
+                })
+                .thenWaitUntil(()->helper.assertTrue(striker.getRemainingFireTicks()>0&&striker.getHealth()<striker.getMaxHealth(),"the striker is burned back at contact"))
+                .thenSucceed();
 	}
 
 	@GameTest

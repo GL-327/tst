@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.love_orbit",
+  "description": "technique.jjkcraft.love_orbit.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 30,
+    "cooldown": 170,
+    "range": 18
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "love_orbit",
+    "damage": 0,
+    "duration": 180,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#E69CB9",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/love_orbit.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

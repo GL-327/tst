@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.projection_overclock",
+  "description": "technique.jjkcraft.projection_overclock.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 48,
+    "cooldown": 280,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "projection_overclock",
+    "damage": 0,
+    "duration": 160,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#D0D0E0",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/projection_overclock.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

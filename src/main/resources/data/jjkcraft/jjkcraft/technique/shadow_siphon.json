@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.shadow_siphon",
+  "description": "technique.jjkcraft.shadow_siphon.desc",
+  "category": "restriction",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 25,
+    "cooldown": 170,
+    "range": 4
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "shadow_siphon",
+    "damage": 10,
+    "duration": 45,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#4A3A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/shadow_siphon.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

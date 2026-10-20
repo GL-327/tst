@@ -38,7 +38,7 @@ import com.jjkcraft.sound.JjkSounds;
 
 /**
  * Reverse Cursed Technique: cursed energy multiplied against itself into positive energy. It is
- * not learned like a technique; it awakens at the edge of death. A Semi-Grade 1 or higher sorcerer
+ * learnable through Practice, and may also awaken at the edge of death. A Semi-Grade 1 or higher sorcerer
  * holding enough CE who takes a lethal blow may grasp it and survive. Once awakened:
  * <ul>
  * <li>below 60% health it heals automatically, 1 health every half second for 3 CE each;</li>
@@ -130,6 +130,7 @@ public final class ReverseTechnique {
 	 * aside (an emergency save, or the awakening itself). Public for tests.
 	 */
 	public static boolean saveFromDeath(ServerPlayer player) {
+        if(com.jjkcraft.technique.PersonalPacts.forbids(player,com.jjkcraft.technique.TechniquePact.HEALING))return false;
 		long now = player.level().getGameTime();
 		ReverseState state = state(player);
 		if (state.unlocked()) {
@@ -178,13 +179,16 @@ public final class ReverseTechnique {
 		{
 			ReverseState state = state(player);
 			boolean wasHealing = HEALING.contains(player.getUUID());
-			boolean heal = state.unlocked() && state.autoHeal() && player.isAlive()
-					&& player.getHealth() < player.getMaxHealth() * HEAL_BELOW
+			var tuning=com.jjkcraft.energy.SorceryPractice.get(player);
+			float healing=(float)Math.min(player.getMaxHealth()-player.getHealth(),tuning.healing()/100.0);
+			double healCost=CE_PER_HEALTH*Math.pow(tuning.healing()/100.0,1.65);
+			boolean heal = !com.jjkcraft.technique.PersonalPacts.forbids(player,com.jjkcraft.technique.TechniquePact.HEALING) && state.unlocked() && state.autoHeal() && player.isAlive() && !player.isSpectator()
+					&& player.getHealth() < player.getMaxHealth() * tuning.healBelow()/100.0
 					&& !CursedEnergy.isOverexerted(player)
-					&& CursedEnergy.current(player) >= CursedEnergy.max(player) * 0.08 + CE_PER_HEALTH
-					&& CursedEnergy.trySpend(player, CE_PER_HEALTH);
+					&& CursedEnergy.current(player) >= CursedEnergy.max(player) * 0.08 + healCost
+					&& CursedEnergy.trySpend(player, healCost);
 			if (heal) {
-				player.heal(1f);
+				player.heal(healing);
 				HEALING.add(player.getUUID());
 				glow(player, 3);
 			} else {

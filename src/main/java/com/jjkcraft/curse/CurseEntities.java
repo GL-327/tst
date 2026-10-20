@@ -50,6 +50,8 @@ public final class CurseEntities {
 	}
 
 	public static void init() {
+		ExpandedCurseTypes.init();
+        LowGradeCurseTypes.init();
 		AttributeSupplier.Builder defaults = Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 20)
 				.add(Attributes.ATTACK_DAMAGE, 3)
@@ -63,14 +65,14 @@ public final class CurseEntities {
 		}
 	}
 
-	private static EntityType<CurseEntity> ground(String name, float width, float height) {
+	static EntityType<CurseEntity> ground(String name, float width, float height) {
 		EntityType<CurseEntity> type = JjkEntities.register(name,
 				EntityType.Builder.<CurseEntity>of(CurseEntity::new, MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
 		ALL.add(type);
 		return type;
 	}
 
-	private static EntityType<FlyingCurseEntity> flying(String name, float width, float height) {
+	static EntityType<FlyingCurseEntity> flying(String name, float width, float height) {
 		EntityType<FlyingCurseEntity> type = JjkEntities.register(name,
 				EntityType.Builder.<FlyingCurseEntity>of(FlyingCurseEntity::new, MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
 		ALL.add(type);

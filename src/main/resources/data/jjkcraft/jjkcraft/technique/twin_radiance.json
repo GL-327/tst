@@ -1,0 +1,39 @@
+{
+  "name": "technique.jjkcraft.twin_radiance",
+  "description": "technique.jjkcraft.twin_radiance.desc",
+  "category": "projectile",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 65,
+    "cooldown": 100,
+    "range": 40
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 5,
+    "speed": 1.8,
+    "size": 0.25,
+    "lifetime": 35,
+    "count": 4,
+    "spread": 18
+  },
+  "visuals": {
+    "color": "#FFF0BF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/twin_radiance.png",
+  "innate_weight": 0,
+  "mastery_uses": 50,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

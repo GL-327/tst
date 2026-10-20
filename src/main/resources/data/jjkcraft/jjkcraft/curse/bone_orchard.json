@@ -1,0 +1,57 @@
+{
+  "name": "curse.jjkcraft.bone_orchard",
+  "description": "curse.jjkcraft.bone_orchard.desc",
+  "lore": "curse.jjkcraft.bone_orchard.lore",
+  "entity": "jjkcraft:bone_orchard",
+  "grade": "jjkcraft:grade_2",
+  "stats": {
+    "health": 88,
+    "armor": 6,
+    "speed": 0.216,
+    "attack_damage": 6.0,
+    "ce_capacity": 150,
+    "drain_on_hit": 6,
+    "knockback_resistance": 0.5
+  },
+  "techniques": [
+    "jjkcraft:grave_chains"
+  ],
+  "spawn": {
+    "weight": 6,
+    "min_fear": 38,
+    "max_light": 7,
+    "group_min": 1,
+    "group_max": 1
+  },
+  "resistances": {
+    "minecraft:arrow": 0.5,
+    "minecraft:in_fire": 1.5,
+    "minecraft:on_fire": 1.5
+  },
+  "model": {
+    "geo": "jjkcraft:entity/bone_orchard",
+    "texture": "jjkcraft:textures/entity/bone_orchard.png",
+    "animation": "jjkcraft:entity/bone_orchard"
+  },
+  "mechanic": "jjkcraft:thorn",
+  "parameters": {
+    "root_range": 14,
+    "root_windup": 22,
+    "bind_ticks": 40,
+    "root_damage": 5,
+    "root_lifetime": 200,
+    "root_interval": 120,
+    "thorns_fraction": 0.2,
+    "day_bonus": 0.6,
+    "hedge_half_width": 3
+  },
+  "codex": {
+    "color": "#9C3EA2",
+    "unlock_kills": 3
+  },
+  "loot_table": "jjkcraft:entities/thorn_matriarch",
+  "combat_moves": [
+    "jjkcraft:jab",
+    "jjkcraft:heavy"
+  ]
+}

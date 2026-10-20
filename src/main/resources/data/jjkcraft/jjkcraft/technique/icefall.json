@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.icefall",
+  "description": "technique.jjkcraft.icefall.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 60,
+    "cooldown": 300,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "freeze",
+    "damage": 10,
+    "duration": 70,
+    "radius": 9
+  },
+  "visuals": {
+    "color": "#80D5E2",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/icefall.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

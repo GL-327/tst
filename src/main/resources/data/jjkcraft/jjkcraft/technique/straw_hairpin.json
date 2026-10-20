@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.straw_hairpin",
+  "description": "technique.jjkcraft.straw_hairpin.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 28,
+    "cooldown": 150,
+    "range": 5
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "straw_hairpin",
+    "damage": 9,
+    "duration": 1,
+    "radius": 5
+  },
+  "visuals": {
+    "color": "#C0302F",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/straw_hairpin.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

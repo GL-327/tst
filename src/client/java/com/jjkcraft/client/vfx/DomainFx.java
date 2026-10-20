@@ -52,6 +52,7 @@ public final class DomainFx {
 	}
 
 	private static void render(LevelRenderContext context) {
+		if (ClientConfig.effect(ClientConfig.get().vfx.domains) == 0) return;
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null || (ClientDomains.domains().isEmpty() && ClientDomains.simpleDomains().isEmpty())) {
 			return;
@@ -65,8 +66,10 @@ public final class DomainFx {
 
 		context.submitNodeCollector().submitCustomGeometry(poseStack, JjkRenderTypes.dome(), (pose, buffer) -> {
 			Quads quads = new Quads(pose, buffer, camera);
+			WorldFx.Frame interior=new WorldFx.Frame(pose,buffer,camera,time,low);
 			for (ClientDomains.Domain domain : ClientDomains.domains().values()) {
 				domain.definition().ifPresent(def -> dome(quads, domain, def, time, low));
+				if(domain.contains(camera))domain.definition().ifPresent(def->DomainScenery.draw(interior,domain,def,alpha(domain,time)));
 			}
 
 			for (DomainWorldPayload.SimpleView simple : ClientDomains.simpleDomains()) {
@@ -93,6 +96,9 @@ public final class DomainFx {
 
 					if (domain.phase() == ActiveDomain.Phase.CLASHING) {
 						clash(frame, domain, def, time);
+					}
+					if(domain.barrier()&&domain.integrity()<0.8f){
+						for(int n=0;n<(1-domain.integrity())*18;n++){double a=n*2.399;Vec3 p=domain.center().add(Math.cos(a)*domain.radius()*0.97,n%4,Math.sin(a)*domain.radius()*0.97);frame.beam(p,p.add(0,1.4,0),0.045,0xCCF3DFFF,0x44FFFFFF);}
 					}
 				});
 			}

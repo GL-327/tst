@@ -1,0 +1,41 @@
+{
+  "name": "technique.jjkcraft.granite_cannon",
+  "description": "technique.jjkcraft.granite_cannon.desc",
+  "category": "ultimate",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 95,
+    "cooldown": 170,
+    "range": 24
+  },
+  "behavior": {
+    "type": "jjkcraft:projectile",
+    "damage": 19,
+    "speed": 1.4,
+    "count": 1,
+    "spread": 0,
+    "size": 0.7,
+    "lifetime": 40,
+    "blast_radius": 3,
+    "pierce": true
+  },
+  "visuals": {
+    "color": "#D2C6F0",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.bolt_fire",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "orb",
+    "hit_sound": "jjkcraft:technique.bolt_hit"
+  },
+  "icon": "jjkcraft:textures/gui/technique/granite_cannon.png",
+  "innate_weight": 0,
+  "mastery_uses": 45,
+  "vow_modifiers": [
+    {
+      "vow": "jjkcraft:night_covenant",
+      "cost": 0.7,
+      "range": 1.2
+    }
+  ]
+}

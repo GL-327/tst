@@ -65,7 +65,7 @@ public final class CursedEnergy {
 			SorcererProgress progress = progress(player);
 			double gradeMultiplier = Grades.get(entity.registryAccess(), progress.grade())
 					.map(GradeDefinition::ceMultiplier).orElse(1.0);
-			capacity = EnergyMath.sorcererCapacity(JjkConfig.server().energy.baseCapacity, gradeMultiplier,
+			capacity = EnergyMath.sorcererCapacity(SorceryPractice.base(player), gradeMultiplier,
 					progress.growth().output(), progress.heavenlyRestricted());
 		} else if (entity instanceof CursedEnergyUser user) {
 			capacity = user.maxCursedEnergy();
@@ -90,7 +90,7 @@ public final class CursedEnergy {
 			SorcererProgress progress = progress(player);
 			double perk = Grades.get(entity.registryAccess(), progress.grade())
 					.map(g -> g.perks().regenBonus()).orElse(0.0);
-			modifier = 1.0 + perk + 0.02 * progress.growth().efficiency();
+			modifier = (1.0 + perk + 0.02 * progress.growth().efficiency()) * com.jjkcraft.core.technique.PersonalizationMath.regenMultiplier(SorceryPractice.get(player).regenLevel());
 		} else if (entity instanceof CursedEnergyUser user) {
 			modifier = user.cursedEnergyRegenMultiplier();
 		} else {
@@ -108,7 +108,7 @@ public final class CursedEnergy {
 	public static EnergyState state(LivingEntity entity) {
 		double max = max(entity);
 		EnergyState stored = stored(entity, max);
-		return EnergyMath.advance(stored, max, now(entity), params(), regenModifier(entity));
+		return uncapped(entity)?EnergyMath.advanceUnbounded(stored,max,now(entity),params(),regenModifier(entity)):EnergyMath.advance(stored, max, now(entity), params(), regenModifier(entity));
 	}
 
 	public static double current(LivingEntity entity) {
@@ -122,7 +122,8 @@ public final class CursedEnergy {
 			return cost <= 0;
 		}
 
-		EnergyMath.SpendResult result = EnergyMath.spend(stored(entity, max), max, cost, now(entity), params(), regenModifier(entity));
+		if(!Double.isFinite(cost)||cost<0)return false;
+		EnergyMath.SpendResult result = EnergyMath.spend(stored(entity, max), storageMax(entity,max), cost, now(entity), params(), storageRegen(entity,max));
 		if (!result.success()) {
 			return false;
 		}
@@ -143,7 +144,7 @@ public final class CursedEnergy {
 		}
 
 		EnergyState before = state(entity);
-		EnergyState after = EnergyMath.drain(stored(entity, max), max, amount, now(entity), params(), regenModifier(entity));
+		EnergyState after = EnergyMath.drain(stored(entity, max), storageMax(entity,max), amount, now(entity), params(), storageRegen(entity,max));
 		store(entity, after);
 		return before.current() - after.current();
 	}
@@ -154,19 +155,26 @@ public final class CursedEnergy {
 			return;
 		}
 
-		store(entity, EnergyMath.restore(stored(entity, max), max, amount, now(entity), params(), regenModifier(entity)));
+		if(!Double.isFinite(amount))return;
+		store(entity, EnergyMath.restore(stored(entity, max), storageMax(entity,max), amount, now(entity), params(), storageRegen(entity,max)));
 	}
 
 	/** Sets CE directly (commands, tests). Clears overexertion. */
 	public static void set(LivingEntity entity, double value) {
 		double max = max(entity);
 		EnergyState current = state(entity);
-		store(entity, new EnergyState(Math.max(0, Math.min(max, value)), now(entity), 0, current.lastActionTick()));
+		if(!Double.isFinite(value))return;
+		store(entity, new EnergyState(Math.max(0, Math.min(storageMax(entity,max), value)), now(entity), 0, current.lastActionTick()));
 	}
 
 	public static void fill(LivingEntity entity) {
+		if(uncapped(entity)){checkpoint(entity);return;}
 		set(entity, max(entity));
 	}
+	/** max() remains the finite working-output reference for percentage costs and regeneration. */
+	public static boolean uncapped(LivingEntity entity){return entity instanceof Player p && com.jjkcraft.awakening.CharacterTraits.has(p,"mechamaru_restriction");}
+	private static double storageMax(LivingEntity e,double reference){return uncapped(e)?Double.MAX_VALUE:reference;}
+	private static double storageRegen(LivingEntity e,double reference){return regenModifier(e)*(uncapped(e)?reference/Double.MAX_VALUE:1);}
 
 	/**
 	 * Stores the current value before something that changes max CE or the regen modifier (a grade
@@ -205,7 +213,7 @@ public final class CursedEnergy {
 	/** The stored state, or a full pool if the entity has never been touched. */
 	private static EnergyState stored(LivingEntity entity, double max) {
 		EnergyState state = entity.getAttached(JjkAttachments.ENERGY);
-		return state != null ? state : EnergyState.full(max, now(entity));
+		return state != null ? state : uncapped(entity)?new EnergyState(0,now(entity),0,now(entity)):EnergyState.full(max, now(entity));
 	}
 
 	private static void store(LivingEntity entity, EnergyState state) {

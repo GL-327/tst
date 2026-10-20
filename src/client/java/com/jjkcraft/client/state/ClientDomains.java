@@ -33,7 +33,8 @@ import com.jjkcraft.technique.CastFailure;
 public final class ClientDomains {
 	/** One open domain. */
 	public record Domain(int instance, int casterEntity, Identifier id, Vec3 center, float radius, DomainMath.Variant variant,
-			ActiveDomain.Phase phase, long phaseStart, long openedAt) {
+			ActiveDomain.Phase phase, long phaseStart, long openedAt,float integrity) {
+		public Domain(int instance,int casterEntity,Identifier id,Vec3 center,float radius,DomainMath.Variant variant,ActiveDomain.Phase phase,long phaseStart,long openedAt){this(instance,casterEntity,id,center,radius,variant,phase,phaseStart,openedAt,1);}
 		public Optional<DomainDefinition> definition() {
 			Minecraft mc = Minecraft.getInstance();
 			return mc.level == null ? Optional.empty() : Domains.get(mc.level.registryAccess(), id);
@@ -71,7 +72,7 @@ public final class ClientDomains {
 		for (DomainWorldPayload.View v : payload.domains()) {
 			next.put(v.instance(), new Domain(v.instance(), v.casterEntity(), v.domain(), new Vec3(v.x(), v.y(), v.z()), v.radius(),
 					DomainMath.Variant.values()[Math.floorMod(v.variant(), DomainMath.Variant.values().length)],
-					ActiveDomain.Phase.values()[Math.floorMod(v.phase(), ActiveDomain.Phase.values().length)], v.phaseStart(), v.openedAt()));
+					ActiveDomain.Phase.values()[Math.floorMod(v.phase(), ActiveDomain.Phase.values().length)], v.phaseStart(), v.openedAt(),v.integrity()));
 		}
 
 		DOMAINS.clear();

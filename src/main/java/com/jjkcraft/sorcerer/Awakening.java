@@ -44,7 +44,7 @@ public final class Awakening {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			ServerPlayer player = handler.getPlayer();
 			if (JjkConfig.server().progression.awakenOnFirstJoin && !Progression.get(player).awakened()) {
-				awaken(player, null);
+				com.jjkcraft.awakening.CharacterAwakening.firstJoin(player);
 			}
 		});
 	}

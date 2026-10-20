@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.shadow_escape",
+  "description": "technique.jjkcraft.shadow_escape.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 18,
+    "cooldown": 85,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "shadow_escape",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#4A3A6A",
+    "particle": "jjkcraft:ce_aura",
+    "sound": "jjkcraft:technique.cast",
+    "shake": 0.15,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/shadow_escape.png",
+  "innate_weight": 0,
+  "mastery_uses": 45
+}

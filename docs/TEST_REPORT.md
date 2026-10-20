@@ -1,5 +1,180 @@
 # Test report
 
+## 1.11.0-preview, 2026-10-20
+
+All **127 unit tests and 208 server scenarios passed** in
+`build/charge-verified-package.log`. New checks cover hold/release casting, the server's
+200% Purple cap, unrelated key releases, cancellation/unbinding, CE exhaustion, actual
+Six Eyes spending, channels starting on release and stopping on a second press, real
+log/leaf removal, transient debris cleanup, Purple's corridor, protected containers and
+bedrock, Fabric claim vetoes and the server terrain toggle. Charging suppresses natural
+regeneration so high-capacity characters cannot regenerate through its CE cost.
+
+The final native client run and package succeeded in `build/charge-final-native.log`.
+Actual held R input charges Maximum Output Blue to 100%, visibly drains CE, removes
+tree blocks on release and renders its effects. Purple reaches 200%; opening the profile
+cancels a held charge. Screenshot review corrected the charge/combat HUD overlap.
+Six final screenshots are preserved in `build/charge-final-screenshots`.
+The final network cancellation refinement preserves unrelated active toggles and is
+covered by this native cancellation path. These checks do not establish multiplayer
+latency balance or compatibility with every third-party protection mod.
+
+Artifact: `build/libs/jjkcraft-1.11.0-preview.jar`, **4,850,197 bytes**; SHA-256
+`b3479ad877515d97c05aeee5663a39667208b1d0a008e6a746d87cb2c3b475d8`.
+ZIP integrity, packaged version, all 169 technique definitions and exclusion of GameTest
+classes were verified. Runtime logs, worlds and build caches are excluded from staging.
+
+## 1.10.0-preview, 2026-10-20
+
+123 unit tests and all 198 server scenarios passed in the final full build:
+`build/menagerie-final-package.log`. The final Chalice body-health preservation refinement
+passed its focused rerun with the rebuilt artifact (`build/menagerie-chalice-final.log`).
+New scenarios exercise missing/empty Creative family IDs; ordered, one-time potential
+migration; exact Creative overrides; all Ten Shadows entity definitions; Agito's four active
+components; failed-fusion atomicity; saved custom component inheritance; invalid/duplicate
+recipe refusal; Divine Dogs Totality; complete Chalice technique reset with preserved body,
+clan, growth and CE; deliberate use and exact consumption; real loaded-player Blood/Mass
+damage; guardian redirection and shared heal limits; and bounded adaptation. A loot codec
+round trip confirms player-kill and 1% chance conditions are retained by Minecraft rather
+than ignored JSON.
+
+The native client scenario passed twice, including the final run in
+`build/menagerie-client-final.log`: a legacy missing-family record opens safely; selecting
+Ten Shadows remains a draft, then applies successfully; fusion choices are saved through
+the UI; an actual cast consumes the live components into one chimera; the recipe survives
+world reopen. All eighteen new beast types render without missing resources. Twenty-three
+screenshots are preserved in `build/menagerie-final-screenshots`; the previous review set is
+in `build/menagerie-screenshots`. The static NoAI gallery shows their fixed body orientation;
+it is a resource/render check, not evidence for every combat animation or AI matchup.
+
+There are 169 powers, 31 families, 18 additional owned shikigami types, 52 curse species,
+16 attributes and nine domains. All referenced icons exist, and scroll ingredient checks
+found no conflicting shapeless recipes. Generator reruns do not duplicate family moves or
+loot pools. `git diff --check` passed.
+
+Final jar: `build/libs/jjkcraft-1.10.0-preview.jar` (4,833,601 bytes), SHA-256
+`d9a494d6718f363042c8c032bf375af1c80d3d2c443891a99d999e43ac29f4e4`. ZIP/version/definition counts passed, and test classes are excluded. Normal
+Minecraft was reopened with the final build. GeckoLib loads 131 models and 77 animation sets.
+Human PvP/latency balance, every fusion combination and canon-accurate high-detail art remain
+outside these automated checks; this remains a playable preview.
+
+## 1.9.0-preview, 2026-10-20
+
+123 unit tests passed. The final full server run passed 182/183 scenarios, including all ten
+new family/character checks. The existing Tithe payment scenario failed after its random
+resurfacing could leave the harness's entity-ticking area; the fixture now returns it to the
+payment area after testing resurfacing, holds its movement and the offering, then exercises
+the unchanged payment mechanic. Its focused confirmation passed. All 183 scenarios passed
+across the final full and focused runs. Logs: `build/atelier-final-package.log` and
+`build/atelier-payment-final.log`. No production curse mechanic was weakened for this test.
+
+New server coverage verifies all 29 families have at least four valid moves; 147 registered
+powers; additive owned souls with a six-soul cap; real summon count/vitality/lifetime tuning;
+servant AI attacks; soul damage/binding; Furnace contact ignition and retained tuned fire;
+custom grade, CE, growth, mastery, attributes and skill values; no unwanted Calamity/Six Eyes,
+family moves or domain regrant; atomic invalid/survival edit refusal; exact uncapped Creative
+Mechamaru balances; and movement/healing vow enforcement.
+
+The complete native client run passed in `build/atelier-client-complete.log`. It covers the
+family browser, loadout details, summon personalization, optional Auto Calamity toggle,
+seven Creative pages, exact numeric edits with server acknowledgement, both GUI sizes,
+quick/held inverted right-mouse Auto attacks, inverted manual attacks, Use remaining separate,
+visible soul summons, and reopening with custom birth/regen intact. A focused inverted-input
+run also passed (`build/atelier-input.log`). Thirteen screenshots are preserved in
+`build/atelier-screenshots`. Earlier UI test attempts exposed ambiguous navigation labels;
+the final editor uses distinct Training/Attributes/Powers labels. The combined input fixture
+now explicitly aims the local and server player after GUI resize/teleport.
+
+The release jar is `build/libs/jjkcraft-1.9.0-preview.jar` (4,626,384 bytes), SHA-256
+`de7e4384524519302dd520bc2ee69d73eb3d6043eaee8fe76cbc4ead91a1bfab`.
+ZIP, version, 147 packaged definitions, soul resources, missing icon and duplicate scroll
+recipe checks passed. Test classes and the removed vanilla-key interception are excluded.
+`git diff --check` passed. Normal Minecraft was launched with 1.9.0-preview; GeckoLib loaded
+113 models and 59 animation sets. Human PvP/latency balance and the full tuning/vow combination
+space still need playtesting.
+
+## 1.8.0-preview, 2026-10-20
+
+123 unit tests passed. The final full server run passed 172 of 173 scenarios, including all
+new feature checks; the intermittent door-ambush fixture was isolated and kept beside its
+frame, then passed its focused confirmation. All 173 scenarios have therefore passed across
+the full and focused runs. The separate curse-payment scenario passed both in isolation
+and in the final full run after moving it to its own test environment. Logs:
+`build/arsenal-final-package.log`, `build/arsenal-tithe-confirm.log`, `build/arsenal-door-confirm.log`.
+
+The complete real-client run passed in `build/arsenal-client-final.log`: native clearing and
+refilling of all twelve slots, banked power casting without changing the inventory hotbar,
+normal Q/E/F actions, saved Auto Combat preferences, both vow pages and acknowledged saves,
+manual double-tap uppercut/sweep, actual Auto M1 contact, twelve curse previews and reopening
+with the twelve-slot loadout and vow intact. Nineteen reviewed screenshots are preserved in
+`build/arsenal-screenshots`. One earlier parallel test launch deadlocked in Fabric's initial
+phase barrier before any world existed; the disposable client was stopped and a fresh isolated
+client completed normally. No production workaround was added for that startup failure.
+
+The build contains 95 techniques, 29 families and 52 curse species. Dedicated art references,
+32 new technique glyphs, twelve spawn-egg texture/model sets, loot tables and saved defaults
+were checked. Final jar ZIP/version checks passed, with test classes and the removed inventory
+key interception excluded. `git diff --check` passed. Human PvP balance, latency and the large
+combination space of expressions/vows remain outside this automated run.
+
+## 1.7.0-preview, 2026-10-20
+
+114 unit tests and all 163 server scenarios passed in one complete run. The real client
+also passed native right-click clearing and left-click refilling of every slot, eight
+workshop pages, a numeric edit with server acknowledgement, Creative Modulo selection,
+and expression persistence after reopening the world. Log: `build/sandbox-integration-checks.log`.
+
+New server checks cover cleared-slot reuse/channel cancellation, story suppression with
+legacy progress at multiple grades, both new families, all expression axes and old-save
+defaults, independent owners, projectile tuning, summon stats, health sacrifice payment
+and refusal, and all eight loaded scroll recipes.
+
+Ten screenshots were reviewed and preserved in `build/sandbox-screenshots`. The editor
+disables controls that do not apply to the selected move. Human multiplayer balance and
+the large space of combined settings remain playtest work.
+
+Final compilation, unit checks and assembly passed in `build/sandbox-final-package.log`.
+The 1.7.0-preview jar passed ZIP integrity and embedded-version checks, with test-only
+classes excluded. `git diff --check` passed.
+
+## 1.6.0-preview, 2026-10-19
+
+111 unit tests passed. The full server run passed 157 of 158 scenarios; the remaining
+finisher/escape fixture was corrected to use a real survival player and the normal 26.3
+client-loaded acknowledgement, then passed in isolation. Thus all 158 server scenarios
+have passed across the full and focused runs. Logs: `build/quality-server-package.log`
+and `build/quality-finisher-confirm.log`. The filter is reusable with `-PgameTestFilter=<id>`.
+
+The real client passed native key rebinding, direct skill casting without changing the
+inventory hotbar, numeric workshop edits and server acknowledgements, all four workshop
+pages, four rendered domain interiors, and native M1 contact damage. Thirteen screenshots
+were reviewed and preserved in `build/quality-overhaul-screenshots`. The final client run
+also completed a clean disconnect; log: `build/quality-overhaul-final-checks.log` (its overall
+Gradle result reflects the pre-correction server fixture failure, not a client failure).
+
+Asset checks validated 40 base curse atlases and 120 matching glow/wounded/critical variants.
+The packaged jar passed ZIP integrity, embedded-version and client-mixin checks; test-only
+classes and the Fabric shutdown workaround are excluded. `git diff --check` passed.
+
+Human PvP feel, balance across latency and per-weapon move sets still need playtesting.
+This report records actual automated and visual checks, not a claim that every interaction
+or balance combination has been tested.
+
+## 1.5.0-preview, 2026-10-19
+
+110 unit tests passed. All 152 required server GameTests passed on the standalone
+rerun (`build/deep-server-recheck.log`). The first combined run had one intermittent
+Doorframe Hunter AI fixture failure; all new feature tests passed in that run.
+
+The real client completed Creative selection at Calamity, all four workshop pages,
+advanced-setting synchronization, independent regeneration display, uncapped storage
+above normal capacity, and persistence of the bank/tuning/regen through reopening.
+Screenshots in `build/run/clientGameTest/screenshots` were visually inspected.
+Combined log: `build/deep-sorcery-checks.log`. New tests also reject survival grants,
+verify full family mastery/domain and ensure Fill cannot create an uncapped bank.
+
+Earlier reports below describe their respective versions.
+
 Every check below says how it was run. "Automated" means a Gradle task ran it and it passed.
 "Log-checked" means the game was launched and its log was read, without a human playing. Visual
 quality, feel and balance need a human tester. Those rows stay open until someone plays.
@@ -323,3 +498,87 @@ Not checked: the renamed names in a real world saved by 1.0.0 (the tests build o
 stacks from JSON instead); translations other than English (there are none); shikigami art
 (unchanged, still the old crane and tortoise shapes, as `docs/NAMING.md` says).
 
+
+## 1.2.0-preview validation, 2026-10-19
+
+Latest baseline unit run: 102 tests, zero failures. Expanded server run: all 130 required
+GameTests passed. New integration coverage includes one-shot Inherit/Random awakening,
+forged/repeated selection, grade unlocks, forty registered curses with valid combat
+moves, startup frames, guard height/parry, soul/item codecs, placed reliquaries and
+one-time Vessel revival. Stress evidence is in docs/PERF.md.
+
+The initial real-client run produced 56 scene screenshots and reached its final relog
+assertion. That assertion failed (43.3125 CE against an allowed 33-40) because regeneration
+continued during world loading. The test now pauses regeneration during save/reload and
+requires exactly 33 CE, restoring the setting in finally. Its focused rerun result is
+recorded below when complete. The 56 captured scenes are retained locally under
+build/reports/client-preview-scenes. Loadout and curse screenshots were visually inspected.
+This is not a claim that every individual added curse or new pact path was visually
+reviewed, or that the complete revised client suite passed in one uninterrupted run.
+
+Data generation is run separately before packaging to avoid scheduling sourcesJar ahead
+of runDatagen's generated-resource output. Validation found the Vessel required an
+explicit no-loot-table registration. The new object item/block model providers and
+spawn-egg textures are included. Final results follow below.
+
+### Final checkpoint
+
+runDatagen: passed (strict resource/data providers). Final `test assemble runGameTest
+runClientGameTest -PclientTestFocus=relog`: BUILD SUCCESSFUL. All 131 required server
+GameTests passed in 43.66 seconds, all 102 unit tests passed, and the focused real-client
+save/reload check passed with regeneration paused. The added domain regression confirms
+that new Limitless characters wait for Unlimited Void's grade, while the legacy test
+continues to grant a Grade 1 domain. The earlier 56-scene client run plus the focused
+persistence rerun are recorded separately; the revised full client suite was not rerun.
+
+Final crowded scene: 40 curses, 12 entrants, 4 summons, 200 ticks, mean 10.33 ms/tick.
+Jar validation found no missing curse textures, spawn-egg item definitions, models or
+textures among all forty definitions. Output: build/libs/jjkcraft-1.2.0-preview.jar.
+Runtime launch log: build/play-client.log. Changes remain local and have not been pushed.
+
+## 1.3.0-preview final validation, 2026-10-19
+
+Strict runDatagen passed. All 140 required server GameTests passed in the final run
+(42.76 s of test execution). The crowded scene averaged 18.95 ms/tick with forty curses,
+twelve NPC entrants and four summons over 200 ticks. Unit tests passed, including old
+six-slot save normalization without deleting learned moves.
+
+The focused real-client revision run passed normal respawning at a configured vanilla
+spawn point with Blood Manipulation retained, the four-slot/family loadout, the Traits
+screen, cursed-spirit rebirth/rendering, and exorcism into a different innate family.
+Six screenshots are in build/run/clientGameTest/screenshots. The loadout, death menu
+and spirit form were visually inspected. A render failure found by that test was fixed
+by retaining AvatarRenderState and redirecting only submitted geometry. The capture
+fixture was corrected to clear solid terrain outside the tiny empty test template;
+its aimed absorb/release assertions now pass.
+
+Additional integration coverage: spirit/deal choices in both mode policies, fallen-host
+consumption and duplicate rejection, host health/body persistence, Six Eyes outside
+technique slots, complete family references, captured-curse ownership and explicit
+colony entry with personal Kogane negotiation. Full long-running Hardcore worlds,
+four-player play, every technique's balance and new renderer/backend combinations
+remain manual checks. The full older 56-scene suite was not rerun for this expansion.
+
+Final output: build/libs/jjkcraft-1.3.0-preview.jar. Launch log: build/play-client.log.
+Source changes remain local, without a GitHub push.
+
+## 1.4.0-preview personalization and animation, 2026-10-19
+
+`test assemble runGameTest runClientGameTest -PclientTestFocus=personalization` passed:
+107 unit tests and all 147 required server GameTests. The mixed stress scene averaged
+18.71 ms/tick for 40 curses, 12 entrants and four summons over 200 ticks.
+
+New server coverage checks every registered technique's default/tuned behavior, bounded
+finite costs, unknown-move rejection, player isolation, actual customized teleport
+distance/CE/cooldown, birth-reserve persistence across death/respec, XP-funded universal
+learning, zero-CE restrictions, RCT output and Infinity filter pricing.
+
+The focused real client exercised workshop synchronization, reserve/skill UI, paid
+reinforcement activation, six combat poses with assertions on changed model limbs,
+first-person rendering, and saved tuning/birth reserves across world reopening.
+Screenshots were inspected and panel opacity/layout problems corrected. Casting gestures
+are also checked for field techniques, which use a different VFX phase.
+
+Logs: `build/personalization-release-check.log`, `build/personalization-gesture-check.log`.
+The previous long scene suite was not rerun. Human PvP balance and third-party player-model
+compatibility remain manual checks. Release jar: `build/libs/jjkcraft-1.4.0-preview.jar`.
