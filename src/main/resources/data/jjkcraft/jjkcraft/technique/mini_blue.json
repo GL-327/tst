@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.mini_blue",
+  "description": "technique.jjkcraft.mini_blue.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 35,
+    "range": 14
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": 0.65,
+    "radius": 1.6,
+    "duration": 24,
+    "damage_per_second": 3,
+    "burst_damage": 8,
+    "burst_radius": 2
+  },
+  "visuals": {
+    "color": "#3D8BFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mini_blue.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.momentum_salvo",
+  "description": "technique.jjkcraft.momentum_salvo.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 36,
+    "cooldown": 85,
+    "range": 14,
+    "cast_time": 3
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/momentum/salvo",
+    "damage": 7,
+    "duration": 60,
+    "radius": 6
+  },
+  "visuals": {
+    "color": "#F3C478",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.04,
+    "hit_stop": 0,
+    "trail": "slash"
+  },
+  "icon": "jjkcraft:textures/gui/technique/momentum_salvo.png",
+  "innate_weight": 0,
+  "mastery_uses": 59
+}

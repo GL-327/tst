@@ -113,6 +113,7 @@ public final class JjkItems {
 	}
 
 	public static void init() {
+        CursedEquipment.init();
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TAB, FabricCreativeModeTab.builder()
 				.title(Component.translatable("itemGroup.jjkcraft.main"))
 				.icon(() -> new ItemStack(CURSED_ENERGY_SHARD))

@@ -1,0 +1,9 @@
+{
+  "item": "jjkcraft:stormbell_spear",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_2",
+  "on_hit": "shock",
+  "amount": 4,
+  "description": "item.jjkcraft.stormbell_spear.desc",
+  "technique": "jjkcraft:return_stroke"
+}

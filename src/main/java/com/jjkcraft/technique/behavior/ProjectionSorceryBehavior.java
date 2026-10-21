@@ -40,34 +40,5 @@ public record ProjectionSorceryBehavior(double radius, int skipTicks, double bli
 	}
 
 	@Override
-	public CastResult cast(CastContext ctx) {
-		LivingEntity caster = ctx.caster();
-		Vec3 from = caster.position();
-		List<Entity> frozen = new ArrayList<>();
-		for (LivingEntity enemy : ctx.enemiesInRadius(from, radius)) {
-			enemy.addEffect(new MobEffectInstance(JjkEffects.FROZEN_FRAME, (int) Math.round(skipTicks * Math.min(1.5, ctx.power())), 0, false, true), caster);
-			frozen.add(enemy);
-		}
-
-		Vec3 look = new Vec3(ctx.look().x, 0, ctx.look().z);
-		if (blink > 0 && look.lengthSqr() > 1e-4) {
-			Vec3 limit = ctx.blockLimit(blink);
-			Vec3 to = new Vec3(limit.x, from.y, limit.z);
-			Vec3 step = to.subtract(from);
-			if (step.length() > 0.8) {
-				to = from.add(step.normalize().scale(step.length() - 0.6));
-			}
-
-			if (caster instanceof ServerPlayer player) {
-				if(!ctx.level().noCollision(caster,caster.getBoundingBox().move(to.subtract(from))))to=from;
-				player.teleportTo(to.x, to.y, to.z);
-			} else {
-				caster.teleportTo(to.x, to.y, to.z);
-			}
-		}
-
-		caster.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 1, false, false));
-		ctx.fx(TechniqueFxPayload.Phase.BURST, from.add(0, 1, 0), new Vec3(radius * 0.5, 0, 0), frozen);
-		return frozen.isEmpty() ? CastResult.done(caster.position()) : CastResult.hit(frozen, caster.position());
-	}
+	public CastResult cast(CastContext ctx) { return com.jjkcraft.technique.ProjectionPlans.cast(ctx, Math.max(1,blink * ctx.power())); }
 }

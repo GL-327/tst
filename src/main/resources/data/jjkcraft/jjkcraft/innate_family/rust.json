@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.rust",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:rust_mark",
+    "jjkcraft:rust_guard",
+    "jjkcraft:rust_step",
+    "jjkcraft:rust_salvo",
+    "jjkcraft:rust_snare",
+    "jjkcraft:rust_finish"
+  ],
+  "domain": ""
+}

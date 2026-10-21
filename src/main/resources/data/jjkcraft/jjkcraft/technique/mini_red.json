@@ -1,0 +1,32 @@
+{
+  "name": "technique.jjkcraft.mini_red",
+  "description": "technique.jjkcraft.mini_red.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 18,
+    "cooldown": 45,
+    "range": 12
+  },
+  "behavior": {
+    "type": "jjkcraft:field",
+    "strength": -1.1,
+    "radius": 1.8,
+    "duration": 12,
+    "damage_per_second": 5,
+    "burst_damage": 10,
+    "burst_radius": 2
+  },
+  "visuals": {
+    "color": "#FF3D4E",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.repel",
+    "shake": 0.3,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/mini_red.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "ASA",
+    "AAA",
+    "AAA"
+  ],
+  "key": {
+    "A": "minecraft:leather",
+    "S": "jjkcraft:cursed_energy_shard"
+  },
+  "result": {
+    "id": "jjkcraft:sorcerer_uniform_chestplate"
+  }
+}

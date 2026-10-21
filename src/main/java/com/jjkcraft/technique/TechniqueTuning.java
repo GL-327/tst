@@ -9,6 +9,7 @@ public record TechniqueTuning(int output, int reach, int area, int duration, int
     public TechniqueTuning(int output,int reach,int area,int duration,int cooldown,int mode,TechniqueDetails details){this(output,reach,area,duration,cooldown,mode,details,TechniquePact.NONE);}
     public TechniqueTuning(int output,int reach,int area,int duration,int cooldown,int mode){this(output,reach,area,duration,cooldown,mode,TechniqueDetails.DEFAULT);}
     public static final TechniqueTuning DEFAULT = new TechniqueTuning(100,100,100,100,100,0);
+    public static TechniqueTuning defaultFor(net.minecraft.resources.Identifier id){return id.getPath().equals("infinity")?new TechniqueTuning(100,100,100,100,100,2):DEFAULT;}
     public static final Codec<TechniqueTuning> CODEC = RecordCodecBuilder.create(i -> i.group(
         Codec.INT.optionalFieldOf("output",100).forGetter(TechniqueTuning::output),
         Codec.INT.optionalFieldOf("reach",100).forGetter(TechniqueTuning::reach),

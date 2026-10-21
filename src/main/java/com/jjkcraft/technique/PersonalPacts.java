@@ -28,6 +28,9 @@ public final class PersonalPacts {
         return !next.pact().has(TechniquePact.SINGLE)||single(p).filter(other->!other.equals(id)).isEmpty();
     }
     public static CastFailure check(LivingEntity caster,Identifier id,TechniqueDefinition definition){
+        if(forbids(caster,TechniquePact.DASH)&&TechniquePact.movement(definition))return CastFailure.VOW;
+        if(forbids(caster,TechniquePact.COMBAT)&&definition.behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior)return CastFailure.VOW;
+        if(forbids(caster,TechniquePact.GUARD)&&definition.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m&&m.ability().startsWith("original/")&&m.ability().endsWith("/guard"))return CastFailure.VOW;
         if(caster instanceof Player p&&single(p).filter(only->!only.equals(id)).isPresent())return CastFailure.VOW;
         if(forbids(caster,TechniquePact.HEALING)&&definition.category()==TechniqueCategory.HEALING)return CastFailure.VOW;
         if(forbids(caster,TechniquePact.DASH)&&(definition.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior || definition.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m && java.util.Set.of("shadow_escape","soul_dash","frame_rush","mirror_step","swap_feint").contains(m.ability())))return CastFailure.VOW;

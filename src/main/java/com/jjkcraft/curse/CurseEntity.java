@@ -423,7 +423,7 @@ public class CurseEntity extends Monster implements GeoEntity, CursedEnergyUser,
 				return test.setAndContinue(SPAWN);
 			}
 
-			return test.setAndContinue(test.isMoving() ? WALK : IDLE);
+			return test.setAndContinue(test.isMoving() ? getDeltaMovement().horizontalDistanceSqr()>.025?RawAnimation.begin().thenLoop("run"):WALK : IDLE);
 		}));
 		controllers.add(new AnimationController<>("action", 2, test -> PlayState.STOP)
 				.triggerableAnim("jab", RawAnimation.begin().thenPlay("jab"))

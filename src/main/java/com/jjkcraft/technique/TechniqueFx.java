@@ -18,7 +18,7 @@ public final class TechniqueFx {
 	/** Every paid cast animates, including fields and utility behaviors with no CAST VFX phase. */
 	public static void castPose(CastContext ctx){
 		if(!(ctx.caster() instanceof ServerPlayer))return;
-		var pose=new com.jjkcraft.network.payload.CombatPosePayload(ctx.caster().getId(),"cast_"+ctx.technique().category().getSerializedName(),ctx.now(),Math.max(2,ctx.technique().cast().castTime()),3,8,-1,0);
+		var pose=new com.jjkcraft.network.payload.CombatPosePayload(ctx.caster().getId(),ctx.techniqueId().getPath().equals("blue_punch")?"hook":ctx.techniqueId().getPath().equals("red_punch")?"heavy":"cast_"+ctx.technique().category().getSerializedName(),ctx.now(),Math.max(2,ctx.technique().cast().castTime()),3,8,-1,0);
 		for(var viewer:PlayerLookup.tracking(ctx.caster()))JjkNetworking.send(viewer,pose);
 		JjkNetworking.send((ServerPlayer)ctx.caster(),pose);
 	}

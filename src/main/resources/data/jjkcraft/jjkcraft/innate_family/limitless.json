@@ -9,7 +9,13 @@
     "jjkcraft:reversal_red",
     "jjkcraft:hollow_purple",
     "jjkcraft:maximum_output_blue",
-    "jjkcraft:blue_orbit"
+    "jjkcraft:blue_orbit",
+    "jjkcraft:mini_blue",
+    "jjkcraft:blue_punch",
+    "jjkcraft:blue_cluster",
+    "jjkcraft:mini_red",
+    "jjkcraft:red_punch",
+    "jjkcraft:maximum_output_red"
   ],
   "domain": "jjkcraft:unlimited_void"
 }

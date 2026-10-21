@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.sand",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:sand_mark",
+    "jjkcraft:sand_guard",
+    "jjkcraft:sand_step",
+    "jjkcraft:sand_salvo",
+    "jjkcraft:sand_snare",
+    "jjkcraft:sand_finish"
+  ],
+  "domain": ""
+}

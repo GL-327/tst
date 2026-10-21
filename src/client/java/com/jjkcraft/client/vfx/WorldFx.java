@@ -45,6 +45,7 @@ public final class WorldFx {
 		final float time;
 		final boolean low;
 		int quads;
+        int[] shared=new int[1];
 		private float opacity=1;
 		public void opacity(float value){opacity=Math.clamp(value,0,1);}
 		final long began = System.nanoTime();
@@ -67,7 +68,7 @@ public final class WorldFx {
 		}
 
 		public boolean budgetLeft() {
-			return quads < Math.min(MAX_QUADS, Math.max(100, ClientConfig.get().vfx.maxWorldQuads))
+			return shared[0] < Math.min(MAX_QUADS, Math.max(100, ClientConfig.get().vfx.maxWorldQuads))
 				&& System.nanoTime() - began < Math.clamp(ClientConfig.get().vfx.maxEffectMillis, 1, 10) * 1_000_000L;
 		}
 
@@ -78,6 +79,7 @@ public final class WorldFx {
 			}
 
 			quads++;
+            shared[0]++;
 			vertex(a, colorA);
 			vertex(b, colorA);
 			vertex(c, colorB);
@@ -108,6 +110,8 @@ public final class WorldFx {
 	}
 
 	private static final List<Effect> EFFECTS = new ArrayList<>();
+    private static final List<Effect> SOLID=new ArrayList<>();
+    public static void addSolid(Effect effect){if(!ClientConfig.effectsOff()&&SOLID.size()<96)SOLID.add(effect);}
 
 	private WorldFx() {
 	}
@@ -125,12 +129,13 @@ public final class WorldFx {
 
 	public static void clear() {
 		EFFECTS.clear();
+        SOLID.clear();
 	}
 
 	private static void render(LevelRenderContext context) {
 		if (ClientConfig.effectsOff()) { clear(); return; }
 		Minecraft mc = Minecraft.getInstance();
-		if (EFFECTS.isEmpty() || mc.level == null) {
+		if (EFFECTS.isEmpty()&&SOLID.isEmpty() || mc.level == null) {
 			return;
 		}
 
@@ -138,8 +143,14 @@ public final class WorldFx {
 		float time = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		boolean low = ClientConfig.lowVfx();
 		PoseStack poseStack = context.poseStack();
+        int[] shared=new int[1];
+        context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.debugQuads(),(pose,buffer)->{
+            Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;
+            for(Iterator<Effect> it=SOLID.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
+        });
 		context.submitNodeCollector().submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, buffer) -> {
 			Frame frame = new Frame(pose, buffer, camera, time, low);
+            frame.shared=shared;
 			for (Iterator<Effect> it = EFFECTS.iterator(); it.hasNext(); ) {
 				if (!it.next().render(frame)) {
 					it.remove();

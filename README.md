@@ -3,19 +3,32 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.11.1-preview.** Suitable moves such as Blue, Red, Purple, Piercing Blood and
+**Status: 1.12.0-preview.** The visual overhaul rebuilds 75 creature rigs with articulated
+limbs, individual UV materials, emissive accents and sixteen animation clips each. Spells
+use layered material effects, dark cores, orbiting filaments, crystals and blood tendrils.
+Combat adds a breathing stance, body weight shifts, two visible first-person fists and
+lighter impact pauses. Five new cursed weapons and three four-piece armor sets have
+crafting recipes and working combat bonuses. See [the visual and equipment guide](docs/VISUAL_OVERHAUL.md).
+
+Suitable moves such as Blue, Red, Purple, Piercing Blood and
 Granite Blast support holding to charge, then releasing to cast: up to 100%, or 200%
 for Hollow Purple. Other moves use their normal press, toggle or held-channel controls.
 Tooltips and the loadout show each casting style. Charging rapidly consumes CE, especially without Six Eyes.
 Blue pulls real terrain into its core; Purple, destructive slashes and blasts damage blocks.
 See [charging and terrain controls](docs/CHARGING.md) for costs, cancellation and server settings.
 
-Twelve power slots are available from awakening, with one move
-per slot and three banks of four. Each power has an independent expression and ten optional
+Twelve power slots are available from awakening. Bind a whole family to open its learned
+variants, or bind a specific move directly. Hold G and scroll to select a slot; R opens a
+family selector or casts its bound move. The wheel replaces the four-row sidebar. See
+[wheel, Infinity and RCT controls](docs/TECHNIQUE_WHEEL.md). Each power has an independent expression and ten optional
 binding-vow restrictions. Forsaking ordinary combat grants that power x5 output; restrictions
 persist when switching slots, and casting seals vow changes for one minute.
 
-Every family has at least four distinct moves. Ten Shadows now includes all ten summons,
+Twenty original six-move families add marks, resonance, three-hit guards, movement,
+control and prepared finishers. There are now **296 moves across 51 families**. Projection
+Sorcery has a terrain-aware route preset and an editor for destinations and physical moves.
+Explosive Flesh spends actual health, and regrowing its ammunition requires learned RCT.
+See [the original families](docs/ORIGINAL_TECHNIQUES.md). Every family has at least four distinct moves. Ten Shadows now includes all ten summons,
 Totality, Well’s Unknown Abyss, Agito and configurable two-to-four-component chimeras.
 There are 18 new owned shikigami types and 22 new powers, including Moon Dregs, Garuda,
 Rika and an original Moonlit Menagerie. See [the summoning guide](docs/MENAGERIE.md).
@@ -32,11 +45,14 @@ It preserves body/clan attributes, grade, growth, CE potential/training and univ
 Rare high-grade boss drops and an expensive endgame recipe are documented in the guide.
 
 Auto Combat is on by default: holding attack chooses coarse attacks/defensive responses.
+It commits three of every five attack opportunities and visibly feints the others. Actual
+contact still requires range, aim and timing; manual attacks have no artificial accuracy cap.
+Assisted guards cannot perfectly parry. The HUD reports the observed contact percentage.
 Manual hit keys offer faster timing, double-tap uppercuts/sweeps and deliberate parries.
 Vanilla Q/E/F and the normal hotbar keys remain available. Hostile melee mobs share server
 frame windows, and curses have distinct combat clips and reactive guards.
 
-There are now **169 powers across 31 families, 52 curse species, 16 body/clan attributes and
+There are now **296 powers across 51 families, 52 curse species, 16 body/clan attributes and
 nine domains**. Twelve new species broaden the weak curse roster. Natural encounters are
 less frequent, weak curses appear in small mixed packs, and Grade 2+ curses spawn alone
 with space around them. See [the play guide](docs/PLAYTEST.md), [new powers and vows](docs/ARSENAL.md)
@@ -51,7 +67,7 @@ Jujutsu Kaisen assets.
 ## Installing
 
 1. Install Fabric Loader 0.19.5 or newer for Minecraft 26.3.
-2. Put these in `mods/`: `jjkcraft-1.8.0-preview.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
+2. Put these in `mods/`: `jjkcraft-1.12.0-preview.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
    or newer, Cloth Config 26.3.159 or newer. Mod Menu is optional (it adds a config button).
 3. Install it on both the client and the server for multiplayer.
 
@@ -63,7 +79,7 @@ Jujutsu Kaisen assets.
 - **Grades**, Grade 4 to Special Grade, earned with grade experience, measured stats (Output,
   Control) and trials, with a promotion ceremony. A growth tree (Output, Control, Efficiency,
   Domain). Heavenly Restriction is a rare roll at awakening: no CE, a stronger body.
-- **95 cursed techniques** across ten categories, among them Cursed Technique Lapse: Blue and
+- **296 cursed techniques** across ten categories, among them Cursed Technique Lapse: Blue and
   Reversal: Red (they burst when they meet), Hollow Purple, Infinity, Cleave and Dismantle, Cursed
   Speech (Don't Move, Crumble Away, Blast Away), Straw Doll Technique: Resonance, Idle
   Transfiguration, Projection Sorcery, Reverse Cursed Technique and Positive Energy Output, the
@@ -84,7 +100,7 @@ Jujutsu Kaisen assets.
   enter one; inside you can't leave. Kills score points, points buy rules negotiated with the game
   master through the Kogane, and nine base rules (plus ten more to negotiate) run a small rule
   engine. NPC entrants make it playable alone. A map, scoreboard, rule list and HUD panel.
-- **Cursed tools and objects**: five grade-tagged weapons that lend techniques or act on hit
+- **Cursed tools and objects**: ten grade-tagged weapons that lend techniques or act on hit
   (among them the Inverted Spear of Heaven, the Split Soul Katana and the Chain of a Thousand
   Miles), a cursed object (the Withered Digit), a flight gourd, a rule-bound points ledger, technique scrolls.
 - **The Special Grade path**: the Unbound Ritual (a mastered innate technique, an active vow, and a
@@ -98,7 +114,7 @@ Keys are editable in Minecraft Controls and J -> Moves -> Bindings. **U** light 
 (double tap: uppercut), **I** heavy hit (double tap: sweep), **O** block/parry, **Left Alt**
 dash/evasive, **F7** Auto Combat toggle. Hold M1 for Auto Combat assistance. Q/E/F keep
 vanilla behavior. The four direct power keys use **Numpad 1-4**; R casts the selected move,
-V cycles slots, and G opens the twelve-power wheel. The bank key is configurable in Bindings.
+V cycles slots; hold G and scroll, then release to select on the twelve-slot wheel. The bank key is configurable in Bindings.
 J opens the profile; K expands a domain, N uses Simple Domain, H toggles RCT, M opens Culling.
 
 ## Content packs

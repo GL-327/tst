@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.orbit",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:orbit_mark",
+    "jjkcraft:orbit_guard",
+    "jjkcraft:orbit_step",
+    "jjkcraft:orbit_salvo",
+    "jjkcraft:orbit_snare",
+    "jjkcraft:orbit_finish"
+  ],
+  "domain": ""
+}

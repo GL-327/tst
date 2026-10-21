@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.carrion",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:carrion_mark",
+    "jjkcraft:carrion_guard",
+    "jjkcraft:carrion_step",
+    "jjkcraft:carrion_salvo",
+    "jjkcraft:carrion_snare",
+    "jjkcraft:carrion_finish"
+  ],
+  "domain": ""
+}

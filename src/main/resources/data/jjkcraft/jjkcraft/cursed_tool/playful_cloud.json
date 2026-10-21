@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:playful_cloud",
+  "kind": "weapon",
+  "grade": "jjkcraft:special_grade",
+  "on_hit": "none",
+  "amount": 0,
+  "description": "item.jjkcraft.playful_cloud.desc"
+}

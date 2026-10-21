@@ -183,6 +183,8 @@ public final class TechniqueService {
 	}
 
 	public static void init() {
+        InfinityField.init();
+        ServerPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.VariantCastPayload.TYPE,(payload,ctx)->onVariant(ctx.player(),payload.slot(),payload.technique()));
         CursedEnergy.addRegenModifier(caster->CHARGES.containsKey(caster.getUUID())?0:1);
 		ServerPlayNetworking.registerGlobalReceiver(CastPayload.TYPE, (payload, context) -> {if(payload.cancelled())cancelKey(context.player(),payload.slot());else onCastKey(context.player(), payload.slot(), payload.pressed());});
 		ServerPlayNetworking.registerGlobalReceiver(CastTechniquePayload.TYPE, (payload, context) -> onQuickCast(context.player(), payload.technique()));
@@ -269,6 +271,7 @@ public final class TechniqueService {
 	}
 
 	public static void revoke(ServerPlayer player, Identifier id) {
+		if(id.getPath().equals("infinity"))InfinityField.stop(player);
 		active(player).filter(a -> a.id.equals(id)).ifPresent(a -> stop(player));
 		set(player, get(player).withoutLearned(id));
 	}
@@ -400,7 +403,7 @@ public final class TechniqueService {
 		if (!player.isAlive() || player.isSpectator() || !allowRequest(player)) {
 			return;
 		}
-		if (get(player).loadout().stream().limit(usableSlots(player)).noneMatch(slot -> slot.filter(id::equals).isPresent())
+		if (get(player).loadout().stream().limit(usableSlots(player)).noneMatch(slot -> slot.filter(binding->TechniqueBindings.contains(player.registryAccess(),get(player),binding,id)).isPresent())
 				&& !TechniqueSources.grants(player, id)) {
 			feedback(player, -1, CastFailure.EMPTY_SLOT);
 			return;
@@ -421,16 +424,23 @@ public final class TechniqueService {
 			return;
 		}
 
-		if (id.isPresent() && !knows(player, id.get())) {
+		if (id.isPresent() && !TechniqueBindings.allowed(player.registryAccess(),get(player),id.get())) {
 			return;
 		}
 
 		var next=get(player).withSlot(slot,id);
         Charge charging=CHARGES.get(player.getUUID());
         if(charging!=null&&charging.slot>=0&&!next.slot(charging.slot).equals(Optional.of(charging.id)))cancelCharge(player);
-		active(player).filter(a->next.loadout().stream().noneMatch(s->s.filter(a.id()::equals).isPresent())).ifPresent(a->stop(player));
+		active(player).filter(a->next.loadout().stream().noneMatch(s->s.filter(binding->TechniqueBindings.contains(player.registryAccess(),next,binding,a.id())).isPresent())).ifPresent(a->stop(player));
 		set(player,next);
 	}
+
+    public static void onVariant(ServerPlayer player,int slot,Identifier id) {
+        if(!player.isAlive()||player.isSpectator()||slot<0||slot>=usableSlots(player)||!allowRequest(player))return;
+        var state=get(player);var binding=state.slot(slot);
+        if(binding.isEmpty()||!TechniqueBindings.family(binding.get())||!TechniqueBindings.moves(player.registryAccess(),state,binding.get()).contains(id)) {feedback(player,slot,CastFailure.NOT_KNOWN);return;}
+        CastFailure failure=beginCharge(player,id,slot);if(failure!=CastFailure.NONE)feedback(player,slot,failure);
+    }
 
 	public static void selectSlot(ServerPlayer player, int slot) {
 		if (slot >= 0 && slot < Math.min(TechniqueState.SLOTS, usableSlots(player))) {
@@ -477,11 +487,12 @@ public final class TechniqueService {
 		}
 
 		TechniqueDefinition definition = Personalization.definition(caster,id,found.get());
+        if(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior&&InfinityField.on(caster)){CursedEnergy.checkpoint(caster);InfinityField.stop(caster);return CastFailure.NONE;}
         if(CHARGES.containsKey(caster.getUUID()))return CastFailure.BUSY;
 		if(PENDING.stream().anyMatch(p->p.ctx().caster().getUUID().equals(caster.getUUID())))return CastFailure.BUSY;
 		CastMode mode = definition.cast().mode();
 		Active active = ACTIVE.get(caster.getUUID());
-		if (active != null && mode != CastMode.INSTANT) {
+		if (active != null && mode != CastMode.INSTANT && !(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior)) {
 			boolean same = active.id.equals(id);
 			stop(caster);
 			if (same) {
@@ -514,7 +525,7 @@ public final class TechniqueService {
 		CastContext ctx = new CastContext(caster, level, id, definition, power(caster, id, definition, modifiers)*charge, modifiers.range());
         ctx.memory.put("charge",charge);
 		playCastSound(ctx);
-		TechniqueFx.castPose(ctx);
+		if(!(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior))TechniqueFx.castPose(ctx);
 		if (definition.cast().castTime() > 0) {
 			ctx.fx(TechniqueFxPayload.Phase.WINDUP, caster.position(), caster.getLookAngle(), List.of());
 			PENDING.add(new Pending(ctx, id, definition, level.getGameTime() + definition.cast().castTime(), spent, slot));
@@ -570,9 +581,12 @@ public final class TechniqueService {
 
 	private static void execute(CastContext ctx, Identifier id, TechniqueDefinition definition, double cost, int slot) {
 		LivingEntity caster = ctx.caster();
+		if(!FleshSacrifice.pay(caster,id)){if(caster instanceof ServerPlayer p)feedback(p,slot,CastFailure.NOT_ENOUGH_HEALTH);return;}
 		CastResult result = definition.behavior().cast(ctx);
 		if(ctx.details().expression().recoil()>0){caster.push(ctx.look().scale(-ctx.details().expression().recoil()/150.0));caster.needsSync=true;}
-		if (definition.cast().mode() == CastMode.INSTANT) {
+		if (definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior) {
+            CursedEnergy.checkpoint(caster);InfinityField.start(ctx);
+        } else if (definition.cast().mode() == CastMode.INSTANT) {
 			startCooldown(caster, id, definition);
 		} else {
 			ACTIVE.put(caster.getUUID(), new Active(ctx, id, definition, slot));
@@ -678,7 +692,7 @@ public final class TechniqueService {
 			SYNC.markDirty(player);
 		}
 	}
-	public static void cancel(LivingEntity caster){cancelCharge(caster);PENDING.removeIf(p->p.ctx().caster().getUUID().equals(caster.getUUID()));stop(caster);}
+	public static void cancel(LivingEntity caster){CursedEnergy.checkpoint(caster);InfinityField.stop(caster);cancelCharge(caster);PENDING.removeIf(p->p.ctx().caster().getUUID().equals(caster.getUUID()));stop(caster);}
 
 	private static void playCastSound(CastContext ctx) {
 		ctx.level().playSound(null, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(),

@@ -77,8 +77,7 @@ public final class SorceryPractice {
         if(action==4){set(p,s.tune(request.output(),request.healing(),request.threshold()));return true;}
         if(action==3&&s.reinforcement()){set(p,s.withReinforcement(true,!s.active()));return true;}
         if(action==0&&!s.reinforcement()&&pay(p,3)){set(p,s.withReinforcement(true,false));return true;}
-        if(action==1&&!ReverseTechnique.unlocked(p)&&pay(p,10)){
-            ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(true),true);Personalization.send(p);return true;}
+        if(action==1)return com.jjkcraft.reverse.ReverseStudy.start(p);
         if(action==2&&s.trained()<10000&&pay(p,trainingPrice(p))){int gain=trainingGain(p);ensureBirth(p);set(p,get(p).withTraining(gain));return true;}
         return false;
     }

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jjkcraft:heavenly_hunter"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jjkcraft:heavenly_hunter"
+      }
+    ]
+  }
+}

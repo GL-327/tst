@@ -24,11 +24,7 @@ import com.jjkcraft.technique.CastFailure;
 import com.jjkcraft.technique.TechniqueDefinition;
 import com.jjkcraft.technique.TechniqueState;
 
-/**
- * The technique hotbar: up to four slots stacked vertically. Each slot shows the icon, a cooldown
- * ring and dark sweep, a red "!" when CE is too low, the active glow for channels and toggles,
- * and a brief shake with a reason when the server refuses a cast.
- */
+/** Selected-power badge, cooldown/feedback and the held-charge meter. Slot selection uses the wheel. */
 public final class TechniqueHotbarHud {
 	private static final int SLOT = 22;
 	private static final int GAP = 2;
@@ -39,7 +35,7 @@ public final class TechniqueHotbarHud {
 	public static void extract(GuiGraphicsExtractor g, DeltaTracker delta) {
 		Minecraft mc = Minecraft.getInstance();
 		JjkClientConfig.HudElement cfg = ClientConfig.get().hud.techniqueHotbar;
-		if (!cfg.visible || mc.gui.hud.isHidden() || mc.player == null || !ClientProgress.hasData()
+		if (!cfg.visible || mc.gui.hud.isHidden() || mc.gui.screen()!=null || mc.player == null || !ClientProgress.hasData()
 				|| ClientProgress.get().heavenlyRestricted() || ClientTechniques.known().isEmpty()) {
 			return;
 		}
@@ -55,35 +51,16 @@ public final class TechniqueHotbarHud {
             g.fill(cx-82,cy+23,cx+82,cy+25,0xFF292333);
             g.fill(cx-82,cy+23,cx-82+(int)(164*charge.percent()/(double)charge.maximum()),cy+25,color);
         }
-		int height = slots * SLOT + (slots - 1) * GAP + 24;
-		int width = SLOT + 8;
-		float alpha = cfg.opacity();
-		HudLayout.push(g, cfg, width, height);
-		Ink.panel(g, 0, 0, width, height, Palette.accent(), alpha * 0.85f);
-
-		TechniqueState state = ClientTechniques.state();
-		for (int i = 0; i < slots; i++) {
-			int x = 4;
-			int y = 4 + i * (SLOT + GAP);
-			int absolute=bank+i; CastFailure failure = ClientTechniques.recentFailure(absolute);
-			if (failure != CastFailure.NONE && !ClientConfig.reducedMotion()) {
-				x += (int) (Mth.sin(Util.getMillis() / 25f) * 2 * (1 - ClientTechniques.feedbackAge()));
-			}
-
-			slot(g, x, y, absolute, state.slot(absolute), absolute == state.selected(), failure, alpha);
-		}
-
-		g.pose().pushMatrix();g.pose().translate(3,height-20);g.pose().scale(0.5f,0.5f);
-		Ink.text(g,"BANK "+(bank/4+1)+" "+JjkKeys.BANK.getTranslatedKeyMessage().getString(),0,0,Palette.gold(),alpha);g.pose().popMatrix();
-        String key = (com.jjkcraft.client.combat.CombatClient.enabled()?JjkKeys.SKILLS[state.selected()%4]:JjkKeys.CAST).getTranslatedKeyMessage().getString();
-		g.pose().pushMatrix();
-		g.pose().translate(4, height - 8);
-		g.pose().scale(0.5f, 0.5f);
-		Ink.text(g, Component.translatable("hud.jjkcraft.cast_hint", key), 0, 0, Palette.TEXT_DIM, alpha);
-		g.pose().popMatrix();
-
-		g.pose().popMatrix();
-	}
+        // A single selected-power badge replaces the four-row sidebar. Selection lives on the wheel.
+        var state=ClientTechniques.state();int selected=state.selected();float alpha=cfg.opacity();
+        HudLayout.push(g,cfg,150,34);Ink.panel(g,0,0,150,34,Palette.accent(),alpha*.85f);
+        slot(g,4,5,selected,state.slot(selected),true,ClientTechniques.recentFailure(selected),alpha);
+        String title=state.slot(selected).flatMap(ClientTechniques::definition).map(d->Component.translatable(d.name()).getString()).orElse("Empty slot");
+        Ink.text(g,Ink.fit(Component.literal(title),116),31,5,Palette.TEXT,alpha);
+        Ink.text(g,Ink.fit(Component.literal(JjkKeys.WHEEL.getTranslatedKeyMessage().getString()+" wheel · "+JjkKeys.CAST.getTranslatedKeyMessage().getString()+" activate"),116),31,18,Palette.TEXT_DIM,alpha);
+        if(ClientTechniques.activeIs(com.jjkcraft.JjkCraft.id("infinity")))Ink.text(g,"∞",139,23,Palette.energyHigh(),alpha);
+        g.pose().popMatrix();
+    }
 
 	private static void slot(GuiGraphicsExtractor g, int x, int y, int index, Optional<Identifier> id, boolean selected, CastFailure failure, float alpha) {
 		g.fill(x, y, x + SLOT, y + SLOT, ARGB.multiplyAlpha(0xFF15131C, alpha));
@@ -126,7 +103,7 @@ public final class TechniqueHotbarHud {
 		g.pose().pushMatrix();
 		g.pose().translate(x + 2, y + SLOT - 6);
 		g.pose().scale(0.5f, 0.5f);
-		Component binding=com.jjkcraft.client.combat.CombatClient.enabled()?JjkKeys.SKILLS[index%4].getTranslatedKeyMessage():Component.literal(String.valueOf(index+1));
+		Component binding=Component.literal(String.valueOf(index+1));
 		Ink.text(g, Ink.fit(binding,38), 0, 0, selected ? Palette.gold() : Palette.TEXT_DIM, alpha);
 		g.pose().popMatrix();
 

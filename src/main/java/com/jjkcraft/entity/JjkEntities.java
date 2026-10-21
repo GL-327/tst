@@ -32,7 +32,7 @@ public final class JjkEntities {
 					.sized(0.7f, 0.85f).clientTrackingRange(10).noSave().noSummon().noLootTable());
 	public static final EntityType<com.jjkcraft.entity.shikigami.NueEntity> NUE = register("nue",
 			EntityType.Builder.<com.jjkcraft.entity.shikigami.NueEntity>of(com.jjkcraft.entity.shikigami.NueEntity::new, MobCategory.MISC)
-					.sized(0.6f, 0.5f).clientTrackingRange(10).noSave().noSummon().noLootTable());
+					.sized(1.1f, 1.5f).clientTrackingRange(10).noSave().noSummon().noLootTable());
 	public static final EntityType<com.jjkcraft.entity.shikigami.ToadEntity> TOAD = register("toad",
 			EntityType.Builder.<com.jjkcraft.entity.shikigami.ToadEntity>of(com.jjkcraft.entity.shikigami.ToadEntity::new, MobCategory.MISC)
 					.sized(1.2f, 0.9f).clientTrackingRange(10).noSave().noSummon().noLootTable());

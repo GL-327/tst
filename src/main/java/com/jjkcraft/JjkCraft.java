@@ -110,6 +110,9 @@ public final class JjkCraft implements ModInitializer {
 		SpatialFields.init();
         com.jjkcraft.technique.TechniqueTerrain.init();
 		TechniqueService.init();
+        com.jjkcraft.technique.FleshSacrifice.init();
+        com.jjkcraft.technique.ProjectionPlans.init();
+        com.jjkcraft.technique.OriginalArts.init();
 		com.jjkcraft.technique.Personalization.init();
 		com.jjkcraft.energy.SorceryPractice.init();
 		com.jjkcraft.awakening.CharacterTraits.init();

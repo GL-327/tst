@@ -2,7 +2,7 @@
   "name": "family.jjkcraft.ratio",
   "clan": "",
   "inherited_weight": 0,
-  "random_weight": 35,
+  "random_weight": 10,
   "techniques": [
     "jjkcraft:ratio",
     "jjkcraft:ratio_expose",

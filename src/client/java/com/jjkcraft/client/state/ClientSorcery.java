@@ -17,6 +17,9 @@ public final class ClientSorcery {
 	private static int zoneStacks;
 	private static ReversePayload reverse = new ReversePayload(false, true, false, false);
 	private static VowState vow = VowState.EMPTY;
+    private static com.jjkcraft.network.payload.ReverseStudyPayload study=new com.jjkcraft.network.payload.ReverseStudyPayload(0,0,false);
+    public static void accept(com.jjkcraft.network.payload.ReverseStudyPayload value){study=value;}
+    public static com.jjkcraft.network.payload.ReverseStudyPayload study(){return study;}
 
 	private ClientSorcery() {
 	}
@@ -78,7 +81,8 @@ public final class ClientSorcery {
 	}
 
 	public static void reset() {
-		zoneUntil = 0;
+		study=new com.jjkcraft.network.payload.ReverseStudyPayload(0,0,false);
+        zoneUntil = 0;
 		zoneStacks = 0;
 		reverse = new ReversePayload(false, true, false, false);
 		vow = VowState.EMPTY;

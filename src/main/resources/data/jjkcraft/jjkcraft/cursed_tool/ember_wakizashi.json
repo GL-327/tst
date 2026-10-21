@@ -1,0 +1,9 @@
+{
+  "item": "jjkcraft:ember_wakizashi",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_3",
+  "on_hit": "ignite",
+  "amount": 3,
+  "description": "item.jjkcraft.ember_wakizashi.desc",
+  "technique": "jjkcraft:disaster_flames"
+}

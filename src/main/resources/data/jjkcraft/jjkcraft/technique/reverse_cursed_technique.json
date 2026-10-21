@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.reverse_cursed_technique",
   "description": "technique.jjkcraft.reverse_cursed_technique.desc",
   "category": "healing",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 5,
     "cooldown": 60,
@@ -23,6 +23,6 @@
     "trail": "aura"
   },
   "icon": "jjkcraft:textures/gui/technique/reverse_cursed_technique.png",
-  "innate_weight": 4,
+  "innate_weight": 0,
   "mastery_uses": 50
 }

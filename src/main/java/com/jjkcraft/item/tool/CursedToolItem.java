@@ -31,6 +31,15 @@ public class CursedToolItem extends Item {
 	public CursedToolItem(Properties properties) {
 		super(properties);
 	}
+    @Override public net.minecraft.world.InteractionResult use(net.minecraft.world.level.Level level,net.minecraft.world.entity.player.Player player,net.minecraft.world.InteractionHand hand){
+        var tool=CursedTools.get(player,player.getItemInHand(hand));
+        if(tool.isEmpty()||tool.get().technique().isEmpty())return net.minecraft.world.InteractionResult.PASS;
+        if(player instanceof net.minecraft.server.level.ServerPlayer p){
+            var failure=TechniqueService.cast(p,tool.get().technique().orElseThrow(),-1);
+            if(failure!=com.jjkcraft.technique.CastFailure.NONE)p.sendSystemMessage(Component.translatable(failure.translationKey()),true);
+        }
+        return net.minecraft.world.InteractionResult.SUCCESS;
+    }
 
 	@Override
 	public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -42,7 +51,7 @@ public class CursedToolItem extends Item {
 		CursedTools.get(attacker, stack).filter(tool -> CursedTools.usable(attacker, tool)).ifPresent(tool -> {
 			switch (tool.onHit()) {
 				case DISPEL -> {
-					TechniqueService.stop(target);
+					TechniqueService.cancel(target);
 					CursedEnergy.drain(target, tool.amount());
 					level.sendParticles(JjkParticles.of(JjkParticles.DOMAIN_SHARD, 0xE0E0F0, 0.8f), target.getX(), target.getY() + target.getBbHeight() * 0.6,
 							target.getZ(), 10, 0.3, 0.4, 0.3, 0.08);
@@ -53,6 +62,8 @@ public class CursedToolItem extends Item {
 					level.sendParticles(JjkParticles.of(JjkParticles.CE_AURA, 0x8F5CFF, 0.6f), target.getX(), target.getY() + 1, target.getZ(), 8, 0.3, 0.4, 0.3, 0.02);
 				}
 				case IGNITE -> target.igniteForSeconds((float) tool.amount());
+                case SHOCK -> {if(CursedEnergy.trySpend(attacker,4))target.addEffect(new net.minecraft.world.effect.MobEffectInstance(com.jjkcraft.effect.JjkEffects.STUNNED,Math.clamp((int)tool.amount(),1,6),0));}
+                case RECOIL -> {if(CursedEnergy.trySpend(attacker,3))target.knockback(Math.min(.8,tool.amount()),attacker.getX()-target.getX(),attacker.getZ()-target.getZ(),level.damageSources().mobAttack(attacker),0f);}
 				default -> {
 				}
 			}

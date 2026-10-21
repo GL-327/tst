@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.rust_step",
+  "description": "technique.jjkcraft.rust_step.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 20,
+    "cooldown": 90,
+    "range": 6,
+    "cast_time": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/rust/step",
+    "damage": 0,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#C98262",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.04,
+    "hit_stop": 0,
+    "trail": "ring"
+  },
+  "icon": "jjkcraft:textures/gui/technique/rust_step.png",
+  "innate_weight": 0,
+  "mastery_uses": 51
+}

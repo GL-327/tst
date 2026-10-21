@@ -22,6 +22,8 @@ import com.jjkcraft.technique.Techniques;
 public final class ClientTechniques {
 	private static TechniqueState state = TechniqueState.EMPTY;
 	private static Optional<Identifier> active = Optional.empty();
+    private static boolean infinity;
+    public static void accept(com.jjkcraft.network.payload.InfinityPayload payload){infinity=payload.enabled();}
 	private static int feedbackSlot = -2;
 	private static CastFailure feedback = CastFailure.NONE;
 	private static long feedbackAt;
@@ -45,6 +47,7 @@ public final class ClientTechniques {
 	}
 
 	public static void reset() {
+        infinity=false;
         charge=new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);
 		state = TechniqueState.EMPTY;
 		active = Optional.empty();
@@ -73,8 +76,13 @@ public final class ClientTechniques {
 	}
 
 	public static Optional<TechniqueDefinition> definition(Identifier id) {
+		if(com.jjkcraft.technique.TechniqueBindings.family(id))return ClientProgress.registries().flatMap(r->com.jjkcraft.technique.TechniqueBindings.definition(r,id).flatMap(f->f.techniques().stream().filter(state.known()::contains).map(move->Techniques.get(r,move)).flatMap(Optional::stream).findFirst().map(d->new TechniqueDefinition(f.name(),"screen.jjkcraft.family_selector.desc",d.category(),d.grade(),d.cast(),d.behavior(),d.visuals(),d.icon(),d.vowModifiers(),0,d.masteryUses()))));
 		return ClientProgress.registries().flatMap(r -> Techniques.get(r, id)).map(ClientPersonalization.get(id)::apply);
 	}
+
+    public static boolean bindable(Identifier id){return ClientProgress.registries().map(r->com.jjkcraft.technique.TechniqueBindings.allowed(r,state,id)).orElse(false);}
+    public static List<Identifier> families(){return ClientProgress.registries().map(r->com.jjkcraft.technique.TechniqueBindings.available(r,state)).orElse(List.of());}
+    public static List<Identifier> variants(Identifier id){return ClientProgress.registries().map(r->com.jjkcraft.technique.TechniqueBindings.moves(r,state,id)).orElse(List.of());}
 
 	/** Known techniques that exist in the current registry, innate first. */
 	public static List<Identifier> known() {
@@ -111,6 +119,7 @@ public final class ClientTechniques {
 
 	/** The CE cost the player would pay, without vow modifiers (shown in tooltips). */
 	public static double cost(Identifier id) {
+        if(com.jjkcraft.technique.TechniqueBindings.family(id))return 0;
 		return definition(id).map(d -> TechniqueMath.cost(d.cast().cost(), ClientProgress.get().growth().control(), mastered(id), ClientAwakening.view().record().sixEyes()?0.75:1.0)).orElse(0.0);
 	}
 
@@ -123,6 +132,7 @@ public final class ClientTechniques {
 	}
 
 	public static boolean activeIs(Identifier id) {
+		if(id.getPath().equals("infinity"))return infinity;
 		return active.map(id::equals).orElse(false);
 	}
 

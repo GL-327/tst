@@ -1,7 +1,5 @@
 package com.jjkcraft.client.combat;
 
-
-
 import net.minecraft.client.Minecraft;
 
 import net.minecraft.world.phys.HitResult;
@@ -26,13 +24,12 @@ import com.jjkcraft.client.ui.Palette;
 
 import com.jjkcraft.network.payload.CombatPayloads;
 
-
-
 public final class CombatClient {
 
     private static CombatPayloads.View view = new CombatPayloads.View(false, 100, 0, 0, "", 0);
 
     private static boolean pressed;
+    private static CombatPayloads.AutoStats autoStats=new CombatPayloads.AutoStats(0,0,0);
     private static boolean attackClick;
 
     private static boolean lightDown,heavyDown;
@@ -54,6 +51,7 @@ public final class CombatClient {
     public static boolean enabled() { return view.enabled() && ClientProgress.get().awakened(); }
 
     public static void init() {
+        ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.AutoStats.TYPE,(next,context)->autoStats=next);
 
         com.jjkcraft.client.vfx.CombatImpactFx.init();
 
@@ -61,7 +59,7 @@ public final class CombatClient {
 
         ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.View.TYPE, (next, context) -> view = next);
 
-        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, mc) -> { view = new CombatPayloads.View(false, 100, 0, 0, "", 0); resources=new CombatPayloads.Resources(0,0,0);lastAttack=-100;pressed = false;attackClick=false;lightDown=false;heavyDown=false;autoNext=0;manualUntil=0; guard = -1; lockTarget = -1; lastMovement = 0; ticks = 0; java.util.Arrays.fill(lastTap, -100); });
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, mc) -> { view = new CombatPayloads.View(false, 100, 0, 0, "", 0); autoStats=new CombatPayloads.AutoStats(0,0,0); resources=new CombatPayloads.Resources(0,0,0);lastAttack=-100;pressed = false;attackClick=false;lightDown=false;heavyDown=false;autoNext=0;manualUntil=0; guard = -1; lockTarget = -1; lastMovement = 0; ticks = 0; java.util.Arrays.fill(lastTap, -100); });
 
         ClientPreAttackCallback.EVENT.register((mc, player, clicks) -> {
 
@@ -84,7 +82,7 @@ public final class CombatClient {
 
             int x = g.guiWidth() / 2, y = g.guiHeight() - 65;
 
-            Ink.centered(g, Component.literal(view.stun() > 0 ? "STAGGERED" : view.move().isEmpty() ? (com.jjkcraft.client.config.ClientConfig.get().autoCombat?"AUTO COMBAT":"MANUAL COMBAT") : view.move().toUpperCase(java.util.Locale.ROOT)), x, y - 13, view.stun() > 0 ? Palette.danger() : Palette.TEXT_DIM, 1);
+            Ink.centered(g, Component.literal(view.stun() > 0 ? "STAGGERED" : view.move().isEmpty() ? (com.jjkcraft.client.config.ClientConfig.get().autoCombat?autoStats.attempts()<5?"AUTO · 60% COMMITMENT":"AUTO · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"% CONTACT":"MANUAL COMBAT") : view.move().toUpperCase(java.util.Locale.ROOT)), x, y - 13, view.stun() > 0 ? Palette.danger() : Palette.TEXT_DIM, 1);
 
             g.fill(x - 44, y, x + 44, y + 3, 0xA0201728); g.fill(x - 44, y, x - 44 + (int) (88 * view.guard() / 100), y + 3, Palette.energyHigh());
 
@@ -110,6 +108,26 @@ public final class CombatClient {
         if(focused&&(light||lightClick)&&!lightDown){send(0,0);manualUntil=ticks+16;}if(focused&&(heavy||heavyClick)&&!heavyDown){send(5,0);manualUntil=ticks+16;}
         while(JjkKeys.AUTO_COMBAT.consumeClick())if(focused){com.jjkcraft.client.config.ClientConfig.get().autoCombat=!com.jjkcraft.client.config.ClientConfig.get().autoCombat;com.jjkcraft.client.config.ClientConfig.save();}
         if(!migrated&&mc.player!=null){migrated=true;
+            var config=com.jjkcraft.client.config.ClientConfig.get();
+            if(config.controlsRevision<1){
+                int block=net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.getBoundKeyOf(JjkKeys.BLOCK).getValue();
+                if(block==com.mojang.blaze3d.platform.InputConstants.KEY_O||block==com.mojang.blaze3d.platform.InputConstants.KEY_F)JjkKeys.BLOCK.setKey(JjkKeys.BLOCK.getDefaultKey());
+                config.controlsRevision=1;
+            }
+            if(!config.irisBindingsAdjusted&&net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("iris")){
+                String[] names={"iris.keybind.reload","iris.keybind.toggleShaders","iris.keybind.shaderPackSelection"};
+                int[] destinations={com.mojang.blaze3d.platform.InputConstants.KEY_F8,com.mojang.blaze3d.platform.InputConstants.KEY_F9,com.mojang.blaze3d.platform.InputConstants.KEY_F10};
+                for(int i=0;i<names.length;i++){
+                    var key=net.minecraft.client.KeyMapping.get(names[i]);
+                    if(key!=null&&net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.getBoundKeyOf(key).equals(key.getDefaultKey())){
+                        var next=com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD.getOrCreate(destinations[i]);boolean occupied=false;
+                        for(var other:mc.options.keyMappings)if(other!=key&&net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.getBoundKeyOf(other).equals(next)){occupied=true;break;}
+                        key.setKey(occupied?com.mojang.blaze3d.platform.InputConstants.UNKNOWN:next);
+                    }
+                }
+                config.irisBindingsAdjusted=true;
+            }
+            com.jjkcraft.client.config.ClientConfig.save();
             for(int n=0;n<4;n++)if(net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.getBoundKeyOf(JjkKeys.SKILLS[n]).getValue()==new int[]{com.mojang.blaze3d.platform.InputConstants.KEY_1,com.mojang.blaze3d.platform.InputConstants.KEY_2,com.mojang.blaze3d.platform.InputConstants.KEY_3,com.mojang.blaze3d.platform.InputConstants.KEY_4}[n])JjkKeys.SKILLS[n].setKey(JjkKeys.SKILLS[n].getDefaultKey());
             if(net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.getBoundKeyOf(JjkKeys.COMBAT).getValue()==com.mojang.blaze3d.platform.InputConstants.KEY_C)JjkKeys.COMBAT.setKey(JjkKeys.COMBAT.getDefaultKey());
             net.minecraft.client.KeyMapping.resetMapping();mc.options.save();
@@ -138,7 +156,7 @@ public final class CombatClient {
             boolean threat=pose!=null&&!pose.move().isEmpty()&&mc.level.getGameTime()-pose.started()>=5&&mc.level.getGameTime()-pose.started()<pose.startup()+pose.active();
             int choice=com.jjkcraft.core.combat.AutoCombatMath.action(enemy==null?4:mc.player.distanceTo(enemy),pose==null?-1:pose.guard(),threat);
             autoGuard=choice==2;
-            if(!autoGuard&&(ticks>=autoNext||clicked&&!pressed)){send(choice,0);autoNext=ticks+(choice==5?34:14);lastAttack=ticks;}
+            if(!autoGuard&&(ticks>=autoNext||clicked&&!pressed)){send(6,choice);autoNext=ticks+(choice==5?40:22);lastAttack=ticks;}
             pressed=true;
         }else if(attack&&!pressed){send(0,0);pressed=true;lastAttack=ticks;}
 
@@ -151,7 +169,7 @@ public final class CombatClient {
             ? mc.player.isShiftKeyDown() ? 0 : 1 : -1;
 
         if(JjkKeys.BLOCK.isDown())manualUntil=ticks+8;
-        if (height != guard || height >= 0 && ticks % 4 == 0) { send(2, height); guard = height; }
+        if (height != guard || height >= 0 && ticks % 4 == 0) { send(auto&&!JjkKeys.BLOCK.isDown()?7:2, height); guard = height; }
 
         int movement = (mc.options.keyUp.isDown() ? 1 : 0) | (mc.options.keyDown.isDown() ? 2 : 0) | (mc.options.keyLeft.isDown() ? 4 : 0) | (mc.options.keyRight.isDown() ? 8 : 0);
 

@@ -1,5 +1,63 @@
 # Test report
 
+## 1.12.0-preview, 2026-10-21
+
+All **128 unit tests and 241 server scenarios passed** in `build/release-final.log`.
+The full suite covers the existing awakening/death, CE balance, techniques, charging,
+terrain, domains, curses, summons/fusions and Culling systems, plus the new work:
+
+- Measured Auto attacks commit 6/10 contacts against an in-range stationary target;
+  aimed manual attacks contact 10/10. Feints, guard limitations and multi-target counters
+  are checked. Actual contact still depends on aim, reach, movement and defense.
+- All twenty original six-move families load and their primers actually hit/build
+  independent resources. Finishers consume preparation, guards are bounded and CE-paid,
+  movement respects terrain, and Projection uses actual physical attacks and safe routes.
+- Explosive Flesh spends real health and refuses unsafe casts; regrowth requires RCT.
+- Family bindings accept cleared slots, hide unlearned Purple, reject forged variants,
+  use normal charging/release, survive Creative edits and persist through world reopen.
+- Infinity coexists with channels, drains CE without RCT, drops on exhaustion, and is
+  bypassed by sure-hits/hazards and cancelled by eligible dispelling weapons. A Forsake
+  RCT vow disables free Infinity upkeep, positive discharge and brain recovery.
+- Three completed RCT drills consume nine XP levels, interruptions grant no lesson/XP
+  loss, universal skills preserve bindings, Chalice preserves completed lessons, and
+  positive-energy discharge damages curses while leaving non-curse targets unharmed.
+- Blue Punch deals real contact damage and attraction; Mini Blue Cluster creates three
+  separate attraction fields. Equipment recipes, native armor effects and tool dispels pass.
+
+Native Sodium/Iris tests passed with shaders disabled on Intel UHD 620:
+`build/reborn-native-final.log` loads/renders all 75 new creatures, representative action
+clips, all new equipment, material VFX, actual inverted mouse Auto input, manual attacks,
+domains, the editable Projection route and physical impacts. Its **128 screenshots** are
+preserved in `build/reborn-final-screenshots/screenshots`. The focused final inward-hand
+run passed in `build/reborn-hands-final.log`; **15 screenshots** are preserved in
+`build/reborn-hands-screenshots/screenshots`. Idle hands return to vanilla outside fights.
+
+`build/release-native.log` passed actual G/scroll/release slot selection, R family opening,
+held mouse Blue charging/release, persistent Infinity synchronization, the three-stage
+Practice UI and cancellable drill, actual curse damage from RCT, resonance HUD updates,
+the Families screen's Bind family button, and binding persistence after reopening the
+world. Its **10 screenshots** are in `build/release-wheel-screenshots/screenshots`.
+Visual/input testing caught and fixed initial mouse-hover overriding scroll, HUD/wheel
+occlusion, a missing resource update, old O/F block defaults, Iris R/K/I conflicts, item
+atlas paths and Projection's right-click handling. Final selector text and badge labels
+were compiled in the packaging pass.
+
+The asset audit passes **75 distinct rigs, 4,841 UV-mapped cubes, 1,200 clips, 300 creature
+atlases, 17 new gear items and 296 technique emblems**. It validates rig parents, animation
+bone references, face UV bounds, LOD compatibility and equipment chains. Charging is
+opt-in for **19** suitable moves; **277** use ordinary activation. The ZIP integrity and
+version audit confirms 296 move definitions / 51 families, no GameTest classes and no
+nested third-party jars. Sodium/Iris publisher SHA-512 records are in
+`docs/RENDERING_DEPENDENCIES.json`; those optional jars are local and excluded from Git.
+
+Artifact: `build/libs/jjkcraft-1.12.0-preview.jar`, **11,920,078 bytes**. SHA-256:
+`ba945280ff1ee68a931a275f843e08bfa8eb96847b0eb5d7242315c6fad8baec`.
+
+This is a tested preview, not evidence of every AI matchup, multiplayer latency condition,
+shader pack or long-session/PvP balance outcome. NoAI galleries validate visible assets;
+combat scenarios validate controlled mechanics. OSHI/Realms development warnings and
+Sodium option normalization are recorded in logs and did not fail the passing runs.
+
 ## 1.11.1-preview, 2026-10-20
 
 All **127 unit tests and 212 server scenarios passed** in

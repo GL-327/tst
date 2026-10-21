@@ -40,7 +40,7 @@ import com.jjkcraft.technique.Techniques;
 
 import com.jjkcraft.technique.TechniqueState;
 
-/** Named catalogue with scrolling, descriptions, explicit eligibility and click/drag to equip. */
+    /** Catalogue of family selectors and moves, with explicit eligibility and click/drag to equip. */
 public final class LoadoutScreen extends JjkScreen {
     private Identifier selected, dragging;
     private boolean showAll;
@@ -50,7 +50,7 @@ public final class LoadoutScreen extends JjkScreen {
     private double downX,downY;
     private boolean draggingActive;
     private int selectedSlot=ClientTechniques.state().selected();
-    private InkButton equipButton;
+    private InkButton equipButton,personalizeButton;
     public LoadoutScreen() { super(Component.translatable("screen.jjkcraft.loadout")); }
     public LoadoutScreen(Identifier focus) { this();selected=focus;search=focus.getPath();showAll=true; }
     private int left() { return panelX() + 8; }
@@ -63,7 +63,7 @@ public final class LoadoutScreen extends JjkScreen {
     private List<Identifier> entries() {
 
         List<Identifier> ids = showAll ? ClientProgress.registries().map(r -> Techniques.all(r).stream().map(Techniques.Entry::id).toList()).orElse(List.of()) : ClientTechniques.known();
-        return ids.stream().filter(id->search.isBlank()||id.getPath().contains(search.toLowerCase(java.util.Locale.ROOT))||ClientTechniques.definition(id).map(d->Component.translatable(d.name()).getString().toLowerCase(java.util.Locale.ROOT).contains(search.toLowerCase(java.util.Locale.ROOT))).orElse(false)).sorted(Comparator.<Identifier>comparingInt(id -> ClientTechniques.known().contains(id) ? 0 : 1)
+        return java.util.stream.Stream.concat(ClientTechniques.families().stream(),ids.stream()).distinct().filter(id->search.isBlank()||id.getPath().contains(search.toLowerCase(java.util.Locale.ROOT))||ClientTechniques.definition(id).map(d->Component.translatable(d.name()).getString().toLowerCase(java.util.Locale.ROOT).contains(search.toLowerCase(java.util.Locale.ROOT))).orElse(false)).sorted(Comparator.<Identifier>comparingInt(id -> ClientTechniques.known().contains(id) ? 0 : 1)
 
             .thenComparing(id -> ClientTechniques.definition(id).map(d -> Component.translatable(d.name()).getString()).orElse(id.toString()))).toList();
 
@@ -80,7 +80,7 @@ public final class LoadoutScreen extends JjkScreen {
         equipButton = addRenderableWidget(new InkButton(right(), panelY() + panelH() - 27, panelW() / 2 - 16, 18,
 
             Component.literal("Equip in selected slot"), b -> equip(selectedSlot)));
-        addRenderableWidget(new InkButton(right(),contentY()+121,(panelW()/2-20)/2,18,Component.literal("Personalize"),b->{
+        personalizeButton=addRenderableWidget(new InkButton(right(),contentY()+121,(panelW()/2-20)/2,18,Component.literal("Personalize"),b->{
 
             Identifier id=selected!=null?selected:ClientTechniques.state().slot(selectedSlot).orElse(null);
             if(id!=null&&ClientTechniques.known().contains(id))minecraft.gui.setScreen(new TechniqueWorkshopScreen(id));
@@ -92,7 +92,7 @@ public final class LoadoutScreen extends JjkScreen {
         var fusion=addRenderableWidget(new InkButton(right()+134,contentY()+86,Math.max(40,listWidth()-136),18,Component.literal("Fusion"),b->minecraft.gui.setScreen(new ShikigamiFusionScreen())));fusion.active=ClientTechniques.known().contains(com.jjkcraft.JjkCraft.id("chimera_fusion"));
 
     }
-    private boolean canEquip() { return selected != null && ClientTechniques.known().contains(selected) && ClientTechniques.definition(selected).map(ClientTechniques::gradeAllows).orElse(false); }
+    private boolean canEquip() { return selected != null && ClientTechniques.bindable(selected) && ClientTechniques.definition(selected).map(ClientTechniques::gradeAllows).orElse(false); }
     private void equip(int slot) {
         if (canEquip() && slot < Math.min(TechniqueState.SLOTS, ClientTechniques.usableSlots()))
 
@@ -110,13 +110,13 @@ public final class LoadoutScreen extends JjkScreen {
 
             Identifier id = list.get(n); var def = ClientTechniques.definition(id).orElse(null); if (def == null) continue;
             int y = listTop() + (n - offset) * 28;
-            boolean known = ClientTechniques.known().contains(id), ready = known && ClientTechniques.gradeAllows(def);
+            boolean known = ClientTechniques.bindable(id), ready = known && ClientTechniques.gradeAllows(def);
 
             g.fill(left(), y, left() + listWidth(), y + 26, id.equals(selected) ? 0xFF33253E : 0xFF15121D);
 
             g.blit(RenderPipelines.GUI_TEXTURED, def.icon(), left() + 3, y + 3, 0, 0, 20, 20, 20, 20);
             Ink.text(g, Ink.fit(Component.translatable(def.name()), listWidth() - 30), left() + 28, y + 4, ready ? Palette.TEXT : Palette.TEXT_DIM, 1);
-            String status = !known ? "Scroll or family progression" : !ready ? "Requires " + Component.translatable("grade." + def.grade().getNamespace() + "." + def.grade().getPath()).getString()
+            String status = com.jjkcraft.technique.TechniqueBindings.family(id)?"FAMILY · opens learned variants":!known ? "Scroll or family progression" : !ready ? "Requires " + Component.translatable("grade." + def.grade().getNamespace() + "." + def.grade().getPath()).getString()
 
                 : String.format(java.util.Locale.ROOT, "%.0f CE  |  %.1fs cooldown", ClientTechniques.cost(id), def.cast().cooldown() / 20.0);
             Ink.text(g, Ink.fit(Component.literal(status), listWidth() - 30), left() + 28, y + 15, ready ? Palette.energyHigh() : Palette.muted(), 1);
@@ -150,6 +150,7 @@ public final class LoadoutScreen extends JjkScreen {
         else Ink.text(g,"Select a move, then a slot.",right(),contentY()+109,Palette.TEXT_DIM,1);
 
         equipButton.active = canEquip();
+        personalizeButton.active=shown!=null&&ClientTechniques.known().contains(shown);
         if (dragging != null&&draggingActive) ClientTechniques.definition(dragging).ifPresent(d -> g.blit(RenderPipelines.GUI_TEXTURED, d.icon(), (int) dragX - 12, (int) dragY - 12, 0, 0, 24, 24, 24, 24));
 
     }

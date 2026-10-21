@@ -40,7 +40,7 @@ final class AtelierClientChecks {
             c.getInput().holdKeyFor(o->o.keyAttack,45);c.waitTicks(3);
             if(!server.computeOnServer(s->com.jjkcraft.sorcerer.Progression.get(s.getPlayerList().getPlayers().getFirst()).counter("combat_hits")>afterTap))throw new AssertionError("held inverted Auto attack did not hit");
             c.waitTicks(30);c.runOnClient(mc->com.jjkcraft.client.config.ClientConfig.get().autoCombat=false);c.getInput().pressMouse(InputConstants.MOUSE_BUTTON_RIGHT);
-            c.waitFor(mc->{var pose=com.jjkcraft.client.combat.CombatAnimations.pose(mc.player.getId());return pose!=null&&!pose.move().isEmpty();});c.takeScreenshot("jjkcraft-atelier-inverted-manual-combat");
+            c.waitFor(mc->{var pose=com.jjkcraft.client.combat.CombatAnimations.pose(mc.player.getId());return pose!=null&&!pose.move().isEmpty()&&!pose.move().equals("stance");});c.takeScreenshot("jjkcraft-atelier-inverted-manual-combat");
             c.waitTicks(35);int beforeUse=server.computeOnServer(s->com.jjkcraft.sorcerer.Progression.get(s.getPlayerList().getPlayers().getFirst()).counter("combat_hits"));c.getInput().pressMouse(InputConstants.MOUSE_BUTTON_LEFT);c.waitTicks(12);
             if(server.computeOnServer(s->com.jjkcraft.sorcerer.Progression.get(s.getPlayerList().getPlayers().getFirst()).counter("combat_hits"))!=beforeUse)throw new AssertionError("Use mouse button triggered a combat hit");
             c.runOnClient(mc->{mc.options.keyAttack.setKey(mc.options.keyAttack.getDefaultKey());mc.options.keyUse.setKey(mc.options.keyUse.getDefaultKey());net.minecraft.client.KeyMapping.resetMapping();com.jjkcraft.client.config.ClientConfig.get().autoCombat=true;mc.options.guiScale().set(1);mc.resizeGui();});

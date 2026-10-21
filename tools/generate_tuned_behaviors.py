@@ -48,11 +48,13 @@ public final class TunedBehaviors {
         return !(b instanceof MangaAbilityBehavior m && java.util.Set.of("body_transfer","swap").contains(m.ability()));
     }
     public static boolean area(TechniqueBehavior b) {
+        if(b instanceof MangaAbilityBehavior m&&m.ability().startsWith("original/")&&(m.ability().endsWith("/step")||m.ability().endsWith("/guard")&&!m.ability().startsWith("original/ink/")&&!m.ability().startsWith("original/sand/")))return false;
         if(b instanceof MangaAbilityBehavior m && java.util.Set.of("body_transfer","curse_manipulation","swap","mass","armor","flowing_blood","flight").contains(m.ability()))return false;
         return AREA;
     }
     public static boolean duration(TechniqueDefinition definition) {
         TechniqueBehavior b=definition.behavior();
+        if(b instanceof MangaAbilityBehavior m&&m.ability().startsWith("original/")&&m.ability().endsWith("/step"))return false;
         if(b instanceof MangaAbilityBehavior m && java.util.Set.of("body_transfer","curse_manipulation","uzumaki","swap","repel").contains(m.ability()))return false;
         return definition.cast().maxDuration()>0 || DURATION;
     }

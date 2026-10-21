@@ -2,7 +2,7 @@
   "name": "family.jjkcraft.echo_ledger",
   "clan": "",
   "inherited_weight": 0,
-  "random_weight": 7,
+  "random_weight": 10,
   "techniques": [
     "jjkcraft:echo_brand",
     "jjkcraft:echo_collect",

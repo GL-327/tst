@@ -1,0 +1,41 @@
+package com.jjkcraft.gametest;
+
+import java.util.*;
+import com.jjkcraft.JjkCraft;
+import com.jjkcraft.awakening.CharacterAwakening;
+import com.jjkcraft.client.JjkKeys;
+import com.jjkcraft.client.screen.*;
+import com.jjkcraft.client.state.*;
+import com.jjkcraft.technique.*;
+import com.jjkcraft.reverse.*;
+import net.fabricmc.fabric.api.client.gametest.v1.context.*;
+import net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldSave;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import com.mojang.blaze3d.platform.InputConstants;
+
+/** Real scroll/key/mouse inputs, passive synchronization, study UI, curse damage and save reload. */
+final class WheelClientChecks {
+    private static void point(ClientGameTestContext c,int index){var xy=c.computeOnClient(mc->{var w=(TechniqueWheelScreen)mc.gui.screen();int[] p=w.nodePoint(index);return new double[]{p[0]*mc.getWindow().getScreenWidth()/(double)w.width,p[1]*mc.getWindow().getScreenHeight()/(double)w.height};});c.getInput().setCursorPos(xy[0],xy[1]);c.waitTicks(3);}
+    static void run(ClientGameTestContext c){
+        TestWorldSave save;
+        try(var world=c.worldBuilder().create()){
+            var server=world.getServer();world.getConnection().waitForChunksRender();server.runCommand("gamemode creative @a");server.runCommand("gamerule spawn_mobs false");server.runCommand("time set noon");
+            server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);var b=BlockPos.containing(p.position());for(int x=-9;x<=9;x++)for(int z=-9;z<=15;z++){p.level().setBlockAndUpdate(b.offset(x,-1,z),net.minecraft.world.level.block.Blocks.SMOOTH_STONE.defaultBlockState());for(int y=0;y<9;y++)p.level().setBlockAndUpdate(b.offset(x,y,z),net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());}p.setYRot(0);p.setXRot(0);TechniqueService.setLoadout(p,0,Optional.of(TechniqueBindings.binding(JjkCraft.id("limitless"))));TechniqueService.setLoadout(p,1,Optional.of(JjkCraft.id("blue_punch")));TechniqueService.selectSlot(p,0);com.jjkcraft.sorcerer.SorcererLifecycle.fullSync(p);return true;});
+            c.waitFor(mc->ClientTechniques.state().slot(0).filter(TechniqueBindings::family).isPresent());c.setScreen(()->null);c.runOnClient(mc->{mc.options.guiScale().set(2);mc.resizeGui();mc.options.chatOpacity().set(0d);mc.player.setYRot(0);mc.player.setXRot(0);});c.waitTicks(4);
+            c.getInput().holdKey(JjkKeys.WHEEL);c.waitFor(mc->mc.gui.screen() instanceof TechniqueWheelScreen);c.getInput().scroll(-1);c.waitTicks(3);c.takeScreenshot("jjkcraft-wheel-twelve-scroll-slots");c.getInput().releaseKey(JjkKeys.WHEEL);c.waitFor(mc->mc.gui.screen()==null&&ClientTechniques.state().selected()==1);
+            server.computeOnServer(s->{TechniqueService.selectSlot(s.getPlayerList().getPlayers().getFirst(),0);return true;});c.waitFor(mc->ClientTechniques.state().selected()==0);
+            c.getInput().pressKey(JjkKeys.CAST);c.waitFor(mc->mc.gui.screen() instanceof TechniqueWheelScreen w&&w.isFamilyWheel());c.waitTicks(3);c.takeScreenshot("jjkcraft-wheel-limitless-learned-variants");point(c,0);
+            c.getInput().holdMouse(InputConstants.MOUSE_BUTTON_LEFT);c.waitFor(mc->ClientTechniques.charge().slot()==0);c.waitTicks(22);c.takeScreenshot("jjkcraft-wheel-charge-blue-variant");c.getInput().releaseMouse(InputConstants.MOUSE_BUTTON_LEFT);c.waitFor(mc->mc.gui.screen()==null&&ClientTechniques.charge().slot()<0);
+            if(!server.computeOnServer(s->TechniqueService.get(s.getPlayerList().getPlayers().getFirst()).slot(0).filter(TechniqueBindings::family).isPresent()))throw new AssertionError("casting a variant replaced the family binding");
+            c.getInput().pressKey(JjkKeys.CAST);c.waitFor(mc->mc.gui.screen() instanceof TechniqueWheelScreen);point(c,1);c.getInput().pressMouse(InputConstants.MOUSE_BUTTON_LEFT);c.waitFor(mc->mc.gui.screen()==null&&ClientTechniques.activeIs(JjkCraft.id("infinity")));c.takeScreenshot("jjkcraft-wheel-infinity-independent-passive");
+            server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();TechniqueService.cancel(p);ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(false).withAutoHeal(false),false);p.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);p.experienceLevel=3;return true;});c.waitFor(mc->!ClientSorcery.reverse().unlocked());c.waitTicks(4);c.setScreen(PracticeScreen::new);c.waitTicks(4);c.takeScreenshot("jjkcraft-rct-three-stage-practice");c.clickScreenButton("Reverse flow · 0/3 · 3 levels");c.waitFor(mc->ClientSorcery.study().running()&&mc.gui.screen()==null);c.waitTicks(12);c.takeScreenshot("jjkcraft-rct-flow-drill-active");c.getInput().holdShift();c.waitFor(mc->!ClientSorcery.study().running());c.getInput().releaseShift();
+            server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();if(ReverseStudy.completed(p)!=0||p.experienceLevel!=3)throw new AssertionError("cancelled drill granted progress or spent XP");p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(true),false);TechniqueService.setLoadout(p,2,Optional.of(JjkCraft.id("positive_energy_discharge")));TechniqueService.selectSlot(p,2);var t=com.jjkcraft.curse.CurseEntities.HOLLOW_HYMNAL.create(p.level(),net.minecraft.world.entity.EntitySpawnReason.EVENT);t.setNoAi(true);t.setPos(p.position().add(0,0,4));p.level().addFreshEntity(t);return true;});c.waitFor(mc->ClientTechniques.state().selected()==2);c.waitTicks(5);
+            float hp=server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();return p.level().getEntitiesOfClass(com.jjkcraft.curse.CurseEntity.class,p.getBoundingBox().inflate(7)).getFirst().getHealth();});c.runOnClient(mc->{mc.player.setYRot(0);mc.player.setXRot(0);});c.getInput().pressKey(JjkKeys.CAST);c.waitTicks(6);
+            if(!server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();return p.level().getEntitiesOfClass(com.jjkcraft.curse.CurseEntity.class,p.getBoundingBox().inflate(7)).stream().anyMatch(t->t.getHealth()<hp);}))throw new AssertionError("real RCT discharge did not hurt curse");c.takeScreenshot("jjkcraft-rct-positive-energy-exorcism");
+            server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();for(var t:p.level().getEntitiesOfClass(com.jjkcraft.curse.CurseEntity.class,p.getBoundingBox().inflate(20)))t.discard();CharacterAwakening.creative(p,JjkCraft.id("glass"),false);TechniqueService.setLoadout(p,0,Optional.of(JjkCraft.id("glass_mark")));TechniqueService.selectSlot(p,0);var t=net.minecraft.world.entity.EntityTypes.HUSK.create(p.level(),net.minecraft.world.entity.EntitySpawnReason.EVENT);t.setNoAi(true);t.setPos(p.position().add(0,0,4));p.level().addFreshEntity(t);return true;});c.waitFor(mc->ClientTechniques.state().slot(0).filter(JjkCraft.id("glass_mark")::equals).isPresent());c.waitTicks(3);c.getInput().pressKey(JjkKeys.CAST);c.waitFor(mc->com.jjkcraft.client.combat.OriginalArtsHud.resonance()==1);c.takeScreenshot("jjkcraft-original-family-resonance-hud");
+            server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);TechniqueService.setLoadout(p,0,Optional.empty());return true;});c.waitFor(mc->ClientTechniques.state().slot(0).isEmpty());c.setScreen(FamilyTechniqueScreen::new);c.waitTicks(4);c.clickScreenButton("Bind family");c.waitFor(mc->ClientTechniques.state().slot(0).filter(TechniqueBindings::family).isPresent());c.waitTicks(3);c.takeScreenshot("jjkcraft-loadout-family-and-specific-bindings");c.setScreen(()->null);save=world.getWorldSave();
+        }
+        try(var reopen=save.open()){reopen.getConnection().waitForChunksRender();if(!reopen.getServer().computeOnServer(s->TechniqueService.get(s.getPlayerList().getPlayers().getFirst()).slot(0).filter(TechniqueBindings::family).isPresent()))throw new AssertionError("family binding did not persist");c.waitTicks(3);c.takeScreenshot("jjkcraft-wheel-binding-reopened");}
+    }
+}

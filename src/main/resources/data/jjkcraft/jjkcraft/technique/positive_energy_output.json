@@ -2,11 +2,11 @@
   "name": "technique.jjkcraft.positive_energy_output",
   "description": "technique.jjkcraft.positive_energy_output.desc",
   "category": "healing",
-  "grade": "jjkcraft:grade_2",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 24,
     "cooldown": 140,
-    "range": 10.0
+    "range": 10
   },
   "behavior": {
     "type": "jjkcraft:mend_other",
@@ -15,14 +15,14 @@
     "self_fraction": 0.6
   },
   "visuals": {
-    "color": "#7BE3A8",
+    "color": "#5BE38C",
     "particle": "jjkcraft:reverse_glow",
     "sound": "jjkcraft:technique.heal",
-    "shake": 0.2,
+    "shake": 0.0,
     "hit_stop": 0,
-    "trail": "beam"
+    "trail": "aura"
   },
   "icon": "jjkcraft:textures/gui/technique/positive_energy_output.png",
-  "innate_weight": 3,
+  "innate_weight": 0,
   "mastery_uses": 50
 }

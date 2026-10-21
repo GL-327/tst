@@ -45,9 +45,9 @@ public final class TechniqueBindingsScreen extends JjkScreen {
     @Override protected void extractContent(GuiGraphicsExtractor g,int mx,int my,float a){
         int x=panelX()+10,y=contentY(),half=(panelW()-30)/2;
         Ink.text(g,"TECHNIQUE BINDINGS",x,y,Palette.energyHigh(),1);
-        Ink.text(g,"U/I/O manual - M1 auto assist - vanilla Q/E/F preserved",x,y+12,Palette.TEXT_DIM,1);
+        Ink.text(g,"Manual attacks / Auto assist - all keys can be rebound",x,y+12,Palette.TEXT_DIM,1);
         for(int i=0;i<keys.length;i++){
-            boolean conflict=false;for(int k=0;k<keys.length;k++)if(i!=k&&keys[i].same(keys[k])&&!keys[i].isUnbound())conflict=true;
+            boolean conflict=false;for(var other:minecraft.options.keyMappings)if(keys[i]!=other&&keys[i].same(other)&&!keys[i].isUnbound())conflict=true;
             Ink.text(g,NAMES[i],x+(i/7)*(half+10),y+25+(i%7)*20,conflict?Palette.danger():Palette.TEXT,1);
 
         }

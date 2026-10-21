@@ -1,14 +1,21 @@
-# Cursed Combat — 1.8.0-preview
+# Cursed Combat — 1.12.0-preview
 
 Y toggles combat. Auto Combat defaults ON: holding M1 chooses coarse attacks or a defensive
 response to a visible telegraph. It attacks more slowly and lacks deliberate parry timing,
 double-tap specials and escape choices. F7 or Moves -> Bindings toggles the saved preference.
 
 Manual U chains lights; double-U queues an uppercut. I prepares a heavy strike; double-I
-selects a sweep instead. Hold O to guard, crouch for a low guard, raise it just before contact
+selects a sweep instead. Hold Right Bracket (]) to guard, crouch for a low guard, raise it just before contact
 for a parry. Left Alt dashes or spends 33 CE for a stagger escape (ten-second cooldown).
 Manual input temporarily takes priority over Auto Combat. Every control is rebindable.
 Vanilla Q/E/F, hotbar keys and Creative toolbar combinations keep their normal behavior.
+The old O block binding migrates once because Minecraft 26.3 uses O for Friends.
+
+Auto commits three of every five accepted attacks and visibly feints the others, with extra
+recovery. Aim, reach and defense can lower actual contact below 60%. Its guard cannot
+perfectly parry. Manual attacks have no artificial accuracy cap. The contact counter counts
+each swing once, even if it strikes several opponents. The updated stance, body motion,
+two first-person fists and equipment are described in [the overhaul guide](VISUAL_OVERHAUL.md).
 
 Hostile melee mobs and Culling entrants use the shared frame engine. Curses use species
 move sets, distinct jab/heavy/sweep/uppercut/guard clips and reactive defense; weak curses

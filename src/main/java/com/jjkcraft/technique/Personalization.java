@@ -21,7 +21,7 @@ public final class Personalization {
     private static final RateLimiter LIMIT=new RateLimiter(4,8);
     private Personalization() { }
     public static TechniqueTuning get(LivingEntity caster,Identifier id) {
-        return caster instanceof Player p?p.getAttachedOrCreate(TUNINGS).getOrDefault(id,TechniqueTuning.DEFAULT):TechniqueTuning.DEFAULT;
+        return caster instanceof Player p?p.getAttachedOrCreate(TUNINGS).getOrDefault(id,TechniqueTuning.defaultFor(id)):TechniqueTuning.defaultFor(id);
     }
     public static TechniqueDefinition definition(LivingEntity caster,Identifier id,TechniqueDefinition raw) { return get(caster,id).apply(raw); }
     public static void init() {
@@ -46,12 +46,13 @@ public final class Personalization {
         if(!PersonalPacts.maySave(p,id,tuning))return false;
         if(!TechniqueService.knows(p,id)||Techniques.get(p.registryAccess(),id).isEmpty())return false;
         tuning=tuning.normalized(Techniques.get(p.registryAccess(),id).orElseThrow());
+        if(id.getPath().equals("infinity"))InfinityField.stop(p);
         // End the old snapshot before applying new upkeep. A pending cast retains its paid snapshot.
         TechniqueService.active(p).filter(a->a.id().equals(id)).ifPresent(a->TechniqueService.stop(p));
         if(!get(p,id).pact().equals(tuning.pact()))TechniqueService.stop(p);
         var map=new HashMap<>(p.getAttachedOrCreate(TUNINGS));
         if(tuning.equals(TechniqueTuning.DEFAULT))map.remove(id); else if(map.size()<256||map.containsKey(id))map.put(id,tuning);else return false;
-        p.setAttached(TUNINGS,Map.copyOf(map));
+        com.jjkcraft.energy.CursedEnergy.checkpoint(p);p.setAttached(TUNINGS,Map.copyOf(map));
         if(PersonalPacts.forbids(p,TechniquePact.GUARD)&&p.isUsingItem()&&p.getUseItem().has(net.minecraft.core.component.DataComponents.BLOCKS_ATTACKS))p.stopUsingItem();
         send(p);return true;
     }

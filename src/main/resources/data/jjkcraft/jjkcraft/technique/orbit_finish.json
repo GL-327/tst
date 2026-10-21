@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.orbit_finish",
+  "description": "technique.jjkcraft.orbit_finish.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_1",
+  "cast": {
+    "cost": 70,
+    "cooldown": 200,
+    "range": 14,
+    "cast_time": 8
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/orbit/finish",
+    "damage": 12,
+    "duration": 60,
+    "radius": 6
+  },
+  "visuals": {
+    "color": "#C4A3E6",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.15,
+    "hit_stop": 1,
+    "trail": "ring"
+  },
+  "icon": "jjkcraft:textures/gui/technique/orbit_finish.png",
+  "innate_weight": 0,
+  "mastery_uses": 75
+}

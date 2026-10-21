@@ -1,0 +1,29 @@
+{
+  "name": "technique.jjkcraft.positive_energy_discharge",
+  "description": "technique.jjkcraft.positive_energy_discharge.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 36,
+    "cooldown": 60,
+    "range": 6
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "positive_output",
+    "damage": 22,
+    "duration": 1,
+    "radius": 2
+  },
+  "visuals": {
+    "color": "#5BE38C",
+    "particle": "jjkcraft:reverse_glow",
+    "sound": "jjkcraft:technique.heal",
+    "shake": 0.0,
+    "hit_stop": 0,
+    "trail": "beam"
+  },
+  "icon": "jjkcraft:textures/gui/technique/positive_energy_discharge.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

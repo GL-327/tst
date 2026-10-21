@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.lodestone_mark",
+  "description": "technique.jjkcraft.lodestone_mark.desc",
+  "category": "strike",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 12,
+    "cooldown": 30,
+    "range": 14,
+    "cast_time": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/lodestone/mark",
+    "damage": 4,
+    "duration": 160,
+    "radius": 3
+  },
+  "visuals": {
+    "color": "#91A4C1",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.04,
+    "hit_stop": 0,
+    "trail": "slash"
+  },
+  "icon": "jjkcraft:textures/gui/technique/lodestone_mark.png",
+  "innate_weight": 0,
+  "mastery_uses": 35
+}

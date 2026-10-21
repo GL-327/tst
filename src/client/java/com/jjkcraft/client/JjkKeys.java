@@ -40,7 +40,7 @@ public final class JjkKeys {
     public static final KeyMapping BANK = key("bank",InputConstants.KEY_BACKSLASH);
     public static final KeyMapping LIGHT = key("light_hit",InputConstants.KEY_U);
     public static final KeyMapping HEAVY = key("heavy_hit",InputConstants.KEY_I);
-    public static final KeyMapping BLOCK = key("block",InputConstants.KEY_O);
+    public static final KeyMapping BLOCK = key("block",InputConstants.KEY_RBRACKET);
 	public static final KeyMapping[] SKILLS={key("skill_1",InputConstants.KEY_NUMPAD1),key("skill_2",InputConstants.KEY_NUMPAD2),key("skill_3",InputConstants.KEY_NUMPAD3),key("skill_4",InputConstants.KEY_NUMPAD4)};
 	private static final boolean[] skillDown=new boolean[4];
 	private static int heldCastSlot=-1;
@@ -66,6 +66,12 @@ public final class JjkKeys {
 	public static boolean clicked(KeyMapping key){boolean any=false;while(key.consumeClick())any=true;return any;}
     private static void tick(Minecraft mc) {
 		boolean inGame = mc.player != null && mc.gui.screen() == null;
+        var selected=ClientTechniques.state().slot(ClientTechniques.state().selected());
+        boolean family=selected.filter(com.jjkcraft.technique.TechniqueBindings::family).isPresent();
+        if(inGame&&family&&(CAST.isDown()||clicked(CAST))&&!castWasDown){
+            mc.gui.setScreen(new TechniqueWheelScreen(selected.orElseThrow(),ClientTechniques.state().selected()));
+            CAST.setDown(false);castWasDown=false;inGame=false;
+        }
 
 		while (PROFILE.consumeClick()) {
 			if (inGame) {
@@ -86,6 +92,9 @@ public final class JjkKeys {
         for(int slot=0;slot<4;slot++){
 			boolean down=inGame&&com.jjkcraft.client.combat.CombatClient.enabled()&&SKILLS[slot].isDown();
             boolean tap=clicked(SKILLS[slot]);
+            if((tap||down)&&!skillDown[slot]&&inGame&&com.jjkcraft.client.combat.CombatClient.enabled()&&ClientTechniques.state().slot(bankStart()+slot).filter(com.jjkcraft.technique.TechniqueBindings::family).isPresent()){
+                int target=bankStart()+slot;ClientPlayNetworking.send(new SelectSlotPayload(target));mc.gui.setScreen(new TechniqueWheelScreen(ClientTechniques.state().slot(target).orElseThrow(),target));down=false;tap=false;inGame=false;
+            }
             if(tap&&!down&&!skillDown[slot]&&inGame&&com.jjkcraft.client.combat.CombatClient.enabled()){int target=bankStart()+slot;ClientPlayNetworking.send(new SelectSlotPayload(target));ClientPlayNetworking.send(new CastPayload(target,true));ClientPlayNetworking.send(new CastPayload(target,false));}
 			if(down!=skillDown[slot]&&mc.player!=null){if(down){heldSkillSlots[slot]=bankStart()+slot;ClientPlayNetworking.send(new SelectSlotPayload(heldSkillSlots[slot]));}ClientPlayNetworking.send(new CastPayload(heldSkillSlots[slot],down,!inGame));}
 			skillDown[slot]=down;

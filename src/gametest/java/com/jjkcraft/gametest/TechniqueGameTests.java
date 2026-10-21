@@ -147,7 +147,8 @@ public final class TechniqueGameTests {
 		Progression.setGrade(player, JjkCraft.id("grade_3"));
 		CursedEnergy.fill(player);
 		player.setHealth(8);
-		TechniqueService.grant(player, JjkCraft.id("reverse_cursed_technique"));
+		com.jjkcraft.reverse.ReverseTechnique.set(player,com.jjkcraft.reverse.ReverseTechnique.state(player).withUnlocked(true),false);
+        TechniqueService.grant(player, JjkCraft.id("reverse_cursed_technique"));
 		helper.assertValueEqual(TechniqueService.cast(player, JjkCraft.id("reverse_cursed_technique"), 0), CastFailure.NONE, "start healing");
 		helper.runAfterDelay(20, () -> {
 			helper.assertTrue(player.getHealth() > 10, "healed, health " + player.getHealth());

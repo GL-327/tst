@@ -43,11 +43,14 @@ public final class PersonalizationGameTests {
         Awakening.reset(next);h.assertTrue(SorceryPractice.get(next).birth()==birth,"respec cannot reroll potential");h.succeed();
     }
     @GameTest(environment="jjkcraft:expansion") public void universalSkillsLearnWithoutChangingFamilyOrLoadout(GameTestHelper h){
-        var p=sorcerer(h);var original=TechniqueService.get(p);p.experienceLevel=13;
+        var p=sorcerer(h);var original=TechniqueService.get(p);p.experienceLevel=12;p.setOnGround(true);
         h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(0,100,100,60)),"reinforcement teachable");
-        h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(1,100,100,60)),"RCT teachable at any sorcerer grade");
-        h.assertTrue(p.experienceLevel==0&&SorceryPractice.get(p).reinforcement()&&ReverseTechnique.unlocked(p),"learning costs exactly 13 levels");
-        h.assertTrue(TechniqueService.get(p).equals(original),"no innate or four-slot changes");
+        for(int lesson=0;lesson<3;lesson++){
+            h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(1,100,100,60)),"RCT drill teachable at any sorcerer grade");
+            for(int tick=0;tick<com.jjkcraft.reverse.ReverseStudy.LESSON_TICKS;tick++)com.jjkcraft.reverse.ReverseStudy.step(p);
+        }
+        h.assertTrue(p.experienceLevel==0&&SorceryPractice.get(p).reinforcement()&&ReverseTechnique.unlocked(p),"reinforcement and three drills cost twelve levels");
+        h.assertTrue(TechniqueService.get(p).innate().equals(original.innate())&&TechniqueService.get(p).loadout().equals(original.loadout()),"no innate or slot changes");
         h.assertFalse(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"training requires XP");
         p.experienceLevel=30;int gain=SorceryPractice.trainingGain(p);h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"reserves trainable");
         h.assertTrue(SorceryPractice.get(p).trained()==gain,"training increases capacity according to current potential");h.succeed();

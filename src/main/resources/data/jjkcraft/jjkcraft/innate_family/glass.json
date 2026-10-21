@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.glass",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:glass_mark",
+    "jjkcraft:glass_guard",
+    "jjkcraft:glass_step",
+    "jjkcraft:glass_salvo",
+    "jjkcraft:glass_snare",
+    "jjkcraft:glass_finish"
+  ],
+  "domain": ""
+}

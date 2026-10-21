@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.suture",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:suture_mark",
+    "jjkcraft:suture_guard",
+    "jjkcraft:suture_step",
+    "jjkcraft:suture_salvo",
+    "jjkcraft:suture_snare",
+    "jjkcraft:suture_finish"
+  ],
+  "domain": ""
+}

@@ -33,6 +33,7 @@ public final class TechniqueFxClient {
 
 	public static void reset() {
 		REMOTE_ACTIVE.clear();
+        SpectralFx.clear();
 	}
 
 	public static void handle(TechniqueFxPayload fx) {
@@ -58,14 +59,14 @@ public final class TechniqueFxClient {
 		Entity caster = mc.level.getEntity(fx.caster());
 		float now = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		boolean involvesMe = mc.player != null && (fx.caster() == mc.player.getId() || fx.targets().contains(mc.player.getId()));
-		SignatureFx.event(fx,color,now);
+        boolean spectral=SpectralFx.event(fx,color,now);
 
 		switch (fx.phase()) {
-			case WINDUP -> windup(caster, def, color);
-			case CAST -> cast(fx, def, color, particle, caster, now);
+			case WINDUP -> {if(!spectral)windup(caster, def, color);}
+			case CAST -> {if(!spectral)cast(fx, def, color, particle, caster, now);}
 			case HIT -> {
 				ClientFx.burst(particle, fx.origin(), (int) (14 * Math.min(3, fx.power())), 0.35, 0.18);
-				ClientFx.burst(JjkParticles.of(JjkParticles.CURSED_SPARK, 0xFFFFFF, 0.7f), fx.origin(), 5, 0.2, 0.25);
+				ClientFx.burst(JjkParticles.of(JjkParticles.CURSED_SPARK, color, 0.6f), fx.origin(), 2, 0.2, 0.25);
 				sound(v.hitSound(), fx.origin(), SoundMixer.Priority.IMPACT, 1f);
 				if (def.visuals().trail() == TechniqueDefinition.Trail.CHAIN && !fx.targets().isEmpty()) {
 					WorldFx.add(WorldFx.chain(fx.caster(), fx.targets().getFirst(), color, now, (float) Math.max(10, fx.direction().x)));
@@ -77,12 +78,12 @@ public final class TechniqueFxClient {
 
 				hitStop(fx, v.hitStop());
 			}
-			case FIELD -> field(fx, color, particle, now);
+			case FIELD -> {if(!spectral)field(fx, color,particle,now);}
 			case BURST -> {
 				double radius = Math.max(1, fx.direction().x);
-				WorldFx.add(WorldFx.burst(fx.origin(), radius, color, now));
-				ClientFx.burst(particle, fx.origin(), 60, radius * 0.5, 0.45);
-				ClientFx.burst(JjkParticles.of(JjkParticles.DOMAIN_SHARD, color, 1.2f), fx.origin(), 24, radius * 0.3, 0.3);
+				if(!spectral)WorldFx.add(WorldFx.burst(fx.origin(), radius, color, now));
+				ClientFx.burst(particle, fx.origin(), spectral?8:18, radius * 0.5, 0.45);
+				ClientFx.burst(JjkParticles.of(JjkParticles.DOMAIN_SHARD, color, .8f), fx.origin(), spectral?2:6, radius * 0.3, 0.3);
 				sound(Optional.of(JjkSounds.REPEL.location()), fx.origin(), SoundMixer.Priority.DRAMATIC, 1.2f);
 				if (mc.player != null && mc.player.position().distanceTo(fx.origin()) < radius * 4) {
 					ClientFx.shake(0.6f + 0.2f * (float) radius / 5, 450);

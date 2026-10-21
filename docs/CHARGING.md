@@ -1,8 +1,8 @@
-# Charging and terrain, 1.11.1-preview
+# Charging and terrain, 1.12.0-preview
 
 Only suitable moves support charging. Tooltips and the loadout label each move's casting
-style. Charging applies to eighteen moves: Lapse Blue, Reversal Red, Hollow Purple,
-Maximum Output Blue, Piercing Blood, Maximum Uzumaki, Granite Blast, Granite Cannon,
+style. Charging applies to nineteen moves: Lapse Blue, Reversal Red, Hollow Purple,
+Maximum Output Blue, Maximum Output Red, Piercing Blood, Maximum Uzumaki, Granite Blast, Granite Cannon,
 Furnace, Perfect Sphere, Ice Lance, Icefall, Water Lance, Mul Lance, Darkness Nova,
 Chaos Fracture, Eye Blast and Volcanic Burst.
 
@@ -53,3 +53,5 @@ Mob casts obey `mobGriefing`. Servers can set `casting.terrainDamage=false` in
 384 blocks per cast, 256 block changes and 12,000 candidate scans per dimension per tick,
 with at most 192 live debris displays across dimensions. This keeps large personalised
 effects from doing unbounded terrain work.
+
+Family selectors also support holding a variant with left click or the cast key, then releasing. See [wheel and RCT controls](TECHNIQUE_WHEEL.md). Infinity is now an independent passive with RCT-dependent upkeep.

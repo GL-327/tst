@@ -93,7 +93,17 @@ public final class JjkCraftClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+        ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ReverseStudyPayload.TYPE,(payload,ctx)->ClientSorcery.accept(payload));
+        HudElementRegistry.addLast(JjkCraft.id("reverse_practice"),(g,dt)->{
+            var mc=Minecraft.getInstance();var study=ClientSorcery.study();if(!study.running()||mc.player==null||mc.gui.hud.isHidden())return;
+            int x=g.guiWidth()/2-92,y=g.guiHeight()/2+44;g.fill(x,y,x+184,y+30,0xD0141726);
+            com.jjkcraft.client.ui.Ink.text(g,"REVERSE FLOW · "+(study.lessons()+1)+" / 3",x+5,y+4,0xFF7CDDB6,1);
+            com.jjkcraft.client.ui.Ink.text(g,"Stand still · crouch to cancel",x+5,y+15,0xFFCCC7D7,1);g.fill(x+4,y+27,x+4+176*study.ticks()/200,y+29,0xFF7CDDB6);
+        });
+        ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.InfinityPayload.TYPE,(payload,ctx)->ClientTechniques.accept(payload));
 		ClientConfig.init();
+        com.jjkcraft.client.combat.OriginalArtsHud.init();
+        ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ProjectionPayloads.Reply.TYPE,(reply,context)->com.jjkcraft.client.screen.ProjectionPlannerScreen.accept(reply));
 		JjkKeys.init();
 		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.TYPE,(reply,context)->com.jjkcraft.client.state.ClientPersonalization.accept(reply));
 		com.jjkcraft.client.combat.CombatAnimations.init();

@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.tollbell",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:tollbell_mark",
+    "jjkcraft:tollbell_guard",
+    "jjkcraft:tollbell_step",
+    "jjkcraft:tollbell_salvo",
+    "jjkcraft:tollbell_snare",
+    "jjkcraft:tollbell_finish"
+  ],
+  "domain": ""
+}

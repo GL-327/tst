@@ -101,7 +101,7 @@ public final class CastContext {
 
 	/** True for anything a technique may harm: living, not the caster, not an ally or the caster's pet. */
 	public boolean isEnemy(Entity entity) {
-		if(details.targeting()==1 && !(entity instanceof com.jjkcraft.curse.CurseEntity))return false;
+		if(details.targeting()==1 && !(entity instanceof LivingEntity target && com.jjkcraft.reverse.ReverseTechnique.curse(target)))return false;
 		if(details.targeting()==2 && !(entity instanceof net.minecraft.world.entity.player.Player))return false;
 		if(details.targeting()==3 && entity instanceof net.minecraft.world.entity.player.Player)return false;
 		if(level.getAttachedOrCreate(com.jjkcraft.awakening.BodyTransfer.BODIES).containsKey(entity.getUUID().toString())) return false;

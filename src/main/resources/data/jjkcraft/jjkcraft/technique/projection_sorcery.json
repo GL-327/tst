@@ -5,14 +5,15 @@
   "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 45,
-    "cooldown": 360,
-    "cast_time": 14
+    "cooldown": 180,
+    "cast_time": 8,
+    "range": 16
   },
   "behavior": {
     "type": "jjkcraft:projection_sorcery",
     "radius": 8,
     "skip_ticks": 14,
-    "blink": 6
+    "blink": 12
   },
   "visuals": {
     "color": "#D0D0E0",

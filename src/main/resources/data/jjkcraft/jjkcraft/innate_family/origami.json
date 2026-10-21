@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.origami",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:origami_mark",
+    "jjkcraft:origami_guard",
+    "jjkcraft:origami_step",
+    "jjkcraft:origami_salvo",
+    "jjkcraft:origami_snare",
+    "jjkcraft:origami_finish"
+  ],
+  "domain": ""
+}

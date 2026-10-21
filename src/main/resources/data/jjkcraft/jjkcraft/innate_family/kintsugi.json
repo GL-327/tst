@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.kintsugi",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:kintsugi_mark",
+    "jjkcraft:kintsugi_guard",
+    "jjkcraft:kintsugi_step",
+    "jjkcraft:kintsugi_salvo",
+    "jjkcraft:kintsugi_snare",
+    "jjkcraft:kintsugi_finish"
+  ],
+  "domain": ""
+}

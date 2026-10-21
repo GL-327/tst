@@ -20,6 +20,9 @@ public record MangaAbilityBehavior(String ability,double damage,int duration,dou
     ).apply(i,MangaAbilityBehavior::new));
     @Override public TechniqueBehaviorType<?> type(){return TechniqueBehaviors.MANGA_ABILITY;}
     @Override public CastResult cast(CastContext ctx) {
+        if(Set.of("blue_punch","red_punch","blue_cluster").contains(ability))return LimitlessArts.cast(ctx,ability,damage,duration,radius);
+        if(ability.equals("positive_output"))return com.jjkcraft.reverse.ReverseTechnique.discharge(ctx,damage,radius);
+        if(OriginalArts.handles(ability))return OriginalArts.cast(ctx,ability,damage,duration,radius);
         if(FamilyArts.handles(ability))return FamilyArts.cast(ctx,ability,damage,duration,radius);
         if(ExpressionArts.handles(ability))return ExpressionArts.cast(ctx,ability,damage,duration,radius);
         if(ability.equals("body_transfer"))return BodyTransfer.transplant(ctx);

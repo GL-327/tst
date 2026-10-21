@@ -2,7 +2,7 @@
   "name": "family.jjkcraft.brain_transplant",
   "clan": "",
   "inherited_weight": 0,
-  "random_weight": 4,
+  "random_weight": 10,
   "techniques": [
     "jjkcraft:brain_transplant",
     "jjkcraft:antigravity_system",

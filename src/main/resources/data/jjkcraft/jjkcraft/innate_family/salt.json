@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.salt",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:salt_mark",
+    "jjkcraft:salt_guard",
+    "jjkcraft:salt_step",
+    "jjkcraft:salt_salvo",
+    "jjkcraft:salt_snare",
+    "jjkcraft:salt_finish"
+  ],
+  "domain": ""
+}

@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.ink_snare",
+  "description": "technique.jjkcraft.ink_snare.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_2",
+  "cast": {
+    "cost": 34,
+    "cooldown": 110,
+    "range": 14,
+    "cast_time": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/ink/snare",
+    "damage": 3,
+    "duration": 60,
+    "radius": 4
+  },
+  "visuals": {
+    "color": "#8BA8DB",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.04,
+    "hit_stop": 0,
+    "trail": "ring"
+  },
+  "icon": "jjkcraft:textures/gui/technique/ink_snare.png",
+  "innate_weight": 0,
+  "mastery_uses": 67
+}

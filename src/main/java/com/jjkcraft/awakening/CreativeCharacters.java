@@ -47,7 +47,7 @@ public final class CreativeCharacters {
         var slots=new ArrayList<Optional<Identifier>>();var assigned=new HashSet<Identifier>();
         for(String raw:s.slots()){
             if(raw.isEmpty()){slots.add(Optional.empty());continue;}
-            var id=Identifier.tryParse(raw);if(id==null||!s.learned().contains(id)||!assigned.add(id))return false;slots.add(Optional.of(id));
+            var id=Identifier.tryParse(raw);if(id==null||!TechniqueBindings.allowed(p.registryAccess(),TechniqueState.normalized(Optional.empty(),s.learned(),List.of(),0,Map.of(),Map.of()),id)||!assigned.add(id))return false;slots.add(Optional.of(id));
         }
         TechniqueService.cancel(p);DomainService.close(p);
         com.jjkcraft.death.SoulSystem.restoreLivingCharacter(p);

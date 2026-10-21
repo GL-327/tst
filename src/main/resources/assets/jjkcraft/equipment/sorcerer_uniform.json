@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jjkcraft:sorcerer_uniform"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jjkcraft:sorcerer_uniform"
+      }
+    ]
+  }
+}

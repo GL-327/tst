@@ -5,6 +5,50 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.12.0-preview, 2026-10-21
+
+- Added twenty original six-move families, raising the roster to 296 moves across 51 families.
+  Primers/marks, resonance, limited paid guards, movement, control and finishers interact;
+  each family has its own secondary effects. Balanced all nonzero Random family weights.
+- Added whole-family bindings and learned-variant wheels alongside exact-move bindings.
+  Hold G + scroll to select a slot; R opens its family. Variants can charge with held click
+  or be pinned directly. A compact selected-power badge replaces the vertical sidebar.
+- Added six Limitless applications: Mini Blue, Blue Punch, Mini Blue Cluster, Mini Red,
+  Red Punch and chargeable Maximum Red. Infinity is an independent passive toggle;
+  it drains CE and suppresses recovery without RCT, while learned RCT removes upkeep.
+- Replaced instant XP-purchased RCT with three interruptible reverse-flow practice drills.
+  Added curse-only Positive-Energy Discharge, keeping ally mending and held self-healing.
+- Projection Sorcery now executes terrain-checked destinations and actual physical attacks,
+  with an editable route and automatic terrain preset. Explosive Flesh spends real health;
+  flesh regeneration requires learned RCT.
+- All curses now use entirely new silhouettes. All item icons, technique emblems, weapon
+  materials and armor atlases were redrawn. First-person fists angle inward during fights;
+  idle hands return to vanilla outside combat.
+
+- Rebuilt all 75 creature models from editable source recipes: shaped silhouettes,
+  articulated limbs, jaws/eyes/crests, individual face UVs, material textures, emissive
+  masks, damage variants, compatible LOD rigs and sixteen animation clips per creature.
+- Added layered technique VFX by material, dark Limitless/shadow cores, orbiting rings,
+  blood tendrils, ice crystals, fire filaments, healing helices and timed melee trails.
+  Bolt cores are smaller, with orbiting energy; domains gain layered seals and motes.
+  Shared geometry budgets, reduced VFX and effects-off controls apply to the new layers.
+- Added breathing combat stances, hip/leg/head anticipation and recovery, distinct feints,
+  improved first-person motion and an empty offhand fist. Heavy impacts pause for one tick;
+  light attacks no longer freeze the camera. Item-use animations retain vanilla control.
+- Auto Combat commits three of every five accepted attack opportunities with extra recovery
+  and feints; manual input remains uncapped. Assisted guard takes chip instead of perfect
+  parries. The HUD reports observed contact rate, counting each multi-target swing once.
+- Added Playful Cloud, Dragon Bone and three original cursed tools: Stormbell Spear, Ember
+  Wakizashi and Sealbreaker Tanto. Tool effects spend CE where appropriate; dispel cancels
+  charging as well as active techniques. Granted tool abilities cast with Use.
+- Moved block's default to Right Bracket because Minecraft 26.3 uses O for Friends.
+  Old O/F block defaults migrate once; default Iris R/K/I conflicts move to available
+  F8/F9/F10, preserving customized Iris keys. The binding editor detects vanilla and
+  third-party conflicts as well as duplicate mod keys.
+- Added twelve wearable pieces across Sorcerer Uniform, Binding Vestments and Heavenly
+  Hunter sets: up to 8% technique CE discount, CE-paid 20% damage ward, or 12% movement
+  speed respectively. Native armor durability, attributes, textures and recipes are used.
+
 ## 1.11.1-preview, 2026-10-20
 
 - Charging is now opt-in per move: eighteen appropriate high-output, compression and

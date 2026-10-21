@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:sealbreaker_tanto",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "on_hit": "dispel",
+  "amount": 8,
+  "description": "item.jjkcraft.sealbreaker_tanto.desc"
+}

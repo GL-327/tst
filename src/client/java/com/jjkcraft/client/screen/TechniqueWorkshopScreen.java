@@ -55,6 +55,7 @@ public final class TechniqueWorkshopScreen extends JjkScreen {
 
         numbers.clear();colorBox=null;
         int x=panelX()+10,y=contentY()+27;int controlW=(panelW()-28)*3/5;
+        if(id.getPath().equals("projection_sorcery"))addRenderableWidget(new InkButton(x+controlW+8,contentY()-3,panelW()-controlW-28,17,Component.literal("Movement / combat route"),b->minecraft.gui.setScreen(new ProjectionPlannerScreen())));
         addRenderableWidget(new InkButton(x+controlW-85,contentY()-3,85,17,Component.literal(PAGES[page]+" >"),b->{choosingPage=!choosingPage;rebuildWidgets();}));
         if(page<AXES.length)for(int row=0;row<5;row++){
             final int n=AXES[page][row];int yy=y+row*25;

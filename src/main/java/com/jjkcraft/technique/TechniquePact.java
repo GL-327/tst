@@ -12,9 +12,12 @@ public record TechniquePact(int flags) {
     public TechniquePact {flags&=1023;}
     public boolean has(int flag){return (flags&(1<<flag))!=0;}
     public TechniquePact toggle(int flag){return new TechniquePact(flags^(1<<flag));}
+    public static boolean movement(TechniqueDefinition d){return d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m&&(m.ability().startsWith("original/")&&m.ability().endsWith("/step")||java.util.Set.of("shadow_escape","soul_dash","frame_rush","mirror_step","swap_feint").contains(m.ability()));}
     public static boolean compatible(TechniqueDefinition d,int flag){return switch(flag){
-        case DASH->!(d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior);
-        case HEALING->d.category()!=TechniqueCategory.HEALING;
+        case DASH->!movement(d);
+        case COMBAT->!(d.behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior);
+        case GUARD->!(d.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m&&m.ability().startsWith("original/")&&m.ability().endsWith("/guard"));
+        case HEALING->d.category()!=TechniqueCategory.HEALING&&!(d.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m&&m.ability().equals("positive_output"));
         case RECOVERY->d.cast().cooldown()>0;
         case OVERCHARGE->d.cast().cost()>0||d.cast().upkeep()>0||d.cast().mulCost()>0;
         default->true;

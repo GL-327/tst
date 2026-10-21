@@ -25,6 +25,10 @@ public final class TechniqueTooltip {
 	public static List<Component> lines(Identifier id, TechniqueDefinition def) {
 		List<Component> lines = new ArrayList<>();
 		lines.add(Component.translatable(def.name()).withColor(def.visuals().color()));
+        if(com.jjkcraft.technique.TechniqueBindings.family(id)){
+            lines.add(Component.literal("Family selector · "+ClientTechniques.variants(id).size()+" learned variants").withColor(Palette.gold()));
+            lines.add(Component.literal("Activate to open the variant wheel.").withColor(Palette.TEXT));lines.add(Component.literal("Bind a specific move for direct casting.").withColor(Palette.TEXT));return lines;
+        }
 		lines.add(Component.translatable(def.category().translationKey()).withColor(def.category().color()));
 
 		double cost = ClientTechniques.cost(id);
@@ -62,6 +66,7 @@ public final class TechniqueTooltip {
 		return v == Math.floor(v) ? String.valueOf((long) v) : String.format(Locale.ROOT, "%.1f", v);
 	}
     public static MutableComponent activation(TechniqueDefinition def){
+        if(def.name().startsWith("family."))return Component.literal("Activate to open learned variants");
         return Component.translatable(def.cast().chargeable()?"tooltip.jjkcraft.activation.charge":def.cast().mode()==CastMode.CHANNEL?"tooltip.jjkcraft.activation.channel":def.cast().mode()==CastMode.TOGGLE?"tooltip.jjkcraft.activation.toggle":"tooltip.jjkcraft.activation.press");
     }
 }

@@ -63,6 +63,7 @@ public final class FamilyArts {
         }
         if(ability.equals("straw_effigy"))return new StrawDollBehavior(damage,6,ticks).cast(ctx);
         if(ability.equals("brain_recover")||ability.equals("flesh_regrow")||ability.equals("harmony_restore")){
+            if(ability.equals("flesh_regrow")&&!FleshSacrifice.knowsRct(caster))return CastResult.miss(caster.position());
             caster.heal((float)(damage*ctx.power()));effect(caster,MobEffects.REGENERATION,ticks,0);ctx.fx(TechniqueFxPayload.Phase.CAST,caster.position());return CastResult.done(caster.position());
         }
         if(Set.of("soul_blades","soul_body","ratio_overtime","projection_overclock","tidal_guard","flame_vents","ice_armor","sky_counter","mass_anchor","electric_armor","granite_charge","love_orbit","tool_recall","blood_condense").contains(ability)){

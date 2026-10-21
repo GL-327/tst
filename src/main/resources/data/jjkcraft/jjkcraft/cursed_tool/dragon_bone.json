@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:dragon_bone",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "on_hit": "recoil",
+  "amount": 0.65,
+  "description": "item.jjkcraft.dragon_bone.desc"
+}

@@ -24,7 +24,7 @@ public final class CombatImpactFx {
         });
         if(strong||p.kind()==2)WorldFx.add(WorldFx.burst(at,strong?1.35:0.8,color,start));
         if(mc.player!=null&&(mc.player.getId()==p.attacker()||mc.player.getId()==p.target())){
-            ClientFx.hitStop(strong?2:1,p.attacker(),p.target());ClientFx.shake(strong?0.07f:0.025f,strong?130:65);
+            if(strong)ClientFx.hitStop(1,p.attacker(),p.target());ClientFx.shake(strong?0.045f:0.015f,strong?110:55);
         }
     }
 }

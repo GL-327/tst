@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.ink",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:ink_mark",
+    "jjkcraft:ink_guard",
+    "jjkcraft:ink_testament_step",
+    "jjkcraft:ink_salvo",
+    "jjkcraft:ink_snare",
+    "jjkcraft:ink_finish"
+  ],
+  "domain": ""
+}

@@ -1,0 +1,31 @@
+{
+  "name": "technique.jjkcraft.stencil_guard",
+  "description": "technique.jjkcraft.stencil_guard.desc",
+  "category": "utility",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 24,
+    "cooldown": 130,
+    "range": 0,
+    "cast_time": 0
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "original/stencil/guard",
+    "damage": 0,
+    "duration": 80,
+    "radius": 3
+  },
+  "visuals": {
+    "color": "#80CFC9",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.cast",
+    "hit_sound": "jjkcraft:technique.bolt_hit",
+    "shake": 0.04,
+    "hit_stop": 0,
+    "trail": "aura"
+  },
+  "icon": "jjkcraft:textures/gui/technique/stencil_guard.png",
+  "innate_weight": 0,
+  "mastery_uses": 43
+}

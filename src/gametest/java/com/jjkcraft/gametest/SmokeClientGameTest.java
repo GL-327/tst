@@ -60,10 +60,12 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			return;
 		}
 		if("personalization".equals(System.getProperty("jjkcraft.clientTestFocus"))){personalization(context);return;}
+        if("wheel".equals(System.getProperty("jjkcraft.clientTestFocus"))){WheelClientChecks.run(context);return;}
 		if("deep".equals(System.getProperty("jjkcraft.clientTestFocus"))){deepSorcery(context);return;}
 		if("overhaul".equals(System.getProperty("jjkcraft.clientTestFocus"))){qualityOverhaul(context);return;}
 		if("menagerie".equals(System.getProperty("jjkcraft.clientTestFocus"))){MenagerieClientChecks.run(context);return;}
         if("charge".equals(System.getProperty("jjkcraft.clientTestFocus"))){ChargeClientChecks.run(context);return;}
+        if("spectral".equals(System.getProperty("jjkcraft.clientTestFocus"))||"equipment".equals(System.getProperty("jjkcraft.clientTestFocus"))||"reborn".equals(System.getProperty("jjkcraft.clientTestFocus"))){SpectralClientChecks.run(context);return;}
 		if("input".equals(System.getProperty("jjkcraft.clientTestFocus"))||"atelier".equals(System.getProperty("jjkcraft.clientTestFocus"))){AtelierClientChecks.run(context);return;}
 		if("arsenal".equals(System.getProperty("jjkcraft.clientTestFocus"))){ArsenalClientChecks.run(context);return;}
         if("sandbox".equals(System.getProperty("jjkcraft.clientTestFocus"))){sandboxPowers(context);return;}

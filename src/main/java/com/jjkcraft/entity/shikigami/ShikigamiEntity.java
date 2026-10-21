@@ -147,7 +147,7 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>("base", 3, test -> test.setAndContinue(test.isMoving() ? WALK : IDLE)));
+		controllers.add(new AnimationController<>("base", 3, test -> test.setAndContinue(test.isMoving() ? getDeltaMovement().horizontalDistanceSqr()>.025?RawAnimation.begin().thenLoop("run"):WALK : IDLE)));
 		controllers.add(new AnimationController<>("action", 2, test -> PlayState.STOP)
 				.triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
 	}

@@ -54,7 +54,9 @@ public record CursedToolDefinition(Identifier item, Kind kind, Identifier grade,
 		/** Takes {@code amount} CE from the target and gives it to the wielder. */
 		SIPHON,
 		/** Sets the target alight for {@code amount} seconds. */
-		IGNITE;
+		IGNITE,
+        SHOCK,
+        RECOIL;
 
 		public static final Codec<OnHit> CODEC = StringRepresentable.fromEnum(OnHit::values);
 

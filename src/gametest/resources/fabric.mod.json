@@ -28,7 +28,10 @@
       "com.jjkcraft.gametest.ArsenalExpansionGameTests",
       "com.jjkcraft.gametest.AtelierGameTests",
       "com.jjkcraft.gametest.MenagerieGameTests",
-      "com.jjkcraft.gametest.ChargeTerrainGameTests"
+      "com.jjkcraft.gametest.ChargeTerrainGameTests",
+      "com.jjkcraft.gametest.SpectralGameTests",
+      "com.jjkcraft.gametest.RebornGameTests",
+      "com.jjkcraft.gametest.WheelReverseGameTests"
     ],
     "fabric-client-gametest": [
       "com.jjkcraft.gametest.SmokeClientGameTest"

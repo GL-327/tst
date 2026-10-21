@@ -36,6 +36,20 @@ final class DomainScenery {
             }
             for(int n=0;n<12;n++){double a=n*Math.PI/6;Vec3 p=c.add(Math.cos(a)*r,0.03,Math.sin(a)*r);f.beam(c.add(0,0.03,0),p,fire?0.13:0.035,WorldFx.fade(main,0.6f),WorldFx.fade(main,0.05f));}
         }
+        // Layered boundary seals and suspended filaments keep the interior readable in motion.
+        double time=f.time();int segments=com.jjkcraft.client.config.ClientConfig.lowVfx()?16:32;
+        for(int ring=0;ring<3;ring++){
+            double rr=r*(0.38+ring*0.28),height=0.055+ring*0.02;
+            for(int n=0;n<segments;n++){
+                double a=n*Math.PI*2/segments+time*0.002*(ring%2==0?1:-1),b=a+Math.PI*1.55/segments;
+                f.beam(c.add(Math.cos(a)*rr,height,Math.sin(a)*rr),c.add(Math.cos(b)*rr,height,Math.sin(b)*rr),0.018,WorldFx.fade(main,0.48f),WorldFx.fade(main,0.14f));
+            }
+        }
+        if(!com.jjkcraft.client.config.ClientConfig.lowVfx())for(int n=0;n<12;n++){
+            double a=n*2.39996+time*0.0015,rr=r*(0.55+(n%4)*0.09),h=1+(n%5)*0.6+Math.sin(time*0.035+n)*0.3;
+            Vec3 p=c.add(Math.cos(a)*rr,h,Math.sin(a)*rr);
+            f.beam(p.add(0,-0.18,0),p.add(0,0.25,0),0.025,WorldFx.fade(main,0.1f),WorldFx.fade(main,0.75f));
+        }
     }
     private static void box(WorldFx.Frame f,Vec3 c,double w,double h,double d,int color){
         double x=w/2,y=h/2,z=d/2;Vec3 a=c.add(-x,-y,-z),b=c.add(x,-y,-z),e=c.add(-x,y,-z),g=c.add(x,y,-z);

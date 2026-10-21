@@ -38,10 +38,10 @@ import com.jjkcraft.sound.JjkSounds;
 
 /**
  * Reverse Cursed Technique: cursed energy multiplied against itself into positive energy. It is
- * learnable through Practice, and may also awaken at the edge of death. A Semi-Grade 1 or higher sorcerer
+ * learnable through three reverse-flow drills, and may also awaken at the edge of death. A Semi-Grade 1 or higher sorcerer
  * holding enough CE who takes a lethal blow may grasp it and survive. Once awakened:
  * <ul>
- * <li>below 60% health it heals automatically, 1 health every half second for 3 CE each;</li>
+ * <li>optional automatic healing spends CE according to the player's healing output and threshold;</li>
  * <li>once every five minutes it turns a lethal blow aside at the cost of 40% of max CE;</li>
  * <li>its positive energy makes techniques hit curses 25% harder;</li>
  * <li>it mends the brain after a domain: burnout is halved.</li>
@@ -69,6 +69,8 @@ public final class ReverseTechnique {
 	}
 
 	public static void init() {
+        ReverseStudy.init();
+        com.jjkcraft.technique.TechniqueService.addCastBlocker((caster,id,d)->java.util.Set.of("positive_energy_discharge","positive_energy_output","reverse_cursed_technique").contains(id.getPath())&&!available(caster)?unlocked(caster)?com.jjkcraft.technique.CastFailure.VOW:com.jjkcraft.technique.CastFailure.NOT_KNOWN:null);
 		ServerLivingEntityEvents.ALLOW_DEATH.register(ReverseTechnique::allowDeath);
 		ServerTickEvents.END_SERVER_TICK.register(ReverseTechnique::tick);
 		ServerPlayNetworking.registerGlobalReceiver(ReverseTogglePayload.TYPE, (payload, context) -> {
@@ -78,7 +80,7 @@ public final class ReverseTechnique {
 			}
 		});
 		DamageModifiers.add(ReverseTechnique::positiveEnergy);
-		SorcererLifecycle.addFullSync(player -> send(player, false));
+		SorcererLifecycle.addFullSync(player -> {if(unlocked(player))grantApplications(player);send(player, false);});
 		SorcererLifecycle.addDeathCopier((oldPlayer, newPlayer, policy, config) -> newPlayer.setAttached(STATE, state(oldPlayer)));
 		Awakening.addResetHook(player -> set(player, ReverseState.EMPTY, false));
 	}
@@ -90,6 +92,7 @@ public final class ReverseTechnique {
 	public static boolean unlocked(LivingEntity entity) {
 		return entity instanceof Player player && state(player).unlocked();
 	}
+    public static boolean available(LivingEntity entity){return unlocked(entity)&&!com.jjkcraft.technique.PersonalPacts.forbids(entity,com.jjkcraft.technique.TechniquePact.HEALING);}
 
 	public static boolean healing(LivingEntity entity) {
 		return HEALING.contains(entity.getUUID());
@@ -100,9 +103,21 @@ public final class ReverseTechnique {
 	}
 
 	public static void set(ServerPlayer player, ReverseState state, boolean awakenedNow) {
+		CursedEnergy.checkpoint(player);
 		player.setAttached(STATE, state);
+        if(state.unlocked())grantApplications(player);
 		send(player, awakenedNow);
 	}
+
+    private static void grantApplications(ServerPlayer p){var state=com.jjkcraft.technique.TechniqueService.get(p);for(String move:java.util.List.of("reverse_cursed_technique","positive_energy_output","positive_energy_discharge"))state=state.withLearned(JjkCraft.id(move));com.jjkcraft.technique.TechniqueService.set(p,state);}
+    public static boolean curse(LivingEntity entity){return entity instanceof CurseEntity||entity instanceof ServerPlayer p&&com.jjkcraft.death.SoulSystem.state(p).phase().equals("spirit");}
+    public static com.jjkcraft.technique.CastResult discharge(com.jjkcraft.technique.CastContext ctx,double damage,double radius){
+        if(!available(ctx.caster()))return com.jjkcraft.technique.CastResult.miss(ctx.eye());
+        var targets=ctx.enemiesOnLine(ctx.range(),Math.min(1.5,radius*.2)).stream().filter(ReverseTechnique::curse).limit(4).toList();
+        for(var target:targets)ctx.hurt(target,damage*ctx.power(),true);
+        ctx.fx(com.jjkcraft.network.payload.TechniqueFxPayload.Phase.CAST,ctx.eye(),ctx.look().scale(ctx.range()),targets);
+        return com.jjkcraft.technique.CastResult.hit(java.util.List.copyOf(targets),ctx.blockLimit(ctx.range()));
+    }
 
 	private static void send(ServerPlayer player, boolean awakenedNow) {
 		ReverseState state = state(player);
@@ -208,7 +223,7 @@ public final class ReverseTechnique {
 
 	/** Positive energy against curses: techniques and Black Flashes from a Reverse user hit curses harder. */
 	private static float positiveEnergy(net.minecraft.server.level.ServerLevel level, LivingEntity target, DamageSource source, float amount) {
-		if (target instanceof CurseEntity && unlocked(source.getEntity() instanceof LivingEntity l ? l : null)
+		if (target instanceof CurseEntity && available(source.getEntity() instanceof LivingEntity l ? l : null)
 				&& (source.is(JjkDamageTypes.TECHNIQUE) || source.is(JjkDamageTypes.TECHNIQUE_PIERCING) || source.is(JjkDamageTypes.BLACK_FLASH))) {
 			return amount * (float) CURSE_DAMAGE_BONUS;
 		}
@@ -218,6 +233,6 @@ public final class ReverseTechnique {
 
 	/** Burnout after a domain, shortened for Reverse users. */
 	public static int burnout(LivingEntity caster, int ticks) {
-		return unlocked(caster) ? (int) Math.round(ticks * BURNOUT_FACTOR) : ticks;
+		return available(caster) ? (int) Math.round(ticks * BURNOUT_FACTOR) : ticks;
 	}
 }

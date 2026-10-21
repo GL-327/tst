@@ -35,6 +35,7 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 	public static final class State extends EntityRenderState {
 		int color;
 		float size;
+        float age;
 		List<Vec3> trail = List.of();
 	}
 
@@ -52,6 +53,7 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		super.extractRenderState(entity, state, partialTicks);
 		state.color = entity.color();
 		state.size = entity.size();
+        state.age=entity.tickCount+partialTicks;
 		Vec3 now = new Vec3(state.x, state.y, state.z);
 		if (HISTORY.size() > 256) {
 			// Bolts removed without a final frame leave entries behind; drop them all now and then.
@@ -91,7 +93,15 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		collector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, buffer) -> {
 			glow(pose, buffer, facing, size * 2.2f, halo);
 			glow(pose, buffer, facing, size * 1.1f, core);
-			glow(pose, buffer, facing, size * 0.5f, 0xF0FFFFFF);
+            glow(pose, buffer, facing, size * 0.22f, 0xD0FFFFFF);
+            int segments=ClientConfig.lowVfx()||cameraFromEntity.lengthSqr()>32*32?8:16;
+            for(int plane=0;plane<2;plane++)for(int j=0;j<segments;j++){
+                double a=j*Math.PI*2/segments+state.age*.16,b=(j+.7)*Math.PI*2/segments+state.age*.16;
+                Vec3 p=plane==0?new Vec3(Math.cos(a)*size*1.35,Math.sin(a)*size*.5,Math.sin(a)*size):new Vec3(Math.cos(a)*size,Math.sin(a)*size*1.35,Math.cos(a)*size*.45);
+                Vec3 q=plane==0?new Vec3(Math.cos(b)*size*1.35,Math.sin(b)*size*.5,Math.sin(b)*size):new Vec3(Math.cos(b)*size,Math.sin(b)*size*1.35,Math.cos(b)*size*.45);
+                Vec3 side=q.subtract(p).cross(cameraFromEntity.subtract(p)).normalize().scale(size*.035);
+                vertex(pose,buffer,p.add(side),core);vertex(pose,buffer,p.subtract(side),core);vertex(pose,buffer,q.subtract(side),halo);vertex(pose,buffer,q.add(side),halo);
+            }
 
 			for (int i = 0; i + 1 < trail.size(); i++) {
 				Vec3 a = trail.get(i);

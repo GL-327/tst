@@ -1,0 +1,15 @@
+{
+  "name": "family.jjkcraft.echo_memory",
+  "clan": "",
+  "inherited_weight": 0,
+  "random_weight": 10,
+  "techniques": [
+    "jjkcraft:echo_memory_mark",
+    "jjkcraft:echo_memory_guard",
+    "jjkcraft:echo_memory_step",
+    "jjkcraft:echo_memory_salvo",
+    "jjkcraft:echo_memory_snare",
+    "jjkcraft:echo_memory_finish"
+  ],
+  "domain": ""
+}

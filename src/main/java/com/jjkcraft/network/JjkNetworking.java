@@ -36,6 +36,13 @@ public final class JjkNetworking {
 	}
 
 	public static void init() {
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ReverseStudyPayload.TYPE,com.jjkcraft.network.payload.ReverseStudyPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.InfinityPayload.TYPE,com.jjkcraft.network.payload.InfinityPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.VariantCastPayload.TYPE,com.jjkcraft.network.payload.VariantCastPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.OriginalArtsPayload.TYPE,com.jjkcraft.network.payload.OriginalArtsPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.ProjectionPayloads.Edit.TYPE,com.jjkcraft.network.payload.ProjectionPayloads.Edit.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ProjectionPayloads.Reply.TYPE,com.jjkcraft.network.payload.ProjectionPayloads.Reply.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.AutoStats.TYPE,com.jjkcraft.network.payload.CombatPayloads.AutoStats.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ChargePayload.TYPE,com.jjkcraft.network.payload.ChargePayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Impact.TYPE,com.jjkcraft.network.payload.CombatPayloads.Impact.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Resources.TYPE,com.jjkcraft.network.payload.CombatPayloads.Resources.CODEC);

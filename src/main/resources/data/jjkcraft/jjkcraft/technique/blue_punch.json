@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.blue_punch",
+  "description": "technique.jjkcraft.blue_punch.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_4",
+  "cast": {
+    "cost": 16,
+    "cooldown": 35,
+    "range": 3.5
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "blue_punch",
+    "damage": 8,
+    "radius": 1.5,
+    "duration": 1
+  },
+  "visuals": {
+    "color": "#3D8BFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blue_punch.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

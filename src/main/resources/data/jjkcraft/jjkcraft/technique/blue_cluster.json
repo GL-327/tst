@@ -1,0 +1,30 @@
+{
+  "name": "technique.jjkcraft.blue_cluster",
+  "description": "technique.jjkcraft.blue_cluster.desc",
+  "category": "area",
+  "grade": "jjkcraft:grade_3",
+  "cast": {
+    "cost": 32,
+    "cooldown": 100,
+    "range": 16
+  },
+  "behavior": {
+    "type": "jjkcraft:manga_ability",
+    "ability": "blue_cluster",
+    "damage": 2,
+    "radius": 1.6,
+    "duration": 36
+  },
+  "visuals": {
+    "color": "#3D8BFF",
+    "particle": "jjkcraft:cursed_spark",
+    "sound": "jjkcraft:technique.attract",
+    "shake": 0.2,
+    "hit_stop": 0,
+    "trail": "ring",
+    "hit_sound": "jjkcraft:technique.repel"
+  },
+  "icon": "jjkcraft:textures/gui/technique/blue_cluster.png",
+  "innate_weight": 0,
+  "mastery_uses": 50
+}

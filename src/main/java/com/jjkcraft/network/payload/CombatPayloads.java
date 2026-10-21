@@ -8,6 +8,11 @@ import com.jjkcraft.JjkCraft;
 
 public final class CombatPayloads {
     private CombatPayloads() { }
+    public record AutoStats(int attempts,int hits,int feints) implements CustomPacketPayload {
+        public static final Type<AutoStats> TYPE=new Type<>(JjkCraft.id("auto_combat_stats"));
+        public static final StreamCodec<ByteBuf,AutoStats> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,AutoStats::attempts,ByteBufCodecs.VAR_INT,AutoStats::hits,ByteBufCodecs.VAR_INT,AutoStats::feints,AutoStats::new);
+        @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    }
     public record Impact(int attacker,int target,int kind,double x,double y,double z) implements CustomPacketPayload {
         public static final Type<Impact> TYPE=new Type<>(JjkCraft.id("combat_impact"));
         public static final StreamCodec<ByteBuf,Impact> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,Impact::attacker,ByteBufCodecs.VAR_INT,Impact::target,ByteBufCodecs.VAR_INT,Impact::kind,ByteBufCodecs.DOUBLE,Impact::x,ByteBufCodecs.DOUBLE,Impact::y,ByteBufCodecs.DOUBLE,Impact::z,Impact::new);
@@ -18,7 +23,7 @@ public final class CombatPayloads {
         public static final StreamCodec<ByteBuf,Resources> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,Resources::escapeCooldown,ByteBufCodecs.VAR_INT,Resources::knockdown,ByteBufCodecs.VAR_INT,Resources::chain,Resources::new);
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
-    /** 0 press, 1 release, 2 guard, 3 dash, 4 toggle; data holds movement/guard height only. */
+    /** 0 light, 1 release, 2 manual guard, 3 dash, 4 toggle, 5 heavy, 6 assisted attack, 7 assisted guard. */
     public record Input(int action, int data) implements CustomPacketPayload {
         public static final Type<Input> TYPE = new Type<>(JjkCraft.id("combat_input"));
         public static final StreamCodec<ByteBuf, Input> CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, Input::action, ByteBufCodecs.VAR_INT, Input::data, Input::new);

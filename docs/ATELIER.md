@@ -1,12 +1,11 @@
-# Family and character workshop (1.9.0-preview)
+# Family and character workshop (1.12.0-preview)
 
 Open Moves with J and choose the Moves tab, then **Families**. Each family lists its moves,
 learned status and required grade together. Click a move to open its loadout entry; select a
 slot to equip it. Personalize edits only that move. Click the current section name to choose
 any of the ten sections directly. Every move has its own tuning and binding vows.
 
-There are 147 powers across 29 families. The 52 additions cover all families; each has at least
-four moves. Family progression remains server controlled for Inherit/Random characters.
+There are 296 powers across 51 families, including twenty original six-move families. Each has at least four moves. Family progression remains server controlled for Inherit/Random characters.
 New scroll recipes also allow learning these moves outside the innate family.
 
 ## Idle Transfiguration
@@ -56,10 +55,12 @@ numeric input limit. A maximum preset never fills an uncapped bank from nothing.
 
 Attack always follows Minecraft's Attack mapping, so right mouse works when Attack/Use are
 inverted. Quick mouse clicks are retained until the combat tick. Auto Combat is initially on;
-F7 toggles it. U/I/O remain the default manual light/heavy/block keys, editable in Controls.
+F7 toggles it. U/I/Right Bracket (]) are the default manual light/heavy/block keys, editable in Controls.
 
 ## Reproducible resources
 
 `tools/family_expansion.py` adds the family moves, scroll recipes, original glyphs, soul model,
 UV texture and animation. Run it after older content generators/datagen, using the project's
 Python/Pillow runtime. It is idempotent and writes `build/family-expansion-inventory.json`.
+
+Family selectors can be bound alongside individual moves. Hold G and scroll to select; R opens learned variants. See [wheel, passive Infinity and RCT drills](TECHNIQUE_WHEEL.md).

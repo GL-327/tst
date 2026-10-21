@@ -5,7 +5,7 @@ import json, os, sys
 ROOT = Path(__file__).resolve().parents[1]
 TECHNIQUES = ROOT / 'src/main/resources/data/jjkcraft/jjkcraft/technique'
 CHARGEABLE = {
-    'lapse_blue', 'reversal_red', 'hollow_purple', 'maximum_output_blue',
+    'lapse_blue', 'reversal_red', 'hollow_purple', 'maximum_output_blue', 'maximum_output_red',
     'piercing_blood', 'maximum_uzumaki', 'granite_blast', 'granite_cannon',
     'shrine_furnace', 'perfect_sphere', 'ice_lance', 'icefall', 'water_lance',
     'mul_lance', 'darkness_nova', 'chaos_fracture', 'eye_blast', 'volcanic_burst',

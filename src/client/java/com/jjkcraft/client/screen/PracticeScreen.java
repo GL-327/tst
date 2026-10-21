@@ -15,7 +15,7 @@ public final class PracticeScreen extends JjkScreen {
     @Override protected void initContent(){
         int x=panelX()+10,y=contentY()+58,col=(panelW()-30)/2;
         reinforce=addRenderableWidget(new InkButton(x,y,col,18,Component.literal("Learn reinforcement · 3 levels"),b->action(0)));
-        rct=addRenderableWidget(new InkButton(x+col+10,y,col,18,Component.literal("Learn RCT · 10 levels"),b->action(1)));
+        rct=addRenderableWidget(new InkButton(x+col+10,y,col,18,Component.literal("Reverse-flow drill · 3 levels"),b->action(1)));
         toggle=addRenderableWidget(new InkButton(x,y+23,col,18,Component.literal("Reinforcement: off"),b->action(3)));
         addRenderableWidget(new InkButton(x+col+10,y+23,col,18,Component.literal("Toggle RCT healing [H]"),b->ClientPlayNetworking.send(new com.jjkcraft.network.payload.ReverseTogglePayload())));
         for(int n=0;n<3;n++){
@@ -32,7 +32,9 @@ public final class PracticeScreen extends JjkScreen {
         reinforce.active=allowed&&!s.reinforcement();rct.active=allowed&&!ClientSorcery.reverse().unlocked();toggle.active=allowed&&s.reinforcement();train.active=allowed&&s.trained()<10000;
         toggle.setMessage(Component.literal("Reinforcement: "+(s.active()?"ON":"OFF")));
         reinforce.setMessage(Component.literal(s.reinforcement()?"Reinforcement learned":"Learn reinforcement · 3 levels"));
-        rct.setMessage(Component.literal(ClientSorcery.reverse().unlocked()?"RCT learned":"Learn RCT · 10 levels"));
+        rct.setMessage(Component.literal(ClientSorcery.reverse().unlocked()?"RCT learned":"Reverse flow · "+ClientSorcery.study().lessons()+"/3 · 3 levels"));
+        rct.active=rct.active&&s.reinforcement()&&!ClientSorcery.study().running();
+        if(ClientSorcery.study().running())onClose();
         train.setMessage(Component.literal("+"+com.jjkcraft.core.technique.PersonalizationMath.trainingGain(ClientEnergy.max())+" reserves · "+com.jjkcraft.core.technique.PersonalizationMath.trainingPrice(ClientEnergy.max())+" levels"));
     }
     @Override protected void extractContent(GuiGraphicsExtractor g,int mx,int my,float a){
@@ -46,6 +48,6 @@ public final class PracticeScreen extends JjkScreen {
         Ink.text(g,String.format(java.util.Locale.ROOT,"%.1f CE/s · damage +%.0f%%",3*Math.pow(s.output()/100.0,2),35*s.output()/100.0),x,yy+20,Palette.TEXT_DIM,1);
         Ink.text(g,"RCT "+s.healing()+"%",x+col+10,yy,Palette.TEXT,1);
         Ink.text(g,"Heal below "+s.healBelow()+"%",x+col+10,yy+30,Palette.TEXT,1);
-        Ink.text(g,"Learned skills do not consume technique slots.",x,panelY()+panelH()-40,Palette.TEXT_DIM,1);
+        Ink.text(g,Ink.fit(Component.literal(ClientSorcery.reverse().unlocked()?"RCT: heal with H; bind Positive Discharge to exorcise curses.":"RCT: learn reinforcement, then finish 3 stillness drills (10s, 30 CE + 3 levels each)."),panelW()-20),x,panelY()+panelH()-40,Palette.TEXT_DIM,1);
     }
 }

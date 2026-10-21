@@ -187,16 +187,17 @@ public class ArsenalGameTests {
 		helper.succeed();
 	}
 
-	@GameTest(maxTicks = 60)
-	public void projectionSorceryFreezesEnemiesAfterItsTell(GameTestHelper helper) {
+	@GameTest(maxTicks = 60,padding=24)
+	public void projectionSorcerySchedulesPhysicalChoreographyAfterItsTell(GameTestHelper helper) {
 		ServerPlayer player = caster(helper, "grade_2", "projection_sorcery");
+		for(int x=-2;x<=10;x++)for(int z=-2;z<=10;z++)helper.getLevel().setBlockAndUpdate(helper.absolutePos(new BlockPos(x,0,z)),net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
 		Zombie near = dummy(helper, 3.5, 3.5);
 		double startZ = player.getZ();
 		TechniqueService.cast(player, id("projection_sorcery"), -1);
 		helper.assertFalse(near.hasEffect(JjkEffects.FROZEN_FRAME), "nothing happens during the windup");
 		helper.startSequence()
 				.thenWaitUntil(() -> helper.assertTrue(near.hasEffect(JjkEffects.FROZEN_FRAME), "then the enemy loses the moment"))
-				.thenExecute(() -> helper.assertTrue(player.getZ() > startZ + 3, "while the caster steps forward"))
+				.thenExecute(() -> helper.assertTrue(player.getZ() > startZ + .5, "the planned route approaches the target on actual terrain"))
 				.thenSucceed();
 	}
 
@@ -311,6 +312,7 @@ public class ArsenalGameTests {
 	public void positiveEnergyOutputHealsTheAllyInSight(GameTestHelper helper) {
 		// The test player isn't in the world, so the ally is the healer's own summon.
 		ServerPlayer healer = caster(helper, "grade_2", "positive_energy_output");
+        com.jjkcraft.reverse.ReverseTechnique.set(healer,com.jjkcraft.reverse.ReverseTechnique.state(healer).withUnlocked(true),false);
 		ToadEntity ally = helper.spawn(com.jjkcraft.entity.JjkEntities.TOAD, new Vec3(1.5, 1, 4.5));
 		ally.bind(healer, 600, 1.0);
 		ally.setNoAi(true);

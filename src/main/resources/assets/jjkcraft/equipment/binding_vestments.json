@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jjkcraft:binding_vestments"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jjkcraft:binding_vestments"
+      }
+    ]
+  }
+}

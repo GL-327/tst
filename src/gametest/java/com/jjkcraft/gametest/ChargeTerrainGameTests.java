@@ -43,7 +43,7 @@ public final class ChargeTerrainGameTests {
             h.assertTrue(tuned.cast().chargeable()==d.cast().chargeable(),"personalisation preserves authored charging for "+entry.id());
             if(d.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.FusionBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.HealBehavior)h.assertFalse(d.cast().chargeable(),"summons, fusion, movement and healing do not charge");
         }
-        h.assertTrue(count==18,"only eighteen suitable moves opt into charging");
+        h.assertTrue(count==19,"only nineteen suitable moves opt into charging");
         var json=com.google.gson.JsonParser.parseString("{\"cost\":10,\"cooldown\":20}");
         h.assertFalse(TechniqueDefinition.Cast.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE,json).getOrThrow().chargeable(),"old and datapack moves default to normal activation");h.succeed();
     }
@@ -54,7 +54,7 @@ public final class ChargeTerrainGameTests {
         h.runAfterDelay(12,()->{TechniqueService.onCastKey(p,0,false);var after=com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(h.getLevel(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p);h.assertTrue(after.size()==2&&after.stream().allMatch(e->ids.contains(e.getUUID())),"holding or releasing neither replaces nor duplicates summons");h.succeed();});
     }
     @GameTest(environment="jjkcraft:expansion",padding=24) public void infinityTogglesImmediatelyAndMenuLeavesItRunning(GameTestHelper h){
-        var p=player(h);bind(p,"infinity");TechniqueService.onCastKey(p,0,true);h.assertTrue(TechniqueService.active(p).isPresent()&&TechniqueService.chargePercent(p)==0,"Infinity is an immediate toggle");TechniqueService.onCastKey(p,0,false);TechniqueService.cancelKey(p,0);h.assertTrue(TechniqueService.active(p).isPresent(),"release and menu leave toggles running");TechniqueService.onCastKey(p,0,true);h.assertTrue(TechniqueService.active(p).isEmpty(),"next press toggles off");h.succeed();
+        var p=player(h);bind(p,"infinity");TechniqueService.onCastKey(p,0,true);h.assertTrue(InfinityField.on(p)&&TechniqueService.chargePercent(p)==0,"Infinity is an immediate toggle");TechniqueService.onCastKey(p,0,false);TechniqueService.cancelKey(p,0);h.assertTrue(InfinityField.on(p),"release and menu leave toggles running");TechniqueService.onCastKey(p,0,true);h.assertTrue(!InfinityField.on(p),"next press toggles off");h.succeed();
     }
     @GameTest(environment="jjkcraft:expansion",padding=24) public void boogieWoogieSwapsOnPressWithoutCharging(GameTestHelper h){
         var p=player(h);bind(p,"boogie_woogie");var target=h.spawn(net.minecraft.world.entity.EntityTypes.ZOMBIE,new Vec3(2.5,1,5.5));target.setNoAi(true);var destination=target.position();TechniqueService.onCastKey(p,0,true);h.assertTrue(p.position().distanceToSqr(destination)<.01&&TechniqueService.chargePercent(p)==0,"swap occurs on the key press");TechniqueService.onCastKey(p,0,false);h.assertTrue(p.position().distanceToSqr(destination)<.01,"release never swaps back");h.succeed();

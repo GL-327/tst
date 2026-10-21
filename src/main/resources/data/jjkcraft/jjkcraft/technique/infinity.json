@@ -4,15 +4,16 @@
   "category": "passive",
   "grade": "jjkcraft:grade_3",
   "cast": {
-    "cost": 8,
-    "cooldown": 20,
+    "cost": 0,
+    "cooldown": 0,
     "mode": "toggle",
     "upkeep": 1.5
   },
   "behavior": {
     "type": "jjkcraft:infinity",
     "radius": 6,
-    "slow": 0.55
+    "slow": 0.55,
+    "filter": 2
   },
   "visuals": {
     "color": "#76C7A5",

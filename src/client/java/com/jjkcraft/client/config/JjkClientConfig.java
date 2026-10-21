@@ -11,6 +11,8 @@ public class JjkClientConfig implements ConfigData {
     @Comment("Assist attack choice and defensive reactions while holding attack. Manual hit/block inputs take priority.")
     public boolean autoCombat = true;
     public boolean creativeAutoCalamity = false;
+    public int controlsRevision = 0;
+    public boolean irisBindingsAdjusted = false;
 	@ConfigEntry.Gui.CollapsibleObject
 	public Hud hud = new Hud();
 

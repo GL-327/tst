@@ -2,7 +2,7 @@
   "name": "family.jjkcraft.moonlit_menagerie",
   "clan": "",
   "inherited_weight": 0,
-  "random_weight": 4,
+  "random_weight": 10,
   "techniques": [
     "jjkcraft:summon_paper_heron",
     "jjkcraft:summon_lantern_moth",

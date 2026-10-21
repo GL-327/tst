@@ -17,6 +17,7 @@ public final class FamilyTechniqueScreen extends JjkScreen {
     private Identifier selected;
     private int offset,moveOffset;
     private String search="";
+    private InkButton bind;
     public FamilyTechniqueScreen(){super(Component.literal("Technique families"));}
     private int x(){return panelX()+10;}private int y(){return contentY()+27;}private int col(){return (panelW()-30)*2/5;}private int rx(){return x()+col()+10;}
     private int rows(){return Math.max(2,(panelH()-92)/29);}
@@ -27,8 +28,14 @@ public final class FamilyTechniqueScreen extends JjkScreen {
         addRenderableWidget(new InkButton(x(),panelY()+panelH()-24,70,18,Component.literal("Loadout"),b->minecraft.gui.setScreen(new LoadoutScreen())));
         addRenderableWidget(new InkButton(rx(),panelY()+panelH()-24,35,18,Component.literal("<"),b->moveOffset=Math.max(0,moveOffset-rows())));
         addRenderableWidget(new InkButton(panelX()+panelW()-45,panelY()+panelH()-24,35,18,Component.literal(">"),b->moveOffset+=rows()));
+        bind=addRenderableWidget(new InkButton(rx()+39,panelY()+panelH()-24,Math.max(50,panelX()+panelW()-rx()-88),18,Component.literal("Bind family"),b->{
+            var binding=com.jjkcraft.technique.TechniqueBindings.binding(selected);
+            net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.SetLoadoutPayload(ClientTechniques.state().selected(),Optional.of(binding)));
+            minecraft.gui.setScreen(new LoadoutScreen(binding));
+        }));
     }
     @Override protected void extractContent(GuiGraphicsExtractor g,int mx,int my,float a){
+        bind.active=selected!=null&&ClientTechniques.bindable(com.jjkcraft.technique.TechniqueBindings.binding(selected));
         var ids=families();offset=Math.clamp(offset,0,Math.max(0,ids.size()-rows()));
         for(int n=offset;n<Math.min(ids.size(),offset+rows());n++){var id=ids.get(n);var f=minecraft.level.registryAccess().lookupOrThrow(CharacterAwakening.FAMILIES).getValue(id);int yy=y()+(n-offset)*29;
             Ink.flatPanel(g,x(),yy,col(),27,1);if(id.equals(selected))g.fill(x(),yy,x()+2,yy+27,Palette.accent());
