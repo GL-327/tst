@@ -35,22 +35,24 @@ public final class TechniqueHotbarHud {
 	public static void extract(GuiGraphicsExtractor g, DeltaTracker delta) {
 		Minecraft mc = Minecraft.getInstance();
 		JjkClientConfig.HudElement cfg = ClientConfig.get().hud.techniqueHotbar;
-		if (!cfg.visible || mc.gui.hud.isHidden() || mc.gui.screen()!=null || mc.player == null || !ClientProgress.hasData()
+		if (mc.gui.hud.isHidden() || mc.gui.screen()!=null || mc.player == null || !ClientProgress.hasData()
 				|| ClientProgress.get().heavenlyRestricted() || ClientTechniques.known().isEmpty()) {
 			return;
 		}
 
-		int slots = 4; int bank=JjkKeys.bankStart();
         var charge=ClientTechniques.charge();
-        if(charge.slot()>=0){
-            int cx=mc.getWindow().getGuiScaledWidth()/2,cy=mc.getWindow().getGuiScaledHeight()-112;
+        var meter=ClientConfig.get().hud.chargeMeter;
+        if(charge.slot()>=0&&meter.visible){
+            float alpha=meter.opacity();HudLayout.pushBelow(g,meter,150,32,cfg);
             int color=charge.percent()>100?0xFFB56BFF:Palette.accent();
-            Ink.panel(g,cx-90,cy,180,27,color,.92f);
-            Ink.text(g,"CHARGE "+charge.percent()+"% / "+charge.maximum()+"%",cx-82,cy+3,color,1);
-            Ink.text(g,String.format(java.util.Locale.ROOT,"%.1f CE/s  |  Release to cast",charge.cePerSecond()),cx-82,cy+13,Palette.TEXT_DIM,1);
-            g.fill(cx-82,cy+23,cx+82,cy+25,0xFF292333);
-            g.fill(cx-82,cy+23,cx-82+(int)(164*charge.percent()/(double)charge.maximum()),cy+25,color);
+            Ink.panel(g,0,0,150,32,color,alpha*.92f);
+            Ink.text(g,Ink.fit(Component.literal("CHARGE "+charge.percent()+"% / "+charge.maximum()+"%"),140),5,4,color,alpha);
+            Ink.text(g,Ink.fit(Component.literal(String.format(java.util.Locale.ROOT,"%.1f CE/s · release to cast",charge.cePerSecond())),140),5,15,Palette.TEXT_DIM,alpha);
+            g.fill(5,27,145,29,ARGB.multiplyAlpha(0xFF292333,alpha));
+            g.fill(5,27,5+(int)Math.clamp(140*charge.percent()/(double)charge.maximum(),0,140),29,ARGB.multiplyAlpha(color,alpha));
+            g.pose().popMatrix();
         }
+        if(!cfg.visible)return;
         // A single selected-power badge replaces the four-row sidebar. Selection lives on the wheel.
         var state=ClientTechniques.state();int selected=state.selected();float alpha=cfg.opacity();
         HudLayout.push(g,cfg,150,34);Ink.panel(g,0,0,150,34,Palette.accent(),alpha*.85f);

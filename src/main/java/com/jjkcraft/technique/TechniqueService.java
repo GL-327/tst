@@ -430,7 +430,7 @@ public final class TechniqueService {
 
 		var next=get(player).withSlot(slot,id);
         Charge charging=CHARGES.get(player.getUUID());
-        if(charging!=null&&charging.slot>=0&&!next.slot(charging.slot).equals(Optional.of(charging.id)))cancelCharge(player);
+        if(charging!=null&&charging.slot>=0&&next.slot(charging.slot).filter(binding->TechniqueBindings.contains(player.registryAccess(),next,binding,charging.id)).isEmpty())cancelCharge(player);
 		active(player).filter(a->next.loadout().stream().noneMatch(s->s.filter(binding->TechniqueBindings.contains(player.registryAccess(),next,binding,a.id())).isPresent())).ifPresent(a->stop(player));
 		set(player,next);
 	}
@@ -477,7 +477,7 @@ public final class TechniqueService {
         return castCharged(caster,id,slot,-1,1,0);
     }
     private static CastFailure castCharged(LivingEntity caster, Identifier id, int slot,double prepaid,double charge,int heldTicks) {
-		if (!(caster.level() instanceof ServerLevel level)) {
+		if (!(caster.level() instanceof ServerLevel level) || !caster.isAlive() || caster.isRemoved() || caster.isSpectator()) {
 			return CastFailure.DISABLED;
 		}
 
@@ -489,13 +489,13 @@ public final class TechniqueService {
 		TechniqueDefinition definition = Personalization.definition(caster,id,found.get());
         if(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior&&InfinityField.on(caster)){CursedEnergy.checkpoint(caster);InfinityField.stop(caster);return CastFailure.NONE;}
         if(CHARGES.containsKey(caster.getUUID()))return CastFailure.BUSY;
-		if(PENDING.stream().anyMatch(p->p.ctx().caster().getUUID().equals(caster.getUUID())))return CastFailure.BUSY;
+        if(PENDING.stream().anyMatch(p->p.ctx().caster().getUUID().equals(caster.getUUID())))return CastFailure.BUSY;
 		CastMode mode = definition.cast().mode();
 		Active active = ACTIVE.get(caster.getUUID());
-		if (active != null && mode != CastMode.INSTANT && !(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior)) {
-			boolean same = active.id.equals(id);
-			stop(caster);
-			if (same) {
+		boolean replace = active != null && mode != CastMode.INSTANT && !(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior);
+		if (replace) {
+			if (active.id.equals(id)) {
+				stop(caster);
 				// Pressing an active toggle (or a stuck channel) turns it off.
 				return CastFailure.NONE;
 			}
@@ -517,6 +517,7 @@ public final class TechniqueService {
 		}
 
 		PersonalPacts.seal(caster,id);
+        if(replace)stop(caster);
         // Output counts CE the caster spent; a medium's energy is the tool's.
 		if(!creative&&sacrifice>0)caster.setHealth(caster.getHealth()-sacrifice);
 		double spent = payer.isPresent() ? 0 : prepaid>=0?prepaid:cost;
@@ -544,6 +545,7 @@ public final class TechniqueService {
         return new TechniqueDefinition(d.name(),d.description(),d.category(),d.grade(),cast,TunedBehaviors.apply(d.behavior(),tuning),d.visuals(),d.icon(),d.vowModifiers(),d.innateWeight(),d.masteryUses());
     }
 	public static CastFailure check(LivingEntity caster, Identifier id, TechniqueDefinition definition) {
+        if(!caster.isAlive()||caster.isRemoved()||caster.isSpectator())return CastFailure.DISABLED;
         var pactFailure=PersonalPacts.check(caster,id,definition);if(pactFailure!=CastFailure.NONE)return pactFailure;
 		if (caster.hasEffect(JjkEffects.STUNNED)) {
 			return CastFailure.STUNNED;
@@ -719,14 +721,14 @@ public final class TechniqueService {
 			for (Iterator<Pending> it = PENDING.iterator(); it.hasNext(); ) {
 				Pending pending = it.next();
 				LivingEntity caster = pending.ctx().caster();
-				if (!caster.isAlive() || caster.isRemoved()) {
+				if (!caster.isAlive() || caster.isRemoved() || caster.isSpectator() || caster.level()!=pending.ctx().level() || caster.hasEffect(JjkEffects.STUNNED) || com.jjkcraft.combat.CursedCombat.interrupted(caster)) {
 					it.remove();
 					continue;
 				}
 
 				if (pending.ctx().level().getGameTime() >= pending.executeAt()) {
 					it.remove();
-					if (!caster.hasEffect(JjkEffects.STUNNED) && PersonalPacts.check(caster,pending.id(),pending.definition())==CastFailure.NONE) {
+					if (check(caster,pending.id(),pending.definition())==CastFailure.NONE) {
 						execute(pending.ctx(), pending.id(), pending.definition(), pending.costPaid(), pending.slot());
 					}
 				}
@@ -739,7 +741,7 @@ public final class TechniqueService {
 
 		for (Active active : List.copyOf(ACTIVE.values())) {
 			LivingEntity caster = active.ctx.caster();
-			if (!caster.isAlive() || caster.isRemoved() || caster.hasEffect(JjkEffects.STUNNED) || PersonalPacts.check(caster,active.id,active.definition)!=CastFailure.NONE) {
+			if (!caster.isAlive() || caster.isRemoved() || caster.isSpectator() || caster.level()!=active.ctx.level() || caster.hasEffect(JjkEffects.STUNNED) || com.jjkcraft.combat.CursedCombat.interrupted(caster) || PersonalPacts.check(caster,active.id,active.definition)!=CastFailure.NONE) {
 				stop(caster);
 				continue;
 			}

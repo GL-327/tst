@@ -15,7 +15,7 @@ public final class PersonalizationGameTests {
     private static ServerPlayer sorcerer(GameTestHelper h){var p=TestPlayers.fresh(h);Awakening.awaken(p,false);return p;}
     @GameTest(environment="jjkcraft:expansion") public void everyTechniqueSupportsFiniteIndependentTuning(GameTestHelper h){
         for(var e:Techniques.all(h.getLevel().registryAccess())){
-            var raw=e.definition();h.assertTrue(TechniqueTuning.DEFAULT.apply(raw).equals(raw),"defaults preserve "+e.id());
+            var raw=e.definition();h.assertTrue(TechniqueTuning.defaultFor(raw).apply(raw).equals(raw),"defaults preserve "+e.id());
             var tuned=new TechniqueTuning(300,300,200,300,25,2).apply(raw);
             h.assertTrue(Double.isFinite(tuned.cast().cost())&&tuned.cast().cost()>=0,"finite costs "+e.id());
             h.assertTrue(tuned.behavior().type()==raw.behavior().type(),"identity preserved "+e.id());

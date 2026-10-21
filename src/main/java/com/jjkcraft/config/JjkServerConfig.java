@@ -100,6 +100,10 @@ public class JjkServerConfig implements ConfigData {
 	public static class Casting {
         @Comment("Allow destructive techniques to damage terrain. Containers, unbreakable blocks and block-break event claims are protected; mobs respect mobGriefing.")
         public boolean terrainDamage = true;
+        @Comment("Oldest spatial fields retire when a caster reaches this limit. A Mini Blue Cluster uses three fields.")
+        public int maxSpatialFieldsPerCaster = 16;
+        @Comment("Maximum simultaneous attraction/repulsion fields per dimension; oldest fields retire first.")
+        public int maxSpatialFieldsPerLevel = 128;
 		@Comment("Max cast requests a client may send per second before the rest are dropped.")
 		public double maxCastRequestsPerSecond = 8.0;
 		@Comment("Chance (percent) that a reinforced strike becomes a Black Flash before modifiers.")
@@ -208,6 +212,8 @@ public class JjkServerConfig implements ConfigData {
 		progression.sixEyesChancePercent = clamp(progression.sixEyesChancePercent, 0, 100);
 		progression.gradeXpMultiplier = clamp(progression.gradeXpMultiplier, 0, 100);
 		casting.maxCastRequestsPerSecond = clamp(casting.maxCastRequestsPerSecond, 1, 100);
+        casting.maxSpatialFieldsPerCaster=Math.clamp(casting.maxSpatialFieldsPerCaster,3,128);
+        casting.maxSpatialFieldsPerLevel=Math.clamp(casting.maxSpatialFieldsPerLevel,12,1024);
 		casting.blackFlashBaseChancePercent = clamp(casting.blackFlashBaseChancePercent, 0, 100);
 		casting.blackFlashExponent = clamp(casting.blackFlashExponent, 1, 5);
 		domains.costMultiplier = clamp(domains.costMultiplier, 0, 10);

@@ -27,9 +27,12 @@ public final class ProjectionPlans {
     public static void init(){
         net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(server->RUNS.clear());
         com.jjkcraft.sorcerer.Awakening.addResetHook(p->{p.removeAttached(PLAN);RUNS.remove(p.getUUID());});
-        ServerPlayNetworking.registerGlobalReceiver(ProjectionPayloads.Edit.TYPE,(payload,ctx)->{var p=ctx.player();boolean accepted=EDITS.tryAcquire(p.getUUID(),p.level().getGameTime())&&(payload.read()||set(p,payload.plan()));JjkNetworking.send(p,new ProjectionPayloads.Reply(p.getAttachedOrCreate(PLAN),accepted,payload.request()));});
+        ServerPlayNetworking.registerGlobalReceiver(ProjectionPayloads.Edit.TYPE,(payload,ctx)->{
+            var p=ctx.player();int result=!p.isAlive()||p.isSpectator()?5:!EDITS.tryAcquire(p.getUUID(),p.level().getGameTime())?1:payload.read()?0:!payload.plan().valid()?4:running(p)?3:!p.isCreative()&&!TechniqueService.knows(p,JjkCraft.id("projection_sorcery"))?2:set(p,payload.plan())?0:5;
+            JjkNetworking.send(p,new ProjectionPayloads.Reply(p.getAttachedOrCreate(PLAN),result==0,payload.request(),result));
+        });
         ServerTickEvents.END_SERVER_TICK.register(server->{for(var it=RUNS.entrySet().iterator();it.hasNext();){var r=it.next().getValue();var p=r.ctx.caster();long now=p.level().getGameTime();
-            if(p.isRemoved()||!p.isAlive()||p.isShiftKeyDown()||p.isSpectator()||p.level()!=r.ctx.level()||now>r.expires||p.hasEffect(JjkEffects.STUNNED)||p.hasEffect(JjkEffects.FROZEN_FRAME)){it.remove();continue;}
+            if(p.isRemoved()||!p.isAlive()||p.isShiftKeyDown()||p.isSpectator()||p.level()!=r.ctx.level()||now>r.expires||CursedCombat.interrupted(p)||p.hasEffect(JjkEffects.STUNNED)||p.hasEffect(JjkEffects.FROZEN_FRAME)){it.remove();continue;}
             if(now<r.next||!CursedCombat.currentMove(p).isEmpty())continue;if(r.index>=r.stages.size()){it.remove();continue;}
             var stage=r.stages.get(r.index++);Vec3 from=p.position();if(!sweep(p,stage.destination)){p.addEffect(new net.minecraft.world.effect.MobEffectInstance(JjkEffects.FROZEN_FRAME,8,0));it.remove();continue;}
             var enemy=r.ctx.enemiesInRadius(stage.destination,4).stream().filter(p::hasLineOfSight).findFirst().orElse(null);
@@ -42,18 +45,44 @@ public final class ProjectionPlans {
         }});
     }
     public static Vec3 ground(LivingEntity p,Vec3 point){
-        for(int dy:new int[]{0,1,-1,2,-2}){Vec3 at=new Vec3(point.x,Math.floor(point.y)+dy,point.z);var below=p.level().getBlockState(BlockPos.containing(at.add(0,-.05,0)));var body=p.getBoundingBox().move(at.subtract(p.position()));if(!below.getCollisionShape(p.level(),BlockPos.containing(at.add(0,-.05,0))).isEmpty()&&p.level().getFluidState(BlockPos.containing(at)).isEmpty()&&p.level().getFluidState(BlockPos.containing(at.add(0,-.05,0))).isEmpty()&&p.level().noCollision(p,body))return at;}return null;
+        if(!finite(point))return null;var level=p.level();double half=p.getBbWidth()/2.0,best=Double.POSITIVE_INFINITY;Vec3 result=null;
+        int bx=(int)Math.floor(point.x-half+.001),ex=(int)Math.floor(point.x+half-.001),bz=(int)Math.floor(point.z-half+.001),ez=(int)Math.floor(point.z+half-.001),base=(int)Math.floor(point.y);
+        for(int dy:new int[]{-1,0,-2,1,-3})for(int x=bx;x<=ex;x++)for(int z=bz;z<=ez;z++){
+            var pos=new BlockPos(x,base+dy,z);if(!level.hasChunkAt(pos)||!level.getWorldBorder().isWithinBounds(pos)||!level.getFluidState(pos).isEmpty())continue;
+            var shape=level.getBlockState(pos).getCollisionShape(level,pos);if(shape.isEmpty())continue;
+            for(var box:shape.toAabbs()){
+                if(point.x+half<=x+box.minX||point.x-half>=x+box.maxX||point.z+half<=z+box.minZ||point.z-half>=z+box.maxZ)continue;
+                double top=pos.getY()+box.maxY,gap=Math.abs(top-point.y);if(gap>2.01||gap>=best)continue;
+                Vec3 at=new Vec3(point.x,top,point.z);if(!level.getFluidState(BlockPos.containing(at.add(0,.01,0))).isEmpty()||!level.noCollision(p,p.getBoundingBox().move(at.subtract(p.position()))))continue;
+                best=gap;result=at;if(gap<.0001)return result;
+            }
+        }return result;
     }
-    public static boolean sweep(LivingEntity p,Vec3 to){Vec3 from=p.position();int count=(int)Math.ceil(from.distanceTo(to)/.25);if(count>96)return false;for(int i=1;i<=count;i++){Vec3 at=from.lerp(to,i/(double)Math.max(1,count));if(!p.level().noCollision(p,p.getBoundingBox().move(at.subtract(from))))return false;if(i%3==0&&ground(p,at)==null)return false;}return true;}
+    private static boolean finite(Vec3 at){return Double.isFinite(at.x)&&Double.isFinite(at.y)&&Double.isFinite(at.z);}
+    private static boolean clear(LivingEntity p,Vec3 from,Vec3 to){int n=Math.max(1,(int)Math.ceil(from.distanceTo(to)/.2));for(int i=0;i<=n;i++)if(!p.level().noCollision(p,p.getBoundingBox().move(from.lerp(to,i/(double)n).subtract(p.position()))))return false;return true;}
+    public static boolean sweep(LivingEntity p,Vec3 to){return sweep(p,p.position(),to);}
+    public static boolean sweep(LivingEntity p,Vec3 from,Vec3 to){
+        if(!finite(from)||!finite(to))return false;int count=Math.max(1,(int)Math.ceil(from.distanceTo(to)/.25));if(count>96)return false;Vec3 last=from;
+        for(int i=1;i<=count;i++){
+            Vec3 foot=ground(p,from.lerp(to,i/(double)count));if(foot==null||Math.abs(foot.y-last.y)>1.01)return false;
+            Vec3 corner=foot.y>last.y?new Vec3(last.x,foot.y,last.z):new Vec3(foot.x,last.y,foot.z);
+            if(!clear(p,last,corner)||!clear(p,corner,foot))return false;last=foot;
+        }return Math.abs(last.y-to.y)<.05;
+    }
     public static List<Vec3> preview(CastContext ctx,double range){return stages(ctx,range).stream().map(Stage::destination).toList();}
     private static List<Stage> stages(CastContext ctx,double range){
         var p=ctx.caster();Vec3 origin=p.position(),forward=ctx.look().multiply(1,0,1).normalize(),right=new Vec3(forward.z,0,-forward.x);var stages=new ArrayList<Stage>();
         var plan=p instanceof ServerPlayer sp?sp.getAttachedOrCreate(PLAN):ProjectionPlan.DEFAULT;
-        if(!plan.automatic()){for(var s:plan.steps()){Vec3 at=origin.add(right.scale(s.right())).add(forward.scale(s.forward()));if(at.distanceTo(origin)>range)continue;Vec3 safe=ground(p,at);if(safe!=null)stages.add(new Stage(safe,s.action()));}return stages;}
+        if(!plan.automatic()){for(var s:plan.steps()){Vec3 at=origin.add(right.scale(s.right())).add(forward.scale(s.forward()));if(at.distanceTo(origin)>range)return List.of();Vec3 safe=ground(p,at);if(safe==null)return List.of();stages.add(new Stage(safe,s.action()));}return stages;}
         double search=ctx.technique().behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior b?Math.min(range+3,b.radius()):range+3;
         var enemy=ctx.enemiesInCone(search,110).stream().filter(p::hasLineOfSight).findFirst().orElse(null);Vec3 focus=enemy==null?origin.add(forward.scale(Math.min(5,range*.65))):enemy.position();
-        Vec3 facing=focus.subtract(origin).multiply(1,0,1).normalize();if(facing.lengthSqr()<.1)facing=forward;Vec3 lateral=new Vec3(facing.z,0,-facing.x);
-        int[] actions={1,2,3,5};for(int i=0;i<4;i++){Vec3 at=focus.subtract(facing.scale(1.8)).add(lateral.scale(i%2==0?-.8:.8));if(at.distanceTo(origin)>range)at=origin.add(at.subtract(origin).normalize().scale(range));Vec3 safe=ground(p,at);if(safe==null)safe=ground(p,focus.subtract(facing.scale(2.3)));if(safe!=null)stages.add(new Stage(safe,actions[i]));}return stages;
+        if(enemy==null){Vec3 safe=ground(p,focus);if(safe!=null&&sweep(p,safe))stages.add(new Stage(safe,0));return stages;}
+        Vec3 facing=focus.subtract(origin).multiply(1,0,1).normalize();if(facing.lengthSqr()<.1)facing=forward;Vec3 lateral=new Vec3(facing.z,0,-facing.x),last=origin;
+        int[] actions={1,2,3,5};for(int i=0;i<4;i++){
+            double preferred=i%2==0?-.8:.8;Vec3 chosen=null;
+            for(double side:new double[]{preferred,-preferred,0,preferred*1.6}){Vec3 at=focus.subtract(facing.scale(1.8)).add(lateral.scale(side));if(at.distanceTo(origin)>range)continue;Vec3 safe=ground(p,at);if(safe!=null&&sweep(p,last,safe)){chosen=safe;break;}}
+            if(chosen!=null){stages.add(new Stage(chosen,actions[i]));last=chosen;}
+        }return stages;
     }
     public static CastResult cast(CastContext ctx,double range){var route=stages(ctx,Math.clamp(range,1,16));if(route.isEmpty()||running(ctx.caster()))return CastResult.miss(ctx.eye());RUNS.put(ctx.caster().getUUID(),new Run(ctx,route));ctx.fx(TechniqueFxPayload.Phase.BURST,ctx.caster().position(),new Vec3(.8,0,0),List.of());return CastResult.done(ctx.caster().position());}
 }

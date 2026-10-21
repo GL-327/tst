@@ -1,4 +1,9 @@
-# Cursed Combat — 1.12.0-preview
+# Cursed Combat — 1.12.1-preview
+
+Combat status is a compact panel at the bottom left, with guard, evasive readiness and
+observed Auto contact statistics. Move/scale/hide it independently in client HUD settings.
+Actual melee stagger interrupts pending windups and held channels/charges; a brief stun
+cannot let an interrupted windup resume later. Manual parries and evasive timing still apply.
 
 Y toggles combat. Auto Combat defaults ON: holding M1 chooses coarse attacks or a defensive
 response to a visible telegraph. It attacks more slowly and lacks deliberate parry timing,

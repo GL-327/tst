@@ -73,6 +73,10 @@ public class JjkClientConfig implements ConfigData {
 		@ConfigEntry.Gui.CollapsibleObject
 		public HudElement techniqueHotbar = new HudElement(Anchor.CENTER_RIGHT, -6, 0);
 		@ConfigEntry.Gui.CollapsibleObject
+		public HudElement combatPanel = new HudElement(Anchor.BOTTOM_LEFT, 6, -6);
+		@ConfigEntry.Gui.CollapsibleObject
+		public HudElement chargeMeter = new HudElement(Anchor.CENTER_RIGHT, -6, 39);
+		@ConfigEntry.Gui.CollapsibleObject
 		public HudElement gradeBadge = new HudElement(Anchor.TOP_LEFT, 6, 30);
 		@ConfigEntry.Gui.CollapsibleObject
 		public HudElement domainMeter = new HudElement(Anchor.TOP_CENTER, 0, 34);
@@ -162,9 +166,11 @@ public class JjkClientConfig implements ConfigData {
 		if (hud.dialogue == null) {
 			hud.dialogue = new HudElement(Anchor.BOTTOM_CENTER, 0, -62);
 		}
+		if(hud.combatPanel==null)hud.combatPanel=new HudElement(Anchor.BOTTOM_LEFT,6,-6);
+		if(hud.chargeMeter==null)hud.chargeMeter=new HudElement(Anchor.CENTER_RIGHT,-6,39);
 
 		for (HudElement element : new HudElement[] {hud.energyBar, hud.techniqueHotbar, hud.gradeBadge, hud.domainMeter, hud.senseRadar, hud.cullingPanel,
-				hud.mulMeter, hud.missionTracker, hud.dialogue}) {
+				hud.mulMeter, hud.missionTracker, hud.dialogue, hud.combatPanel, hud.chargeMeter}) {
 			if (element != null) {
 				element.scalePercent = Math.clamp(element.scalePercent, 50, 300);
 				element.opacityPercent = Math.clamp(element.opacityPercent, 10, 100);

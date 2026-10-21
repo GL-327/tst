@@ -99,8 +99,10 @@ public final class ClientFx {
 		}
 
 		int n = budget(count, from.lerp(to, 0.5));
+		Vec3 camera = mc.gameRenderer.mainCamera().position();
 		for (int i = 0; i < n; i++) {
 			Vec3 p = from.lerp(to, RANDOM.nextDouble()).add(RANDOM.nextGaussian() * jitter, RANDOM.nextGaussian() * jitter, RANDOM.nextGaussian() * jitter);
+			if (p.distanceToSqr(camera) < NEAR_CAMERA_SQR) continue;
 			mc.level.addParticle(particle, p.x, p.y, p.z, 0, 0, 0);
 		}
 	}
@@ -133,6 +135,7 @@ public final class ClientFx {
 
 	/** Yaw and pitch offsets in degrees for this frame. Called by the camera mixin. */
 	public static float[] shakeOffsets() {
+		if(ClientConfig.effectsOff()||ClientConfig.reducedMotion()||!ClientConfig.get().vfx.cameraShake)return null;
 		long now = Util.getMillis();
 		float s = currentShake(now);
 		if (s <= 0) {

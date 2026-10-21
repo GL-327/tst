@@ -1,4 +1,16 @@
-# Visuals, combat and equipment — 1.12.0-preview
+# Visuals, combat and equipment — 1.12.1-preview
+
+The 1.12.1 pass gives the new Red applications the spatial repulsion style and a brighter
+core, with opposed blue/red strands and small orbiting cores for Purple. Infinity uses
+faint spatial brackets and a floor ring; its owner sees a clear first-person view.
+Channel rings stay below the owner's view, line particles keep camera clearance, and
+positive-energy beams are narrower. Combat and charging use independently movable HUD
+panels so charge effects and aiming remain visible.
+
+Effects OFF also hides existing sustained geometry immediately; re-enabling it restores
+still-active effects. Server casting settings bound attraction/repulsion fields to 16 per
+caster and 128 per dimension by default, retiring the oldest when a limit is reached.
+Mini Blue Cluster uses three fields. Server owners can adjust both limits.
 
 This version builds on the available checkout. Unpushed changes on another computer are
 not part of this build; preserve and merge that work separately when it is available.

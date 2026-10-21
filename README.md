@@ -3,7 +3,11 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.12.0-preview.** The visual overhaul rebuilds 75 creature rigs with articulated
+**Status: 1.12.1-preview.** The follow-up adds Limitless branch filters, rebound mouse
+controls, a draggable Projection planner with terrain warnings, reliable Infinity filter
+saving and safer cast interruption. Workshop presets preserve vows and visual choices.
+
+The visual overhaul rebuilds 75 creature rigs with articulated
 limbs, individual UV materials, emissive accents and sixteen animation clips each. Spells
 use layered material effects, dark cores, orbiting filaments, crystals and blood tendrils.
 Combat adds a breathing stance, body weight shifts, two visible first-person fists and
@@ -67,7 +71,7 @@ Jujutsu Kaisen assets.
 ## Installing
 
 1. Install Fabric Loader 0.19.5 or newer for Minecraft 26.3.
-2. Put these in `mods/`: `jjkcraft-1.12.0-preview.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
+2. Put these in `mods/`: `jjkcraft-1.12.1-preview.jar`, Fabric API 0.163.0+26.3 or newer, GeckoLib 5.5.7
    or newer, Cloth Config 26.3.159 or newer. Mod Menu is optional (it adds a config button).
 3. Install it on both the client and the server for multiplayer.
 

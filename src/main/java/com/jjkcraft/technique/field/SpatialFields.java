@@ -76,6 +76,10 @@ public final class SpatialFields {
 			double burstDamage, double burstRadius, int duration) {
 		Field field = new Field(ctx, center, radius, strength, damagePerSecond, burstDamage, burstRadius, duration);
 		List<Field> list = FIELDS.computeIfAbsent(ctx.level(), l -> new ArrayList<>());
+		list.removeIf(f->f.removed||f.expiresAt<=ctx.now());
+        var limits=com.jjkcraft.config.JjkConfig.server().casting;var owner=ctx.caster().getUUID();int owned=(int)list.stream().filter(f->f.ctx.caster().getUUID().equals(owner)).count();
+        for(var it=list.iterator();it.hasNext()&&owned>=Math.clamp(limits.maxSpatialFieldsPerCaster,3,128);){var old=it.next();if(old.ctx.caster().getUUID().equals(owner)){old.removed=true;it.remove();owned--;}}
+        while(list.size()>=Math.clamp(limits.maxSpatialFieldsPerLevel,12,1024)){list.getFirst().removed=true;list.removeFirst();}
 		list.add(field);
         com.jjkcraft.technique.TechniqueTerrain.sphere(ctx,center,Math.min(radius,2.5+Math.sqrt(ctx.power())*2),24,strength>0);
 		resolveCollisions(ctx.level(), list);

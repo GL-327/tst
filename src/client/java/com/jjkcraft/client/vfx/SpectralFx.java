@@ -13,6 +13,7 @@ public final class SpectralFx {
     private static final Map<Integer,Long> MELEE=new HashMap<>();
     private SpectralFx() { }
     public static void clear(){RECENT.clear();MELEE.clear();MaterialFx.clear();}
+    public static boolean spatial(String name){return name.contains("blue")||name.contains("purple")||name.contains("reversal_red")||name.equals("mini_red")||name.equals("red_punch")||name.equals("maximum_output_red")||name.equals("infinity");}
     public static boolean event(TechniqueFxPayload fx,int color,float now){
         if(ClientConfig.effectsOff())return false;
         if(MaterialFx.event(fx,color,now))return true;
@@ -20,21 +21,23 @@ public final class SpectralFx {
         if(now-RECENT.getOrDefault(key,-1000f)<4)return fx.phase()==TechniqueFxPayload.Phase.FIELD||fx.phase()==TechniqueFxPayload.Phase.WINDUP;
         RECENT.put(key,now);RECENT.values().removeIf(t->now-t>240);
         String name=fx.technique().getPath();
-        int style=name.contains("blood")||name.contains("crimson")?1:name.contains("ice")||name.contains("frost")?2:name.contains("flame")||name.contains("volcan")||name.contains("ember")||name.contains("furnace")?3:name.contains("blue")||name.contains("purple")||name.contains("reversal_red")||name.contains("infinity")?4:name.contains("shadow")||name.contains("summon")||name.contains("dreg")||name.contains("fusion")?5:name.contains("heal")||name.contains("reverse_cursed")||name.contains("positive")?6:0;
+        int style=name.contains("blood")||name.contains("crimson")?1:name.contains("ice")||name.contains("frost")?2:name.contains("flame")||name.contains("volcan")||name.contains("ember")||name.contains("furnace")?3:spatial(name)?4:name.contains("shadow")||name.contains("summon")||name.contains("dreg")||name.contains("fusion")?5:name.contains("heal")||name.contains("reverse_cursed")||name.contains("positive")?6:0;
         boolean field=fx.phase()==TechniqueFxPayload.Phase.FIELD,wind=fx.phase()==TechniqueFxPayload.Phase.WINDUP;
         boolean burst=fx.phase()==TechniqueFxPayload.Phase.BURST,hit=fx.phase()==TechniqueFxPayload.Phase.HIT;
         if(!field&&!wind&&!burst&&!hit&&fx.phase()!=TechniqueFxPayload.Phase.CAST)return false;
         var mc=Minecraft.getInstance();if(mc.level==null)return false;
         var caster=mc.level.getEntity(fx.caster());
-        Vec3 origin=wind&&caster!=null?caster.getEyePosition().add(caster.getLookAngle().scale(1)):fx.origin();
-        float life=field?(float)Math.clamp(fx.direction().y,8,240):wind?11:burst?22:hit?10:14;
+        Vec3 origin=wind&&caster!=null?caster.getEyePosition().add(caster.getLookAngle().scale(1.45)).add(new Vec3(caster.getLookAngle().z,0,-caster.getLookAngle().x).scale(.25)).add(0,-.25,0):fx.origin();
+        if(style==6&&fx.phase()==TechniqueFxPayload.Phase.CAST&&fx.direction().lengthSqr()>1)origin=origin.add(fx.direction().scale(.6));
+        float life=field?(float)Math.clamp(fx.direction().y,8,240):wind?9:burst?22:hit?10:14;
         double radius=field||burst?Math.clamp(Math.abs(fx.direction().x),.5,24):wind?.6:hit?.8:1.2;
         if(style==5)origin=origin.add(0,-.5,0);
-        final Vec3 center=origin;final boolean inward=!name.contains("red")&&!burst;
+        final Vec3 center=origin;final boolean red=name.contains("red"),purple=name.contains("purple"),inward=!red&&!burst;
         if(style==4||style==5){
             WorldFx.addSolid(f->{float t=(f.time()-now)/life;if(t>=1)return false;if(t<0)return true;
                 if(f.camera.distanceToSqr(center)>96*96)return true;
-                sphere(f,center,Math.min(radius*.22,.8)*(wind?.65:1),0x101024,(1-t)*.9f);return true;
+                sphere(f,center,Math.min(radius*.28,.8)*(wind?.8:1),red?0xFF7865:purple?0x362044:0x101024,(1-t)*.9f);
+                if(purple&&wind){double a=f.time()*.14;Vec3 offset=new Vec3(Math.cos(a)*.2,Math.sin(a)*.08,Math.sin(a)*.2);sphere(f,center.add(offset),.065,0x2879EA,(1-t)*.85f);sphere(f,center.subtract(offset),.065,0xF23556,(1-t)*.85f);}return true;
             });
         }
         WorldFx.add(f->{
@@ -42,12 +45,13 @@ public final class SpectralFx {
             float alpha=(float)Math.pow(1-t,.7);double r=radius*(field?.8+.05*Math.sin(f.time()*.3):wind?.5+.5*t:.25+1.1*t);
             int segments=f.segments(field?32:24);int c=WorldFx.fade(color,alpha*.58f);
             if(style==4){
-                for(int plane=0;plane<3;plane++)ring(f,center,r*(.6+plane*.2),plane,f.time()*(plane==1?-.09:.07),color,alpha*.5f);
+                for(int plane=0;plane<3;plane++)ring(f,center,r*(.6+plane*.2),plane,f.time()*(plane==1?-.09:.07),purple?(plane==0?0x4CA9FF:plane==1?0xFF526D:color):color,alpha*(wind?.32f:.5f));
                 int strands=f.segments(12);for(int j=0;j<strands;j++){
                     Vec3 previous=null;for(int i=0;i<14&&f.budgetLeft();i++){
                         double u=i/13.0,rr=r*(inward?1-u:u),a=j*Math.PI*2/strands+u*4+f.time()*.05;
                         Vec3 next=center.add(Math.cos(a)*rr,Math.sin(u*Math.PI*2+j)*rr*.35,Math.sin(a)*rr);
-                        if(previous!=null)f.beam(previous,next,.035+u*.035,c,WorldFx.fade(color,alpha*.12f));previous=next;
+                        int strand=purple?(j%2==0?0x4CA9FF:0xFF526D):color;
+                        if(previous!=null)f.beam(previous,next,.035+u*.035,WorldFx.fade(strand,alpha*.58f),WorldFx.fade(strand,alpha*.12f));previous=next;
                     }
                 }
             }else if(style==5){

@@ -1,8 +1,8 @@
 package com.jjkcraft.client.vfx;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleOptions;
@@ -25,8 +25,9 @@ import com.jjkcraft.technique.TechniqueDefinition;
  * client code.
  */
 public final class TechniqueFxClient {
-	/** "casterId:techniqueId" pairs of channels and toggles running on other entities. */
-	private static final Set<String> REMOTE_ACTIVE = new HashSet<>();
+	/** Generation tokens prevent a restarted channel from reviving its previous effects. */
+	private static final Map<String,Long> REMOTE_ACTIVE = new HashMap<>();
+	private static long generation;
 
 	private TechniqueFxClient() {
 	}
@@ -93,18 +94,22 @@ public final class TechniqueFxClient {
 			}
 			case CHANNEL_START -> {
 				String key = fx.caster() + ":" + fx.technique();
-				REMOTE_ACTIVE.add(key);
+				if(REMOTE_ACTIVE.containsKey(key))break;
+				long token=++generation;REMOTE_ACTIVE.put(key,token);
+				java.util.function.BooleanSupplier current=()->java.util.Objects.equals(REMOTE_ACTIVE.get(key),token);
 				boolean mine = mc.player != null && fx.caster() == mc.player.getId();
+				boolean infinity=def.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior;
 				WorldFx.add(WorldFx.aura(fx.caster(), color, now,
-						() -> mine ? ClientTechniques.activeIs(fx.technique()) : REMOTE_ACTIVE.contains(key)));
+						() -> current.getAsBoolean()&&(!mine||ClientTechniques.activeIs(fx.technique())),infinity));
 				Emitters.add(age -> {
-					boolean alive = mine ? ClientTechniques.activeIs(fx.technique()) || age < 3 : REMOTE_ACTIVE.contains(key);
+					boolean alive = current.getAsBoolean()&&(!mine||ClientTechniques.activeIs(fx.technique())||age<3);
 					Entity e = mc.level == null ? null : mc.level.getEntity(fx.caster());
 					if (!alive || e == null) {
+						REMOTE_ACTIVE.remove(key,token);
 						return false;
 					}
 
-					if (age % 3 == 0) {
+					if (age % 3 == 0 && !(infinity && mine && mc.options.getCameraType().isFirstPerson())) {
 						ClientFx.burst(particle, e.position().add(0, e.getBbHeight() * 0.5, 0), 3, e.getBbWidth(), 0.03);
 					}
 
@@ -161,8 +166,9 @@ public final class TechniqueFxClient {
 			case BEAM -> {
 				// A heavy line with a white-hot core: ultimates, falling lances, mending beams.
 				Vec3 end = fx.origin().add(dir);
-				WorldFx.add(WorldFx.line(fx.origin(), end, 0.85, color, now, 14));
-				WorldFx.add(WorldFx.line(fx.origin(), end, 0.22, 0xFFFFF4F0, now, 10));
+				boolean positive=def.category()==com.jjkcraft.technique.TechniqueCategory.HEALING||def.behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior m&&m.ability().equals("positive_output");
+				WorldFx.add(WorldFx.line(fx.origin(), end, positive?.18:.85, color, now, 14));
+				WorldFx.add(WorldFx.line(fx.origin(), end, positive?.055:.22, 0xFFFFF4F0, now, 10));
 				ClientFx.line(particle, fx.origin(), end, (int) Math.min(48, 6 + dir.length() * 1.5), 0.08);
 			}
 			case SHOUT -> {

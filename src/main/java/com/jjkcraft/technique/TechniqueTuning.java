@@ -10,6 +10,7 @@ public record TechniqueTuning(int output, int reach, int area, int duration, int
     public TechniqueTuning(int output,int reach,int area,int duration,int cooldown,int mode){this(output,reach,area,duration,cooldown,mode,TechniqueDetails.DEFAULT);}
     public static final TechniqueTuning DEFAULT = new TechniqueTuning(100,100,100,100,100,0);
     public static TechniqueTuning defaultFor(net.minecraft.resources.Identifier id){return id.getPath().equals("infinity")?new TechniqueTuning(100,100,100,100,100,2):DEFAULT;}
+    public static TechniqueTuning defaultFor(TechniqueDefinition definition){return definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?new TechniqueTuning(100,100,100,100,100,b.filter()):DEFAULT;}
     public static final Codec<TechniqueTuning> CODEC = RecordCodecBuilder.create(i -> i.group(
         Codec.INT.optionalFieldOf("output",100).forGetter(TechniqueTuning::output),
         Codec.INT.optionalFieldOf("reach",100).forGetter(TechniqueTuning::reach),
@@ -38,8 +39,9 @@ public record TechniqueTuning(int output, int reach, int area, int duration, int
     public int get(int axis) { return switch(axis) { case 0->output;case 1->reach;case 2->area;case 3->duration;case 4->cooldown;case 5->mode;default->details.get(axis); }; }
     public TechniqueDefinition apply(TechniqueDefinition raw) {
         var valid=normalized(raw);if(!valid.equals(this))return valid.apply(raw);
-        if(equals(DEFAULT))return raw;
-        var c=raw.cast(); double cost=costMultiplier()*details.cost(raw)*pact.cost()*(raw.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior && mode==2?1.65:1);
+        if(equals(defaultFor(raw)))return raw;
+        double filterCost=raw.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?(mode==2?1.65:1)/(b.filter()==2?1.65:1):1;
+        var c=raw.cast(); double cost=costMultiplier()*details.cost(raw)*pact.cost()*filterCost;
         var cast=new TechniqueDefinition.Cast(Math.min(100000,c.cost()*cost),
             c.cooldown()==0?0:Math.max(1,(int)Math.round(c.cooldown()*cooldown/100.0*pact.recovery())),(details.windup()<0?c.castTime():details.windup())+pact.windup(),
             Math.min(256,c.range()*reach/100.0),c.mode(),Math.min(10000,c.upkeep()*cost),

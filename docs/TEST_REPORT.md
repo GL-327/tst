@@ -1,5 +1,35 @@
 # Test report
 
+## 1.12.1-preview, 2026-10-21
+
+All **128 unit tests and 256 server scenarios passed** in `build/hour-final-build.log`.
+Fifteen new server regressions cover projectile-only Infinity persistence/defaults,
+revoked/dead/spectator/dimension-sensitive casting, short-stun interruption, a real melee
+hit interrupting charge, failed channel replacement, line-of-sight mending, exact slab
+footing, gaps/walls, targetless Projection, spatial punch force, family-binding edits and
+per-owner/per-dimension field budgets. The existing mixed-load benchmark recorded a
+**9.50 ms average server tick** with 40 curses, 12 entrants and four summons over 200 ticks;
+this is a test workload measurement, not a client FPS claim.
+
+The creature/item audit still passes 75 distinct rigs, 4,841 UV-mapped cubes, 1,200 clips,
+300 atlases, 17 equipment items and all 296 move icons. Charge profiles remain 19 opt-in
+chargeable moves and 277 normal activations. No runtime worlds, configuration or logs are
+part of the source commit.
+
+Native Sodium/Iris input/render checks passed in `build/hour-input-vfx-final.log`, with
+**26 screenshots** preserved in `build/hour-verified-screenshots`. They cover keyboard and
+rebound mouse selection/casting, releasing a different button during charge, branch
+filters/pinning, Infinity filter resets, immediate effects-off/restoration, rapid passive
+toggles without duplicate geometry, presets retaining vows/style, Red/Purple charge VFX,
+the compact HUD, waypoint dragging/deletion/saving, blocked segments, a personalized aim
+offset and cancelling a paid windup across dimensions. Existing wheel/RCT/curse damage,
+family binding and save-reopen checks passed in the same native run.
+
+The final client-only corrections were packaged in `build/hour-package-final.log` after
+the full server pass; packaging kept the verified main/server code. Artifact:
+`build/libs/jjkcraft-1.12.1-preview.jar`, **11,934,304 bytes**, SHA-256
+`e095b943e78d1fd8a3f3b31bdf8098937e9b2e9fc33682cd7943f329fb73174f`.
+
 ## 1.12.0-preview, 2026-10-21
 
 All **128 unit tests and 241 server scenarios passed** in `build/release-final.log`.

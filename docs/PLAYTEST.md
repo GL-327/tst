@@ -1,4 +1,4 @@
-# Playing 1.12.0-preview
+# Playing 1.12.1-preview
 
 For chargeable moves, hold R or a direct power key, then release to cast. Three seconds reaches 100%;
 Hollow Purple reaches 200% after seven seconds. Watch the CE/s meter: long holds are

@@ -76,7 +76,7 @@ public final class CursedCombat {
             if (!level.isClientSide() && (com.jjkcraft.awakening.CharacterAwakening.pending(p) || PersonalPacts.forbids(p,TechniquePact.COMBAT) || enabled(p))) return InteractionResult.FAIL;
             return InteractionResult.PASS;
         });
-        TechniqueService.addCastBlocker((caster, id, def) -> actor(caster).stunned > caster.level().getGameTime() ? CastFailure.STUNNED : null);
+        TechniqueService.addCastBlocker((caster, id, def) -> interrupted(caster) ? CastFailure.STUNNED : null);
         DamageModifiers.add((level, target, source, amount) -> {
             if(source.getEntity() instanceof Player p&&PersonalPacts.forbids(p,TechniquePact.COMBAT)&&source.typeHolder().unwrapKey().map(k->k.identifier().getNamespace().equals("minecraft")).orElse(false))return 0;
             if(source.is(com.jjkcraft.damage.JjkDamageTypes.SURE_HIT))return amount;
@@ -219,6 +219,7 @@ public final class CursedCombat {
     public static boolean busy(LivingEntity e){var a=actor(e);long now=e.level().getGameTime();return a.move!=null||a.stunned>now||a.knockedUntil>now;}
     public static String currentMove(LivingEntity e){var a=actor(e);return a.move==null?"":a.moveId;}
     public static boolean attacking(LivingEntity e){return actor(e).move!=null;}
+    public static boolean interrupted(LivingEntity e){var a=actor(e);long now=e.level().getGameTime();return a.stunned>now||a.knockedUntil>now;}
     public static boolean guardMob(CurseEntity e,int height){
         var a=actor(e);long now=e.level().getGameTime();if(height<0){a.guardHeight=-1;return false;}
         if(busy(e)||a.guard<15)return false;

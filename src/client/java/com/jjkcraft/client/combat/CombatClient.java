@@ -80,15 +80,17 @@ public final class CombatClient {
 
             if (!enabled() || mc.player == null || mc.gui.hud.isHidden()||mc.gui.screen()!=null) return;
 
-            int x = g.guiWidth() / 2, y = g.guiHeight() - 65;
-
-            Ink.centered(g, Component.literal(view.stun() > 0 ? "STAGGERED" : view.move().isEmpty() ? (com.jjkcraft.client.config.ClientConfig.get().autoCombat?autoStats.attempts()<5?"AUTO · 60% COMMITMENT":"AUTO · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"% CONTACT":"MANUAL COMBAT") : view.move().toUpperCase(java.util.Locale.ROOT)), x, y - 13, view.stun() > 0 ? Palette.danger() : Palette.TEXT_DIM, 1);
-
-            g.fill(x - 44, y, x + 44, y + 3, 0xA0201728); g.fill(x - 44, y, x - 44 + (int) (88 * view.guard() / 100), y + 3, Palette.energyHigh());
-
-            if (view.combo() > 1) Ink.centered(g, Component.literal(view.combo() + " HIT COMBO"), x, y - 27, Palette.gold(), 1);
-
-            Ink.centered(g,Component.literal(resources.escapeCooldown()==0?"EVASIVE READY · "+JjkKeys.DASH.getTranslatedKeyMessage().getString():"EVASIVE "+String.format(java.util.Locale.ROOT,"%.1fs",resources.escapeCooldown()/20.0)),x,y+7,resources.escapeCooldown()==0?Palette.good():Palette.TEXT_DIM,1);
+            var config=com.jjkcraft.client.config.ClientConfig.get();var panel=config.hud.combatPanel;if(!panel.visible)return;
+            float alpha=panel.opacity();com.jjkcraft.client.hud.HudLayout.push(g,panel,110,43);
+            Ink.panel(g,0,0,110,43,view.stun()>0?Palette.danger():Palette.accent(),alpha);
+            String status=view.stun()>0?"STAGGERED":view.move().isEmpty()?config.autoCombat?"AUTO COMBAT":"MANUAL COMBAT":view.move().toUpperCase(java.util.Locale.ROOT)+(view.combo()>1?" · "+view.combo():"");
+            Ink.text(g,Ink.fit(Component.literal(status),102),4,4,view.stun()>0?Palette.danger():view.combo()>1?Palette.gold():Palette.TEXT,alpha);
+            String detail=config.autoCombat?autoStats.attempts()<5?"60% commitment":"Contact "+autoStats.hits()+" / "+autoStats.attempts()+" · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"%":"Hits: "+JjkKeys.LIGHT.getTranslatedKeyMessage().getString()+" / "+JjkKeys.HEAVY.getTranslatedKeyMessage().getString();
+            Ink.text(g,Ink.fit(Component.literal(detail),102),4,15,Palette.TEXT_DIM,alpha);
+            int guardColor=view.guard()<30?Palette.danger():Palette.energyHigh();g.fill(4,26,106,28,net.minecraft.util.ARGB.multiplyAlpha(0xFF241D31,alpha));g.fill(4,26,4+(int)Math.clamp(102*view.guard()/100,0,102),28,net.minecraft.util.ARGB.multiplyAlpha(guardColor,alpha));
+            String escape=resources.escapeCooldown()==0?"Evade: "+JjkKeys.DASH.getTranslatedKeyMessage().getString():"Evade: "+String.format(java.util.Locale.ROOT,"%.1f s",resources.escapeCooldown()/20.0);
+            Ink.text(g,Ink.fit(Component.literal(escape),102),4,32,resources.escapeCooldown()==0?Palette.good():Palette.TEXT_DIM,alpha);
+            g.pose().popMatrix();
 
         });
 

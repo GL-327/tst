@@ -5,6 +5,34 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.12.1-preview, 2026-10-21
+
+- Limitless selectors have All, Blue, Red, Infinity and Purple filters on normal-size
+  screens. Cooldown, grade, CE and active-state hints appear in the wheel. Rebound mouse
+  wheel/cast controls work; middle click pins moves when right click is bound to casting.
+- Projection's editor supports selecting, dragging and deleting individual waypoints,
+  with cached terrain, reach and swept-path warnings. Server replies explain rejected
+  edits. Movement uses exact collision-shape heights for slabs and stairs, checks every
+  segment, and interrupts on combat stun. A targetless preset moves without air attacks.
+- Fixed projectile-only Infinity settings being discarded, incorrect default resets,
+  and unintended default upkeep inflation. Presets retain the draft's filter, vows,
+  custom name, color and trail. Spatial punches expose independent push/pull force;
+  instant punches/discharge no longer charge for an unused duration setting.
+- Pending casts recheck eligibility at the end of windup and cancel on dimension changes,
+  death or spectator mode. Sustained casts also stop on dimension/spectator changes.
+  Failed replacements preserve the existing channel. Ally mending requires line of sight.
+  Melee stagger interrupts charge, windup and channels immediately; short stuns cannot
+  let an old windup resume. Editing another slot preserves a family variant's charge.
+- New Red variants use repulsion effects and a bright core; Purple has opposed Blue/Red
+  filaments. Infinity uses a faint spatial envelope with a clear first-person view.
+  Sustained rings and beam particles avoid filling the camera; positive-energy beams
+  are narrower. Duplicate channel effects and expired remote channel bookkeeping are cleaned up.
+- Compact combat and charge panels keep the center clear. Both have independent HUD
+  visibility, anchor, position, scale and opacity controls; charge sits below the selected power.
+- Effects OFF hides already-running geometry immediately and restores live effects when
+  re-enabled. Camera-shake/reduced-motion changes apply immediately. Spatial fields have
+  configurable oldest-first budgets: 16 per caster and 128 per dimension by default.
+
 ## 1.12.0-preview, 2026-10-21
 
 - Added twenty original six-move families, raising the roster to 296 moves across 51 families.

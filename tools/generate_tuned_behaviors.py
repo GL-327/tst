@@ -55,7 +55,7 @@ public final class TunedBehaviors {
     public static boolean duration(TechniqueDefinition definition) {
         TechniqueBehavior b=definition.behavior();
         if(b instanceof MangaAbilityBehavior m&&m.ability().startsWith("original/")&&m.ability().endsWith("/step"))return false;
-        if(b instanceof MangaAbilityBehavior m && java.util.Set.of("body_transfer","curse_manipulation","uzumaki","swap","repel").contains(m.ability()))return false;
+        if(b instanceof MangaAbilityBehavior m && java.util.Set.of("body_transfer","curse_manipulation","uzumaki","swap","repel","blue_punch","red_punch","positive_output").contains(m.ability()))return false;
         return definition.cast().maxDuration()>0 || DURATION;
     }
     public static boolean reach(TechniqueDefinition definition) {

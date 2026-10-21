@@ -31,6 +31,9 @@ public final class WorldFx {
 	private static final int MAX_QUADS = 6000;
 	private static long profileNanos, profilePeak;
 	private static int profileFrames, profileQuads;
+	private static int lastFrameQuads;
+	/** Most recent rendered geometry count, including the solid and additive passes. */
+	public static int lastFrameQuads(){return lastFrameQuads;}
 
 	/** One effect. Returns false when finished. */
 	public interface Effect {
@@ -128,14 +131,15 @@ public final class WorldFx {
 	}
 
 	public static void clear() {
+		lastFrameQuads=0;
 		EFFECTS.clear();
         SOLID.clear();
 	}
 
 	private static void render(LevelRenderContext context) {
-		if (ClientConfig.effectsOff()) { clear(); return; }
 		Minecraft mc = Minecraft.getInstance();
-		if (EFFECTS.isEmpty()&&SOLID.isEmpty() || mc.level == null) {
+		if (ClientConfig.effectsOff() || EFFECTS.isEmpty()&&SOLID.isEmpty() || mc.level == null) {
+			lastFrameQuads=0;
 			return;
 		}
 
@@ -157,6 +161,7 @@ public final class WorldFx {
 				}
 			}
 			long elapsed = System.nanoTime() - frame.began;
+			lastFrameQuads=shared[0];
 			profileNanos += elapsed; profilePeak = Math.max(profilePeak, elapsed); profileQuads = Math.max(profileQuads, frame.quads);
 			if (++profileFrames >= 300) {
 				if (ClientConfig.get().vfx.logProfiling) com.jjkcraft.JjkCraft.LOGGER.info("VFX profile: frames={} mean_cpu_ms={} peak_cpu_ms={} peak_quads={} active={}", profileFrames, profileNanos / (profileFrames * 1_000_000.0), profilePeak / 1_000_000.0, profileQuads, EFFECTS.size());
@@ -396,20 +401,34 @@ public final class WorldFx {
 
 	/** Rising rings around an entity while a channel or toggle technique runs. */
 	public static Effect aura(int entityId, int color, float start, BooleanSupplier alive) {
+		return aura(entityId,color,start,alive,false);
+	}
+	public static Effect aura(int entityId, int color, float start, BooleanSupplier alive, boolean infinity) {
 		return frame -> {
 			Minecraft mc = Minecraft.getInstance();
 			Entity e = mc.level == null ? null : mc.level.getEntity(entityId);
-			if (e == null || !alive.getAsBoolean()) {
+			if (e == null || (!alive.getAsBoolean() && frame.time()-start>3)) {
 				return false;
 			}
 
 			float partial = mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 			Vec3 base = e.getPosition(partial);
+			boolean firstPerson=e==mc.player&&mc.options.getCameraType().isFirstPerson();
+			if(infinity){
+				double radius=e.getBbWidth()*.5+.48;int count=frame.segments(32);float spin=(frame.time()-start)*.018f;
+				for(int i=0;i<count&&frame.budgetLeft();i++){double a=i*Math.PI*2/count+spin,b=(i+.65)*Math.PI*2/count+spin;frame.beam(base.add(Math.cos(a)*radius,.07,Math.sin(a)*radius),base.add(Math.cos(b)*radius,.07,Math.sin(b)*radius),.025,fade(color,.34f),fade(0xDBF7FF,.15f));}
+				if(!firstPerson)for(int side=0;side<8;side++){
+					double a=side*Math.PI/4+spin*.3;Vec3 edge=base.add(Math.cos(a)*radius,0,Math.sin(a)*radius),tangent=new Vec3(-Math.sin(a)*.15,0,Math.cos(a)*.15);
+					for(int n=0;n<4;n++){double y=.15+n*e.getBbHeight()/4;Vec3 p=edge.add(0,y,0);frame.beam(p.subtract(tangent),p.add(tangent),.018,fade(color,.3f),fade(0xDBF7FF,.1f));frame.beam(p,p.add(0,.12,0),.02,fade(color,.24f),fade(color,.08f));}
+				}
+				return true;
+			}
 			double rr = e.getBbWidth() * 0.9;
 			int seg = frame.segments(20);
 			for (int k = 0; k < 3; k++) {
 				float phase = ((frame.time() - start) * 0.04f + k / 3f) % 1f;
 				double y = e.getBbHeight() * phase;
+				if(firstPerson&&y>.55)continue;
 				float alpha = (float) Math.sin(Math.PI * phase) * 0.6f;
 				for (int i = 0; i < seg; i++) {
 					double a0 = 2 * Math.PI * i / seg;

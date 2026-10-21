@@ -31,7 +31,9 @@
       "com.jjkcraft.gametest.ChargeTerrainGameTests",
       "com.jjkcraft.gametest.SpectralGameTests",
       "com.jjkcraft.gametest.RebornGameTests",
-      "com.jjkcraft.gametest.WheelReverseGameTests"
+      "com.jjkcraft.gametest.WheelReverseGameTests",
+      "com.jjkcraft.gametest.PolishGameTests",
+      "com.jjkcraft.gametest.FieldBudgetGameTests"
     ],
     "fabric-client-gametest": [
       "com.jjkcraft.gametest.SmokeClientGameTest"

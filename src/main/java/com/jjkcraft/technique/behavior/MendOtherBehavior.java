@@ -42,7 +42,7 @@ public record MendOtherBehavior(double amount, int regenTicks, double selfFracti
 		Vec3 eye = ctx.eye();
 		double best = Double.MAX_VALUE;
 		for (LivingEntity candidate : ctx.level().getEntitiesOfClass(LivingEntity.class, ctx.caster().getBoundingBox().inflate(reach),
-				e -> e != ctx.caster() && e.isAlive() && !ctx.isEnemy(e))) {
+				e -> e != ctx.caster() && e.isAlive() && !com.jjkcraft.reverse.ReverseTechnique.curse(e) && ctx.caster().hasLineOfSight(e) && !ctx.isEnemy(e))) {
 			Vec3 to = candidate.position().add(0, candidate.getBbHeight() / 2, 0).subtract(eye);
 			double distance = to.length();
 			if (distance <= reach && distance > 1e-3 && to.normalize().dot(ctx.look()) > 0.9 && distance < best) {

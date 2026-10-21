@@ -28,7 +28,7 @@ public record TechniqueDetails(int speed,int shots,int spread,int homing,int pen
     public static boolean applicable(TechniqueDefinition d,int axis){return switch(axis){
         case 6,7,8,9->d.behavior() instanceof ProjectileBehavior;
         case 10->d.behavior() instanceof ProjectileBehavior||d.behavior() instanceof LineCutBehavior;
-        case 11->d.behavior() instanceof FieldBehavior||d.behavior() instanceof SingularityBehavior||d.behavior() instanceof StrikeBehavior||d.behavior() instanceof ArcSlashBehavior||d.behavior() instanceof VowStrikeBehavior||d.behavior() instanceof ShockwaveBehavior||d.behavior() instanceof BarrierBehavior;
+        case 11->d.behavior() instanceof FieldBehavior||d.behavior() instanceof SingularityBehavior||d.behavior() instanceof StrikeBehavior||d.behavior() instanceof ArcSlashBehavior||d.behavior() instanceof VowStrikeBehavior||d.behavior() instanceof ShockwaveBehavior||d.behavior() instanceof BarrierBehavior||d.behavior() instanceof MangaAbilityBehavior m&&java.util.Set.of("blue_punch","red_punch","blue_cluster").contains(m.ability());
         case 13->d.behavior() instanceof FieldBehavior;default->axis<16||TechniqueExpression.applicable(d,axis);};}
     public TechniqueDetails normalized(TechniqueDefinition d){var t=this;for(int axis=6;axis<=31;axis++)if(!applicable(d,axis))t=t.with(axis,DEFAULT.get(axis));return t;}
     public double cost(TechniqueDefinition def){
