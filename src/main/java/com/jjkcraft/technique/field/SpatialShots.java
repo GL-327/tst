@@ -11,7 +11,7 @@ public final class SpatialShots {
     private static final List<Shot> SHOTS=new ArrayList<>();
     private SpatialShots() {}
     public static int active(){return SHOTS.size();}
-    public static Vec3 origin(CastContext c){var side=c.look().cross(new Vec3(0,1,0)).normalize().scale(c.caster().getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT?.22:-.22);return c.eye().add(c.look().scale(1.25)).add(side).add(0,-.22,0);}
+    public static Vec3 origin(CastContext c){return c.eye().add(c.look().scale(1.25));}
     public static int flight(Vec3 from,Vec3 to){return Math.max(2,(int)Math.ceil(from.distanceTo(to)/1.8));}
     public static void visual(CastContext c,Vec3 from,Vec3 to,double radius,int ticks){
         var payload=new SpatialShotPayload(c.caster().getId(),c.techniqueId(),from,to,(float)radius,ticks,c.technique().visuals().color());
@@ -20,7 +20,9 @@ public final class SpatialShots {
     }
     public static void launch(CastContext c,Vec3 to,double radius,double strength,double dps,double burst,double blast,int duration){
         if(SHOTS.size()>=64)SHOTS.removeFirst();
-        Vec3 from=origin(c);int flight=flight(from,to);visual(c,from,to,Math.min(2.4,radius*.22),flight);
+        Vec3 from=origin(c);int flight=flight(from,to);
+        boolean maximum=c.techniqueId().getPath().contains("maximum");
+        visual(c,from,to,Math.clamp(radius*(maximum?.65:.38),.35,maximum?8:3.5),flight);
         SHOTS.add(new Shot(c,from,to,radius,strength,dps,burst,blast,duration,flight,c.now()));
     }
     public static void init(){

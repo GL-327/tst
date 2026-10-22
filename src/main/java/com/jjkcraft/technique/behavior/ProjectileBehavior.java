@@ -54,7 +54,7 @@ public record ProjectileBehavior(double damage, double speed, boolean homing, do
 	@Override
 	public CastResult cast(CastContext ctx) {
 		Vec3 look = ctx.look();
-		Vec3 start = ctx.technique().cast().chargeable()?com.jjkcraft.technique.field.SpatialShots.origin(ctx):ctx.eye().add(look.scale(0.6)).add(0,-0.15,0);
+		Vec3 start = ctx.technique().cast().chargeable()?com.jjkcraft.technique.field.SpatialShots.origin(ctx):ctx.eye().add(look.scale(0.6));
 		for (int n = 0; n < count; n++) {
 			// A volley fans out evenly across the spread, centred on the aim.
 			double yaw = count == 1 ? 0 : Math.toRadians((n - (count - 1) / 2.0) * spread / Math.max(1, count - 1) * 2);

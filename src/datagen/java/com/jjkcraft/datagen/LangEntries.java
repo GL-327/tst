@@ -71,7 +71,7 @@ final class LangEntries {
 		b.add("tooltip.jjkcraft.mode.channel", "Hold to channel");
 		b.add("tooltip.jjkcraft.mode.toggle", "Press to toggle");
 		b.add("tooltip.jjkcraft.mastery", "Mastery: %s/%s");
-		b.add("tooltip.jjkcraft.mastered", "Mastered: -10% cost, +10% power");
+		b.add("tooltip.jjkcraft.mastered", "Mastery milestone reached");
 		b.add("hud.jjkcraft.cast_hint", "[%s]");
 		b.add("screen.jjkcraft.loadout", "Techniques");
 		b.add("screen.jjkcraft.loadout.known", "Known techniques (%s)");

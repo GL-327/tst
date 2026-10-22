@@ -60,6 +60,8 @@ public final class PunchImbuement {
             if(spatial!=null){
                 if(spatial.level()!=p.level()||TechniqueService.check(p,spatial.techniqueId(),Personalization.definition(p,spatial.techniqueId(),Techniques.get(p.registryAccess(),spatial.techniqueId()).orElse(spatial.technique())))!=CastFailure.NONE||!CursedEnergy.trySpend(p,mode(p)==1?5:7)){SPATIAL.remove(p.getUUID());changed=true;}
                 else {
+                    var definition=Personalization.definition(p,spatial.techniqueId(),Techniques.get(p.registryAccess(),spatial.techniqueId()).orElse(spatial.technique()));
+                    spatial=new CastContext(p,p.level(),spatial.techniqueId(),definition,TechniqueService.power(p,spatial.techniqueId(),definition,TechniqueService.modifiers(p,spatial.techniqueId(),definition)),1);
                     target.damageCooldownTime=0;
                     double base=spatial.technique().behavior() instanceof com.jjkcraft.technique.behavior.MangaAbilityBehavior b?b.damage():10;
                     boolean landed=spatial.hurt(target,base*spatial.power(),false);

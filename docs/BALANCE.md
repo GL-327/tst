@@ -1,11 +1,13 @@
 # Balance
 
-**1.13 preview amendment:** offensive techniques now use a configurable 2.5x
-runtime damage multiplier, with a separate Shrine efficiency pass. Strong powers
-can defeat weak curses in one hit. The current simulation bounds full output
-against the strongest special-grade boss instead of enforcing the historical
-same-grade no-one-shot rule below. See `COMBAT_REFINEMENT.md` for charge profiles,
-fist coatings and summon changes. Older milestone tables remain historical.
+**1.14 preview amendment:** new configurations use a 3.0× offensive technique
+damage multiplier; existing configured values are retained. All techniques gain
+continuous mastery scaling through four milestones, reaching 3× mastery power,
+35% lower CE/cooldown, and supported reach/duration growth. Fully trained
+ultimates may defeat a special-grade boss in one cast; the simulation checks a
+finite eight-boss health envelope. See [Mastery and effects](MASTERY_AND_VFX.md)
+for the current curve. The 1.13 Shrine efficiency changes and charge profiles
+remain. Older milestone tables remain historical.
 
 All numbers are defaults. Server operators change them in `config/jjkcraft-server.json5`, and
 datapacks change them in grade, technique, curse and domain data. Formulas live in
@@ -81,9 +83,13 @@ Tests: `ProgressionMathTest`, `ProgressionGameTests`.
 
 ## 3. Techniques (M3)
 
-Power: `(1 + 0.08 rank) * (1 + 0.02 output) * (1.10 if mastered) * vow`. Cost:
-`base * (1 - 0.015 control) * (0.90 if mastered) * vow`, with reductions capped at 30%. Cooldown:
-`base * (1 - 0.015 efficiency)`, never below 1 tick.
+Power: `(1 + 0.08 rank) * (1 + 0.02 output) * masteryPower * vow`. Mastery power
+grows from 1× to 1.6× at one milestone, 2.25× at two, and 3× at four. Cost:
+`base * controlMultiplier * masteryCost * vow`; cooldown:
+`base * efficiencyMultiplier * masteryRecovery`, rounded and never below 1 tick
+for moves that have a cooldown. Control/Efficiency reductions cap at 30%; mastery
+then stacks, reaching a 0.65 cost/recovery multiplier. Offensive damage also uses
+the server's configured technique damage multiplier. See the current curve above.
 
 | Technique | Grade | Cost | Cooldown | Damage (base) | Notes |
 |---|---|---|---|---|---|

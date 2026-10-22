@@ -39,7 +39,7 @@ public final class TechniqueTooltip {
 			lines.add(Component.translatable("tooltip.jjkcraft.upkeep", fmt(id.equals(com.jjkcraft.JjkCraft.id("infinity"))?ClientTechniques.infinityUpkeep():def.cast().upkeep())).withColor(Palette.TEXT_DIM));
 		}
 
-		lines.add(Component.translatable("tooltip.jjkcraft.cooldown", fmt(def.cast().cooldown() / 20.0)).withColor(Palette.TEXT_DIM));
+		lines.add(Component.translatable("tooltip.jjkcraft.cooldown", fmt(ClientTechniques.cooldown(id) / 20.0)).withColor(Palette.TEXT_DIM));
 		if (def.cast().castTime() > 0) {
 			lines.add(Component.translatable("tooltip.jjkcraft.cast_time", fmt(def.cast().castTime() / 20.0)).withColor(Palette.TEXT_DIM));
 		}
@@ -57,6 +57,9 @@ public final class TechniqueTooltip {
 		}
 
 		int mastery = ClientTechniques.state().masteryOf(id);
+        double training=ClientTechniques.mastery(id);
+        lines.add(Component.literal(String.format(Locale.ROOT,"Training %.0f%% · power ×%.2f",training*100,com.jjkcraft.core.technique.TechniqueMath.masteryPower(training))).withColor(Palette.energyHigh()));
+        lines.add(Component.literal(String.format(Locale.ROOT,"Mastery: −%.0f%% CE and cooldown",(1-com.jjkcraft.core.technique.TechniqueMath.masteryCost(training))*100)).withColor(Palette.TEXT_DIM));
 		lines.add(mastery >= def.masteryUses()
 				? Component.translatable("tooltip.jjkcraft.mastered").withColor(Palette.gold())
 				: Component.translatable("tooltip.jjkcraft.mastery", mastery, def.masteryUses()).withColor(Palette.TEXT_DIM));

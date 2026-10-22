@@ -64,4 +64,15 @@ for path in techniques:
     data=json.loads(path.read_text());icon=data['icon'].split(':',1)[1]
     assert (A/icon).is_file(),(path.stem,'missing icon')
 assert len(techniques)==296,len(techniques)
+with Image.open(A/'textures/vfx/energy_materials.png') as materials:
+    assert materials.mode=='RGBA' and materials.size==(1024,1024),'VFX material atlas layout'
+    for tile in range(16):
+        cell=materials.crop(((tile%4)*256,(tile//4)*256,(tile%4+1)*256,(tile//4+1)*256))
+        alpha=cell.getchannel('A')
+        assert alpha.getextrema()[1]>100,(tile,'empty VFX material')
+        assert alpha.crop((0,0,256,1)).getextrema()[1]==0,(tile,'missing transparent gutter')
+        assert alpha.crop((0,0,1,256)).getextrema()[1]==0,(tile,'missing transparent gutter')
+metadata=json.loads((A/'textures/vfx/energy_materials.png.mcmeta').read_text())
+assert metadata['texture']['blur'],'VFX materials require smooth filtering'
 print(f'PASS: {count} unique creature rigs, {cubes} UV-mapped cubes, {count*16} clips, {count*4} atlases, 17 equipment items and 296 technique icons.')
+print('PASS: sixteen filtered 256px VFX materials with transparent atlas gutters.')

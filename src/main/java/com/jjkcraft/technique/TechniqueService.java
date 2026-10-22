@@ -525,6 +525,7 @@ public final class TechniqueService {
 		if(!creative&&sacrifice>0)caster.setHealth(caster.getHealth()-sacrifice);
 		double spent = payer.isPresent() ? 0 : prepaid>=0?prepaid:cost;
         if(prepaid>=0)definition=chargedDefinition(definition,charge,heldTicks);
+        definition=masteryDefinition(definition,mastery(caster,id,definition));
 
 		CastContext ctx = new CastContext(caster, level, id, definition, power(caster, id, definition, modifiers)*charge, modifiers.range());
         ctx.memory.put("charge",charge);
@@ -629,6 +630,17 @@ public final class TechniqueService {
 		}
 	}
 
+    public static double mastery(LivingEntity caster,Identifier id,TechniqueDefinition definition) {
+        return caster instanceof Player p?TechniqueMath.mastery(get(p).masteryOf(id),definition.masteryUses()):0;
+    }
+    private static TechniqueDefinition masteryDefinition(TechniqueDefinition d,double mastery){
+        if(mastery<=0)return d;
+        var c=d.cast();
+        int mode=d.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?b.filter():0;
+        var tuning=new TechniqueTuning(100,(int)Math.round(TechniqueMath.masteryReach(mastery)*100),100,(int)Math.round(TechniqueMath.masteryDuration(mastery)*100),100,mode).normalized(d);
+        var cast=new TechniqueDefinition.Cast(c.cost(),c.cooldown(),c.castTime(),c.range()*tuning.reach()/100.0,c.mode(),c.upkeep(),c.maxDuration()==0?0:(int)Math.round(c.maxDuration()*tuning.duration()/100.0),c.mulCost(),c.chargeable());
+        return new TechniqueDefinition(d.name(),d.description(),d.category(),d.grade(),cast,TunedBehaviors.apply(d.behavior(),tuning),d.visuals(),d.icon(),d.vowModifiers(),d.innateWeight(),d.masteryUses());
+    }
 	public static boolean isMastered(LivingEntity caster, Identifier id, TechniqueDefinition definition) {
 		return caster instanceof Player player && get(player).masteryOf(id) >= definition.masteryUses();
 	}
@@ -644,7 +656,7 @@ public final class TechniqueService {
 
 	public static double effectiveCost(LivingEntity caster, Identifier id, TechniqueDefinition definition, Modifiers modifiers) {
 		int control = caster instanceof Player player ? Progression.get(player).growth().control() : 0;
-		return TechniqueMath.cost(definition.cast().cost(), control, isMastered(caster, id, definition), modifiers.cost());
+		return TechniqueMath.cost(definition.cast().cost(), control, mastery(caster, id, definition), modifiers.cost());
 	}
 
 	public static double effectiveCost(LivingEntity caster, Identifier id, TechniqueDefinition definition) {
@@ -654,7 +666,7 @@ public final class TechniqueService {
 	public static double power(LivingEntity caster, Identifier id, TechniqueDefinition definition, Modifiers modifiers) {
 		int rank = Progression.gradeRank(caster.registryAccess(), caster);
 		int output = caster instanceof Player player ? Progression.get(player).growth().output() : 0;
-		return TechniqueMath.power(rank, output, isMastered(caster, id, definition), modifiers.damage()) * Personalization.get(caster,id).output()/100.0 * Personalization.get(caster,id).pact().output();
+		return TechniqueMath.power(rank, output, mastery(caster, id, definition), modifiers.damage()) * Personalization.get(caster,id).output()/100.0 * Personalization.get(caster,id).pact().output();
 	}
 
 	public static int effectiveCooldown(LivingEntity caster, TechniqueDefinition definition) {
@@ -672,7 +684,7 @@ public final class TechniqueService {
 
 	private static void startCooldown(LivingEntity caster, Identifier id, TechniqueDefinition definition) {
 		long now = caster.level().getGameTime();
-		long readyAt = now + effectiveCooldown(caster, definition);
+		long readyAt = now + TechniqueMath.cooldown(definition.cast().cooldown(),caster instanceof Player p?Progression.get(p).growth().efficiency():0,mastery(caster,id,definition));
 		if (caster instanceof ServerPlayer player) {
 			set(player, get(player).withCooldown(id, readyAt, now));
 		} else {
@@ -750,7 +762,7 @@ public final class TechniqueService {
 			}
 
 			active.ticks++;
-			double upkeep = active.definition.cast().upkeep() / 20.0 * modifiers(caster, active.id, active.definition).cost();
+			double upkeep = active.definition.cast().upkeep() / 20.0 * modifiers(caster, active.id, active.definition).cost()*TechniqueMath.masteryCost(mastery(caster,active.id,active.definition));
 			int maxDuration = active.definition.cast().maxDuration();
 			boolean keep = (upkeep <= 0 || CursedEnergy.trySpend(caster, upkeep))
 					&& (maxDuration <= 0 || active.ticks < maxDuration)

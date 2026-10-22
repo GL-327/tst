@@ -90,7 +90,7 @@ public final class CharacterAwakening {
         var traits=new java.util.ArrayList<Identifier>();if(family.clan().equals("Gojo"))traits.add(JjkCraft.id("six_eyes"));if(mechamaru)traits.add(JjkCraft.id("mechamaru_restriction"));
         CharacterTraits.set(p,new TraitState(true,java.util.List.copyOf(traits),"",java.util.List.of()));
         unlock(p);var mastery=new java.util.HashMap<Identifier,Integer>();
-        for(var id:family.techniques())mastery.put(id,Techniques.get(p.registryAccess(),id).orElseThrow().masteryUses());
+        for(var id:family.techniques())mastery.put(id,Techniques.get(p.registryAccess(),id).orElseThrow().masteryUses()*4);
         TechniqueService.set(p,TechniqueService.get(p).withMastery(mastery).withAutoSlotted(com.jjkcraft.technique.TechniqueState.SLOTS));TechniqueService.resetCooldowns(p);
         com.jjkcraft.reverse.ReverseTechnique.set(p,com.jjkcraft.reverse.ReverseTechnique.state(p).withUnlocked(true).withAutoHeal(false),false);
         com.jjkcraft.energy.SorceryPractice.set(p,com.jjkcraft.energy.SorceryPractice.get(p).withReinforcement(true,false));

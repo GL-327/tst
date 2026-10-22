@@ -132,7 +132,7 @@ public record TechniqueState(
 
 	public TechniqueState withMasteryAdded(Identifier id, int amount) {
 		Map<Identifier, Integer> next = new HashMap<>(mastery);
-		next.merge(id, amount, Integer::sum);
+		next.compute(id,(key,old)->(int)Math.clamp((long)(old==null?0:old)+amount,0,Integer.MAX_VALUE));
 		return normalized(innate, learned, loadout, selected, next, cooldowns);
 	}
 

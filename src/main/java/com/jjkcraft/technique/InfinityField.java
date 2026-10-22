@@ -44,7 +44,7 @@ public final class InfinityField {
             var ctx=new CastContext(p,p.level(),id,d,1,1);CursedEnergy.checkpoint(p);start(ctx);d.behavior().cast(ctx);
         }
     }
-    public static double upkeep(LivingEntity caster,TechniqueDefinition d){return ReverseTechnique.available(caster)?0:d.cast().upkeep()*TechniqueService.modifiers(caster,com.jjkcraft.JjkCraft.id("infinity"),d).cost();}
+    public static double upkeep(LivingEntity caster,TechniqueDefinition d){var id=com.jjkcraft.JjkCraft.id("infinity");return ReverseTechnique.available(caster)?0:d.cast().upkeep()*TechniqueService.modifiers(caster,id,d).cost()*com.jjkcraft.core.technique.TechniqueMath.masteryCost(TechniqueService.mastery(caster,id,d));}
     public static void start(CastContext ctx){FIELDS.put(ctx.caster().getUUID(),ctx);sync(ctx.caster());}
     public static void stop(LivingEntity caster){if(FIELDS.containsKey(caster.getUUID()))CursedEnergy.checkpoint(caster);var ctx=FIELDS.remove(caster.getUUID());if(ctx!=null){ctx.technique().behavior().end(ctx);sync(caster);}}
     private static void sync(LivingEntity caster){if(caster instanceof ServerPlayer p){

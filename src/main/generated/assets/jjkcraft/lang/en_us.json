@@ -1373,7 +1373,7 @@
   "tooltip.jjkcraft.cost": "CE cost: %s",
   "tooltip.jjkcraft.grade": "Requires: %s",
   "tooltip.jjkcraft.ledger.points": "Holds %s points",
-  "tooltip.jjkcraft.mastered": "Mastered: -10% cost, +10% power",
+  "tooltip.jjkcraft.mastered": "Mastery milestone reached",
   "tooltip.jjkcraft.mastery": "Mastery: %s/%s",
   "tooltip.jjkcraft.mode.channel": "Hold to channel",
   "tooltip.jjkcraft.mode.instant": "Press to cast",

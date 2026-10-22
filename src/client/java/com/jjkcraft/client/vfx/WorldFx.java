@@ -47,6 +47,7 @@ public final class WorldFx {
 		final Vec3 camera;
 		final float time;
 		final boolean low;
+        Vec3 viewForward=new Vec3(0,0,1),viewRight=new Vec3(1,0,0),viewUp=new Vec3(0,1,0);
 		int quads;
         int[] shared=new int[1];
 		private float opacity=1;
@@ -69,6 +70,14 @@ public final class WorldFx {
 		public int segments(int high) {
 			return low ? Math.max(4, high / 2) : high;
 		}
+        public Vec3 aimPoint(double distance){return camera.add(viewForward.scale(distance));}
+        public void sprite(Vec3 at,double width,double height,int tile,int color,float alpha,double spin){
+            if(!budgetLeft())return;shared[0]++;quads++;
+            Vec3 right=viewRight,up=viewUp;
+            Vec3 u=right.scale(Math.cos(spin)).add(up.scale(Math.sin(spin))).scale(width);
+            Vec3 v=up.scale(Math.cos(spin)).subtract(right.scale(Math.sin(spin))).scale(height);
+            EnergySprites.quad(pose,buffer,at.subtract(camera),u,v,tile,fade(color,alpha));
+        }
 
 		public boolean budgetLeft() {
 			return shared[0] < Math.min(MAX_QUADS, Math.max(100, ClientConfig.get().vfx.maxWorldQuads))
@@ -114,6 +123,8 @@ public final class WorldFx {
 
 	private static final List<Effect> EFFECTS = new ArrayList<>();
     private static final List<Effect> SOLID=new ArrayList<>();
+    private static final List<Effect> MATERIALS=new ArrayList<>();
+    public static void addMaterial(Effect effect){if(!ClientConfig.effectsOff()){if(MATERIALS.size()>=192)MATERIALS.removeLast();MATERIALS.addFirst(effect);}}
     public static void addSolid(Effect effect){if(!ClientConfig.effectsOff()&&SOLID.size()<96)SOLID.add(effect);}
 
 	private WorldFx() {
@@ -140,11 +151,12 @@ public final class WorldFx {
 		lastFrameQuads=0;
 		EFFECTS.clear();
         SOLID.clear();
+        MATERIALS.clear();
 	}
 
 	private static void render(LevelRenderContext context) {
 		Minecraft mc = Minecraft.getInstance();
-		if (ClientConfig.effectsOff() || EFFECTS.isEmpty()&&SOLID.isEmpty() || mc.level == null) {
+		if (ClientConfig.effectsOff() || EFFECTS.isEmpty()&&SOLID.isEmpty()&&MATERIALS.isEmpty() || mc.level == null) {
 			lastFrameQuads=0;
 			return;
 		}
@@ -154,6 +166,13 @@ public final class WorldFx {
 		boolean low = ClientConfig.lowVfx();
 		PoseStack poseStack = context.poseStack();
         int[] shared=new int[1];
+        var orientation=context.levelState().cameraRenderState.orientation;
+        Vec3 forward=new Vec3(orientation.transform(new org.joml.Vector3f(0,0,-1)));
+        Vec3 right=new Vec3(orientation.transform(new org.joml.Vector3f(1,0,0))),up=new Vec3(orientation.transform(new org.joml.Vector3f(0,1,0)));
+        context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.entityTranslucentEmissive(EnergySprites.ATLAS),(pose,buffer)->{
+            Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
+            for(Iterator<Effect> it=MATERIALS.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
+        });
         context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.debugQuads(),(pose,buffer)->{
             Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;
             for(Iterator<Effect> it=SOLID.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
@@ -421,14 +440,17 @@ public final class WorldFx {
 			Vec3 base = e.getPosition(partial);
 			boolean firstPerson=e==mc.player&&mc.options.getCameraType().isFirstPerson();
 			if(infinity){
-				double radius=e.getBbWidth()*.5+.48;int count=frame.segments(32);float spin=(frame.time()-start)*.018f;
-				for(int i=0;i<count&&frame.budgetLeft();i++){double a=i*Math.PI*2/count+spin,b=(i+.65)*Math.PI*2/count+spin;frame.beam(base.add(Math.cos(a)*radius,.07,Math.sin(a)*radius),base.add(Math.cos(b)*radius,.07,Math.sin(b)*radius),.025,fade(color,.34f),fade(0xDBF7FF,.15f));}
-				if(!firstPerson)for(int side=0;side<8;side++){
-					double a=side*Math.PI/4+spin*.3;Vec3 edge=base.add(Math.cos(a)*radius,0,Math.sin(a)*radius),tangent=new Vec3(-Math.sin(a)*.15,0,Math.cos(a)*.15);
-					for(int n=0;n<4;n++){double y=.15+n*e.getBbHeight()/4;Vec3 p=edge.add(0,y,0);frame.beam(p.subtract(tangent),p.add(tangent),.018,fade(color,.3f),fade(0xDBF7FF,.1f));frame.beam(p,p.add(0,.12,0),.02,fade(color,.24f),fade(color,.08f));}
-				}
-				return true;
-			}
+                // Quiet boundary glints; no ground ring covering the local player's view.
+                double radius=e.getBbWidth()*.5+.48;
+                int count=firstPerson?4:8;
+                for(int i=0;i<count;i++){
+                    double a=i*Math.PI*2/count+.2,y=firstPerson?.12:.25+(i%3)*.5;
+                    Vec3 p=base.add(Math.cos(a)*radius,y,Math.sin(a)*radius);
+                    Vec3 tangent=new Vec3(-Math.sin(a)*.07,0,Math.cos(a)*.07);
+                    frame.beam(p.subtract(tangent),p.add(tangent).add(0,.06,0),.012,fade(0xBDDFFF,.18f),fade(color,.05f));
+                }
+                return true;
+            }
 			double rr = e.getBbWidth() * 0.9;
 			int seg = frame.segments(20);
 			for (int k = 0; k < 3; k++) {

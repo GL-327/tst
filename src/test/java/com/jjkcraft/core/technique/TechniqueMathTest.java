@@ -7,18 +7,18 @@ import org.junit.jupiter.api.Test;
 
 class TechniqueMathTest {
 	private static final double EPS = 1e-9;
-    @Test void offensiveMultiplierIsIndependentAndBounded(){assertEquals(25,TechniqueMath.damage(10,TechniqueMath.DEFAULT_DAMAGE_MULTIPLIER));assertEquals(1,TechniqueMath.damage(10,-5));assertEquals(100,TechniqueMath.damage(10,50));assertEquals(25,TechniqueMath.damage(10,Double.NaN));}
+    @Test void offensiveMultiplierIsIndependentAndBounded(){assertEquals(30,TechniqueMath.damage(10,TechniqueMath.DEFAULT_DAMAGE_MULTIPLIER));assertEquals(1,TechniqueMath.damage(10,-5));assertEquals(100,TechniqueMath.damage(10,50));assertEquals(30,TechniqueMath.damage(10,Double.NaN));}
 
 	@Test
 	void powerCombinesRankOutputMasteryAndVows() {
 		assertEquals(1.0, TechniqueMath.power(0, 0, false, 1.0), EPS);
-		assertEquals(1.4 * 1.2 * 1.1 * 1.35, TechniqueMath.power(5, 10, true, 1.35), EPS);
+		assertEquals(1.4 * 1.2 * 1.6 * 1.35, TechniqueMath.power(5, 10, true, 1.35), EPS);
 	}
 
 	@Test
 	void costReductionsStack() {
 		assertEquals(10.0, TechniqueMath.cost(10, 0, false, 1), EPS);
-		assertEquals(10 * 0.7 * 0.9, TechniqueMath.cost(10, 40, true, 1), EPS);
+		assertEquals(10 * 0.7 * 0.85, TechniqueMath.cost(10, 40, true, 1), EPS);
 	}
 
 	@Test
@@ -60,6 +60,6 @@ class TechniqueMathTest {
 		double palm = 7 * TechniqueMath.power(0, 0, false, 1.0);
 		assertTrue(palm < 20, "Grade 4 palm one-shots a player: " + palm);
 		double merge = 40 * TechniqueMath.power(5, 20, true, 1.0);
-		assertTrue(merge < 120, "merge technique too strong at Grade 1: " + merge);
+		assertTrue(merge < 150, "merge technique too strong at Grade 1: " + merge);
 	}
 }

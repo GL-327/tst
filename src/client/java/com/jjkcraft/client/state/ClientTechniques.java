@@ -118,18 +118,21 @@ public final class ClientTechniques {
 			return 0;
 		}
 
-		int full = definition(id).map(d -> TechniqueMath.cooldown(d.cast().cooldown(), ClientProgress.get().growth().efficiency())).orElse(1);
+		int full = definition(id).map(d -> TechniqueMath.cooldown(d.cast().cooldown(), ClientProgress.get().growth().efficiency(),mastery(id))).orElse(1);
 		return Math.min(1, (float) (ready - now) / Math.max(1, full));
 	}
 
 	public static boolean mastered(Identifier id) {
 		return definition(id).map(d -> state.masteryOf(id) >= d.masteryUses()).orElse(false);
 	}
+    public static double mastery(Identifier id){return definition(id).map(d->TechniqueMath.mastery(state.masteryOf(id),d.masteryUses())).orElse(0.0);}
+    public static double power(Identifier id){return TechniqueMath.power(ClientProgress.rank(),ClientProgress.get().growth().output(),mastery(id),1);}
+    public static int cooldown(Identifier id){return definition(id).map(d->TechniqueMath.cooldown(d.cast().cooldown(),ClientProgress.get().growth().efficiency(),mastery(id))).orElse(0);}
 
 	/** The CE cost the player would pay, without vow modifiers (shown in tooltips). */
 	public static double cost(Identifier id) {
         if(com.jjkcraft.technique.TechniqueBindings.family(id))return 0;
-		return definition(id).map(d -> TechniqueMath.cost(d.cast().cost(), ClientProgress.get().growth().control(), mastered(id), ClientAwakening.view().record().sixEyes()?0.75:1.0)).orElse(0.0);
+		return definition(id).map(d -> TechniqueMath.cost(d.cast().cost(), ClientProgress.get().growth().control(), mastery(id), ClientAwakening.view().record().sixEyes()?0.75:1.0)).orElse(0.0);
 	}
 
 	public static boolean affordable(Identifier id) {

@@ -1,5 +1,8 @@
 # Combat refinement — 1.13.0-preview
 
+Historical release notes. The current hand renderer, centered origins, material effects
+and mastery buffs are described in [Mastery and effects](MASTERY_AND_VFX.md).
+
 This release addresses first-person combat arms, moving charges, spatial releases,
 fist coatings, offensive output, wheel readability and creature presentation.
 

@@ -28,7 +28,7 @@ public final class ProjectionPlannerScreen extends JjkScreen {
     public int[] pointAtOffset(double right,double forward){return new int[]{panelX()+10+(int)((right/24+.5)*size()),contentY()+18+(int)((.5-forward/24)*size())};}
     public int unsafeStep(){return preview.unsafe(steps);}
     public int pointCount(){return steps.size();}
-    private double reach(){var d=ClientTechniques.definition(JjkCraft.id("projection_sorcery")).orElse(null);if(d==null||!(d.behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior b))return 12;var t=ClientPersonalization.get(JjkCraft.id("projection_sorcery"));return Math.clamp(b.blink()*com.jjkcraft.core.technique.TechniqueMath.power(ClientProgress.rank(),ClientProgress.get().growth().output(),ClientTechniques.mastered(JjkCraft.id("projection_sorcery")),1)*t.output()/100.0*t.pact().output(),1,16);}
+    private double reach(){var d=ClientTechniques.definition(JjkCraft.id("projection_sorcery")).orElse(null);if(d==null||!(d.behavior() instanceof com.jjkcraft.technique.behavior.ProjectionSorceryBehavior b))return 12;var t=ClientPersonalization.get(JjkCraft.id("projection_sorcery"));return Math.clamp(b.blink()*com.jjkcraft.core.technique.TechniqueMath.masteryReach(ClientTechniques.mastery(JjkCraft.id("projection_sorcery")))*com.jjkcraft.core.technique.TechniqueMath.power(ClientProgress.rank(),ClientProgress.get().growth().output(),ClientTechniques.mastery(JjkCraft.id("projection_sorcery")),1)*t.output()/100.0*t.pact().output(),1,16);}
     private void changed(){automatic=false;preview.dirty=true;feedback="Unsaved route";}
     @Override protected void initContent(){
         preview.dirty=true;rows.clear();int x=panelX()+size()+24,y=contentY()+20,w=panelW()-size()-34;

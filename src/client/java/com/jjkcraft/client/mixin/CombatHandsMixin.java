@@ -1,7 +1,5 @@
 package com.jjkcraft.client.mixin;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,7 +10,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 @Mixin(FirstPersonHandsAndItemsRenderer.class)
 public abstract class CombatHandsMixin {
-    @Invoker("renderPlayerArm") protected abstract void jjkcraft$arm(PoseStack stack,SubmitNodeCollector nodes,int light,float equip,float swing,net.minecraft.world.entity.HumanoidArm arm,PlayerRenderState player);
     @Inject(method="submitArmWithItem",at=@At("HEAD"),cancellable=true)
     private void jjkcraft$pose(PlayerRenderState player,FirstPersonHandsAndItemsRenderState hands,float partial,float pitch,InteractionHand hand,
             float swing,ItemStack item,float equip,PoseStack stack,SubmitNodeCollector nodes,int light,CallbackInfo ci){
@@ -23,9 +20,7 @@ public abstract class CombatHandsMixin {
         stack.pushPose();
         try {
             if(!com.jjkcraft.client.combat.CombatAnimations.hands(stack,right,partial))return;
-            com.jjkcraft.client.combat.CombatAnimations.firstPerson=true;
-            try {jjkcraft$arm(stack,nodes,light,0,0,right?net.minecraft.world.entity.HumanoidArm.RIGHT:net.minecraft.world.entity.HumanoidArm.LEFT,player);}
-            finally {com.jjkcraft.client.combat.CombatAnimations.firstPerson=false;}
+            com.jjkcraft.client.combat.CombatFists.submit(stack,nodes,light,player,right);
             ci.cancel();
         } finally {stack.popPose();}
     }

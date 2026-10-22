@@ -95,21 +95,29 @@ public final class CombatAnimations {
         boolean stance=p.move().equals("stance");
         if(!move&&!stance&&p.guard()<0&&p.stun()<=0&&!charging)return false;
         int side=right?1:-1;
-        stack.translate(.08*side,-.20,-.22);
-        stack.scale(.82f,.82f,.82f);
-        if(charging){stack.translate(-side*.05,.08,-.03);stack.rotateDegrees(Axis.YP,side*5);}
-        if(stance){float breath=(float)Math.sin((mc.level.getGameTime()+partial)*.11)*.004f;stack.translate(-side*.04,.045+breath,-.03);stack.rotateDegrees(Axis.ZP,side*4);
-            if(right==(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT)&&mc.player.getMainHandItem().getItem() instanceof com.jjkcraft.item.tool.CursedToolItem){stack.translate(side*.14,-.17,.04);stack.rotateDegrees(Axis.ZP,-side*13);}
+        boolean dominant=right==(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT);
+        float breath=mc.level==null?0:(float)Math.sin((mc.level.getGameTime()+partial)*.11)*.003f;
+        stack.translate(side*(dominant?.34:.32),dominant?-.30+breath:-.26-breath,dominant?-.67:-.74);
+        stack.rotateDegrees(Axis.ZP,side*12);stack.rotateDegrees(Axis.YP,-side*10);
+        if(charging){stack.translate(-side*.10,.035,-.06);stack.rotateDegrees(Axis.ZP,-side*10);}
+        if(p.guard()>=0&&!move){stack.translate(-side*.09,.10+(p.guard()-1)*.065,-.05);stack.rotateDegrees(Axis.ZP,-side*12);}
+        else if(move){
+            float age=mc.level.getGameTime()-p.started()+partial;
+            float strike=smooth((age-p.startup()+2)/4f),recovery=smooth((age-p.startup()-p.active())/Math.max(1,p.recovery()));
+            float w=smooth(age/Math.max(1,p.startup()))*(1-strike),h=strike*(1-recovery);
+            boolean active=dominant||p.move().equals("heavy")||p.move().startsWith("cast_");
+            if(p.move().equals("backfist"))active=!dominant;
+            if(!active){stack.translate(-side*.025*h,.025*h,.025*h);}
+            else switch(p.move()){
+                case "feint" -> {stack.translate(0,.015*h,-.07*h+.04*w);}
+                case "hook","backfist" -> {stack.translate(side*(.10*w-.20*h),.035*h,-.12*h);stack.rotateDegrees(Axis.YP,side*(20*w-35*h));stack.rotateDegrees(Axis.ZP,-side*18*h);}
+                case "uppercut" -> {stack.translate(-side*.07*h,-.07*w+.15*h,-.14*h);stack.rotateDegrees(Axis.XP,15*w-35*h);}
+                case "heavy" -> {stack.translate(-side*.08*h,.09*w-.03*h,-.17*h);stack.rotateDegrees(Axis.XP,-20*w+15*h);}
+                case "sweep" -> {stack.translate(0,-.06*h,.025*h);}
+                case "cast_summon","cast_domain","cast_restriction","cast_area","cast_ultimate" -> {stack.translate(-side*.12*h,.035*h,-.04*h);stack.rotateDegrees(Axis.YP,side*12*h);}
+                default -> {stack.translate(-side*.08*h,.055*h,-.24*h+.06*w);stack.rotateDegrees(Axis.XP,-12*h+7*w);}
+            }
         }
-        if(p.guard()>=0&&!move){stack.translate(-0.16*side,0.2+(p.guard()-1)*0.1,-0.15);stack.rotateDegrees(Axis.ZP,18*side);}
-        else if(move){float h=Math.max(0,k),w=Math.max(0,-k);switch(p.move()){
-            case "feint" -> {stack.translate(0,.025*h,-.13*h+.09*w);stack.rotateDegrees(Axis.YP,side*10*w);}
-            case "hook","backfist" -> {stack.translate(side*(0.3*w-0.35*h),0.12*h,-0.25*h);stack.rotateDegrees(Axis.YP,side*(55*w-60*h));}
-            case "uppercut" -> {stack.translate(0,-0.2*w+0.45*h,-0.35*h);stack.rotateDegrees(Axis.XP,35*w-55*h);}
-            case "heavy" -> {stack.translate(0,0.4*w-0.1*h,-0.35*h);stack.rotateDegrees(Axis.XP,-55*w+35*h);}
-            case "sweep" -> {stack.translate(0,-0.25*h,0.12*h);stack.rotateDegrees(Axis.ZP,22*h);}
-            default -> {if(right==(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT)){stack.translate(-.035*h,0.08*h,-0.62*h+0.21*w);stack.rotateDegrees(Axis.XP,-22*h+15*w);}else{stack.translate(.04*h,.06*h,.1*h);stack.rotateDegrees(Axis.YP,-12*h);}}
-        }}
         return true;
     }
 }

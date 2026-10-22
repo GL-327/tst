@@ -5,6 +5,27 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.14.0-preview, 2026-10-22
+
+- Rebuilt charge, spatial-field and projectile effects with sixteen filtered, guttered
+  materials. Blue/Red/Purple have distinct cores and flow. Every family receives material
+  casting/impact effects, with fewer random particles and crossing Shrine cage incisions.
+- Centered local charges on the current camera axis and server projectile/release origins
+  on the eye/aim ray. Removed the side/down hand offset and opaque ball/wire-hoop rendering.
+- Replaced repeated vanilla combat arm transforms with skin-mapped fists, thumbs, bent
+  forearms, sleeves, slim/left-handed handling and continuous attack transitions.
+- All techniques gain continuous mastery benefits up to four original milestones:
+  1.60×/2.25×/3.00× power at 100/200/400%, up to 35% less CE and cooldown, and supported
+  reach/duration growth. New server configs default to 3.0× offensive damage. Existing
+  configured values and saved mastery counts are retained. Creative maximum presets use 400%.
+- Coatings refresh their output at contact. Tooltips, cooldown overlays, workshop previews,
+  Projection reach and passive/channel upkeep account for mastery.
+- Infinity slows inward motion, preserving tangent motion and living gravity, and only
+  separates overlapping targets. Incoming projectiles fully suspend and resume when released.
+  Removed constant outward acceleration, minimum-speed leakage and the first-person floor ring.
+- Added native checks for the full registry, all families, ultrawide hands/moving casts,
+  real Infinity motion and projectile restoration, plus mastery/Infinity unit regressions.
+
 ## 1.13.0-preview, 2026-10-22
 
 - Reworked first-person empty-hand combat rendering: one scoped pose per arm, compact

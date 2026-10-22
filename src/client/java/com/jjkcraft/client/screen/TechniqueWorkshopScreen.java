@@ -137,7 +137,7 @@ public final class TechniqueWorkshopScreen extends JjkScreen {
 
         double modifier=ClientAwakening.view().record().sixEyes()?0.75:1;
 
-        double cost=TechniqueMath.cost(d.cast().cost(),ClientProgress.get().growth().control(),ClientTechniques.mastered(id),modifier);
+        double cost=TechniqueMath.cost(d.cast().cost(),ClientProgress.get().growth().control(),ClientTechniques.mastery(id),modifier);
 
         g.fill(rx-5,y+25,rx+rw+3,panelY()+panelH()-32,0x70000000);
         Ink.text(g,"EXPRESSION CE COST",rx,y+30,Palette.TEXT_DIM,1);
@@ -146,8 +146,8 @@ public final class TechniqueWorkshopScreen extends JjkScreen {
         Ink.text(g,String.format(java.util.Locale.ROOT,"%.1f / %.0f",cost,budget),rx,y+44,cost>budget?Palette.danger():Palette.energyHigh(),1);
 
         bar(g,rx,y+59,rw,budget>0?cost/budget:1,Palette.energy());
-        String[] preview={String.format(java.util.Locale.ROOT,"Cooldown %.2fs",TechniqueMath.cooldown(d.cast().cooldown(),ClientProgress.get().growth().efficiency())/20.0),
-            String.format(java.util.Locale.ROOT,"Reach %.1f blocks",d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior b?b.distance():d.cast().range()),
+        String[] preview={String.format(java.util.Locale.ROOT,"Cooldown %.2fs",TechniqueMath.cooldown(d.cast().cooldown(),ClientProgress.get().growth().efficiency(),ClientTechniques.mastery(id))/20.0),
+            String.format(java.util.Locale.ROOT,"Reach %.1f blocks",d.behavior() instanceof com.jjkcraft.technique.behavior.DashBehavior b?b.distance()*TechniqueMath.masteryReach(ClientTechniques.mastery(id)):d.cast().range()*TechniqueMath.masteryReach(ClientTechniques.mastery(id))),
             String.format(java.util.Locale.ROOT,"Upkeep %.1f CE/s",d.cast().upkeep()),
 
             "Output "+draft.output()+"% x"+String.format(java.util.Locale.ROOT,"%.2f",draft.pact().output()),feedback.isEmpty()?(draft.equals(ClientPersonalization.get(id))?"Server: saved":"Unsaved draft"):feedback};

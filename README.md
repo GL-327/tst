@@ -3,11 +3,14 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.13.0-preview.** Combat refinement fixes oversized first-person arms,
-moves domain information onto the wheel, anchors charges to the moving caster and
-adds outward spatial releases. Blue/Red fist coatings and separate CE imbuement join
-stronger techniques, slower maximum charges, larger maximum effects and repainted
-creature materials. [Controls and changes](docs/COMBAT_REFINEMENT.md).
+**Status: 1.14.0-preview.** The full roster gains continuous mastery scaling through
+400% training, lower mastered CE costs/cooldowns and stronger supported utility effects.
+New filtered effect materials replace Limitless's flat cores and wire hoops, with
+camera-centered moving charges and material effects across all 51 families. Empty-hand
+combat uses skin-mapped fists and bent wrists. Infinity slows and holds approaching targets,
+with separation only at close contact. [Changes and verification](docs/MASTERY_AND_VFX.md).
+Blue/Red fist coatings, separate CE imbuement and wheel-only domain information remain.
+[Controls](docs/COMBAT_REFINEMENT.md).
 
 The quality-of-life update adds searchable family abilities,
 live readiness filters, remembered wheel selections, summon dismissal, an Infinity

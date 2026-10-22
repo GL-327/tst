@@ -32,6 +32,7 @@ public class CursedBoltEntity extends ThrowableProjectile {
 	public void burnSeconds(int seconds){burnSeconds=Math.clamp(seconds,0,20);}
 	private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(CursedBoltEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Float> SIZE = SynchedEntityData.defineId(CursedBoltEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> TECHNIQUE = SynchedEntityData.defineId(CursedBoltEntity.class, EntityDataSerializers.STRING);
 
 	private CastContext ctx;
 	private double damage;
@@ -60,6 +61,7 @@ public class CursedBoltEntity extends ThrowableProjectile {
 		this.gravity = gravity;
 		this.entityData.set(COLOR, ctx.technique().visuals().color());
 		this.entityData.set(SIZE, size);
+        this.entityData.set(TECHNIQUE,ctx.techniqueId().toString());
 		setOwner(ctx.caster());
 		return this;
 	}
@@ -68,6 +70,7 @@ public class CursedBoltEntity extends ThrowableProjectile {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		builder.define(COLOR, 0xFF8F5CFF);
 		builder.define(SIZE, 0.35f);
+        builder.define(TECHNIQUE,"");
 	}
 
 	public int color() {
@@ -202,6 +205,6 @@ public class CursedBoltEntity extends ThrowableProjectile {
 	}
 
 	public Identifier technique() {
-		return ctx == null ? null : ctx.techniqueId();
+		return ctx == null ? Identifier.tryParse(entityData.get(TECHNIQUE)) : ctx.techniqueId();
 	}
 }

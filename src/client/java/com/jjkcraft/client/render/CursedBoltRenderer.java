@@ -36,6 +36,7 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 
 	public static final class State extends EntityRenderState {
 		int color;
+        int tile;boolean spatial;
 		float size;
         float age;
 		List<Vec3> trail = List.of();
@@ -55,6 +56,9 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		super.extractRenderState(entity, state, partialTicks);
 		state.color = entity.color();
 		state.size = entity.size();
+        var technique=entity.technique();
+        state.spatial=technique!=null&&com.jjkcraft.client.vfx.SpectralFx.spatial(technique.getPath());
+        state.tile=technique==null?3:state.spatial?com.jjkcraft.client.vfx.EnergySprites.spatialTile(technique.getPath()):com.jjkcraft.client.vfx.TechniqueMaterials.tile(technique);
         state.age=entity.tickCount+partialTicks;
 		Vec3 now = new Vec3(state.x, state.y, state.z);
 		if (HISTORY.size() > 256) {
@@ -86,79 +90,21 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 	}
 
 	@Override
-	public void submit(State state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-		Quaternionf facing = camera.orientation;
-		float size = state.size;
-		int core = ARGB.color(230, state.color & 0xFFFFFF);
-		int halo = ARGB.color(90, state.color & 0xFFFFFF);
-		List<Vec3> trail = state.trail;
-		Vec3 cameraFromEntity = camera.pos.subtract(state.x, state.y, state.z);
-        float near=(float)Math.clamp(cameraFromEntity.length()/Math.max(1,size*2.5),.12,1);
-
-		collector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, buffer) -> {
-			glow(pose, buffer, facing, size * 1.6f, ARGB.multiplyAlpha(halo,near));
-			glow(pose, buffer, facing, size * .8f, ARGB.multiplyAlpha(core,near));
-            glow(pose, buffer, facing, size * 0.18f, ARGB.multiplyAlpha(0xB0FFFFFF,near));
-            int segments=ClientConfig.lowVfx()||cameraFromEntity.lengthSqr()>32*32?8:16;
-            for(int plane=0;plane<2;plane++)for(int j=0;j<segments;j++){
-                double a=j*Math.PI*2/segments+state.age*.16,b=(j+.7)*Math.PI*2/segments+state.age*.16;
-                Vec3 p=plane==0?new Vec3(Math.cos(a)*size*1.35,Math.sin(a)*size*.5,Math.sin(a)*size):new Vec3(Math.cos(a)*size,Math.sin(a)*size*1.35,Math.cos(a)*size*.45);
-                Vec3 q=plane==0?new Vec3(Math.cos(b)*size*1.35,Math.sin(b)*size*.5,Math.sin(b)*size):new Vec3(Math.cos(b)*size,Math.sin(b)*size*1.35,Math.cos(b)*size*.45);
-                Vec3 side=q.subtract(p).cross(cameraFromEntity.subtract(p)).normalize().scale(size*.035);
-                vertex(pose,buffer,p.add(side),core);vertex(pose,buffer,p.subtract(side),core);vertex(pose,buffer,q.subtract(side),halo);vertex(pose,buffer,q.add(side),halo);
+    public void submit(State state,PoseStack stack,SubmitNodeCollector collector,CameraRenderState camera){
+        if(ClientConfig.effectsOff())return;
+        Vec3 right=new Vec3(camera.orientation.transform(new Vector3f(1,0,0))),up=new Vec3(camera.orientation.transform(new Vector3f(0,1,0)));
+        double size=state.size;
+        float near=(float)Math.clamp(camera.pos.distanceTo(new Vec3(state.x,state.y,state.z))/Math.max(1,size*1.5),.18,1);
+        collector.submitCustomGeometry(stack,RenderTypes.entityTranslucentEmissive(com.jjkcraft.client.vfx.EnergySprites.ATLAS),(pose,buffer)->{
+            double spin=ClientConfig.reducedMotion()?0:state.age*.035;
+            Vec3 u=right.scale(Math.cos(spin)).add(up.scale(Math.sin(spin))),v=up.scale(Math.cos(spin)).subtract(right.scale(Math.sin(spin)));
+            com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,Vec3.ZERO,u.scale(size*1.75),v.scale(size*1.75),state.tile,ARGB.color((int)(near*250),state.spatial?0xffffff:state.color&0xffffff));
+            com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,Vec3.ZERO,u.scale(size*2.05),v.scale(size*2.05),4,ARGB.color((int)(near*80),state.color&0xffffff));
+            for(int i=1;i<state.trail.size();i++){
+                float t=1-i/(float)state.trail.size();double r=size*(.35+.45*t);
+                com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,state.trail.get(i),right.scale(r),up.scale(r),4,ARGB.color((int)(near*t*100),state.color&0xffffff));
             }
-
-			for (int i = 0; i + 1 < trail.size(); i++) {
-				Vec3 a = trail.get(i);
-				Vec3 b = trail.get(i + 1);
-				float t0 = 1 - (float) i / trail.size();
-				float t1 = 1 - (float) (i + 1) / trail.size();
-				Vec3 axis = b.subtract(a);
-				Vec3 side = axis.cross(cameraFromEntity.subtract(a));
-				if (side.lengthSqr() < 1e-8) {
-					continue;
-				}
-
-				side = side.normalize();
-				Vec3 s0 = side.scale(size * 0.8 * t0);
-				Vec3 s1 = side.scale(size * 0.8 * t1);
-				int c0 = ARGB.color((int) (170 * t0), state.color & 0xFFFFFF);
-				int c1 = ARGB.color((int) (170 * t1), state.color & 0xFFFFFF);
-				vertex(pose, buffer, a.add(s0), c0);
-				vertex(pose, buffer, a.subtract(s0), c0);
-				vertex(pose, buffer, b.subtract(s1), c1);
-				vertex(pose, buffer, b.add(s1), c1);
-				vertex(pose, buffer, b.add(s1), c1);
-				vertex(pose, buffer, b.subtract(s1), c1);
-				vertex(pose, buffer, a.subtract(s0), c0);
-				vertex(pose, buffer, a.add(s0), c0);
-			}
-		});
-		super.submit(state, poseStack, collector, camera);
-	}
-
-	/** A round, camera-facing glow: full colour at the centre, fading to nothing at the rim. */
-	private static void glow(PoseStack.Pose pose, VertexConsumer buffer, Quaternionf facing, float radius, int color) {
-		int segments = 12;
-		int rim = color & 0xFFFFFF;
-		for (int i = 0; i < segments; i++) {
-			double a0 = 2 * Math.PI * i / segments;
-			double a1 = 2 * Math.PI * (i + 1) / segments;
-			Vector3f p0 = facing.transform(new Vector3f((float) Math.cos(a0) * radius, (float) Math.sin(a0) * radius, 0));
-			Vector3f p1 = facing.transform(new Vector3f((float) Math.cos(a1) * radius, (float) Math.sin(a1) * radius, 0));
-			// One wedge as a quad with a doubled centre vertex, both windings.
-			buffer.addVertex(pose, 0, 0, 0).setColor(color);
-			buffer.addVertex(pose, p0.x, p0.y, p0.z).setColor(rim);
-			buffer.addVertex(pose, p1.x, p1.y, p1.z).setColor(rim);
-			buffer.addVertex(pose, 0, 0, 0).setColor(color);
-			buffer.addVertex(pose, 0, 0, 0).setColor(color);
-			buffer.addVertex(pose, p1.x, p1.y, p1.z).setColor(rim);
-			buffer.addVertex(pose, p0.x, p0.y, p0.z).setColor(rim);
-			buffer.addVertex(pose, 0, 0, 0).setColor(color);
-		}
-	}
-
-	private static void vertex(PoseStack.Pose pose, VertexConsumer buffer, Vec3 p, int color) {
-		buffer.addVertex(pose, (float) p.x, (float) p.y, (float) p.z).setColor(color);
-	}
+        });
+        super.submit(state,stack,collector,camera);
+    }
 }

@@ -7,19 +7,41 @@ import com.jjkcraft.core.progress.ProgressionMath;
  * types; unit-tested in {@code TechniqueMathTest}, which also checks max damage against curse HP.
  */
 public final class TechniqueMath {
-    public static final double DEFAULT_DAMAGE_MULTIPLIER=2.5;
+    public static final double DEFAULT_DAMAGE_MULTIPLIER=3.0;
     public static double damage(double amount,double multiplier){return Math.max(0,amount)*(Double.isFinite(multiplier)?Math.clamp(multiplier,.1,10):DEFAULT_DAMAGE_MULTIPLIER);}
 	/** Damage bonus per grade rank above Grade 4. */
 	public static final double RANK_POWER = 0.08;
 	/** Mastered techniques deal this much more damage. */
-	public static final double MASTERY_POWER = 1.10;
+	public static final double MASTERY_POWER = 1.60;
 	/** Mastered techniques cost this much less. */
-	public static final double MASTERY_COST = 0.90;
+	public static final double MASTERY_COST = 0.85;
 	/** Upper bound on a target's CE ratio for scaling techniques. */
 	public static final double MAX_CE_RATIO = 3.0;
 
 	private TechniqueMath() {
 	}
+
+    /** Landed uses continue to matter after the first mastery milestone. Four milestones cap it. */
+    public static double mastery(int uses, int milestone) {
+        return Math.clamp(Math.max(0, uses) / (double)Math.max(1, milestone), 0, 4);
+    }
+    public static double masteryPower(double mastery) {
+        double m=Math.clamp(mastery,0,4);
+        return m<=1 ? 1+.6*m : m<=2 ? 1.6+.65*(m-1) : 2.25+.375*(m-2);
+    }
+    public static double masteryCost(double mastery) {return 1-.15*Math.min(1,Math.max(0,mastery))-.20*Math.clamp((mastery-1)/3,0,1);}
+    public static double masteryRecovery(double mastery) {return 1-.15*Math.min(1,Math.max(0,mastery))-.20*Math.clamp((mastery-1)/3,0,1);}
+    public static double masteryReach(double mastery) {return 1+.075*Math.clamp(mastery,0,4);}
+    public static double masteryDuration(double mastery) {return 1+.125*Math.clamp(mastery,0,4);}
+    public static double power(int rank,int outputPoints,double mastery,double vowMultiplier) {
+        return (1+RANK_POWER*Math.max(0,rank))*ProgressionMath.damageMultiplier(outputPoints)*masteryPower(mastery)*vowMultiplier;
+    }
+    public static double cost(double base,int controlPoints,double mastery,double vowMultiplier) {
+        return base*ProgressionMath.costMultiplier(controlPoints)*masteryCost(mastery)*vowMultiplier;
+    }
+    public static int cooldown(int base,int efficiencyPoints,double mastery) {
+        return base<=0?0:Math.max(1,(int)Math.round(base*ProgressionMath.cooldownMultiplier(efficiencyPoints)*masteryRecovery(mastery)));
+    }
 
 	/** Damage multiplier for a caster. */
 	public static double power(int rank, int outputPoints, boolean mastered, double vowMultiplier) {
