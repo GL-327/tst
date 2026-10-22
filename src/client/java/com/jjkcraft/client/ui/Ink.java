@@ -8,9 +8,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 /**
- * Drawing primitives for the shared "ink-brushed panel" style. Everything is drawn from filled
- * rectangles so it works with any renderer, resource pack or shader pack. Brush edges are
- * deterministic (seeded by position) so panels do not shimmer frame to frame.
+ * Drawing primitives for the shared ink-panel style. Crisp borders and restrained accents
+ * keep dense technique screens readable with any renderer, resource pack or shader pack.
  */
 public final class Ink {
 	private Ink() {
@@ -21,38 +20,16 @@ public final class Ink {
 	}
 
 	/**
-	 * A dark panel with ragged brush-stroke top and bottom edges and a thin accent stroke.
+     * A dark panel with a thin border and an accent corner.
 	 *
 	 * @param alpha overall opacity multiplier (HUD opacity setting)
 	 */
 	public static void panel(GuiGraphicsExtractor g, int x, int y, int w, int h, int accent, float alpha) {
-		int ink = ARGB.multiplyAlpha(Palette.INK, alpha);
-		int edge = ARGB.multiplyAlpha(Palette.INK_EDGE, alpha);
-		g.fill(x, y, x + w, y + h, ink);
+        g.fill(x,y,x+w,y+h,ARGB.multiplyAlpha(Palette.INK,alpha));
+        g.outline(x,y,w,h,ARGB.multiplyAlpha(Palette.INK_EDGE,alpha));
+        g.fill(x,y,x+Math.min(w,24),y+2,ARGB.multiplyAlpha(accent,alpha));
+        g.fill(x,y,x+2,y+Math.min(h,12),ARGB.multiplyAlpha(accent,alpha));
 
-		// Ragged edges: short strokes of varying length hanging off the top and bottom.
-		int seed = x * 31 + y * 17 + w;
-		for (int i = 0; i < w; i += 3) {
-			int top = hash(seed + i) % 3;
-			int bottom = hash(seed * 7 + i) % 3;
-			int len = Math.min(3, w - i);
-			g.fill(x + i, y - top, x + i + len, y, ARGB.multiplyAlpha(ink, 0.85f));
-			g.fill(x + i, y + h, x + i + len, y + h + bottom, ARGB.multiplyAlpha(ink, 0.85f));
-		}
-
-		// Side edges are slightly darker.
-		g.fill(x - 1, y + 1, x, y + h - 1, edge);
-		g.fill(x + w, y + 1, x + w + 1, y + h - 1, edge);
-
-		// Accent brush stroke along the bottom, tapering at both ends.
-		int strokeY = y + h - 1;
-		for (int i = 0; i < w; i++) {
-			float t = (float) i / Math.max(1, w - 1);
-			float taper = Mth.sin((float) Math.PI * t);
-			if (taper > 0.15f) {
-				g.fill(x + i, strokeY, x + i + 1, strokeY + 1, ARGB.multiplyAlpha(accent, alpha * taper));
-			}
-		}
 	}
 
 	/** A plain panel without the ragged edges, for dense layouts (lists, tooltips). */
@@ -75,11 +52,15 @@ public final class Ink {
 	}
 
 	public static void text(GuiGraphicsExtractor g, Component text, int x, int y, int color, float alpha) {
-		g.text(font(), text, x, y, ARGB.multiplyAlpha(color, alpha), true);
+        var m=Minecraft.getInstance();var at=g.pose().transformPosition(new org.joml.Vector2f(x,y));var end=g.pose().transformPosition(new org.joml.Vector2f(x+font().width(text),y+9));
+        var p=com.jjkcraft.client.design.UiDesign.text(text.getString(),(int)at.x,(int)at.y,Math.max(1,(int)Math.abs(end.x-at.x)),Math.max(1,(int)Math.abs(end.y-at.y)),color);
+        if(p!=null){if(p.hidden())return;var target=new org.joml.Matrix3x2f(g.pose()).invert().transformPosition(new org.joml.Vector2f(p.x()*m.getWindow().getGuiScaledWidth()/640f,p.y()*m.getWindow().getGuiScaledHeight()/360f));
+            float desired=p.h()*m.getWindow().getGuiScaledHeight()/360f,current=Math.abs(end.y-at.y),scale=Math.abs(desired-current)<1?1:Math.clamp(desired/Math.max(.01f,current),.5f,3f);
+            g.pose().pushMatrix();g.pose().translate(target.x,target.y);g.pose().scale(scale,scale);g.text(font(),text,0,0,ARGB.multiplyAlpha(p.color(),alpha),false);g.pose().popMatrix();return;}
+        g.text(font(), text, x, y, ARGB.multiplyAlpha(color, alpha), false);
 	}
 
-	public static void text(GuiGraphicsExtractor g, String text, int x, int y, int color, float alpha) {
-		g.text(font(), text, x, y, ARGB.multiplyAlpha(color, alpha), true);
+	public static void text(GuiGraphicsExtractor g, String text, int x, int y, int color, float alpha) {text(g,Component.literal(text),x,y,color,alpha);
 	}
 
 	/** {@code text} cut to {@code width} pixels with an ellipsis, keeping its style. */
@@ -93,7 +74,7 @@ public final class Ink {
 	}
 
 	public static void centered(GuiGraphicsExtractor g, Component text, int cx, int y, int color, float alpha) {
-		g.centeredText(font(), text, cx, y, ARGB.multiplyAlpha(color, alpha));
+		text(g,text,cx-font().width(text)/2,y,color,alpha);
 	}
 
 	/** A filled diamond (badges, wheel nodes). */

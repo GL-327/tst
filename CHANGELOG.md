@@ -5,6 +5,24 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.17.0-preview, 2026-10-22
+
+- Replaced survival menu purchases with measured physical drills. Added a recoverable
+  straw doll, breathing mat, reverse-flow focus stone and balance beam, with recipes.
+  Physical strength, endurance, agility and weapon skill have real bounded benefits.
+- Added a rebindable F6 design studio: drag/resize real UI controls and labels, ready-made
+  visual parts, HUD placement, themes, undo, validated JSON sharing and block prop editing.
+  Prop designs export to an enabled resource pack and reload into the actual game models.
+- Redesigned shared UI panels, buttons and typography across mod screens and HUD panels.
+  The training journal reports work; universal skill expression settings remain editable.
+- Added blade, polearm, heavy-weapon and improvised-item combat profiles, with animated
+  held models, matching third-person poses, real item effects and no offhand damage borrowing.
+  Rebuilt fifteen weapon models/materials and standardised custom physical pixel textures.
+- Cleaned all 52 curse designs with connected painted faces, restrained materials and
+  fewer floating cubes. Encounters now consider habitat, region rest and species variety,
+  avoid visible pop-ins and retain low-grade groups/high-grade solitary encounters.
+- Added physical-training and native designer/weapon/prop/curse regressions.
+
 ## 1.16.0-preview, 2026-10-22
 
 - Moved fighting hands toward the lower corners; added physical right/left punch keys,

@@ -66,6 +66,11 @@ public final class CombatAnimations {
             m.head.xRot-=wind*.08f;m.head.yRot+=wind*.12f-hit*.1f;
             m.leftLeg.xRot-=wind*.23f;m.rightLeg.xRot+=wind*.18f;
             switch(p.move()) {
+                case "item_cut","item_return","item_thrust","item_heavy","blade_cut","blade_return","blade_thrust","blade_heavy","pole_cut","pole_return","pole_thrust","pole_heavy","club_cut","club_return","club_thrust","club_heavy" -> {
+                    boolean thrust=p.move().endsWith("thrust"),heavy=p.move().endsWith("heavy"),back=p.move().endsWith("return");float side=back?-1:1;
+                    rot(m.rightArm,thrust?-1.6f:heavy?-2.6f*wind-.6f*hit:-1.25f,.9f*wind*side-1.2f*hit*side,.3f+wind*.7f-hit*.7f);m.body.yRot=side*(.5f*wind-.75f*hit);m.rightArm.z-=thrust?hit*2:0;
+                    if(!p.move().startsWith("blade_"))rot(m.leftArm,-1.25f,-.55f*hit,-.2f);
+                }
                 case "feint" -> {float retract=Math.min(1,hit*.25f);rot(m.rightArm,-1.12f-.4f*retract+.25f*wind,-.18f,.2f);m.body.yRot=.18f*wind-.12f*retract;}
                 case "jab" -> {rot(m.rightArm,-1.12f-0.55f*hit+0.8f*wind,-0.26f-0.18f*hit,0.16f);m.body.yRot=-0.32f*hit+0.25f*wind;m.rightArm.z-=hit*1.2f;m.leftLeg.xRot-=hit*.16f;}
                 case "hook" -> {rot(m.rightArm,-1.35f+0.2f*wind,-0.9f*hit+1.1f*wind,0.65f);m.body.yRot=-0.7f*hit+0.45f*wind;m.rightLeg.yRot+=.3f*hit;m.head.yRot+=.25f*hit;}

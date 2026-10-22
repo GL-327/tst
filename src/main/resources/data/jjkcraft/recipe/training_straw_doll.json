@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " H ",
+    "SHS",
+    " P "
+  ],
+  "key": {
+    "H": "minecraft:hay_block",
+    "S": "minecraft:stick",
+    "P": "minecraft:oak_planks"
+  },
+  "result": {
+    "id": "jjkcraft:training_straw_doll",
+    "count": 1
+  }
+}

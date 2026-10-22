@@ -99,7 +99,7 @@ def sculpt(name,source):
     return geo
 
 def bake(name,geo):
-    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=256 if name in DESIGNS else 1024;density=1 if name in DESIGNS else 4
+    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=256 if name in DESIGNS else 1024;density=2 if name in DESIGNS else 4
     for bone in g['bones']:
         for c in bone.get('cubes',[]):
             w,h,d=c['size'];faces={};kind=c.pop('_material','skin');facial=c.pop('_face',False)
@@ -113,6 +113,9 @@ def bake(name,geo):
     im=Image.new('RGBA',(width,height));glow=Image.new('RGBA',im.size);draw=ImageDraw.Draw(im);gd=ImageDraw.Draw(glow);base,accent=palette(name);rng=random.Random(seed(name))
     for x,y,w,h,kind,face,facial,origin,size in tiles:
         (paint_pixel if name in DESIGNS else paint_material)(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
+        if name in DESIGNS and face=='north' and isinstance(facial,dict):
+            from studio_materials import face as paint_face
+            paint_face(draw,gd,x,y,w,h,facial,accent)
     return im,glow
 
 def curve(values,length):return {str(round(i*length/(len(values)-1),3)):v for i,v in enumerate(values)}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "SSS"
+  ],
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "S": "minecraft:stone"
+  },
+  "result": {
+    "id": "jjkcraft:focus_stone",
+    "count": 1
+  }
+}

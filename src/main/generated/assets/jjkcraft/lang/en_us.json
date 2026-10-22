@@ -2098,5 +2098,11 @@
   "key.jjkcraft.left_punch": "Left punch / double-tap uppercut",
   "item.jjkcraft.sukunas_finger": "Sukuna's Finger",
   "trait.jjkcraft.cursed_vessel": "Cursed Vessel",
-  "trait.jjkcraft.cursed_vessel.desc": "An exceptionally strong body: +2.5 attack damage, +6 health, +8% movement speed and 140 stamina. Sukuna relics grant power but weaken your control. Rest and maintain health and CE to suppress him."
+  "trait.jjkcraft.cursed_vessel.desc": "An exceptionally strong body: +2.5 attack damage, +6 health, +8% movement speed and 140 stamina. Sukuna relics grant power but weaken your control. Rest and maintain health and CE to suppress him.",
+  "key.jjkcraft.design_studio": "Open visual design studio",
+  "item.jjkcraft.training_straw_doll": "Training Straw Doll",
+  "entity.jjkcraft.training_dummy": "Training Straw Doll",
+  "block.jjkcraft.training_mat": "Breathing Mat",
+  "block.jjkcraft.focus_stone": "Reverse-flow Focus Stone",
+  "block.jjkcraft.balance_beam": "Balance Beam"
 }

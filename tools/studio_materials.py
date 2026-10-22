@@ -68,3 +68,21 @@ def damage(image,name,critical=False):
             px=x+k//2;py=y+k
             if image.getpixel((px,py))[3]:d.point((px,py),fill=(63,45,48,255))
     return out
+
+
+def face(d,g,x,y,w,h,spec,accent):
+    """Readable pixel expressions, with eyelids, pupils and a recessed mouth like a vanilla mob."""
+    if min(w,h)<4:return
+    eye=(221,212,176,255);dark=(37,27,36,255)
+    count=spec.get('eyes',2);ey=y+max(1,int(h*.32));ew=max(1,w//5);eh=max(1,h//7)
+    for i in range(count):
+        xx=x+int(w*(i+1)/(count+1))-ew//2
+        d.rectangle((xx,ey,xx+ew-1,ey+eh-1),fill=eye)
+        d.line((xx,ey-1,xx+ew-1,ey-1),fill=dark)
+        d.point((xx+ew//2,ey+eh//2),fill=dark)
+        g.point((xx,ey),fill=tuple(accent)+(55,))
+    if spec.get('mouth',True):
+        mx=x+w//4;my=y+int(h*.68);mw=max(2,w//2);mh=max(1,h//6)
+        d.rectangle((mx,my,mx+mw-1,min(y+h-1,my+mh)),fill=dark)
+        if mw>=5:
+            for n in range(0,mw,3):d.point((mx+n,my),fill=(190,179,152,255))

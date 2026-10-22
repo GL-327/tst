@@ -19,17 +19,19 @@ public final class ReverseStudy {
     public static final double CE_COST=30;
     public static final AttachmentType<Integer> LESSON=AttachmentRegistry.create(JjkCraft.id("reverse_lessons"),b->b.persistent(Codec.intRange(0,3)).copyOnDeath().initializer(()->0));
     private static final Map<UUID,Run> RUNS=new HashMap<>();
-    private static final class Run {final Vec3 anchor;final net.minecraft.server.level.ServerLevel level;int ticks;Run(ServerPlayer p){anchor=p.position();level=p.level();}}
+    private static final class Run {boolean physical;final Vec3 anchor;final net.minecraft.server.level.ServerLevel level;int ticks;Run(ServerPlayer p){anchor=p.position();level=p.level();}}
     private ReverseStudy() { }
     public static int completed(ServerPlayer p){return p.getAttachedOrCreate(LESSON);}
     public static boolean running(ServerPlayer p){return RUNS.containsKey(p.getUUID());}
     public static int ticks(ServerPlayer p){var run=RUNS.get(p.getUUID());return run==null?0:run.ticks;}
     private static void send(ServerPlayer p){JjkNetworking.send(p,new ReverseStudyPayload(completed(p),ticks(p),running(p)));}
-    public static boolean start(ServerPlayer p){
+    public static boolean startInWorld(ServerPlayer p){return start(p,true);}
+    public static boolean start(ServerPlayer p){return start(p,false);}
+    private static boolean start(ServerPlayer p,boolean physical){
         if(ReverseTechnique.unlocked(p)||running(p)||!com.jjkcraft.sorcerer.Progression.get(p).awakened()||com.jjkcraft.sorcerer.Progression.get(p).heavenlyRestricted()||!SorceryPractice.get(p).reinforcement()||!p.isAlive()||p.isSpectator()||!p.onGround()||PersonalPacts.forbids(p,TechniquePact.HEALING))return false;
-        if(!p.isCreative()&&p.experienceLevel<LEVELS){p.sendSystemMessage(Component.literal("Each reverse-flow drill requires 3 experience levels and 30 CE."),true);return false;}
+        if(!physical&&!p.isCreative()&&p.experienceLevel<LEVELS){p.sendSystemMessage(Component.literal("Each reverse-flow drill requires 3 experience levels and 30 CE."),true);return false;}
         if(!CursedEnergy.trySpend(p,CE_COST))return false;
-        RUNS.put(p.getUUID(),new Run(p));send(p);return true;
+        var run=new Run(p);run.physical=physical;RUNS.put(p.getUUID(),run);send(p);return true;
     }
     public static void cancel(ServerPlayer p){if(RUNS.remove(p.getUUID())!=null)send(p);}
     /** One authoritative tick, also exercised directly by server GameTests. */
@@ -39,11 +41,11 @@ public final class ReverseStudy {
         run.ticks++;
         if(run.ticks%20==0)send(p);
         if(run.ticks<LESSON_TICKS)return;
-        if(!p.isCreative()&&p.experienceLevel<LEVELS){cancel(p);return;}
-        if(!p.isCreative())p.giveExperienceLevels(-LEVELS);
+        if(!run.physical&&!p.isCreative()&&p.experienceLevel<LEVELS){cancel(p);return;}
+        if(!run.physical&&!p.isCreative())p.giveExperienceLevels(-LEVELS);
         int lesson=Math.min(LESSONS,completed(p)+1);p.setAttached(LESSON,lesson);RUNS.remove(p.getUUID());
         if(lesson==LESSONS){ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(true).withAutoHeal(false),true);p.sendSystemMessage(Component.literal("Reverse Cursed Technique learned. Healing and positive-energy output are available in your loadout."));}
-        else p.sendSystemMessage(Component.literal("Reverse-flow drill "+lesson+"/3 complete. Start the next exercise in Practice."));
+        else p.sendSystemMessage(Component.literal("Reverse-flow drill "+lesson+"/3 complete. Use a focus stone for the next exercise."));
         send(p);
     }
     public static void init(){

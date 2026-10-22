@@ -133,6 +133,7 @@ public final class JjkCraft implements ModInitializer {
 		BlackFlash.init();
 		com.jjkcraft.combat.CursedCombat.init();
         com.jjkcraft.vessel.CursedVessels.init();
+        com.jjkcraft.training.Training.init();
 		ReverseTechnique.init();
 		PlayerActions.init();
 		Vows.init();

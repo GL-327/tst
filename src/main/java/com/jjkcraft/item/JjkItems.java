@@ -66,6 +66,10 @@ public final class JjkItems {
 	public static final Item GILDED_TONGUE = trophy("gilded_tongue", "gilded_mimic", Rarity.UNCOMMON);
 	public static final Item TITHE_PURSE = trophy("tithe_purse", "tithe_burrower", Rarity.RARE);
 
+    public static final Item TRAINING_DOLL=register("training_straw_doll",com.jjkcraft.training.TrainingPropItem::new,new Item.Properties().stacksTo(8));
+    public static final Item TRAINING_MAT=registerBlock(JjkBlocks.TRAINING_MAT);
+    public static final Item FOCUS_STONE=registerBlock(JjkBlocks.FOCUS_STONE);
+    public static final Item BALANCE_BEAM=registerBlock(JjkBlocks.BALANCE_BEAM);
 	public static final Item CURSE_NEST = registerBlock(JjkBlocks.CURSE_NEST);
 
 	static {

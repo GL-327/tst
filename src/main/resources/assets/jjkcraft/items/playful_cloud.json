@@ -7,18 +7,17 @@
         "when": [
           "gui",
           "ground",
-          "fixed",
-          "on_shelf"
+          "fixed"
         ],
         "model": {
           "type": "minecraft:model",
-          "model": "jjkcraft:item/playful_cloud_gui"
+          "model": "jjkcraft:item/playful_cloud_icon"
         }
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jjkcraft:item/playful_cloud"
+      "model": "jjkcraft:item/playful_cloud_held"
     }
   }
 }

@@ -89,7 +89,7 @@ public abstract class JjkScreen extends Screen {
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float a) {
 		float appear = ClientConfig.reducedMotion() ? 1f : Math.min(1f, (System.currentTimeMillis() - openedAt) / 160f);
-		g.fill(panelX,panelY,panelX+panelW,panelY+panelH,0xFF0D0C14);
+		g.fill(panelX,panelY,panelX+panelW,panelY+panelH,Palette.INK_DEEP);
 		Ink.panel(g, panelX, panelY, panelW, panelH, Palette.accent(), 0.92f * appear + 0.08f);
 		g.fill(panelX+1,panelY+1,panelX+panelW-1,panelY+20,0xFF171B29);
 		g.outline(panelX-3,panelY-3,panelW+6,panelH+6,0x805D6786);
@@ -105,7 +105,8 @@ public abstract class JjkScreen extends Screen {
 			// With many tabs the bar is full; the selected tab already names the screen.
 			Ink.text(g, getTitle(), titleX, panelY + 7, Palette.TEXT_DIM, 1f);
 		}
-		extractContent(g, mouseX, mouseY, a);
+		com.jjkcraft.client.design.UiDesign.decorations(this,g);
+        extractContent(g, mouseX, mouseY, a);
 		super.extractRenderState(g, mouseX, mouseY, a);
 	}
 

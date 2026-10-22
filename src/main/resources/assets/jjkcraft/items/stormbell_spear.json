@@ -7,18 +7,17 @@
         "when": [
           "gui",
           "ground",
-          "fixed",
-          "on_shelf"
+          "fixed"
         ],
         "model": {
           "type": "minecraft:model",
-          "model": "jjkcraft:item/stormbell_spear_gui"
+          "model": "jjkcraft:item/stormbell_spear_icon"
         }
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jjkcraft:item/stormbell_spear"
+      "model": "jjkcraft:item/stormbell_spear_held"
     }
   }
 }

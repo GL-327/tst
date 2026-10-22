@@ -53,7 +53,7 @@ public final class Progression {
 	public static void init() {
 		ServerPlayNetworking.registerGlobalReceiver(SpendGrowthPayload.TYPE, (payload, context) -> {
 			ServerPlayer player = context.player();
-			if (SPEND_LIMIT.tryAcquire(player.getUUID(), player.level().getGameTime())) {
+			if (player.isCreative() && SPEND_LIMIT.tryAcquire(player.getUUID(), player.level().getGameTime())) {
 				spendGrowth(player, payload.path());
 			}
 		});

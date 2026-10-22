@@ -3,7 +3,14 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.16.0-preview.** Empty-hand combat now has separate right/left punches,
+**Status: 1.17.0-preview.** Train through in-world drills and physical equipment, with
+bounded strength, endurance, agility and weapon skill. **F6** opens a visual studio for
+dragging UI parts and building block-shaped training props, including live prop-pack
+exports. Shared UI styling is redesigned across menus and HUD panels. Weapons now use
+their own combat swings; curses gain cleaner faces/materials and habitat-based encounters.
+[Training, recipes and the design studio](docs/TRAINING_AND_DESIGN_STUDIO.md).
+
+Empty-hand combat has separate right/left punches,
 faster alternating combinations and stamina. Cursed Vessel is a physical attribute;
 Sukuna's Finger grants power with hallucination and takeover risks. Domains gain a
 workshop for size, output, duration, barrier strength and visual expression, with repaired

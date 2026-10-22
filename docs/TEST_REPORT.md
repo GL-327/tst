@@ -1,5 +1,32 @@
 # Test report
 
+## 1.17.0-preview, 2026-10-22
+
+All **137 unit tests and 275 server scenarios passed** in `build/server-117-final.log`.
+An additional targeted animated Black Flash training regression passed in
+`build/dojo-contact-check.log`. It covers the real framed combat path, including the
+replacement damage source, rather than calling the doll's damage handler alone.
+
+The new server coverage checks bounded physical bonuses, blocked survival purchases,
+contact rate limits, reinforcement learning, timed breaths and AFK rejection, XP-free
+reverse-flow study, weapon profiles, offhand damage isolation, death persistence,
+network round trips and habitat preferences. Existing characters keep their learned skills.
+
+The final native `dojo` client run with **Sodium and Iris passed** in
+`build/client-117-release.log`. It uses actual combat input against the training doll,
+renders five held-item profiles in first and third person, opens every mod menu, drags a
+layout part using real mouse input, imports/exports the design, reloads a generated prop
+pack and checks that the live resource contains the edited model. It also renders all
+52 curse species. Screenshot review corrected prop-preview occlusion and anchored
+weapon windups at the hand grip. The final art fixture fixes front-view interpolation
+before each capture; screenshots live only under `build/`. Packaging succeeded in
+`build/package-117.log` and produced `build/libs/jjkcraft-1.17.0-preview.jar`.
+
+The asset validator passed: **75 creature rigs, 2,335 mapped cubes, 1,200 animation
+clips, 300 atlases, 17 equipment items and 296 technique icons**, plus sixteen filtered
+glow materials and sixteen seamless volume surfaces (`build/asset-check-117.log`).
+The training dummy is additionally validated by the native pack-reload scenario.
+
 ## 1.12.1-preview, 2026-10-21
 
 All **128 unit tests and 256 server scenarios passed** in `build/hour-final-build.log`.

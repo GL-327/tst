@@ -7,18 +7,17 @@
         "when": [
           "gui",
           "ground",
-          "fixed",
-          "on_shelf"
+          "fixed"
         ],
         "model": {
           "type": "minecraft:model",
-          "model": "jjkcraft:item/sealbreaker_tanto_gui"
+          "model": "jjkcraft:item/sealbreaker_tanto_icon"
         }
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jjkcraft:item/sealbreaker_tanto"
+      "model": "jjkcraft:item/sealbreaker_tanto_held"
     }
   }
 }

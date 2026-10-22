@@ -102,6 +102,9 @@ public final class JjkCraftClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.InfinityPayload.TYPE,(payload,ctx)->ClientTechniques.accept(payload));
 		ClientConfig.init();
+        com.jjkcraft.client.design.UiDesign.init();
+        com.jjkcraft.client.training.TrainingClient.init();
+        EntityRendererRegistry.register(com.jjkcraft.entity.JjkEntities.TRAINING_DUMMY,com.jjkcraft.client.training.TrainingDummyRenderer::new);
         com.jjkcraft.client.vfx.TexturedFx.init();
         com.jjkcraft.client.combat.OriginalArtsHud.init();
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ProjectionPayloads.Reply.TYPE,(reply,context)->com.jjkcraft.client.screen.ProjectionPlannerScreen.accept(reply));

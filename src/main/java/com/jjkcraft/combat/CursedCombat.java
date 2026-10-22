@@ -186,7 +186,7 @@ public final class CursedCombat {
         return start(entity,id,aim,false,false);
     }
     public static double stamina(LivingEntity e){return actor(e).stamina;}
-    public static double maximumStamina(LivingEntity e){return e instanceof Player p&&com.jjkcraft.awakening.CharacterTraits.has(p,"cursed_vessel")?140:100;}
+    public static double maximumStamina(LivingEntity e){return e instanceof Player p&&com.jjkcraft.awakening.CharacterTraits.has(p,"cursed_vessel")?140+com.jjkcraft.training.Training.get(p).level("endurance")*2:e instanceof Player p?100+com.jjkcraft.training.Training.get(p).level("endurance")*2:100;}
     public static void restoreStamina(LivingEntity e){actor(e).stamina=maximumStamina(e);}
     public static void clearActions(LivingEntity e){var a=actor(e);a.move=null;a.buffered=false;a.special="";a.guardHeight=-1;a.ready=e.level().getGameTime();a.leftReady=a.rightReady=a.ready;}
     public static int currentHand(LivingEntity e){return actor(e).hand;}
@@ -197,18 +197,20 @@ public final class CursedCombat {
         if(entity instanceof Player p&&(!p.getMainHandItem().isEmpty()||!p.getOffhandItem().isEmpty())){int main=p.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT?-1:1;if(hand!=main&&!assisted)return false;hand=main;}
         boolean fist=entity instanceof Player&&Set.of("jab","hook","backfist","uppercut").contains(id.getPath())&&entity.getMainHandItem().isEmpty()&&entity.getOffhandItem().isEmpty();
         boolean alternate=fist&&state.hand!=hand&&state.move!=null&&Set.of("jab","hook","backfist","uppercut","feint").contains(state.moveId)&&now>=state.started+state.move.startup()+state.move.active();
-        if((state.move!=null&&!alternate)||(state.ready>now&&!alternate)||state.stunned>now||state.knockedUntil>now||!entity.isAlive()
+        if((state.move!=null&&!alternate)||(state.ready>now&&!alternate)||state.stunned>now||state.knockedUntil>now||!entity.isAlive()||entity.isUsingItem()
             ||entity.hasEffect(com.jjkcraft.effect.JjkEffects.STUNNED)||entity.hasEffect(com.jjkcraft.effect.JjkEffects.FROZEN_FRAME)||PersonalPacts.forbids(entity,TechniquePact.COMBAT))return false;
         if(entity instanceof Player&&(hand<0?state.leftReady:state.rightReady)>now)return false;
         CombatMove move=entity.registryAccess().lookupOrThrow(MOVES).getValue(id);if(move==null)return false;
+        String weaponKind=WeaponCombat.kind(entity.getMainHandItem());
+        if(!weaponKind.isEmpty())move=WeaponCombat.move(move,weaponKind,Set.of("heavy","sweep").contains(id.getPath()),entity instanceof Player p?com.jjkcraft.training.Training.get(p).level("weaponry"):0);
         if(fist)move=new CombatMove(Math.min(3,move.startup()),Math.min(2,move.active()),3,move.damage(),move.ce(),move.height(),move.reach(),move.guardDamage(),Math.min(4,move.stun()),move.knockback(),move.lift());
-        double effort=feint?5:switch(id.getPath()){case "heavy"->28;case "uppercut","sweep"->24;case "hook","backfist"->15;default->12;};
+        double effort=feint?5:!weaponKind.isEmpty()?18:switch(id.getPath()){case "heavy"->28;case "uppercut","sweep"->24;case "hook","backfist"->15;default->12;};
         if(entity instanceof Player&&state.stamina<effort)return false;
         boolean heavenly=entity instanceof Player p&&Progression.get(p).heavenlyRestricted();
         if(!heavenly&&(entity instanceof Player||CursedEnergy.max(entity)>0)&&!CursedEnergy.trySpend(entity,move.ce()))return false;
         if(entity instanceof Player){state.stamina-=effort;state.staminaAt=now;if(hand<0)state.leftReady=now+(fist?10:move.duration());else state.rightReady=now+(fist?10:move.duration());}
         state.hand=hand;state.nextHand=hand<0?1:-1;
-        state.move=move;state.moveId=id.getPath();state.started=now;state.ready=now+move.duration();
+        state.move=move;state.moveId=weaponKind.isEmpty()?id.getPath():WeaponCombat.animation(weaponKind,id.getPath(),state.chain);state.started=now;state.ready=now+move.duration();
         state.assisted=assisted;state.feint=feint;state.autoContact=false;state.combatUntil=now+80;if(feint)state.moveId="feint";
         state.aim=aim.normalize();state.hit.clear();state.guardHeight=-1;
         if(entity instanceof CurseEntity curse)curse.triggerAnim("action",Set.of("jab","sweep","uppercut","heavy").contains(id.getPath())?id.getPath():"attack_windup");

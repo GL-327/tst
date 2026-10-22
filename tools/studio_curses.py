@@ -30,12 +30,9 @@ class Creature:
         return b['name']
 
     def head(self, at=(0, 22, -2), size=(8, 7, 7), material='skin', eyes=2, mouth=True):
+        # Paint the face on a connected head rather than adding floating wafer cubes.
         name=self.box('head',at,size,material)
-        x,y,z=at;w,h,d=size
-        for n in range(eyes):
-            xx=x+(n-(eyes-1)/2)*w*.36
-            self.box('eye_'+str(n),(xx,y+h*.1,z-d/2-.13),(max(1,w*.16),max(.65,h*.14),.26),'eye',name)
-        if mouth:self.box('mouth_', (x,y-h*.25,z-d/2-.15),(w*.48,max(.7,h*.14),.28),'mouth',name)
+        next(b for b in self.r.bones if b['name']==name)['cubes'][0]['_face']={'eyes':eyes,'mouth':mouth}
         return name
 
     def feet(self, count=4, spread=5, height=8, depth=5, material='skin'):
@@ -59,6 +56,10 @@ class Creature:
             next(b for b in self.r.bones if b['name']==name)['cubes'][0]['pivot']=[side*width,base,0]
 
     def face(self, at, width=5, height=3, eyes=2, parent='body'):
+        candidates=[(b,c) for b in self.r.bones for c in b.get('cubes',[]) if c['size'][0]>=width*.7 and c['origin'][1]<=at[1]<=c['origin'][1]+c['size'][1]]
+        if candidates:
+            b,c=min(candidates,key=lambda bc:abs(bc[1]['origin'][2]-at[2]))
+            c['_face']={'eyes':eyes,'mouth':True};return
         x,y,z=at
         for n in range(eyes):self.box('eye_face'+str(len(self.r.bones)),(x+(n-(eyes-1)/2)*width*.4,y+height*.28,z),(width*.15,.8,.25),'eye',parent)
         self.box('mouth_face'+str(len(self.r.bones)),(x,y-height*.3,z),(width*.55,.9,.3),'mouth',parent)

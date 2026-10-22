@@ -10,7 +10,8 @@
     "ProjectionPoseMixin",
     "BodyFormMixin",
     "CombatPoseMixin",
-    "CombatHandsMixin"
+    "CombatHandsMixin",
+    "DesignScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

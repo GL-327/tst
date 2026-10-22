@@ -38,6 +38,9 @@ public final class JjkBlocks {
 	public static final BlockEntityType<CurseNestBlockEntity> CURSE_NEST_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			JjkCraft.id("curse_nest"), FabricBlockEntityTypeBuilder.create(CurseNestBlockEntity::new, CURSE_NEST).build());
 
+	public static final com.jjkcraft.training.TrainingBlock TRAINING_MAT=register("training_mat",com.jjkcraft.training.TrainingBlock::new,BlockBehaviour.Properties.of().strength(.8f).sound(SoundType.WOOL).noOcclusion());
+    public static final com.jjkcraft.training.TrainingBlock FOCUS_STONE=register("focus_stone",com.jjkcraft.training.TrainingBlock::new,BlockBehaviour.Properties.of().strength(2f).sound(SoundType.STONE).noOcclusion());
+    public static final com.jjkcraft.training.TrainingBlock BALANCE_BEAM=register("balance_beam",com.jjkcraft.training.TrainingBlock::new,BlockBehaviour.Properties.of().strength(1.5f).sound(SoundType.WOOD).noOcclusion());
 	private JjkBlocks() {
 	}
 

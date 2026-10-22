@@ -113,6 +113,8 @@ public final class HudLayout {
 			}
 		}
 
+		var design=com.jjkcraft.client.design.UiDesign.hud(element,(int)x,(int)y,(int)w,(int)h,sw,sh);
+        if(design!=null){x=design.x()*sw/640f;y=design.y()*sh/360f;scale=design.hidden()?0:Math.clamp(design.w()*sw/640f/width,.5f,3f);w=width*scale;h=height*scale;x=clamp(x,0,Math.max(0,sw-w));y=clamp(y,0,Math.max(0,sh-h));}
 		DRAWN.put(element, new Drawn(new HudClearance.Box(x, y, w, h), now));
 
 		g.pose().pushMatrix();

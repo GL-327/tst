@@ -51,7 +51,7 @@ public final class CursedVessels {
     public static void begin(ServerPlayer p,int phase,int ticks){
         if(!p.isAlive()||get(p).fingers()==0||phase<1||phase>2)return;
         if(phase==1&&controlled(p))return;
-        if(phase==2){CursedCombat.clearActions(p);TechniqueService.cancel(p);DomainService.close(p);}
+        if(phase==2){p.stopUsingItem();CursedCombat.clearActions(p);TechniqueService.cancel(p);DomainService.close(p);}
         EPISODES.put(p.getUUID(),new Episode(phase,p.level().getGameTime()+Math.clamp(ticks,20,400),p.level().dimension()));sync(p);
     }
     public static void end(ServerPlayer p){

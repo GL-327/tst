@@ -9,13 +9,13 @@ import com.jjkcraft.client.config.ClientConfig;
  */
 public final class Palette {
 	/** Panel fill: near-black with a cold tint, like dried ink. */
-	public static final int INK = 0xF00E121D;
-	public static final int INK_DEEP = 0xF0090D16;
-	public static final int INK_EDGE = 0xFF303B50;
-	public static final int PAPER = 0xFFE9E3D5;
-	public static final int TEXT = 0xFFEDE7F6;
-	public static final int TEXT_DIM = 0xFFACB8CE;
-	public static final int SHADOW = 0x90000000;
+	public static int INK = 0xF00E121D;
+	public static int INK_DEEP = 0xF0090D16;
+	public static int INK_EDGE = 0xFF303B50;
+	public static int PAPER = 0xFFE9E3D5;
+	public static int TEXT = 0xFFEDE7F6;
+	public static int TEXT_DIM = 0xFFACB8CE;
+	public static int SHADOW = 0x90000000;
 
 	private Palette() {
 	}

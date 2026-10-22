@@ -7,18 +7,17 @@
         "when": [
           "gui",
           "ground",
-          "fixed",
-          "on_shelf"
+          "fixed"
         ],
         "model": {
           "type": "minecraft:model",
-          "model": "jjkcraft:item/dragon_bone_gui"
+          "model": "jjkcraft:item/dragon_bone_icon"
         }
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jjkcraft:item/dragon_bone"
+      "model": "jjkcraft:item/dragon_bone_held"
     }
   }
 }

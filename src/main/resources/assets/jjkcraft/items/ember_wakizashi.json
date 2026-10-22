@@ -7,18 +7,17 @@
         "when": [
           "gui",
           "ground",
-          "fixed",
-          "on_shelf"
+          "fixed"
         ],
         "model": {
           "type": "minecraft:model",
-          "model": "jjkcraft:item/ember_wakizashi_gui"
+          "model": "jjkcraft:item/ember_wakizashi_icon"
         }
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jjkcraft:item/ember_wakizashi"
+      "model": "jjkcraft:item/ember_wakizashi_held"
     }
   }
 }

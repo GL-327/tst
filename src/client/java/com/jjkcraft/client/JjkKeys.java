@@ -24,6 +24,7 @@ import com.jjkcraft.network.payload.SelectSlotPayload;
 public final class JjkKeys {
 	public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(JjkCraft.id("main"));
 
+	public static final KeyMapping DESIGN_STUDIO = key("design_studio", InputConstants.KEY_F6);
 	public static final KeyMapping PROFILE = key("profile", InputConstants.KEY_J);
 	public static final KeyMapping CAST = key("cast", InputConstants.KEY_R);
 	public static final KeyMapping NEXT_SLOT = key("next_slot", InputConstants.KEY_V);
@@ -68,6 +69,7 @@ public final class JjkKeys {
 	public static boolean clicked(KeyMapping key){boolean any=false;while(key.consumeClick())any=true;return any;}
     private static void tick(Minecraft mc) {
 		boolean inGame = mc.player != null && mc.gui.screen() == null;
+        while(DESIGN_STUDIO.consumeClick())if(mc.player!=null&&mc.gui.screen()==null)mc.gui.setScreen(new com.jjkcraft.client.design.DesignStudioScreen(null));
         var selected=ClientTechniques.state().slot(ClientTechniques.state().selected());
         boolean family=selected.filter(com.jjkcraft.technique.TechniqueBindings::family).isPresent();
         if(inGame&&family&&(CAST.isDown()||clicked(CAST))&&!castWasDown){

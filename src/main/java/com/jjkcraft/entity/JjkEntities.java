@@ -37,11 +37,13 @@ public final class JjkEntities {
 			EntityType.Builder.<com.jjkcraft.entity.shikigami.ToadEntity>of(com.jjkcraft.entity.shikigami.ToadEntity::new, MobCategory.MISC)
 					.sized(1.2f, 0.9f).clientTrackingRange(10).noSave().noSummon().noLootTable());
 
+	public static final EntityType<com.jjkcraft.training.TrainingDummyEntity> TRAINING_DUMMY=register("training_dummy",EntityType.Builder.<com.jjkcraft.training.TrainingDummyEntity>of(com.jjkcraft.training.TrainingDummyEntity::new,MobCategory.MISC).sized(.8f,1.9f).clientTrackingRange(10).noLootTable());
 	private JjkEntities() {
 	}
 
 	public static void init() {
 		com.jjkcraft.entity.shikigami.ShadowBeasts.init();
+        FabricDefaultAttributeRegistry.register(TRAINING_DUMMY,com.jjkcraft.training.TrainingDummyEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(TRANSFIGURED_SOUL,com.jjkcraft.entity.shikigami.TransfiguredSoulEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHADOW_DIVINE_DOG, ShadowDivineDogEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(DIVINE_DOG, com.jjkcraft.entity.shikigami.DivineDogEntity.createAttributes());

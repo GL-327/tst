@@ -89,7 +89,7 @@ public final class CombatClient {
             var config=com.jjkcraft.client.config.ClientConfig.get();var panel=config.hud.combatPanel;if(!panel.visible)return;
             float alpha=panel.opacity();com.jjkcraft.client.hud.HudLayout.push(g,panel,110,PunchImbuementClient.label().isEmpty()?54:65);
             Ink.panel(g,0,0,110,PunchImbuementClient.label().isEmpty()?54:65,view.stun()>0?Palette.danger():Palette.accent(),alpha);
-            String status=view.stun()>0?"STAGGERED":view.move().isEmpty()?config.autoCombat?"AUTO COMBAT":"MANUAL COMBAT":view.move().toUpperCase(java.util.Locale.ROOT)+(view.combo()>1?" · "+view.combo():"");
+            String status=view.stun()>0?"STAGGERED":view.move().isEmpty()?config.autoCombat?"AUTO COMBAT":"MANUAL COMBAT":view.move().replace('_',' ').toUpperCase(java.util.Locale.ROOT)+(view.combo()>1?" · "+view.combo():"");
             Ink.text(g,Ink.fit(Component.literal(status),102),4,4,view.stun()>0?Palette.danger():view.combo()>1?Palette.gold():Palette.TEXT,alpha);
             String detail=config.autoCombat?autoStats.attempts()<5?"60% commitment":"Contact "+autoStats.hits()+" / "+autoStats.attempts()+" · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"%":"Hits: "+JjkKeys.LIGHT.getTranslatedKeyMessage().getString()+" / "+JjkKeys.LEFT_PUNCH.getTranslatedKeyMessage().getString();
             Ink.text(g,Ink.fit(Component.literal(detail),102),4,15,Palette.TEXT_DIM,alpha);

@@ -49,7 +49,9 @@ public final class GrowthTreeScreen extends JjkScreen {
 			GrowthPath path = entry.getKey();
 			boolean capped = p.growth().get(path) >= ProgressionMath.MAX_POINTS_PER_PATH;
 			boolean closed = p.heavenlyRestricted() && path == GrowthPath.DOMAIN;
-			entry.getValue().active = unspent > 0 && !capped && !closed;
+			entry.getValue().active = minecraft.player!=null&&minecraft.player.isCreative()&&unspent > 0 && !capped && !closed;
+            entry.getValue().setMessage(Component.literal(minecraft.player!=null&&minecraft.player.isCreative()?"+1 · creative":"Train in the world"));
+            entry.getValue().setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal(switch(path){case OUTPUT->"Land techniques on straw dolls and live opponents.";case CONTROL->"Practise accurate contact and cursed-energy control.";case EFFICIENCY->"Complete timed breathing drills on a mat.";case DOMAIN->"Sustain real domains for at least four seconds.";})));
 		}
 	}
 
@@ -58,7 +60,7 @@ public final class GrowthTreeScreen extends JjkScreen {
 		SorcererProgress p = ClientProgress.get();
 		int y = contentY();
 		Ink.text(g, Component.translatable("screen.jjkcraft.profile.unspent", ClientProgress.unspentPoints()), panelX() + 8, y, Palette.gold(), 1f);
-		Ink.text(g, Component.translatable("screen.jjkcraft.growth.hint", ProgressionMath.XP_PER_POINT), panelX() + 8, y + 10, Palette.TEXT_DIM, 1f);
+		Ink.text(g, Component.literal("Drills assign available growth points through actual practice."), panelX() + 8, y + 10, Palette.TEXT_DIM, 1f);
 
 		int colW = (panelW() - 16) / 4;
 		int top = y + 26;

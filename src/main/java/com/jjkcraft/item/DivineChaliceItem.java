@@ -28,7 +28,7 @@ public final class DivineChaliceItem extends Item {
         var registry=p.registryAccess().lookupOrThrow(CharacterAwakening.FAMILIES);
         var originalIdentity=CharacterAwakening.get(p);String previous=originalIdentity.family();
         if(registry.keySet().stream().noneMatch(id->!id.toString().equals(previous)))return false;
-        var progress=Progression.get(p);var practice=SorceryPractice.get(p);var traits=CharacterTraits.get(p);var reverse=com.jjkcraft.reverse.ReverseTechnique.state(p);double energy=CursedEnergy.current(p);float health=p.getHealth();
+        var physical=com.jjkcraft.training.Training.get(p);var progress=Progression.get(p);var practice=SorceryPractice.get(p);var traits=CharacterTraits.get(p);var reverse=com.jjkcraft.reverse.ReverseTechnique.state(p);double energy=CursedEnergy.current(p);float health=p.getHealth();
         int reverseLessons=p.getAttachedOrCreate(com.jjkcraft.reverse.ReverseStudy.LESSON);
         TechniqueService.cancel(p);
         for(var pet:com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(p.level(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p))pet.dissolve(p.level());
@@ -36,7 +36,7 @@ public final class DivineChaliceItem extends Item {
         Awakening.reset(p);
         if(!CharacterAwakening.rebirth(p,previous))throw new IllegalStateException("Validated family pool was empty");
         // Physical restriction remains a body choice, independent of the new innate family.
-        Progression.set(p,progress);SorceryPractice.set(p,practice);CharacterTraits.set(p,new TraitState(traits.rolled(),traits.traits(),traits.form(),List.of(),traits.hostHealth()));
+        p.setAttached(com.jjkcraft.training.Training.STATE,physical);com.jjkcraft.training.Training.refresh(p);Progression.set(p,progress);SorceryPractice.set(p,practice);CharacterTraits.set(p,new TraitState(traits.rolled(),traits.traits(),traits.form(),List.of(),traits.hostHealth()));
         var record=CharacterAwakening.get(p);p.setAttached(CharacterAwakening.RECORD,new AwakeningRecord("rebirth",record.family(),originalIdentity.clan(),traits.traits().contains(com.jjkcraft.JjkCraft.id("six_eyes")),record.tick()));
         com.jjkcraft.reverse.ReverseTechnique.set(p,reverse,false);
         p.setAttached(com.jjkcraft.reverse.ReverseStudy.LESSON,reverseLessons);

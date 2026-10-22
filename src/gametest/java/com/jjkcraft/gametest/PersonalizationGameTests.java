@@ -44,16 +44,17 @@ public final class PersonalizationGameTests {
     }
     @GameTest(environment="jjkcraft:expansion") public void universalSkillsLearnWithoutChangingFamilyOrLoadout(GameTestHelper h){
         var p=sorcerer(h);var original=TechniqueService.get(p);p.experienceLevel=12;p.setOnGround(true);
-        h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(0,100,100,60)),"reinforcement teachable");
+        h.assertFalse(SorceryPractice.act(p,new PersonalizationPayloads.Practice(0,100,100,60)),"survival cannot buy reinforcement");
+        p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(0,100,100,60)),"creative can grant the skill");p.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
         for(int lesson=0;lesson<3;lesson++){
-            h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(1,100,100,60)),"RCT drill teachable at any sorcerer grade");
+            h.assertTrue(com.jjkcraft.reverse.ReverseStudy.startInWorld(p),"physical RCT drill works independently of innate grade");
             for(int tick=0;tick<com.jjkcraft.reverse.ReverseStudy.LESSON_TICKS;tick++)com.jjkcraft.reverse.ReverseStudy.step(p);
         }
-        h.assertTrue(p.experienceLevel==0&&SorceryPractice.get(p).reinforcement()&&ReverseTechnique.unlocked(p),"reinforcement and three drills cost twelve levels");
+        h.assertTrue(p.experienceLevel==12&&SorceryPractice.get(p).reinforcement()&&ReverseTechnique.unlocked(p),"physical learning preserves experience levels");
         h.assertTrue(TechniqueService.get(p).innate().equals(original.innate())&&TechniqueService.get(p).loadout().equals(original.loadout()),"no innate or slot changes");
-        h.assertFalse(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"training requires XP");
-        p.experienceLevel=30;int gain=SorceryPractice.trainingGain(p);h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"reserves trainable");
-        h.assertTrue(SorceryPractice.get(p).trained()==gain,"training increases capacity according to current potential");h.succeed();
+        h.assertFalse(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"reserve purchases are closed");
+        p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);int gain=SorceryPractice.trainingGain(p);h.assertTrue(SorceryPractice.act(p,new PersonalizationPayloads.Practice(2,100,100,60)),"creative can still set reserves");
+        h.assertTrue(SorceryPractice.get(p).trained()==gain,"creative reserve gain respects current potential");h.succeed();
     }
     @GameTest(environment="jjkcraft:expansion") public void reverseTuningChangesHealingAndEnergy(GameTestHelper h){
         var p=sorcerer(h);ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(true),false);p.setHealth(2);CursedEnergy.fill(p);

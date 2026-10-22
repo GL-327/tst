@@ -74,6 +74,7 @@ public final class SorceryPractice {
     public static boolean act(ServerPlayer p,PersonalizationPayloads.Practice request) {
         if(!Progression.get(p).awakened()||Progression.get(p).heavenlyRestricted())return false;
         var s=get(p);int action=request.action();
+        if(action<=2&&!p.isCreative()){p.sendSystemMessage(Component.literal("Train in the world: straw doll for reinforcement, focus stone for RCT, breathing mat for reserves."),true);return false;}
         if(action==4){set(p,s.tune(request.output(),request.healing(),request.threshold()));return true;}
         if(action==3&&s.reinforcement()){set(p,s.withReinforcement(true,!s.active()));return true;}
         if(action==0&&!s.reinforcement()&&pay(p,3)){set(p,s.withReinforcement(true,false));return true;}

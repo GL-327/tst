@@ -38,8 +38,8 @@ public class InkButton extends Button {
 		int y = getY();
 		int w = getWidth();
 		int h = getHeight();
-		g.fill(x, y, x + w, y + h, active ? (hot || selected ? 0xFF26334A : 0xF0172030) : 0xD0101520);
-		g.outline(x, y, w, h, hot || selected ? accent : Palette.INK_EDGE);
+		g.fill(x, y, x + w, y + h, active ? (hot || selected ? net.minecraft.util.ARGB.scaleRGB(Palette.INK,1.4f) : Palette.INK) : Palette.INK_DEEP);
+		g.outline(x, y, w, h, selected ? accent : Palette.INK_EDGE);
 		if (selected || hot) {
 			g.fill(x,y,x+2,y+h,accent);
 			g.fill(x + 2, y + h - 2, x + w - 2, y + h - 1, ARGB.multiplyAlpha(accent, selected ? 1f : 0.6f));

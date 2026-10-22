@@ -33,13 +33,17 @@ import com.jjkcraft.curse.Curses;
 import com.jjkcraft.fear.Fear;
 
 /**
- * Curses are born from fear. Every two seconds, for each player, the spawner tries one spot 16 to
- * 40 blocks away. If the spot is dark enough and its fear clears both the global threshold and a
+ * Curses are born from fear. Every twelve seconds, for each player, the spawner may try one spot 28 to
+ * 52 blocks away. If the spot is dark enough and its fear clears both the global threshold and a
  * curse's own minimum, a weighted pick spawns a group there. Very high fear can instead seed a
  * curse nest, which keeps spawning until a player breaks it.
  */
 public final class CurseSpawner {
-	private static final int INTERVAL = 120;
+	private static final int INTERVAL = 240;
+    private record Region(Identifier dimension,int x,int z){}
+    private static final java.util.Map<Region,Long> REST=new java.util.HashMap<>();
+    private static final java.util.Map<Region,Identifier> LAST=new java.util.HashMap<>();
+    private static Region region(ServerLevel level,BlockPos p){return new Region(level.dimension().identifier(),Math.floorDiv(p.getX(),64),Math.floorDiv(p.getZ(),64));}
 	private static final double NEST_FEAR = 75;
 	private static final double NEST_CHANCE = 0.03;
 
@@ -48,6 +52,7 @@ public final class CurseSpawner {
 
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(CurseSpawner::tick);
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(s->{REST.clear();LAST.clear();});
 	}
 
 	private static void tick(MinecraftServer server) {
@@ -70,7 +75,7 @@ public final class CurseSpawner {
 			}
 
 			RandomSource random = level.getRandom();
-			if (random.nextDouble() > Math.min(1, 0.40 * config.curses.spawnRateMultiplier)) {
+			if (random.nextDouble() > Math.min(1, 0.30 * config.curses.spawnRateMultiplier)) {
 				continue;
 			}
 
@@ -82,7 +87,7 @@ public final class CurseSpawner {
 
 			for (int attempt = 0; attempt < config.curses.spawnAttempts && budget > 0; attempt++) {
 			double angle = random.nextDouble() * Math.PI * 2;
-			double distance = 16 + random.nextDouble() * 24;
+			double distance = 28 + random.nextDouble() * 24;
 			int x = (int) Math.floor(player.getX() + Math.cos(angle) * distance);
 			int z = (int) Math.floor(player.getZ() + Math.sin(angle) * distance);
 			if (!level.hasChunkAt(new BlockPos(x, (int) player.getY(), z))) continue;
@@ -91,7 +96,11 @@ public final class CurseSpawner {
 				continue;
 			}
 
-			double fear = Fear.at(level, spot.get());
+			var cell=region(level,spot.get());if(REST.getOrDefault(cell,0L)>level.getGameTime())continue;
+            if(level.players().stream().anyMatch(other->other.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(spot.get()))<24*24))continue;
+            var direction=net.minecraft.world.phys.Vec3.atCenterOf(spot.get()).subtract(player.getEyePosition());
+            if(player.getLookAngle().dot(direction.normalize())>.5&&level.clip(new net.minecraft.world.level.ClipContext(player.getEyePosition(),net.minecraft.world.phys.Vec3.atCenterOf(spot.get()),net.minecraft.world.level.ClipContext.Block.COLLIDER,net.minecraft.world.level.ClipContext.Fluid.NONE,player)).getType()==net.minecraft.world.phys.HitResult.Type.MISS)continue;
+            double fear = Fear.at(level, spot.get());
 			if (fear < config.curses.fearSpawnThreshold) {
 				if (random.nextDouble() * 100 >= config.curses.calmEncounterPercent) continue;
 				fear = config.curses.fearSpawnThreshold;
@@ -104,7 +113,7 @@ public final class CurseSpawner {
 			}
 
 			int born=spawnAt(level, spot.get(), fear, random, false, budget);
-            budget-=born;if(born>0)break;
+            budget-=born;if(born>0){REST.put(cell,level.getGameTime()+1800);if(REST.size()>4096){REST.clear();LAST.clear();}break;}
 			}
 		}
 	}
@@ -149,7 +158,11 @@ public final class CurseSpawner {
 				continue;
 			}
 
-			double weight = FearMath.spawnWeight(spawn.get().weight(), fear, spawn.get().minFear())*com.jjkcraft.core.fear.CurseEncounterMath.rarity(com.jjkcraft.grade.Grades.rank(level.registryAccess(),entry.definition().grade()));
+			String biome=level.getBiome(pos).unwrapKey().map(k->k.identifier().getPath()).orElse("");
+            int grade=com.jjkcraft.grade.Grades.rank(level.registryAccess(),entry.definition().grade());
+            double habitat=CurseHabitat.weight(entry.id().getPath(),biome,pos.getY()<level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,pos.getX(),pos.getZ())-8,level.isRainingAt(pos),fear,grade);
+            double variety=entry.id().equals(LAST.get(region(level,pos)))?.2:1;
+            double weight = habitat*variety*FearMath.spawnWeight(spawn.get().weight(), fear, spawn.get().minFear())*com.jjkcraft.core.fear.CurseEncounterMath.rarity(com.jjkcraft.grade.Grades.rank(level.registryAccess(),entry.definition().grade()));
 			if (weight > 0) {
 				candidates.add(entry);
 				weights.add(weight);
@@ -171,7 +184,8 @@ public final class CurseSpawner {
 			}
 		}
 
-		CurseDefinition.Spawn rules = chosen.definition().spawn().orElseThrow();
+        if(LAST.size()>4096)LAST.clear();LAST.put(region(level,pos),chosen.id());
+        CurseDefinition.Spawn rules = chosen.definition().spawn().orElseThrow();
 		int rank=com.jjkcraft.grade.Grades.rank(level.registryAccess(),chosen.definition().grade());
         var nearby=level.getEntitiesOfClass(CurseEntity.class,new AABB(pos).inflate(24),Entity::isAlive);
         if(nearby.stream().anyMatch(c->com.jjkcraft.core.fear.CurseEncounterMath.solitary(com.jjkcraft.grade.Grades.rank(level.registryAccess(),c.grade()))) || com.jjkcraft.core.fear.CurseEncounterMath.solitary(rank)&&!nearby.isEmpty())return 0;
