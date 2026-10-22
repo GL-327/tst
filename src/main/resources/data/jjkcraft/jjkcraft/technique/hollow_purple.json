@@ -4,19 +4,19 @@
   "category": "projectile",
   "grade": "jjkcraft:grade_1",
   "cast": {
-    "cost": 160,
-    "cooldown": 600,
+    "cost": 120,
+    "cooldown": 360,
     "cast_time": 30,
-    "range": 40.0,
+    "range": 60,
     "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:projectile",
-    "damage": 40,
-    "speed": 0.55,
-    "size": 1.6,
+    "damage": 70,
+    "speed": 0.85,
+    "size": 3.2,
     "pierce": true,
-    "lifetime": 70
+    "lifetime": 100
   },
   "visuals": {
     "color": "#A04BFF",

@@ -63,6 +63,8 @@ public final class JjkNetworking {
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.SoulPayloads.View.TYPE, com.jjkcraft.network.payload.SoulPayloads.View.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Input.TYPE, com.jjkcraft.network.payload.CombatPayloads.Input.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.View.TYPE, com.jjkcraft.network.payload.CombatPayloads.View.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Imbuement.TYPE,com.jjkcraft.network.payload.CombatPayloads.Imbuement.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.SpatialShotPayload.TYPE,com.jjkcraft.network.payload.SpatialShotPayload.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.AwakeningPayloads.Choose.TYPE, com.jjkcraft.network.payload.AwakeningPayloads.Choose.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.AwakeningPayloads.View.TYPE, com.jjkcraft.network.payload.AwakeningPayloads.View.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(EnergySyncPayload.TYPE, EnergySyncPayload.CODEC);

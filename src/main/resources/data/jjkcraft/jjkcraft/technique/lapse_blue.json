@@ -4,17 +4,17 @@
   "category": "area",
   "grade": "jjkcraft:grade_4",
   "cast": {
-    "cost": 30,
-    "cooldown": 120,
+    "cost": 24,
+    "cooldown": 65,
     "range": 20.0,
     "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:field",
     "strength": 1.2,
-    "radius": 4.0,
-    "duration": 50,
-    "damage_per_second": 2,
+    "radius": 5,
+    "duration": 65,
+    "damage_per_second": 12,
     "burst_damage": 24,
     "burst_radius": 5
   },

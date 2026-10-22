@@ -36,7 +36,7 @@ public final class ClientTechniques {
 	private static long feedbackAt;
     private static com.jjkcraft.network.payload.ChargePayload charge=new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);
     private static long chargeAt;
-    public static void accept(com.jjkcraft.network.payload.ChargePayload payload){charge=payload;chargeAt=System.currentTimeMillis();}
+    public static void accept(com.jjkcraft.network.payload.ChargePayload payload){charge=payload;chargeAt=System.currentTimeMillis();if(payload.percent()==0&&net.minecraft.client.Minecraft.getInstance().player!=null)com.jjkcraft.client.vfx.ChargeFx.stop(net.minecraft.client.Minecraft.getInstance().player.getId());}
     public static com.jjkcraft.network.payload.ChargePayload charge(){return System.currentTimeMillis()-chargeAt<1500?charge:new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);}
 
 	private ClientTechniques() {

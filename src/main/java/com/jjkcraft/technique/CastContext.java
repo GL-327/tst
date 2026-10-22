@@ -192,7 +192,7 @@ public final class CastContext {
 			return false;
 		}
 
-		boolean hit=target.hurtServer(level, source(piercing), (float) amount);
+		boolean hit=target.hurtServer(level, source(piercing), (float) TechniqueMath.damage(amount,com.jjkcraft.config.JjkConfig.server().casting.techniqueDamageMultiplier));
 		if(hit&&details.expression().lift()!=0&&!java.util.Objects.equals(memory.get("lift:"+target.getId()),now())){
 			memory.put("lift:"+target.getId(),now());target.setDeltaMovement(target.getDeltaMovement().add(0,details.expression().lift()/200.0,0));target.needsSync=true;
 		}return hit;

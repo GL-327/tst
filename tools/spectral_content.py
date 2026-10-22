@@ -6,6 +6,8 @@ import copy, hashlib, io, json, math, os, random, re
 from PIL import Image, ImageDraw
 from spectral_anatomy import anatomy
 from reborn_creatures import build as reborn, DESIGNS, rgb
+from creature_materials import paint as paint_material
+from hero_creatures import build as hero, REFINED
 
 ROOT=Path(__file__).resolve().parents[1]
 A=ROOT/'src/main/resources/assets/jjkcraft';D=ROOT/'src/main/resources/data/jjkcraft'
@@ -20,6 +22,7 @@ def cube(origin,size,material='skin',face=False,**kw):return dict(origin=list(or
 def mix(a,b,t):return tuple(int(x*(1-t)+y*t) for x,y in zip(a,b))
 def color(c,f=1):return tuple(max(0,min(255,int(x*f))) for x in c)+(255,)
 def palette(name):
+    if name=='shadow_mahoraga':return (207,198,176),(219,167,72)
     if name in DESIGNS:return rgb(DESIGNS[name][1]),rgb(DESIGNS[name][2])
     if any(n in name for n in ('paper','ledger','chalk','book','door','heron')):return (187,177,151),(76,181,178)
     if any(n in name for n in ('tide','salt','gutter','toad','abyss')):return (72,112,105),(133,226,185)
@@ -40,11 +43,12 @@ def material(bone,name):
     if any(k in bone for k in ('cloth','robe','veil','banner','paper','ledger')):return 'cloth'
     if 'wing' in bone:return 'feather'
     if 'tiger' in name:return 'stripe'
+    if any(k in name for k in ('dog','hound','rabbit','ox')):return 'fur'
     if 'serpent' in name or 'dregs' in name:return 'scale'
     return 'skin'
 
 def sculpt(name,source):
-    geo=copy.deepcopy(reborn(name) or anatomy(name,source));g=geo['minecraft:geometry'][0];bones=g['bones'];rng=random.Random(seed(name));extra=[]
+    geo=copy.deepcopy(hero(name) or reborn(name) or anatomy(name,source));g=geo['minecraft:geometry'][0];bones=g['bones'];rng=random.Random(seed(name));extra=[]
     head=next((b for b in bones if b['name']=='head' and b.get('cubes')),None)
     for bone in list(bones):
         key=bone['name'];parts=bone.get('cubes',[]);kind=material(key,name);shaped=[]
@@ -65,7 +69,7 @@ def sculpt(name,source):
         if 'wing' in key and parts and 'moth' not in name:
             b=parts[0];x,y,z=b['origin'];w,h,d=b['size']
             for n in range(5):bone['cubes'].append(cube((x+n*w/5,y-.25,z+d*.5),(max(.5,w/5),.6,d*.65+1+n*.25),'feather'))
-    if head:
+    if head and name not in REFINED:
         base=max(head['cubes'],key=lambda c:math.prod(c['size']));x,y,z=base['origin'];w,h,d=base['size']
         if w>=4 and h>=4:
             extra.append(dict(name='spectral_jaw',parent='head',pivot=[x+w/2,y+h*.22,z+d*.35],cubes=[cube((x+.2,y-.6,z-.35),(w-.4,1.7,d*.65),'bone')]))
@@ -83,57 +87,28 @@ def sculpt(name,source):
                 b['cubes']=[]
                 for n in range(24):
                     angle=n*math.tau/24;xx,yy=9*math.cos(angle),cy+9*math.sin(angle)
-                    b['cubes'].append(cube((xx-1,yy-.6,1.5),(2,1.2,1.2),'gold',rotation=[0,0,n*15+90],pivot=[xx,yy,2]))
+                    b['cubes'].append(cube((xx-1.35,yy-.5,1.5),(2.7,1,1),'gold',rotation=[0,0,n*15+90],pivot=[xx,yy,2]))
                 for n in range(8):
                     angle=n*math.tau/8;xx,yy=4.5*math.cos(angle),cy+4.5*math.sin(angle)
-                    b['cubes'].append(cube((xx-4.5,yy-.4,1.8),(9,.8,.8),'gold',rotation=[0,0,n*45],pivot=[xx,yy,2]))
+                    b['cubes'].append(cube((0,cy-.4,1.8),(9,.8,.8),'gold',rotation=[0,0,n*45],pivot=[0,cy,2]))
     bones.extend(extra);g['description'].update(visible_bounds_width=7,visible_bounds_height=7,visible_bounds_offset=[0,2,0])
     return geo
 
 def bake(name,geo):
-    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=512;density=2
+    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=1024;density=4
     for bone in g['bones']:
         for c in bone.get('cubes',[]):
             w,h,d=c['size'];faces={};kind=c.pop('_material','skin');facial=c.pop('_face',False)
             for face,fw,fh in [('north',w,h),('south',w,h),('east',d,h),('west',d,h),('up',w,d),('down',w,d)]:
                 tw,th=max(1,math.ceil(fw*density)),max(1,math.ceil(fh*density))
                 if u+tw+2>width:u=0;v+=row+2;row=0
-                faces[face]={'uv':[u,v],'uv_size':[tw,th]};tiles.append((u,v,tw,th,kind,face,facial));u+=tw+2;row=max(row,th)
+                faces[face]={'uv':[u,v],'uv_size':[tw,th]};tiles.append((u,v,tw,th,kind,face,facial,tuple(c['origin']),tuple(c['size'])));u+=tw+2;row=max(row,th)
             c['uv']=faces
-    height=2**max(8,math.ceil(math.log2(v+row+2)));assert height<=2048,(name,height)
+    height=2**max(8,math.ceil(math.log2(v+row+2)));assert height<=4096,(name,height)
     g['description'].update(texture_width=width,texture_height=height)
     im=Image.new('RGBA',(width,height));glow=Image.new('RGBA',im.size);draw=ImageDraw.Draw(im);gd=ImageDraw.Draw(glow);base,accent=palette(name);rng=random.Random(seed(name))
-    for x,y,w,h,kind,face,facial in tiles:
-        b=(212,202,166) if kind=='bone' else (180,137,53) if kind=='gold' else mix(base,(34,28,45),.25) if kind=='cloth' else base
-        if kind=='eye':b=(15,12,23)
-        if kind=='mouth':b=(22,10,20)
-        light={'up':1.12,'down':.65,'north':1.0,'south':.84,'east':.8,'west':.93}[face]
-        for yy in range(h):
-            grad=.91+.15*math.sin(math.pi*yy/max(1,h-1));draw.line((x,y+yy,x+w-1,y+yy),fill=color(b,light*grad))
-        if w>3 and h>3:
-            draw.rectangle((x,y,x+w-1,y+h-1),outline=color(b,light*.66));draw.line((x+1,y+1,x+w-2,y+1),fill=color(b,light*1.16))
-            if kind in ('scale','stripe','feather','cloth'):
-                for n in range(2,w,4):
-                    if kind=='scale':
-                        for yy in range(2,h,5):draw.arc((x+n-2,y+yy,x+n+3,y+yy+4),0,180,fill=color(b,.64),width=1)
-                    else:draw.line((x+n,y+2,x+max(1,n-2),y+h-2),fill=color(b,.63),width=1)
-            else:
-                for n in range(max(1,w*h//90)):
-                    px=x+rng.randrange(1,max(2,w-1));py=y+rng.randrange(1,max(2,h-1));draw.line((px,py,min(x+w-2,px+2),min(y+h-2,py+3)),fill=color(b,.73))
-                if kind=='skin' and w>=7 and h>=7:
-                    for n in range(max(1,w*h//75)):
-                        px=x+rng.randrange(2,w-2);py=y+rng.randrange(2,h-2);end=min(y+h-2,py+3+rng.randrange(5))
-                        draw.line((px,py,px-1,end),fill=color(mix(b,accent,.3),.75),width=1)
-                        if n%4==0:gd.line((px,py,px-1,end),fill=accent+(85,))
-                    for n in range(w*h//12):
-                        px=x+rng.randrange(1,w-1);py=y+rng.randrange(1,h-1);draw.point((px,py),fill=color(b,.83+rng.random()*.28))
-            if kind in ('bone','gold','cloth'):
-                mid=x+w//2;draw.line((mid,y+2,mid,y+h-3),fill=color(accent,.8));gd.line((mid,y+2,mid,y+h-3),fill=accent+(130,))
-        if facial and face=='north' and w>=5 and h>=5:
-            for ex in (x+w//4,x+3*w//4):draw.ellipse((ex-2,y+h//3-1,ex+1,y+h//3+1),fill=(15,10,22,255));draw.point((ex,y+h//3),fill=accent+(255,));gd.point((ex,y+h//3),fill=accent+(235,))
-            my=y+int(h*.72);draw.line((x+2,my,x+w-3,my),fill=(29,14,26,255),width=max(1,h//10))
-            for tx in range(x+3,x+w-2,3):draw.line((tx,my-1,tx,my+1),fill=(231,222,191,255))
-        if kind=='eye':draw.rectangle((x,y,x+w-1,y+h-1),fill=accent+(255,));gd.rectangle((x,y,x+w-1,y+h-1),fill=accent+(220,))
+    for x,y,w,h,kind,face,facial,origin,size in tiles:
+        paint_material(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
     return im,glow
 
 def curve(values,length):return {str(round(i*length/(len(values)-1),3)):v for i,v in enumerate(values)}

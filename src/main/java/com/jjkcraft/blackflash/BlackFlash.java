@@ -90,7 +90,7 @@ public final class BlackFlash {
 		ServerLevel level = ctx.level();
 		double multiplier = BlackFlashMath.multiplier(BlackFlashMath.ceRatio(CursedEnergy.current(striker), CursedEnergy.max(striker)),
 				JjkConfig.server().casting.blackFlashExponent);
-		double amount = damage * multiplier;
+		double amount = Boolean.TRUE.equals(ctx.memory.get("ordinary_melee"))?damage*multiplier:com.jjkcraft.core.technique.TechniqueMath.damage(damage*multiplier,JjkConfig.server().casting.techniqueDamageMultiplier);
 		target.damageCooldownTime = 0;
 		if (!target.hurtServer(level, level.damageSources().source(JjkDamageTypes.BLACK_FLASH, striker), (float) amount))
 			return new StrikeHooks.Outcome(true, 0);

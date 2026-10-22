@@ -31,6 +31,8 @@ import com.jjkcraft.entity.CursedBoltEntity;
 public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, CursedBoltRenderer.State> {
 	private static final int TRAIL = 10;
 	private static final Map<Integer, Deque<Vec3>> HISTORY = new HashMap<>();
+    private static final Map<Integer,Integer> SAMPLED_TICK=new HashMap<>();
+    public static void clearHistory(){HISTORY.clear();SAMPLED_TICK.clear();}
 
 	public static final class State extends EntityRenderState {
 		int color;
@@ -57,12 +59,13 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		Vec3 now = new Vec3(state.x, state.y, state.z);
 		if (HISTORY.size() > 256) {
 			// Bolts removed without a final frame leave entries behind; drop them all now and then.
-			HISTORY.clear();
+			clearHistory();
 		}
 
 		Deque<Vec3> history = HISTORY.computeIfAbsent(entity.getId(), id -> new ArrayDeque<>());
-		if (history.isEmpty() || history.peekFirst().distanceToSqr(now) > 0.01) {
-			history.addFirst(now);
+		if (history.isEmpty() || SAMPLED_TICK.getOrDefault(entity.getId(),-1)!=entity.tickCount) {
+            SAMPLED_TICK.put(entity.getId(),entity.tickCount);
+			history.addFirst(entity.getPosition(0));
 			int max = ClientConfig.lowVfx() ? TRAIL / 2 : TRAIL;
 			while (history.size() > max) {
 				history.removeLast();
@@ -71,9 +74,10 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 
 		if (entity.isRemoved()) {
 			HISTORY.remove(entity.getId());
+            SAMPLED_TICK.remove(entity.getId());
 		}
 
-		List<Vec3> relative = new ArrayList<>(history.size());
+		List<Vec3> relative = new ArrayList<>(history.size()+1);relative.add(Vec3.ZERO);
 		for (Vec3 p : history) {
 			relative.add(p.subtract(now));
 		}
@@ -89,11 +93,12 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		int halo = ARGB.color(90, state.color & 0xFFFFFF);
 		List<Vec3> trail = state.trail;
 		Vec3 cameraFromEntity = camera.pos.subtract(state.x, state.y, state.z);
+        float near=(float)Math.clamp(cameraFromEntity.length()/Math.max(1,size*2.5),.12,1);
 
 		collector.submitCustomGeometry(poseStack, RenderTypes.lightning(), (pose, buffer) -> {
-			glow(pose, buffer, facing, size * 2.2f, halo);
-			glow(pose, buffer, facing, size * 1.1f, core);
-            glow(pose, buffer, facing, size * 0.22f, 0xD0FFFFFF);
+			glow(pose, buffer, facing, size * 1.6f, ARGB.multiplyAlpha(halo,near));
+			glow(pose, buffer, facing, size * .8f, ARGB.multiplyAlpha(core,near));
+            glow(pose, buffer, facing, size * 0.18f, ARGB.multiplyAlpha(0xB0FFFFFF,near));
             int segments=ClientConfig.lowVfx()||cameraFromEntity.lengthSqr()>32*32?8:16;
             for(int plane=0;plane<2;plane++)for(int j=0;j<segments;j++){
                 double a=j*Math.PI*2/segments+state.age*.16,b=(j+.7)*Math.PI*2/segments+state.age*.16;

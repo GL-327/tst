@@ -4,15 +4,15 @@
   "category": "strike",
   "grade": "jjkcraft:grade_3",
   "cast": {
-    "cost": 16,
-    "cooldown": 36,
-    "range": 12.0
+    "cost": 12,
+    "cooldown": 20,
+    "range": 26
   },
   "behavior": {
     "type": "jjkcraft:line_cut",
-    "damage": 9,
-    "width": 0.35,
-    "pierce": 0.45
+    "damage": 19,
+    "width": 0.65,
+    "pierce": 0.7
   },
   "visuals": {
     "color": "#F2C14E",

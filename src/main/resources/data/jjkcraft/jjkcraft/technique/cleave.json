@@ -4,15 +4,15 @@
   "category": "area",
   "grade": "jjkcraft:grade_4",
   "cast": {
-    "cost": 18,
-    "cooldown": 40,
-    "range": 5.0
+    "cost": 14,
+    "cooldown": 24,
+    "range": 6
   },
   "behavior": {
     "type": "jjkcraft:arc_slash",
-    "damage": 6,
-    "arc": 140,
-    "ce_scaling": 0.6,
+    "damage": 16,
+    "arc": 110,
+    "ce_scaling": 1.1,
     "knockback": 0.5
   },
   "visuals": {

@@ -52,6 +52,8 @@ public final class CombatClient {
     public static boolean staggered(){return view.stun()>0;}
 
     public static void init() {
+        PunchImbuementClient.init();
+        com.jjkcraft.client.vfx.ChargeFx.init();
         ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.AutoStats.TYPE,(next,context)->autoStats=next);
 
         com.jjkcraft.client.vfx.CombatImpactFx.init();
@@ -82,8 +84,8 @@ public final class CombatClient {
             if (!enabled() || mc.player == null || mc.gui.hud.isHidden()||mc.gui.screen()!=null) return;
 
             var config=com.jjkcraft.client.config.ClientConfig.get();var panel=config.hud.combatPanel;if(!panel.visible)return;
-            float alpha=panel.opacity();com.jjkcraft.client.hud.HudLayout.push(g,panel,110,43);
-            Ink.panel(g,0,0,110,43,view.stun()>0?Palette.danger():Palette.accent(),alpha);
+            float alpha=panel.opacity();com.jjkcraft.client.hud.HudLayout.push(g,panel,110,PunchImbuementClient.label().isEmpty()?43:54);
+            Ink.panel(g,0,0,110,PunchImbuementClient.label().isEmpty()?43:54,view.stun()>0?Palette.danger():Palette.accent(),alpha);
             String status=view.stun()>0?"STAGGERED":view.move().isEmpty()?config.autoCombat?"AUTO COMBAT":"MANUAL COMBAT":view.move().toUpperCase(java.util.Locale.ROOT)+(view.combo()>1?" · "+view.combo():"");
             Ink.text(g,Ink.fit(Component.literal(status),102),4,4,view.stun()>0?Palette.danger():view.combo()>1?Palette.gold():Palette.TEXT,alpha);
             String detail=config.autoCombat?autoStats.attempts()<5?"60% commitment":"Contact "+autoStats.hits()+" / "+autoStats.attempts()+" · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"%":"Hits: "+JjkKeys.LIGHT.getTranslatedKeyMessage().getString()+" / "+JjkKeys.HEAVY.getTranslatedKeyMessage().getString();
@@ -91,6 +93,7 @@ public final class CombatClient {
             int guardColor=view.guard()<30?Palette.danger():Palette.energyHigh();g.fill(4,26,106,28,net.minecraft.util.ARGB.multiplyAlpha(0xFF241D31,alpha));g.fill(4,26,4+(int)Math.clamp(102*view.guard()/100,0,102),28,net.minecraft.util.ARGB.multiplyAlpha(guardColor,alpha));
             String escape=resources.escapeCooldown()==0?"Evade: "+JjkKeys.DASH.getTranslatedKeyMessage().getString():"Evade: "+String.format(java.util.Locale.ROOT,"%.1f s",resources.escapeCooldown()/20.0);
             Ink.text(g,Ink.fit(Component.literal(escape),102),4,32,resources.escapeCooldown()==0?Palette.good():Palette.TEXT_DIM,alpha);
+            if(!PunchImbuementClient.label().isEmpty())Ink.text(g,Ink.fit(Component.literal(PunchImbuementClient.label()),102),4,43,PunchImbuementClient.mode()==2?0xFFFF6A7A:Palette.energyHigh(),alpha);
             g.pose().popMatrix();
 
         });
@@ -142,6 +145,7 @@ public final class CombatClient {
         while(JjkKeys.LIGHT.consumeClick()){}while(JjkKeys.HEAVY.consumeClick()){}
 
         while (JjkKeys.COMBAT.consumeClick()) if (mc.player != null && mc.gui.screen() == null) send(4, 0);
+        while(JjkKeys.CE_IMBUE.consumeClick())if(mc.player!=null&&mc.gui.screen()==null)send(8,0);
 
         if (!enabled() || mc.player == null) { pressed=false;attackClick=false;guard=-1;autoNext=0;return; }
 

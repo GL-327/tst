@@ -83,7 +83,8 @@ public final class TechniqueAbilityScreen extends JjkScreen {
         if(cast==null||selected==null)return;var d=ClientTechniques.definition(selected).orElse(null);if(d==null)return;
         boolean untamed=!tamed(d),infinity=selected.equals(JjkCraft.id("infinity"));var v=ClientTechniqueMenus.view(family);
         boolean ritual=untamed&&d.behavior() instanceof SummonBehavior;boolean activeTrial=v!=null&&!v.trial().isEmpty();
-        String label=infinity?(ClientTechniques.infinityEnabled()?"Disable Infinity":"Enable Infinity"):untamed?(ritual?(activeTrial?"Ritual active":"Subjugate"):"Tame components"):familySlot()<0?"Equip family":ClientTechniques.activeIs(selected)?"Turn off":d.behavior() instanceof SummonBehavior?"Summon":"Cast";
+        boolean fist=selected.getPath().equals("blue_punch")||selected.getPath().equals("red_punch");
+        String label=infinity?(ClientTechniques.infinityEnabled()?"Disable Infinity":"Enable Infinity"):untamed?(ritual?(activeTrial?"Ritual active":"Subjugate"):"Tame components"):familySlot()<0?"Equip family":fist?(ClientTechniqueStatus.get(selected).label().startsWith("Fists imbued")?"Clear fists":"Imbue fists"):ClientTechniques.activeIs(selected)?"Turn off":d.behavior() instanceof SummonBehavior?"Summon":"Cast";
         cast.setMessage(Component.literal(label));
         cast.active=known(selected)&&(untamed?ritual&&!activeTrial:familySlot()<0&&!infinity||ClientTechniqueStatus.get(selected).actionable());
     }

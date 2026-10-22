@@ -130,6 +130,12 @@ public final class WorldFx {
 		}
 	}
 
+    /** Hand-attached telegraphs render before residual fields when the frame budget is busy. */
+    public static void addPriority(Effect effect,boolean solid){
+        if(ClientConfig.effectsOff())return;var list=solid?SOLID:EFFECTS;int limit=solid?96:256;
+        if(list.size()>=limit)list.removeLast();list.addFirst(effect);
+    }
+
 	public static void clear() {
 		lastFrameQuads=0;
 		EFFECTS.clear();

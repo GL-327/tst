@@ -45,7 +45,9 @@ public record ArcSlashBehavior(double damage, double arc, double ceScaling, doub
 		List<LivingEntity> targets = ctx.enemiesInCone(ctx.range(), arc);
 		for (LivingEntity target : targets) {
 			double ce = CursedEnergy.isCapable(target) ? CursedEnergy.current(target) : 0;
-			ctx.hurt(target, TechniqueMath.ceScaledDamage(damage, ceScaling, ce) * ctx.power(), false);
+            double amount=TechniqueMath.ceScaledDamage(damage,ceScaling,ce)*ctx.power();
+            if(ctx.techniqueId().getPath().equals("cleave"))ctx.hurtSplit(target,(damage+Math.min(30,target.getMaxHealth()*.06+target.getArmorValue()*.65)+Math.min(20,ce*ceScaling/100))*ctx.power(),.4);
+            else ctx.hurt(target,amount,false);
 			ctx.knockback(target, ctx.caster().position(), knockback);
 		}
 

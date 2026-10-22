@@ -55,9 +55,10 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 		this.owner = EntityReference.of(owner);
 		this.lifetime = lifetime;
 		this.power = power;
+        var attack=getAttribute(Attributes.ATTACK_DAMAGE);if(attack!=null)attack.setBaseValue(attack.getBaseValue()*Math.max(.5,power)*1.75);
 		var health = getAttribute(Attributes.MAX_HEALTH);
 		if (health != null) {
-			health.setBaseValue(health.getBaseValue() * Math.max(0.5, power));
+			health.setBaseValue(health.getBaseValue() * Math.max(0.5, power) * 1.25);
 			setHealth(getMaxHealth());
 		}
 	}

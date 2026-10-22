@@ -136,8 +136,8 @@ public final class TechniqueService {
         final int slot; final double base; final ServerLevel level; int ticks; double spent;
         Charge(ServerPlayer p,Identifier id,TechniqueDefinition d,int slot,double base){this.player=p;this.id=id;this.definition=d;this.slot=slot;this.base=base;this.spent=base;this.level=p.level();}
         boolean purple(){return id.getPath().equals("hollow_purple");}
-        double fraction(){return com.jjkcraft.core.technique.ChargeMath.fraction(ticks,purple());}
-        double drain(){return com.jjkcraft.core.technique.ChargeMath.upkeep(base,ticks,purple(),com.jjkcraft.awakening.CharacterAwakening.get(player).sixEyes());}
+        double fraction(){return com.jjkcraft.core.technique.ChargeMath.fraction(ticks,id.getPath());}
+        double drain(){return com.jjkcraft.core.technique.ChargeMath.upkeep(base,ticks,id.getPath(),com.jjkcraft.awakening.CharacterAwakening.get(player).sixEyes());}
         void sync(){JjkNetworking.send(player,new com.jjkcraft.network.payload.ChargePayload(slot,(int)Math.round(fraction()*100),purple()?200:100,(float)(drain()*20)));}
     }
     public static int chargePercent(ServerPlayer p){Charge c=CHARGES.get(p.getUUID());return c==null?0:(int)Math.round(c.fraction()*100);}
@@ -455,6 +455,7 @@ public final class TechniqueService {
 	// ---------------------------------------------------------------- casting
 
     private static CastFailure beginCharge(ServerPlayer player,Identifier id,int slot){
+        if(com.jjkcraft.combat.PunchImbuement.same(player,id)){var d=Techniques.get(player.registryAccess(),id).orElseThrow();com.jjkcraft.combat.PunchImbuement.toggle(new CastContext(player,player.level(),id,d,1,1));return CastFailure.NONE;}
         if(id.equals(com.jjkcraft.JjkCraft.id("infinity"))&&InfinityField.preferred(player))return InfinityField.toggle(player);
         if(CHARGES.containsKey(player.getUUID())||PENDING.stream().anyMatch(p->p.ctx().caster()==player))return CastFailure.BUSY;
         var found=Techniques.get(player.registryAccess(),id);if(found.isEmpty())return CastFailure.NOT_KNOWN;
@@ -470,6 +471,7 @@ public final class TechniqueService {
         if(!(payer.isPresent()?payer.get().pay(player,id,d,cost):CursedEnergy.trySpend(player,cost)))return CastFailure.NOT_ENOUGH_ENERGY;
         Charge charge=new Charge(player,id,d,slot,cost);CHARGES.put(player.getUUID(),charge);charge.sync();
         TechniqueFx.castPose(new CastContext(player,player.level(),id,d,1,1));
+        new CastContext(player,player.level(),id,d,.25,1).fx(TechniqueFxPayload.Phase.WINDUP,player.getEyePosition());
         return CastFailure.NONE;
     }
 
@@ -541,7 +543,7 @@ public final class TechniqueService {
     private static TechniqueDefinition chargedDefinition(TechniqueDefinition d,double q,int held){
         double scale=.5+.5*q;var c=d.cast();
         int mode=d.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior b?b.filter():0;
-        var tuning=new TechniqueTuning((int)Math.round(q*100),(int)Math.round(scale*100),(int)Math.round((.6+.4*q)*100),(int)Math.round(scale*100),100,mode);
+        var tuning=new TechniqueTuning(100,(int)Math.round(scale*100),(int)Math.round((.6+.4*q)*100),(int)Math.round(scale*100),100,mode);
         var cast=new TechniqueDefinition.Cast(c.cost(),c.cooldown(),Math.max(0,c.castTime()-held),c.range()*scale,c.mode(),c.upkeep()*Math.max(.5,q),c.maxDuration()==0?0:Math.max(1,(int)(c.maxDuration()*scale)),c.mulCost(),c.chargeable());
         return new TechniqueDefinition(d.name(),d.description(),d.category(),d.grade(),cast,TunedBehaviors.apply(d.behavior(),tuning),d.visuals(),d.icon(),d.vowModifiers(),d.innateWeight(),d.masteryUses());
     }

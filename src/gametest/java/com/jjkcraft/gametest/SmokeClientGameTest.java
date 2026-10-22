@@ -60,6 +60,9 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			return;
 		}
 		if("personalization".equals(System.getProperty("jjkcraft.clientTestFocus"))){personalization(context);return;}
+        if("refinement".equals(System.getProperty("jjkcraft.clientTestFocus"))){CombatRefinementChecks.run(context);return;}
+        if("refinementAll".equals(System.getProperty("jjkcraft.clientTestFocus"))){CombatRefinementChecks.run(context);CreatureRevampChecks.run(context);return;}
+        if("refinementArt".equals(System.getProperty("jjkcraft.clientTestFocus"))){CreatureRevampChecks.run(context);return;}
         if("reconcile".equals(System.getProperty("jjkcraft.clientTestFocus"))){ReconciliationClientChecks.run(context);return;}
         if("qol".equals(System.getProperty("jjkcraft.clientTestFocus"))){QolClientChecks.run(context);return;}
         if("qolRegression".equals(System.getProperty("jjkcraft.clientTestFocus"))){QolClientChecks.run(context);ReconciliationClientChecks.run(context);return;}

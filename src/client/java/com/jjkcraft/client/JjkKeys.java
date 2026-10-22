@@ -37,6 +37,7 @@ public final class JjkKeys {
 	public static final KeyMapping DASH = key("dash", InputConstants.KEY_LALT);
 	public static final KeyMapping LOCK_ON = key("lock_on", InputConstants.KEY_Z);
 	public static final KeyMapping AUTO_COMBAT = key("auto_combat",InputConstants.KEY_F7);
+    public static final KeyMapping CE_IMBUE = key("ce_imbue",InputConstants.KEY_O);
     public static final KeyMapping BANK = key("bank",InputConstants.KEY_BACKSLASH);
     public static final KeyMapping LIGHT = key("light_hit",InputConstants.KEY_U);
     public static final KeyMapping HEAVY = key("heavy_hit",InputConstants.KEY_I);

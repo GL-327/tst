@@ -8,6 +8,11 @@ import com.jjkcraft.JjkCraft;
 
 public final class CombatPayloads {
     private CombatPayloads() { }
+    public record Imbuement(int entity,int mode,boolean ce) implements CustomPacketPayload {
+        public static final Type<Imbuement> TYPE=new Type<>(JjkCraft.id("punch_imbuement"));
+        public static final StreamCodec<ByteBuf,Imbuement> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,Imbuement::entity,ByteBufCodecs.VAR_INT,Imbuement::mode,ByteBufCodecs.BOOL,Imbuement::ce,Imbuement::new);
+        @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    }
     public record AutoStats(int attempts,int hits,int feints) implements CustomPacketPayload {
         public static final Type<AutoStats> TYPE=new Type<>(JjkCraft.id("auto_combat_stats"));
         public static final StreamCodec<ByteBuf,AutoStats> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,AutoStats::attempts,ByteBufCodecs.VAR_INT,AutoStats::hits,ByteBufCodecs.VAR_INT,AutoStats::feints,AutoStats::new);

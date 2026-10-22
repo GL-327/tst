@@ -98,6 +98,8 @@ public class JjkServerConfig implements ConfigData {
 	}
 
 	public static class Casting {
+        @Comment("Damage multiplier for cursed techniques. Does not multiply ordinary physical attacks, healing or crowd-control durations.")
+        public double techniqueDamageMultiplier = com.jjkcraft.core.technique.TechniqueMath.DEFAULT_DAMAGE_MULTIPLIER;
         @Comment("Allow destructive techniques to damage terrain. Containers, unbreakable blocks and block-break event claims are protected; mobs respect mobGriefing.")
         public boolean terrainDamage = true;
         @Comment("Oldest spatial fields retire when a caster reaches this limit. A Mini Blue Cluster uses three fields.")

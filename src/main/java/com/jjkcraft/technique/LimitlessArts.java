@@ -9,6 +9,7 @@ import com.jjkcraft.technique.field.SpatialFields;
 public final class LimitlessArts {
     private LimitlessArts() { }
     public static CastResult cast(CastContext ctx,String ability,double damage,int duration,double radius){
+        if(ctx.caster() instanceof net.minecraft.server.level.ServerPlayer&&(ability.equals("blue_punch")||ability.equals("red_punch")))return com.jjkcraft.combat.PunchImbuement.toggle(ctx);
         double force=ctx.details().force()/100.0*Math.sqrt(ctx.power());
         if(ability.equals("blue_cluster")){
             Vec3 center=ctx.blockLimit(ctx.range()),side=ctx.look().cross(new Vec3(0,1,0)).normalize();

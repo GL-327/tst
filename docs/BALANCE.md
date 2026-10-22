@@ -1,5 +1,12 @@
 # Balance
 
+**1.13 preview amendment:** offensive techniques now use a configurable 2.5x
+runtime damage multiplier, with a separate Shrine efficiency pass. Strong powers
+can defeat weak curses in one hit. The current simulation bounds full output
+against the strongest special-grade boss instead of enforcing the historical
+same-grade no-one-shot rule below. See `COMBAT_REFINEMENT.md` for charge profiles,
+fist coatings and summon changes. Older milestone tables remain historical.
+
 All numbers are defaults. Server operators change them in `config/jjkcraft-server.json5`, and
 datapacks change them in grade, technique, curse and domain data. Formulas live in
 `com.jjkcraft.core` and are covered by unit tests, which are named in each section.

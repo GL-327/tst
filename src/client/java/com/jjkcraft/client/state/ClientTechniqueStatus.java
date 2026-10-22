@@ -15,6 +15,7 @@ public final class ClientTechniqueStatus {
         var d=ClientTechniques.definition(id).orElse(null);
         if(d==null)return new Status("Unavailable",Palette.TEXT_DIM,false);
         if(TechniqueBindings.family(id))return new Status("Open variants",Palette.gold(),true);
+        if(id.getPath().equals("blue_punch")&&com.jjkcraft.client.combat.PunchImbuementClient.mode()==1||id.getPath().equals("red_punch")&&com.jjkcraft.client.combat.PunchImbuementClient.mode()==2)return new Status("Fists imbued / click to stop",Palette.good(),true);
         if(id.equals(JjkCraft.id("infinity"))&&ClientTechniques.infinityEnabled())return new Status(infinity(),ClientTechniques.infinityActive()?Palette.good():Palette.gold(),true);
         if(ClientTechniques.activeIs(id))return new Status("Active / click to stop",Palette.good(),true);
         var mc=Minecraft.getInstance();

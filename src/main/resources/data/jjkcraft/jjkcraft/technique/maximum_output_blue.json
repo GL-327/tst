@@ -4,22 +4,22 @@
   "category": "ultimate",
   "grade": "jjkcraft:special_grade",
   "cast": {
-    "cost": 200,
-    "cooldown": 900,
-    "range": 24.0,
+    "cost": 140,
+    "cooldown": 420,
+    "range": 36,
     "mode": "toggle",
     "upkeep": 0,
-    "max_duration": 50,
+    "max_duration": 80,
     "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:singularity",
-    "distance": 12,
-    "radius": 10,
+    "distance": 20,
+    "radius": 16,
     "pull_ticks": 40,
-    "strength": 0.25,
-    "damage": 48,
-    "blast_radius": 6
+    "strength": 0.4,
+    "damage": 90,
+    "blast_radius": 12
   },
   "visuals": {
     "color": "#3D8BFF",

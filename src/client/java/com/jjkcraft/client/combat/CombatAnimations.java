@@ -12,6 +12,8 @@ import com.jjkcraft.network.payload.CombatPosePayload;
 
 /** Authored windup, contact and recovery poses follow the server's combat windows. */
 public final class CombatAnimations {
+    /** First-person arms use their own pose; third-person limb rotations must not leak into them. */
+    public static boolean firstPerson;
     private record Received(CombatPosePayload pose,long received) { }
     private static final Map<Integer,Received> POSES=new HashMap<>();
     private static final Map<Integer,Received> CASTS=new HashMap<>();
@@ -42,6 +44,7 @@ public final class CombatAnimations {
     }
     private static void rot(ModelPart p,float x,float y,float z){p.xRot=x;p.yRot=y;p.zRot=z;}
     public static void apply(HumanoidModel<?> m,net.minecraft.client.renderer.entity.state.HumanoidRenderState state){
+        if(firstPerson)return;
         int id=state instanceof AvatarRenderState avatar?avatar.id:ENTITY_IDS.getOrDefault(state,-1);
         var p=pose(id);if(p==null||state instanceof AvatarRenderState avatar&&avatar.isSpectator||state.isFallFlying||state.isVisuallySwimming)return;
         float partial=state.ageInTicks-(float)Math.floor(state.ageInTicks);
@@ -85,14 +88,17 @@ public final class CombatAnimations {
         }
     }
     public static boolean hands(PoseStack stack,boolean right,float partial){
-        var mc=Minecraft.getInstance();if(mc.player==null||mc.player.isUsingItem())return false;var p=pose(mc.player.getId());if(p==null)return false;
+        var mc=Minecraft.getInstance();if(mc.player==null||mc.player.isUsingItem())return false;var p=pose(mc.player.getId());
+        boolean charging=com.jjkcraft.client.state.ClientTechniques.charge().slot()>=0&&com.jjkcraft.client.state.ClientTechniques.charge().percent()>0;
+        if(p==null){if(!charging)return false;p=new CombatPosePayload(mc.player.getId(),"",0,0,0,0,-1,0);}
         float k=phase(p,partial);boolean move=!p.move().isEmpty()&&Math.abs(k)>0.001f;
         boolean stance=p.move().equals("stance");
-        if(!move&&!stance&&p.guard()<0&&p.stun()<=0)return false;
-        stack.pushPose();int side=right?1:-1;
-        stack.translate(-0.10*side,0.04,-0.1);
-        stack.rotateDegrees(Axis.YP,side*8);
-        if(stance){float breath=(float)Math.sin(mc.level.getGameTime()*.11)*.008f;stack.translate(-side*.03,.1+breath,-.06);stack.rotateDegrees(Axis.ZP,side*9);
+        if(!move&&!stance&&p.guard()<0&&p.stun()<=0&&!charging)return false;
+        int side=right?1:-1;
+        stack.translate(.08*side,-.20,-.22);
+        stack.scale(.82f,.82f,.82f);
+        if(charging){stack.translate(-side*.05,.08,-.03);stack.rotateDegrees(Axis.YP,side*5);}
+        if(stance){float breath=(float)Math.sin((mc.level.getGameTime()+partial)*.11)*.004f;stack.translate(-side*.04,.045+breath,-.03);stack.rotateDegrees(Axis.ZP,side*4);
             if(right==(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT)&&mc.player.getMainHandItem().getItem() instanceof com.jjkcraft.item.tool.CursedToolItem){stack.translate(side*.14,-.17,.04);stack.rotateDegrees(Axis.ZP,-side*13);}
         }
         if(p.guard()>=0&&!move){stack.translate(-0.16*side,0.2+(p.guard()-1)*0.1,-0.15);stack.rotateDegrees(Axis.ZP,18*side);}

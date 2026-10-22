@@ -4,16 +4,16 @@
   "category": "area",
   "grade": "jjkcraft:special_grade",
   "cast": {
-    "cost": 60,
-    "cooldown": 260,
-    "range": 18
+    "cost": 34,
+    "cooldown": 160,
+    "range": 20
   },
   "behavior": {
     "type": "jjkcraft:field",
     "strength": 0,
-    "radius": 4,
+    "radius": 7,
     "duration": 100,
-    "damage_per_second": 6,
+    "damage_per_second": 28,
     "burst_damage": 0,
     "burst_radius": 0
   },

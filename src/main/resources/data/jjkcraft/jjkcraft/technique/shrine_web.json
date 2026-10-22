@@ -4,16 +4,16 @@
   "category": "area",
   "grade": "jjkcraft:grade_2",
   "cast": {
-    "cost": 34,
-    "cooldown": 170,
-    "range": 4
+    "cost": 26,
+    "cooldown": 100,
+    "range": 16
   },
   "behavior": {
     "type": "jjkcraft:manga_ability",
     "ability": "ratio_collapse",
-    "damage": 10,
+    "damage": 25,
     "duration": 1,
-    "radius": 4
+    "radius": 8
   },
   "visuals": {
     "color": "#E0303F",

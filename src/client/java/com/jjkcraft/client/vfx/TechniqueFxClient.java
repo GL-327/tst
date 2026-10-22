@@ -36,6 +36,8 @@ public final class TechniqueFxClient {
 		REMOTE_ACTIVE.clear();
         SpectralFx.clear();
         TexturedFx.clear();
+        ChargeFx.clear();
+        com.jjkcraft.client.render.CursedBoltRenderer.clearHistory();
 	}
 
 	public static void handle(TechniqueFxPayload fx) {
@@ -61,6 +63,8 @@ public final class TechniqueFxClient {
 		Entity caster = mc.level.getEntity(fx.caster());
 		float now = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		boolean involvesMe = mc.player != null && (fx.caster() == mc.player.getId() || fx.targets().contains(mc.player.getId()));
+        if(fx.phase()==TechniqueFxPayload.Phase.WINDUP&&def.cast().chargeable()){ChargeFx.update(fx,now);return;}
+        if(fx.phase()==TechniqueFxPayload.Phase.CAST||fx.phase()==TechniqueFxPayload.Phase.CHANNEL_START||fx.phase()==TechniqueFxPayload.Phase.FIELD)ChargeFx.stop(fx.caster());
         boolean spectral=SpectralFx.event(fx,color,now);
         // Keep GitHub's clear spatial envelopes; material sprites accent distant impacts only.
         if((fx.phase()==TechniqueFxPayload.Phase.HIT||fx.phase()==TechniqueFxPayload.Phase.BURST)
@@ -97,6 +101,7 @@ public final class TechniqueFxClient {
 				hitStop(fx, Math.max(2, v.hitStop()));
 			}
 			case CHANNEL_START -> {
+                if(def.behavior() instanceof com.jjkcraft.technique.behavior.SingularityBehavior)break;
 				String key = fx.caster() + ":" + fx.technique();
 				if(REMOTE_ACTIVE.containsKey(key))break;
 				long token=++generation;REMOTE_ACTIVE.put(key,token);

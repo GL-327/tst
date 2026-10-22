@@ -4,14 +4,14 @@
   "category": "area",
   "grade": "jjkcraft:grade_3",
   "cast": {
-    "cost": 24,
-    "cooldown": 55,
+    "cost": 12,
+    "cooldown": 0,
     "range": 3.5
   },
   "behavior": {
     "type": "jjkcraft:manga_ability",
     "ability": "red_punch",
-    "damage": 11,
+    "damage": 15,
     "radius": 1.5,
     "duration": 1
   },

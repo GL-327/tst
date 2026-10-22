@@ -4,20 +4,20 @@
   "category": "projectile",
   "grade": "jjkcraft:grade_1",
   "cast": {
-    "cost": 65,
-    "cooldown": 260,
-    "range": 32,
+    "cost": 70,
+    "cooldown": 280,
+    "range": 48,
     "chargeable": true
   },
   "behavior": {
     "type": "jjkcraft:projectile",
-    "damage": 19,
+    "damage": 70,
     "count": 1,
     "speed": 1.1,
     "spread": 0,
-    "size": 0.35,
+    "size": 2.2,
     "lifetime": 50,
-    "blast_radius": 4,
+    "blast_radius": 9,
     "burn_seconds": 4
   },
   "visuals": {

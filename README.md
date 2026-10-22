@@ -3,7 +3,13 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.12.3-preview.** The quality-of-life update adds searchable family abilities,
+**Status: 1.13.0-preview.** Combat refinement fixes oversized first-person arms,
+moves domain information onto the wheel, anchors charges to the moving caster and
+adds outward spatial releases. Blue/Red fist coatings and separate CE imbuement join
+stronger techniques, slower maximum charges, larger maximum effects and repainted
+creature materials. [Controls and changes](docs/COMBAT_REFINEMENT.md).
+
+The quality-of-life update adds searchable family abilities,
 live readiness filters, remembered wheel selections, summon dismissal, an Infinity
 status/upkeep display and a configurable Ten Shadows ritual tracker.
 [Controls and verification](docs/QUALITY_OF_LIFE.md).

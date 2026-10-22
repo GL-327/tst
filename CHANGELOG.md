@@ -5,6 +5,31 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.13.0-preview, 2026-10-22
+
+- Reworked first-person empty-hand combat rendering: one scoped pose per arm, compact
+  stance, independent hand selection and no third-person pose leaking into the hands.
+- Domain information appears only on the technique wheel. Repositioned the wheel
+  and domain strip, stabilized hover selection around side buttons, and restricted
+  click casting to a node or the selected move's center panel.
+- Charging VFX use one interpolated effect per caster. Release positions match the
+  charge hand; Blue and Red travel outward before their fields form. Projectile
+  ribbons sample game ticks for consistent trails at different frame rates.
+- Blue/Red Punch toggle independent fist imbuements, applying spatial damage and
+  pull/repulsion on a landed unarmed punch. A separate O key and wheel button toggle
+  CE fist imbuement. Both coatings work together and clear on death or disconnect.
+- Maximum charges take longer than ordinary charges; Purple's overcharge slows
+  further. Removed unintended double application of charge damage scaling.
+- Maximum Blue/Red have larger real influence radii and visible envelopes. Purple
+  has a larger, faster projectile with reduced near-camera glare.
+- Offensive techniques gain a configurable 2.5x damage multiplier. Shrine gets
+  adaptive, partly armour-piercing Cleave, a stronger long-range Dismantle, a larger
+  Furnace blast and stronger sustained cutting fields. Summons gain health and melee output.
+- Repainted all 75 creature rigs with denser UV materials, continuous form shading
+  and distinct fur, cloth, scale, bone and metal treatments. Rebuilt Mahoraga, Nue,
+  Rika, Toad and Well's Unknown Abyss forms; corrected Mahoraga's eight-spoke wheel.
+- See `docs/COMBAT_REFINEMENT.md` for controls, balance changes, source recipes and checks.
+
 ## 1.12.3-preview, 2026-10-22
 
 - Family ability browsers now support search and All, Learned, Ready and Untamed

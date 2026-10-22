@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class TechniqueMathTest {
 	private static final double EPS = 1e-9;
+    @Test void offensiveMultiplierIsIndependentAndBounded(){assertEquals(25,TechniqueMath.damage(10,TechniqueMath.DEFAULT_DAMAGE_MULTIPLIER));assertEquals(1,TechniqueMath.damage(10,-5));assertEquals(100,TechniqueMath.damage(10,50));assertEquals(25,TechniqueMath.damage(10,Double.NaN));}
 
 	@Test
 	void powerCombinesRankOutputMasteryAndVows() {

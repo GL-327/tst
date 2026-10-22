@@ -7,6 +7,8 @@ import com.jjkcraft.core.progress.ProgressionMath;
  * types; unit-tested in {@code TechniqueMathTest}, which also checks max damage against curse HP.
  */
 public final class TechniqueMath {
+    public static final double DEFAULT_DAMAGE_MULTIPLIER=2.5;
+    public static double damage(double amount,double multiplier){return Math.max(0,amount)*(Double.isFinite(multiplier)?Math.clamp(multiplier,.1,10):DEFAULT_DAMAGE_MULTIPLIER);}
 	/** Damage bonus per grade rank above Grade 4. */
 	public static final double RANK_POWER = 0.08;
 	/** Mastered techniques deal this much more damage. */

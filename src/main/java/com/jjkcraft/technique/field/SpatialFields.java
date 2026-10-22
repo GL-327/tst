@@ -67,6 +67,7 @@ public final class SpatialFields {
 	}
 
 	public static void init() {
+        SpatialShots.init();
 		ServerTickEvents.END_LEVEL_TICK.register(SpatialFields::tick);
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> FIELDS.clear());
 	}

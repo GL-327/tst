@@ -12,7 +12,7 @@ public final class SpectralFx {
     private static final Map<String,Float> RECENT=new HashMap<>();
     private static final Map<Integer,Long> MELEE=new HashMap<>();
     private SpectralFx() { }
-    public static void clear(){RECENT.clear();MELEE.clear();MaterialFx.clear();}
+    public static void clear(){RECENT.clear();MELEE.clear();MaterialFx.clear();SpatialFx.clear();}
     public static boolean spatial(String name){return name.contains("blue")||name.contains("purple")||name.contains("reversal_red")||name.equals("mini_red")||name.equals("red_punch")||name.equals("maximum_output_red")||name.equals("infinity");}
     public static boolean event(TechniqueFxPayload fx,int color,float now){
         if(ClientConfig.effectsOff())return false;
@@ -25,6 +25,7 @@ public final class SpectralFx {
         boolean field=fx.phase()==TechniqueFxPayload.Phase.FIELD,wind=fx.phase()==TechniqueFxPayload.Phase.WINDUP;
         boolean burst=fx.phase()==TechniqueFxPayload.Phase.BURST,hit=fx.phase()==TechniqueFxPayload.Phase.HIT;
         if(!field&&!wind&&!burst&&!hit&&fx.phase()!=TechniqueFxPayload.Phase.CAST)return false;
+        if(style==4){SpatialFx.event(fx,color,now);return field||burst||hit||wind;}
         var mc=Minecraft.getInstance();if(mc.level==null)return false;
         var caster=mc.level.getEntity(fx.caster());
         Vec3 origin=wind&&caster!=null?caster.getEyePosition().add(caster.getLookAngle().scale(1.45)).add(new Vec3(caster.getLookAngle().z,0,-caster.getLookAngle().x).scale(.25)).add(0,-.25,0):fx.origin();

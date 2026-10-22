@@ -66,6 +66,7 @@ public final class CursedCombat {
     public static Actor actor(LivingEntity entity) { return ACTORS.computeIfAbsent(entity.getUUID(), id -> new Actor(entity)); }
     public static boolean enabled(Player p) { return JjkConfig.server().systems.cursedCombat && Progression.get(p).awakened() && actor(p).enabled && !p.isSpectator(); }
     public static void init() {
+        PunchImbuement.init();
         ServerPlayNetworking.registerGlobalReceiver(CombatPayloads.Input.TYPE, (input, context) -> input(context.player(), input));
         ServerTickEvents.END_SERVER_TICK.register(CursedCombat::tick);
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> ACTORS.remove(handler.getPlayer().getUUID()));
@@ -110,6 +111,7 @@ public final class CursedCombat {
         long now = p.level().getGameTime();
         if (!p.isAlive() || p.isSpectator() || !INPUT.tryAcquire(p.getUUID(), now)) return;
         Actor state = actor(p);
+        if(input.action()==8){PunchImbuement.toggleCe(p);return;}
         if (input.action() == 4) { state.enabled = !state.enabled; state.guardHeight = -1; state.pressed = -1; sync(p); return; }
         if (!enabled(p)) return;
         if(input.action()==6){autoAttack(p,input.data());return;}
@@ -291,6 +293,7 @@ public final class CursedCombat {
                 boolean flash = false;
                 if (definition.isPresent() && !(source instanceof Player p && Progression.get(p).heavenlyRestricted())) {
                     var ctx = new CastContext(source, level, JjkCraft.id("ink_iron_palm"), definition.get(), 1, 1);
+                    ctx.memory.put("ordinary_melee",true);
                     var resolved=StrikeHooks.resolve(ctx, target, damage, true);flash=resolved.handled();
                     if(flash&&resolved.damage()>0){actualContact=true;
                         state.combo++;state.lastHit=level.getGameTime();var defender=actor(target);
@@ -315,6 +318,7 @@ public final class CursedCombat {
                     }
                 }
                 if(actualContact){
+                    PunchImbuement.contact(source,target);
                     net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffectsWithItemSource(level,target,damageSource,source.getMainHandItem());
                     if(source.getMainHandItem().hurtEnemy(target,source))source.getMainHandItem().postHurtEnemy(target,source);
                 }
@@ -339,6 +343,7 @@ public final class CursedCombat {
         level.playSound(null,at.x,at.y,at.z,sound,net.minecraft.sounds.SoundSource.PLAYERS,kind==2?0.2f:0.55f,kind==1?0.7f:1.15f);
     }
     public static void sync(ServerPlayer p) {
+        PunchImbuement.sync(p);
         Actor s = actor(p); long now = p.level().getGameTime();
         JjkNetworking.send(p,new CombatPayloads.AutoStats(s.autoAttempts,s.autoHits,s.autoFeints));
         JjkNetworking.send(p, new CombatPayloads.View(enabled(p), (float) s.guard, s.combo, (int) Math.max(0, s.stunned - now), s.move == null ? "" : s.moveId, s.move == null ? 0 : (int) (now - s.started)));

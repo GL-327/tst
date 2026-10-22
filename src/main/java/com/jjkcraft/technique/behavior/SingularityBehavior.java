@@ -39,8 +39,10 @@ public record SingularityBehavior(double distance, double radius, int pullTicks,
 
 	@Override
 	public CastResult cast(CastContext ctx) {
-		Vec3 star = ctx.blockLimit(distance).add(0, 1, 0);
+		Vec3 star = ctx.blockLimit(distance);
 		ctx.memory.put("star", star);
+        var start=com.jjkcraft.technique.field.SpatialShots.origin(ctx);int flight=com.jjkcraft.technique.field.SpatialShots.flight(start,star);
+        ctx.memory.put("flight",flight);com.jjkcraft.technique.field.SpatialShots.visual(ctx,start,star,Math.min(3,radius*.2),flight);
 		ctx.fx(TechniqueFxPayload.Phase.CHANNEL_START, star);
 		return CastResult.done(star);
 	}
@@ -50,6 +52,7 @@ public record SingularityBehavior(double distance, double radius, int pullTicks,
 		if (!(ctx.memory.get("star") instanceof Vec3 star)) {
 			return false;
 		}
+        int flight=(int)ctx.memory.getOrDefault("flight",0);if(ticksActive<flight)return true;ticksActive-=flight;
 
 		if (ticksActive < pullTicks) {
 			for (LivingEntity enemy : ctx.enemiesInRadius(star, radius)) {
