@@ -9,7 +9,7 @@ from reborn_creatures import build as reborn, DESIGNS, rgb
 from creature_materials import paint as paint_material
 from hero_creatures import build as hero, REFINED
 from studio_curses import build as studio
-from studio_materials import paint as paint_pixel, damage as pixel_damage
+import curse_materials
 
 ROOT=Path(__file__).resolve().parents[1]
 A=ROOT/'src/main/resources/assets/jjkcraft';D=ROOT/'src/main/resources/data/jjkcraft'
@@ -110,12 +110,16 @@ def bake(name,geo):
             c['uv']=faces
     height=2**max(8,math.ceil(math.log2(v+row+2)));assert height<=4096,(name,height)
     g['description'].update(texture_width=width,texture_height=height)
-    im=Image.new('RGBA',(width,height));glow=Image.new('RGBA',im.size);draw=ImageDraw.Draw(im);gd=ImageDraw.Draw(glow);base,accent=palette(name);rng=random.Random(seed(name))
+    base,accent=palette(name)
+    if name in DESIGNS:
+        # Curses: shaded pixel panels and faces (curse_materials.py).
+        canvas=curse_materials.Canvas(width,height)
+        for x,y,w,h,kind,face,facial,origin,size in tiles:
+            curse_materials.paint(canvas,x,y,w,h,kind,face,base,accent,seed(name),origin,size,facial)
+        return canvas.images()
+    im=Image.new('RGBA',(width,height));glow=Image.new('RGBA',im.size);draw=ImageDraw.Draw(im);gd=ImageDraw.Draw(glow);rng=random.Random(seed(name))
     for x,y,w,h,kind,face,facial,origin,size in tiles:
-        (paint_pixel if name in DESIGNS else paint_material)(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
-        if name in DESIGNS and face=='north' and isinstance(facial,dict):
-            from studio_materials import face as paint_face
-            paint_face(draw,gd,x,y,w,h,facial,accent)
+        paint_material(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
     return im,glow
 
 def curve(values,length):return {str(round(i*length/(len(values)-1),3)):v for i,v in enumerate(values)}
@@ -174,7 +178,7 @@ def creatures():
         png(A/'textures/entity'/f'{name}.png',im);png(A/'textures/entity'/f'{name}_glow.png',glow)
         for suffix,factor in [('wounded',.9),('critical',.78)]:
             if name in DESIGNS:
-                png(A/'textures/entity'/f'{name}_{suffix}.png',pixel_damage(im,name,suffix=='critical'));continue
+                png(A/'textures/entity'/f'{name}_{suffix}.png',curse_materials.damage(im,name,suffix=='critical'));continue
             damaged=im.copy();dd=ImageDraw.Draw(damaged);rng=random.Random(seed(name+suffix))
             for n in range(22 if suffix=='wounded' else 45):
                 x,y=rng.randrange(im.width),rng.randrange(im.height)

@@ -75,9 +75,100 @@ class Creature:
         self.box('collar',(0,y+height/2-1,-.2),(width+1,2,8),'cloth')
 
 
+def sovereigns(c, name):
+    """Bespoke silhouettes for the Special Grades that read weakest as generic kinds."""
+    if name == 'ten_mouth_sovereign':
+        # A hunched knuckle-walking giant whose body is crowded with mouths.
+        c.box('body_mass', (0, 17, 1), (16, 13, 11), 'skin')
+        c.box('belly', (0, 10, 0), (13, 6, 10), 'skin')
+        c.box('hump', (0, 24, 4), (12, 5, 8), 'skin')
+        c.head((0, 23, -6), (9, 10, 7), 'skin', eyes=3)
+        for n in range(4):
+            c.box('spine' + str(n), (0, 27 - n * 3, 8 - n * .5), (2, 3, 2), 'bone', rotation=[-20, 0, 0])
+        for s in (-1, 1):
+            hand = c.limb('arm' + str(s), (s * 9, 23, 0), (s * 12, 12, -3), (s * 12, 2, -4), 3.2, 'skin')
+            c.box('hand' + str(s), (s * 12, 1.2, -5), (5, 2.4, 5), 'skin', hand)
+            for k in range(3):
+                c.box('claw' + str(s) + str(k), (s * 12 + (k - 1) * 1.6, 1, -8), (1, 1.2, 3), 'bone', hand)
+        c.feet(2, 5, 7, 4, 'skin')
+        spots = [(-4, 20, -4.6), (3, 18, -4.6), (-2, 13, -5.1), (4, 11, -5.1), (0, 8, -5.1),
+                 (-5, 25, 0), (5, 25, 0), (-8.1, 17, 1), (8.1, 15, 2)]
+        for i, (x, y, z) in enumerate(spots):
+            c.box('mouth_body' + str(i), (x, y, z), (4, 2.2, .5) if abs(x) < 8 else (.5, 2.2, 4), 'mouth')
+        return True
+    if name == 'ossuary_king':
+        # An emaciated king grown into a throne of bone, crowned with spikes.
+        c.box('throne_seat', (0, 7, 3), (20, 3, 15), 'stone')
+        c.box('throne_back', (0, 20, 8), (20, 26, 3), 'bone')
+        for s in (-1, 1):
+            c.box('throne_arm' + str(s), (s * 10, 11, 2), (3, 8, 13), 'bone')
+            c.box('throne_spire' + str(s), (s * 9, 36, 8), (3, 8, 3), 'bone', rotation=[0, 0, s * 10])
+        for n in range(5):
+            c.box('throne_skull' + str(n), ((n - 2) * 4, 30, 6.4), (3, 3, 2), 'bone')
+        c.box('body_mass', (0, 16, 2), (9, 12, 6), 'bone')
+        for n in range(4):
+            c.box('rib' + str(n), (0, 13 + n * 2.4, -1.3), (10 - n, 1.2, 1.5), 'bone')
+        c.box('pelvis', (0, 10, 2), (9, 3, 6), 'bone')
+        c.head((0, 26, 0), (8, 9, 7), 'bone', eyes=2)
+        for n in range(5):
+            a = (n - 2) * .42
+            c.box('crown' + str(n), (math.sin(a) * 3.4, 32 + (n % 2), -math.cos(a) * 3.4 + 1), (1.3, 4 + (n % 2) * 2, 1.3), 'gold', 'head', [0, 0, -math.degrees(a) * .5])
+        for s in (-1, 1):
+            hand = c.limb('arm' + str(s), (s * 6, 21, 1), (s * 9, 15, -1), (s * 10, 13, -6), 2, 'bone')
+            for k in range(3):
+                c.box('finger' + str(s) + str(k), (s * 10 + (k - 1) * 1.2, 11.5, -8), (.8, 3, .8), 'bone', hand)
+            c.limb('leg' + str(s), (s * 3, 9, 0), (s * 4, 8, -6), (s * 4, 1, -7), 2, 'bone', 'root')
+        return True
+    if name == 'hunger_eclipse':
+        # A black sun with one enormous eye over a mouth, ringed by a jagged corona.
+        c.box('body_mass', (0, 16, 0), (14, 14, 11), 'shadow')
+        c.face((0, 17, -5.6), 9, 7, eyes=1)
+        for n in range(12):
+            a = n * math.pi / 6
+            length = 7 if n % 2 == 0 else 4
+            c.box('corona' + str(n), (math.sin(a) * (7 + length / 2), 16 + math.cos(a) * (7 + length / 2), 1), (1.6, length, 1.6), 'bone', rotation=[0, 0, -n * 30])
+        for s, k in ((-1, 0), (1, 1), (0, 2)):
+            c.limb('tendril' + str(k), (s * 4, 10, 1), (s * 5, 5, 0), (s * 3, 0, 1), 1.8, 'shadow')
+        return True
+    if name == 'ink_leviathan':
+        # A serpent of ink rearing out of its own coils, jaw hanging open.
+        for n, (x, z) in enumerate(((0, 10), (5, 5), (-4, 1))):
+            c.box('coil' + str(n), (x, 3, z), (9, 6, 9), 'scale')
+        c.box('body_mass', (0, 9, -1), (8, 8, 8), 'scale')
+        c.box('neck', (0, 16, -4), (7, 8, 7), 'scale', rotation=[-15, 0, 0])
+        c.box('neck_upper', (0, 22, -7), (6, 6, 6), 'scale', rotation=[-25, 0, 0])
+        c.head((0, 27, -10), (9, 7, 9), 'scale', eyes=4)
+        c.box('jaw', (0, 22.8, -11), (8, 2, 8), 'bone', 'head', [18, 0, 0])
+        for n in range(6):
+            c.box('fin' + str(n), (0, 8 + n * 3.3, 4 - n * 2), (1, 4, 4), 'wing', rotation=[20, 0, 0])
+        for s in (-1, 1):
+            c.box('whisker' + str(s), (s * 5, 25, -14), (1, 1, 7), 'bone', 'head', [0, s * 25, 0])
+        return True
+    if name == 'culling_warden':
+        # An armoured judge: a visored helm, a tower shield and a long edict blade.
+        c.box('body_mass', (0, 18, 0), (12, 13, 8), 'metal')
+        c.box('tabard', (0, 11, -4.2), (8, 10, .8), 'cloth')
+        c.box('belt', (0, 12, 0), (12.5, 2, 8.5), 'gold')
+        for s in (-1, 1):
+            c.box('pauldron' + str(s), (s * 8, 25, 0), (6, 4, 9), 'metal', rotation=[0, 0, s * 12])
+        c.head((0, 29, -1), (8, 8, 8), 'metal', eyes=1)
+        c.box('crest', (0, 35, 0), (2, 4, 7), 'gold', 'head')
+        shield = c.limb('arm-1', (-8, 23, 0), (-10, 16, -3), (-9, 11, -6), 3, 'metal')
+        c.box('shield', (-8, 15, -8), (9, 18, 2), 'metal', shield)
+        c.box('shield_seal', (-8, 17, -9.2), (5, 6, .5), 'gold', shield)
+        blade = c.limb('arm1', (8, 23, 0), (10, 16, -3), (10, 11, -5), 3, 'metal')
+        c.box('blade', (10, 12, -14), (1.5, 2.5, 16), 'metal', blade)
+        for s in (-1, 1):
+            c.limb('leg' + str(s), (s * 3.5, 11, 0), (s * 4, 6, -1), (s * 4, 0, -1), 3, 'metal', 'root')
+        return True
+    return False
+
+
 def build(name):
     if name not in DESIGNS:return None
     c=Creature(name);kind=DESIGNS[name][0]
+    if sovereigns(c, name):
+        return c.r.finish()
     if kind in ('tick','crab','spider','cricket','centipede','hermit'):
         width=12 if kind in ('crab','hermit') else 9
         c.box('carapace',(0,8,3),(width,7,12),'chitin')
