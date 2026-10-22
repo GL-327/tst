@@ -38,19 +38,21 @@ public final class ChargeFx {
         Vec3 at=caster==mc.player&&mc.options.getCameraType().isFirstPerson()?f.aimPoint(1.25):anchor(caster,partial,f.camera);
         double q=Math.clamp(e.power(),.25,2),r=.13+.20*Math.sqrt(q);
         String name=e.technique().getPath();boolean spatial=SpectralFx.spatial(name);
-        int color=e.color()<0?0x9ebaff:e.color();
+        // Authored colors may contain an opaque ARGB byte and therefore be negative.
+        // Only -1 is the absent-color sentinel; otherwise Blue/Red/Purple lose their hues.
+        int color=e.color()==-1?com.jjkcraft.client.state.ClientTechniques.definition(e.technique()).map(d->d.visuals().color()).orElse(0x9ebaff):e.color();
         if(spatial){
             int tile=EnergySprites.spatialTile(name);
             EnergySprites.orb(f,at,r,tile,color,.98f);
             if(tile==2){
                 double spread=r*(.50-.18*Math.min(1,q));Vec3 right=f.viewRight.scale(spread);
-                f.sprite(at.subtract(right),r*.6,r*.6,0,0xffffff,.5f,ClientConfig.reducedMotion()?0:-f.time()*.03);
-                f.sprite(at.add(right),r*.6,r*.6,1,0xffffff,.5f,ClientConfig.reducedMotion()?0:f.time()*.03);
+                VolumeMesh.orb(f,at.subtract(right),new Vec3(r*.3,r*.3,r*.3),0,0x499FFF,.65f,ClientConfig.reducedMotion()?0:-f.time()*.03);
+                VolumeMesh.orb(f,at.add(right),new Vec3(r*.3,r*.3,r*.3),1,0xFF4261,.65f,ClientConfig.reducedMotion()?0:f.time()*.03);
             }
         }else{
             int tile=TechniqueMaterials.tile(e.technique());
-            f.sprite(at,r*1.8,r*1.8,tile,color,.85f,ClientConfig.reducedMotion()?0:f.time()*.016);
-            f.sprite(at,r*2.1,r*2.1,4,color,.32f,ClientConfig.reducedMotion()?0:-f.time()*.018);
+            VolumeMesh.orb(f,at,new Vec3(r,r*1.1,r),tile,color,.85f,ClientConfig.reducedMotion()?0:f.time()*.016);
+            f.sprite(at,r*1.6,r*1.6,4,color,.15f,ClientConfig.reducedMotion()?0:-f.time()*.018);
         }
         return true;
     }

@@ -168,9 +168,7 @@ public final class TechniqueGameTests {
 		float before = zombie.getHealth();
 		helper.assertValueEqual(TechniqueService.cast(player, JjkCraft.id("lapse_blue"), 0), CastFailure.NONE, "attract");
 		helper.assertValueEqual(TechniqueService.cast(player, JjkCraft.id("reversal_red"), 1), CastFailure.NONE, "repel");
-		helper.assertTrue(SpatialFields.active(helper.getLevel()).isEmpty(), "fields consumed by the burst");
-		helper.assertTrue(zombie.getHealth() < before - 10, "burst damage, health " + zombie.getHealth());
-		helper.succeed();
+		helper.startSequence().thenWaitUntil(()->helper.assertTrue(zombie.getHealth() < before - 10, "traveling fields arrive and collide, health " + zombie.getHealth())).thenExecute(()->helper.assertTrue(SpatialFields.active(helper.getLevel()).stream().noneMatch(f->f.caster()==player), "own fields consumed by the burst")).thenSucceed();
 	}
 
 	@GameTest

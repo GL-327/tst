@@ -3,7 +3,13 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.14.0-preview.** The full roster gains continuous mastery scaling through
+**Status: 1.15.0-preview.** Cursed Speech and other directional effects now retain the
+server's cast direction, including vertical aim and personal aim offsets. Techniques use
+depth-tested 3D energy cores, pressure shells and material fragments. All 52 curses have
+rebuilt connected silhouettes and restrained pixel-art textures, with small eye accents
+and distinct damage variants. [Visual changes and verification](docs/STUDIO_VISUALS.md).
+
+The full roster gains continuous mastery scaling through
 400% training, lower mastered CE costs/cooldowns and stronger supported utility effects.
 New filtered effect materials replace Limitless's flat cores and wire hoops, with
 camera-centered moving charges and material effects across all 51 families. Empty-hand

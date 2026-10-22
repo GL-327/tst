@@ -81,7 +81,7 @@ public final class TexturedFx {
         if(option==0)return;
         var mc=Minecraft.getInstance();if(mc.level==null)return;
         var caster=mc.level.getEntity(fx.caster());
-        Vec3 direction=fx.direction().lengthSqr()>.01?fx.direction().normalize():new Vec3(0,0,1);
+        Vec3 direction=EffectAim.forward(fx,caster);
         Vec3 at=fx.origin();String id=fx.technique().getPath();
         boolean shadow=id.contains("shadow")||id.contains("summon")||id.contains("divine_dog")||id.contains("chimera");
         int row=shadow?3:id.contains("slash")||id.contains("cleave")||id.contains("dismantle")?2:0;

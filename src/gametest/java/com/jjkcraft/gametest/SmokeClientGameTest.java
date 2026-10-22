@@ -52,6 +52,8 @@ import com.jjkcraft.modulo.mission.Missions;
 public final class SmokeClientGameTest implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext context) {
+        if("studioArt".equals(System.getProperty("jjkcraft.clientTestFocus"))){StudioClientChecks.run(context);return;}
+        if("studio".equals(System.getProperty("jjkcraft.clientTestFocus"))){StudioClientChecks.run(context);MasteryVfxChecks.run(context);return;}
 		if (!JjkCraft.isInitialized() || !JjkCraftClient.isInitialized()) {
 			throw new AssertionError("jjkcraft entrypoints did not run on the client");
 		}

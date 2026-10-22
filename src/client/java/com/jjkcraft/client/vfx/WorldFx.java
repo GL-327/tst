@@ -22,9 +22,9 @@ import com.jjkcraft.client.config.ClientConfig;
 
 /**
  * Short-lived world effects drawn as vertex geometry (not particles): slash ribbons, cut lines,
- * glyph rings, chains, burst shells, shout waves and auras. All are additive, self-lit and
- * submitted through the vanilla {@code lightning} render type, so they work with Sodium and need
- * no custom shader. Low VFX halves the segment counts; a per-frame quad budget caps the cost.
+ * glyph rings, chains, burst shells, shout waves and auras. Energy volumes use UV-mapped,
+ * full-bright depth-tested surfaces; accent ribbons use the vanilla additive lightning pass.
+ * Neither requires a custom shader. Low VFX reduces segments and a shared budget caps cost.
  */
 public final class WorldFx {
 	/** Geometry budget per frame. */
@@ -47,6 +47,7 @@ public final class WorldFx {
 		final Vec3 camera;
 		final float time;
 		final boolean low;
+        boolean depthOnly;
         Vec3 viewForward=new Vec3(0,0,1),viewRight=new Vec3(1,0,0),viewUp=new Vec3(0,1,0);
 		int quads;
         int[] shared=new int[1];
@@ -71,7 +72,13 @@ public final class WorldFx {
 			return low ? Math.max(4, high / 2) : high;
 		}
         public Vec3 aimPoint(double distance){return camera.add(viewForward.scale(distance));}
+        public void surface(Vec3 a,Vec3 b,Vec3 c,Vec3 d,int tile,int color,float alpha,float u0,float v0,float u1,float v1){
+            if(alpha*opacity<.025f||!budgetLeft())return;shared[0]++;quads++;
+            if(depthOnly){for(Vec3 p:new Vec3[]{a,b,c,d})buffer.addVertex(pose,(float)(p.x-camera.x),(float)(p.y-camera.y),(float)(p.z-camera.z));return;}
+            EnergySprites.surface(pose,buffer,a.subtract(camera),b.subtract(camera),c.subtract(camera),d.subtract(camera),tile,fade(color,alpha*opacity),u0,v0,u1,v1);
+        }
         public void sprite(Vec3 at,double width,double height,int tile,int color,float alpha,double spin){
+            if(depthOnly)return;
             if(!budgetLeft())return;shared[0]++;quads++;
             Vec3 right=viewRight,up=viewUp;
             Vec3 u=right.scale(Math.cos(spin)).add(up.scale(Math.sin(spin))).scale(width);
@@ -169,6 +176,12 @@ public final class WorldFx {
         var orientation=context.levelState().cameraRenderState.orientation;
         Vec3 forward=new Vec3(orientation.transform(new org.joml.Vector3f(0,0,-1)));
         Vec3 right=new Vec3(orientation.transform(new org.joml.Vector3f(1,0,0))),up=new Vec3(orientation.transform(new org.joml.Vector3f(0,1,0)));
+        // A depth-only prepass gives closed volumes proper occlusion while preserving the
+        // emissive shader's light. Soft halos never write depth.
+        context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.waterMask(),(pose,buffer)->{
+            Frame frame=new Frame(pose,buffer,camera,time,low);frame.depthOnly=true;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
+            for(Iterator<Effect> it=MATERIALS.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
+        });
         context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.entityTranslucentEmissive(EnergySprites.ATLAS),(pose,buffer)->{
             Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
             for(Iterator<Effect> it=MATERIALS.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();

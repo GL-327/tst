@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 public final class WheelReverseGameTests {
     @GameTest(environment="jjkcraft:expansion",padding=40) public void bluePunchHitsAtContactAndClusterPlacesThreeSeparateFields(GameTestHelper h){
         var p=player(h);var target=h.spawn(EntityTypes.HUSK,new Vec3(2.5,1,5));target.setNoAi(true);target.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(1000);target.setHealth(1000);
-        h.assertTrue(TechniqueService.cast(p,JjkCraft.id("blue_punch"),-1)==CastFailure.NONE&&target.getHealth()<1000,"the aimed Blue punch actually damages at close range");h.assertTrue(target.getDeltaMovement().z<0,"Blue punch attracts toward the caster");
+        h.assertTrue(TechniqueService.cast(p,JjkCraft.id("blue_punch"),-1)==CastFailure.NONE&&target.getHealth()==1000,"toggling the coating waits for real contact");com.jjkcraft.combat.PunchImbuement.contact(p,target);h.assertTrue(target.getHealth()<1000&&target.getDeltaMovement().z<0,"Blue coating damages and attracts on contact");
         h.assertTrue(TechniqueService.cast(p,JjkCraft.id("blue_cluster"),-1)==CastFailure.NONE,"cluster activates immediately");h.assertTrue(com.jjkcraft.technique.field.SpatialFields.active(h.getLevel()).stream().filter(f->f.caster()==p).count()==3,"cluster creates three independent attraction points");h.succeed();
     }
     @GameTest(environment="jjkcraft:expansion",padding=32) public void forsakingRctCannotKeepFreeInfinityOrPositiveDischarge(GameTestHelper h){
@@ -35,7 +35,7 @@ public final class WheelReverseGameTests {
     @GameTest(environment="jjkcraft:expansion",padding=32) public void divineChalicePreservesCompletedUniversalReverseLessons(GameTestHelper h){
         var p=player(h);p.setAttached(ReverseStudy.LESSON,1);h.assertTrue(com.jjkcraft.item.DivineChaliceItem.reroll(p),"rare chalice replaces the innate family");h.assertTrue(ReverseStudy.completed(p)==1&&!ReverseTechnique.unlocked(p),"completed universal learning remains, without granting RCT");h.succeed();
     }
-    private static ServerPlayer player(GameTestHelper h){var p=TestPlayers.fresh(h);p.setGameMode(GameType.CREATIVE);CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);p.setGameMode(GameType.SURVIVAL);p.setPos(h.absoluteVec(new Vec3(2.5,1,2.5)));p.setYRot(0);p.setXRot(0);p.setOnGround(true);ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(false).withAutoHeal(false),false);CursedEnergy.fill(p);return p;}
+    private static ServerPlayer player(GameTestHelper h){var p=TestPlayers.fresh(h);p.setGameMode(GameType.CREATIVE);CharacterAwakening.creative(p,JjkCraft.id("limitless"),false);if(InfinityField.preferred(p))InfinityField.toggle(p);p.setGameMode(GameType.SURVIVAL);p.setPos(h.absoluteVec(new Vec3(2.5,1,2.5)));p.setYRot(0);p.setXRot(0);p.setOnGround(true);ReverseTechnique.set(p,ReverseTechnique.state(p).withUnlocked(false).withAutoHeal(false),false);CursedEnergy.fill(p);return p;}
     @GameTest(environment="jjkcraft:expansion",padding=32) public void familyBindingExposesOnlyLearnedChildrenAndAcceptsRebinding(GameTestHelper h){
         var p=player(h);var family=TechniqueBindings.binding(JjkCraft.id("limitless"));TechniqueService.setLoadout(p,0,Optional.empty());TechniqueService.setLoadout(p,0,Optional.of(family));
         h.assertTrue(TechniqueService.get(p).slot(0).orElseThrow().equals(family),"empty slot accepts family binding");

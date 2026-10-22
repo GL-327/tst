@@ -1,7 +1,7 @@
-"""Authored analytic VFX materials. Rebuilds a deterministic, guttered 4x4 emissive atlas.
+"""Authored analytic VFX materials: 16 guttered glows and 16 seamless volume surfaces.
 
-Broad plasma volumes and tapered brush strokes replace hard opaque balls and wire hoops.
-These are render materials, not random particle textures; animation happens in world space.
+The left bank supports soft accents; the right bank wraps actual three-dimensional
+meshes. Animation happens in world space, independently of the viewer's camera.
 """
 from pathlib import Path
 import numpy as np
@@ -12,7 +12,7 @@ N = 256
 y, x = np.mgrid[-1:1:complex(N), -1:1:complex(N)]
 r = np.hypot(x, y)
 a = np.arctan2(y, x)
-atlas = Image.new('RGBA', (N*4, N*4))
+atlas = Image.new('RGBA', (N*8, N*4))
 
 def smooth(edge, width):
     return np.exp(-((edge)/width)**2)
@@ -86,7 +86,19 @@ for k in range(17):
     t=k*2.399;d=.25+.6*((k*7)%17)/17
     sparks=np.maximum(sparks,smooth(np.hypot(x-np.cos(t)*d,y-np.sin(t)*d),.012+(k%3)*.007))
 save(15,sparks,(238,247,255))
+# The right half is a seamless UV surface bank for true volume meshes. Unlike the
+# left-hand glow sprites, these have no circular cutout or camera-facing silhouette.
+u=(x+1)*.5;v=(y+1)*.5
+for i in range(16):
+    warp=u+.045*np.sin(v*np.pi*4+i*.7)+.022*np.sin(v*np.pi*8-u*np.pi*4)
+    flow=(.5+.5*np.sin(warp*np.pi*(8+i%3*2)+np.sin(v*np.pi*4)))**6
+    broad=.5+.5*np.sin(u*np.pi*4+np.sin(v*np.pi*2)*1.6)
+    value=np.clip(150+55*broad+90*flow,0,255)
+    if i in (7,10,13):value=np.clip(90+100*(.5+.5*np.sin(u*np.pi*8+v*np.pi*4))**12,0,240)
+    if i==11:value=np.clip(30+55*broad+65*flow,0,180)
+    rgba=np.dstack([value,value,value,np.full_like(value,255)]).astype(np.uint8)
+    atlas.paste(Image.fromarray(rgba),((4+i%4)*N,(i//4)*N))
 target=ROOT/'src/main/resources/assets/jjkcraft/textures/vfx/energy_materials.png'
 target.parent.mkdir(parents=True,exist_ok=True)
 atlas.save(target)
-print(f'Wrote {target.name}: sixteen 256px materials, transparent gutters')
+print(f'Wrote {target.name}: sixteen glow sprites and sixteen seamless volume surfaces')

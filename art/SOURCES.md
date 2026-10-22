@@ -36,3 +36,12 @@ Use case: stylized-concept. Asset type: one production VFX sprite sheet for real
 
 The public 01 Studios Jujutsu Playground listing describes an ability picker, hotkeys, and an abilities menu with per-ability options: https://www.nexusmods.com/peopleplayground/mods/148?tab=description . The creator's public patch notes also mention settings inside the abilities menu: https://01studio.dev/blog/jujutsu-playground-95-patch-note/ . These inform the grouping/interaction pattern. This implementation uses this Minecraft mod's own mechanics, networking, art and code; it is not a port of the other mod's implementation.
 
+## 1.15 active curse and volume materials
+
+All 52 active curse models and their pixel textures are original native recipes in
+`tools/studio_curses.py` and `tools/studio_materials.py`, baked by
+`tools/spectral_content.py --creatures-only`. The older sheets above remain archived
+source/reference material. `tools/energy_materials.py` creates sixteen glow textures and
+sixteen seamless surface materials for the actual 3D effect meshes. No downloaded
+franchise models or textures are used in this rebuild.
+

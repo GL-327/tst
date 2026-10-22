@@ -8,6 +8,8 @@ from spectral_anatomy import anatomy
 from reborn_creatures import build as reborn, DESIGNS, rgb
 from creature_materials import paint as paint_material
 from hero_creatures import build as hero, REFINED
+from studio_curses import build as studio
+from studio_materials import paint as paint_pixel, damage as pixel_damage
 
 ROOT=Path(__file__).resolve().parents[1]
 A=ROOT/'src/main/resources/assets/jjkcraft';D=ROOT/'src/main/resources/data/jjkcraft'
@@ -48,6 +50,8 @@ def material(bone,name):
     return 'skin'
 
 def sculpt(name,source):
+    clean=studio(name)
+    if clean:return clean
     geo=copy.deepcopy(hero(name) or reborn(name) or anatomy(name,source));g=geo['minecraft:geometry'][0];bones=g['bones'];rng=random.Random(seed(name));extra=[]
     head=next((b for b in bones if b['name']=='head' and b.get('cubes')),None)
     for bone in list(bones):
@@ -95,7 +99,7 @@ def sculpt(name,source):
     return geo
 
 def bake(name,geo):
-    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=1024;density=4
+    g=geo['minecraft:geometry'][0];tiles=[];u=v=row=0;width=256 if name in DESIGNS else 1024;density=1 if name in DESIGNS else 4
     for bone in g['bones']:
         for c in bone.get('cubes',[]):
             w,h,d=c['size'];faces={};kind=c.pop('_material','skin');facial=c.pop('_face',False)
@@ -108,7 +112,7 @@ def bake(name,geo):
     g['description'].update(texture_width=width,texture_height=height)
     im=Image.new('RGBA',(width,height));glow=Image.new('RGBA',im.size);draw=ImageDraw.Draw(im);gd=ImageDraw.Draw(glow);base,accent=palette(name);rng=random.Random(seed(name))
     for x,y,w,h,kind,face,facial,origin,size in tiles:
-        paint_material(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
+        (paint_pixel if name in DESIGNS else paint_material)(draw,gd,x,y,w,h,kind,face,base,accent,seed(name),origin,size)
     return im,glow
 
 def curve(values,length):return {str(round(i*length/(len(values)-1),3)):v for i,v in enumerate(values)}
@@ -166,6 +170,8 @@ def creatures():
         im,glow=bake(name,geo);save(A/'geckolib/models/entity'/f'{name}.geo.json',geo);save(A/'geckolib/animations/entity'/f'{name}.animation.json',animations(name,geo))
         png(A/'textures/entity'/f'{name}.png',im);png(A/'textures/entity'/f'{name}_glow.png',glow)
         for suffix,factor in [('wounded',.9),('critical',.78)]:
+            if name in DESIGNS:
+                png(A/'textures/entity'/f'{name}_{suffix}.png',pixel_damage(im,name,suffix=='critical'));continue
             damaged=im.copy();dd=ImageDraw.Draw(damaged);rng=random.Random(seed(name+suffix))
             for n in range(22 if suffix=='wounded' else 45):
                 x,y=rng.randrange(im.width),rng.randrange(im.height)
@@ -254,4 +260,7 @@ def equipment():
         save(D/'recipe'/f'{key}.json',{'type':'minecraft:crafting_shaped','category':'equipment','pattern':[' M ',' M ',' S '],'key':{'M':'minecraft:'+mat,'S':'jjkcraft:cursed_energy_shard'},'result':{'id':'jjkcraft:'+key}})
     save(langpath,lang)
 
-if __name__=='__main__':creatures();equipment()
+if __name__=='__main__':
+    import sys
+    creatures()
+    if '--creatures-only' not in sys.argv:equipment()

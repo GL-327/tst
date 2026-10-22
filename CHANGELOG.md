@@ -5,6 +5,21 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.15.0-preview, 2026-10-22
+
+- Separated cast aim from overloaded VFX radius/duration parameters. Cursed Speech
+  follows yaw and pitch, remains fixed after casting, and uses traveling 3D pressure fronts.
+- Replaced flat primary material envelopes with UV-mapped volumes: energy ellipsoids,
+  thick pressure shells, crystalline fragments, shadow pools and reverse-energy helices.
+  Held charge cores and actual projectiles share the same depth-tested rendering.
+  Spatial cores have wrapped bright currents and preserve distinct authored charge colors.
+- Rebuilt all 52 curses with connected block anatomy, purposeful faces and material
+  details. New crisp pixel textures use restrained palettes, limited eye glow and subtle
+  wound variants. Art is reproducible from source recipes; full rigs and LODs stay unique.
+- Added packet roundtrip and full-pitch direction regressions, multi-angle native visual
+  checks, and seamless-surface asset assertions. Updated older gameplay fixtures for
+  subjugated summons, passive Infinity, punch coatings and traveling spatial releases.
+
 ## 1.14.0-preview, 2026-10-22
 
 - Rebuilt charge, spatial-field and projectile effects with sixteen filtered, guttered

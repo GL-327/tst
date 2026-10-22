@@ -54,8 +54,9 @@ public final class TechniqueMaterials {
         Field state=new Field(now+duration);if(field){if(FIELDS.size()>=128)return;FIELDS.put(key,state);}
         Vec3 origin=e.origin();
         var caster=mc.level.getEntity(e.caster());
-        if(phase==TechniqueFxPayload.Phase.CAST&&caster!=null&&origin.distanceToSqr(caster.position())<1)origin=caster.getEyePosition().add(caster.getLookAngle().scale(1.8));
+        if(phase==TechniqueFxPayload.Phase.CAST&&caster!=null&&origin.distanceToSqr(caster.position())<1)origin=caster.getEyePosition().add(EffectAim.forward(e,caster).scale(1.8));
         final Vec3 base=origin;
+        var basis=com.jjkcraft.vfx.EffectOrientation.of(EffectAim.forward(e,caster));
         double size=field?Math.clamp(Math.abs(e.direction().x)*.3,.5,4):phase==TechniqueFxPayload.Phase.BURST?Math.clamp(Math.abs(e.direction().x)*.4,.7,5):wind?.35:phase==TechniqueFxPayload.Phase.HIT?.65:1.0;
         WorldFx.addMaterial(f->{
             if(f.time()>state.expires){if(field)FIELDS.remove(key,state);return false;}
@@ -65,9 +66,13 @@ public final class TechniqueMaterials {
             if(wind){var entity=mc.level.getEntity(e.caster());if(entity==null)return false;at=entity==mc.player&&mc.options.getCameraType().isFirstPerson()?f.aimPoint(1.25):ChargeFx.anchor(entity,mc.getDeltaTracker().getGameTimeDeltaPartialTick(false),f.camera);}
             double r=size*(wind?1:field?1:.55+.7*Math.sqrt(t));
             double spin=ClientConfig.reducedMotion()?0:(tile==7?-.4:tile==11?.04:f.time()*.017);
-            f.sprite(at,r,r*(tile==7?.6:1),tile,color,alpha*(tile==11?.85f:.8f),spin);
-            if(tile!=11&&tile!=7&&tile!=13)f.sprite(at,r*1.25,r*1.25,4,color,alpha*.22f,-spin);
-            if(!wind&&!ClientConfig.lowVfx())f.sprite(at,r*1.35,r*1.35,15,color,alpha*.65f,spin*.5);
+            if(at.distanceToSqr(f.camera)<.6*.6)return true;
+            if(tile==6)VolumeMesh.pressure(f,at,basis,r,.06+Math.min(.15,r*.04),tile,color,alpha*.65f,spin);
+            else if(tile==7)VolumeMesh.shard(f,at,basis,.055,r*.85,tile,color,alpha*.8f);
+            else if(tile==10||tile==13||tile==15){for(int n=0;n<f.segments(6);n++){double a=n*2.399+spin;Vec3 p=basis.at(at,Math.cos(a)*r*.65,Math.sin(a)*r*.65,Math.sin(a*2)*r*.35);VolumeMesh.shard(f,p,com.jjkcraft.vfx.EffectOrientation.of(p.subtract(at).add(0,.4,0)),r*.10,r*.32,tile,color,alpha*.75f);}}
+            else if(tile==14){for(int n=0;n<f.segments(12);n++){double a=n*.65+spin;Vec3 p=basis.at(at,Math.cos(a)*r*.45,(n/11.0-.5)*r*1.5,Math.sin(a)*r*.45);VolumeMesh.shard(f,p,basis,r*.035,r*.12,tile,color,alpha*.6f);}}
+            else {Vec3 dimensions=tile==11?new Vec3(r*.7,r*.13,r*.7):tile==9?new Vec3(r*.6,r*.25,r*.3):tile==8?new Vec3(r*.4,r*.75,r*.4):new Vec3(r*.42,r*.5,r*.42);VolumeMesh.orb(f,at,dimensions,tile,color,alpha*(tile==11?.8f:.72f),spin);}
+            if(!wind&&!ClientConfig.lowVfx()&&tile!=11)f.sprite(at,r*.8,r*.8,4,color,alpha*.1f,-spin);
             return true;
         });
     }

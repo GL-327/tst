@@ -39,6 +39,7 @@ public final class TechniqueFxClient {
         ChargeFx.clear();
         TechniqueMaterials.clear();
         com.jjkcraft.client.render.CursedBoltRenderer.clearHistory();
+        SpeechFx.clear();
 	}
 
 	public static void handle(TechniqueFxPayload fx) {
@@ -66,8 +67,9 @@ public final class TechniqueFxClient {
 		boolean involvesMe = mc.player != null && (fx.caster() == mc.player.getId() || fx.targets().contains(mc.player.getId()));
         if(fx.phase()==TechniqueFxPayload.Phase.WINDUP&&def.cast().chargeable()){ChargeFx.update(fx,now);return;}
         if(fx.phase()==TechniqueFxPayload.Phase.CAST||fx.phase()==TechniqueFxPayload.Phase.CHANNEL_START||fx.phase()==TechniqueFxPayload.Phase.FIELD)ChargeFx.stop(fx.caster());
-        TechniqueMaterials.event(fx,color,now);
-        boolean spectral=SpectralFx.event(fx,color,now);
+        boolean speech=SpeechFx.event(fx,def,color,now);
+        if(!speech)TechniqueMaterials.event(fx,color,now);
+        boolean spectral=speech||SpectralFx.event(fx,color,now);
 
 		switch (fx.phase()) {
 			case WINDUP -> {if(!spectral)windup(caster, def, color);}
@@ -160,7 +162,7 @@ public final class TechniqueFxClient {
 
 	private static void cast(TechniqueFxPayload fx, TechniqueDefinition def, int color, ParticleOptions particle, Entity caster, float now) {
 		Vec3 dir = fx.direction();
-		double yaw = Math.atan2(-dir.x, dir.z);
+		Vec3 aim=EffectAim.forward(fx,caster);double yaw = Math.atan2(-aim.x, aim.z);
 		switch (def.visuals().trail()) {
 			case SLASH -> {
 				WorldFx.add(WorldFx.slash(fx.origin(), yaw, Math.max(2.5, def.cast().range() * 0.7), 140, Math.toRadians(32), color, now));

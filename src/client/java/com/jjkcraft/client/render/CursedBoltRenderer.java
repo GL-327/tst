@@ -95,11 +95,12 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
         Vec3 right=new Vec3(camera.orientation.transform(new Vector3f(1,0,0))),up=new Vec3(camera.orientation.transform(new Vector3f(0,1,0)));
         double size=state.size;
         float near=(float)Math.clamp(camera.pos.distanceTo(new Vec3(state.x,state.y,state.z))/Math.max(1,size*1.5),.18,1);
+        collector.submitCustomGeometry(stack,RenderTypes.waterMask(),(pose,buffer)->com.jjkcraft.client.vfx.VolumeMesh.projectile(pose,buffer,size,state.tile,state.color&0xffffff,near*.94f,state.age,ClientConfig.lowVfx()||camera.pos.distanceToSqr(new Vec3(state.x,state.y,state.z))>24*24,true));
         collector.submitCustomGeometry(stack,RenderTypes.entityTranslucentEmissive(com.jjkcraft.client.vfx.EnergySprites.ATLAS),(pose,buffer)->{
             double spin=ClientConfig.reducedMotion()?0:state.age*.035;
             Vec3 u=right.scale(Math.cos(spin)).add(up.scale(Math.sin(spin))),v=up.scale(Math.cos(spin)).subtract(right.scale(Math.sin(spin)));
-            com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,Vec3.ZERO,u.scale(size*1.75),v.scale(size*1.75),state.tile,ARGB.color((int)(near*250),state.spatial?0xffffff:state.color&0xffffff));
-            com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,Vec3.ZERO,u.scale(size*2.05),v.scale(size*2.05),4,ARGB.color((int)(near*80),state.color&0xffffff));
+            com.jjkcraft.client.vfx.VolumeMesh.projectile(pose,buffer,size,state.tile,state.color&0xffffff,near*.94f,state.age,ClientConfig.lowVfx()||camera.pos.distanceToSqr(new Vec3(state.x,state.y,state.z))>24*24);
+            com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,Vec3.ZERO,u.scale(size*1.5),v.scale(size*1.5),4,ARGB.color((int)(near*45),state.color&0xffffff));
             for(int i=1;i<state.trail.size();i++){
                 float t=1-i/(float)state.trail.size();double r=size*(.35+.45*t);
                 com.jjkcraft.client.vfx.EnergySprites.quad(pose,buffer,state.trail.get(i),right.scale(r),up.scale(r),4,ARGB.color((int)(near*t*100),state.color&0xffffff));

@@ -24,14 +24,17 @@ public final class TechniqueFx {
 	}
 
 	public static void send(CastContext ctx, TechniqueFxPayload.Phase phase, Vec3 origin, Vec3 direction, List<? extends Entity> targets) {
-		List<Integer> ids = targets.stream().limit(64).map(Entity::getId).toList();
-		TechniqueFxPayload payload = new TechniqueFxPayload(ctx.caster().getId(), ctx.techniqueId(), phase, origin, direction, ids, (float) ctx.power(),ctx.technique().visuals().color(),ctx.technique().visuals().trail().ordinal());
+		TechniqueFxPayload payload=payload(ctx,phase,origin,direction,targets);
 		for (ServerPlayer viewer : PlayerLookup.tracking(ctx.caster())) {
 			JjkNetworking.send(viewer, payload);
 		}
-
-		if (ctx.caster() instanceof ServerPlayer self) {
-			JjkNetworking.send(self, payload);
-		}
+		if (ctx.caster() instanceof ServerPlayer self) JjkNetworking.send(self, payload);
+	}
+	/** Immutable visual snapshot: phase parameters never replace the actual cast aim. */
+	public static TechniqueFxPayload payload(CastContext ctx,TechniqueFxPayload.Phase phase,Vec3 origin,Vec3 direction,List<? extends Entity> targets){
+		List<Integer> ids = targets.stream().limit(64).map(Entity::getId).toList();
+		Vec3 aim=phase==TechniqueFxPayload.Phase.HIT&&ctx.technique().behavior() instanceof com.jjkcraft.technique.behavior.ProjectileBehavior?direction:ctx.look();
+		TechniqueFxPayload payload = new TechniqueFxPayload(ctx.caster().getId(), ctx.techniqueId(), phase, origin, direction, ids, (float) ctx.power(),ctx.technique().visuals().color(),ctx.technique().visuals().trail().ordinal(),com.jjkcraft.vfx.EffectOrientation.of(aim).forward());
+		return payload;
 	}
 }

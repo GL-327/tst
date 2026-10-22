@@ -1,6 +1,7 @@
 """Validate shipped rig graphs, animation references, atlas bounds and native equipment resources."""
 import json
 import hashlib
+import math
 from pathlib import Path
 from PIL import Image
 
@@ -21,6 +22,17 @@ for name in sources:
     signatures.add(signature)
     assert len(names) == len(bones), (name, 'duplicate bone')
     parents = {b['name']: b.get('parent') for b in bones}
+    # Curse articulated segments must physically reach the next joint in GeckoLib's
+    # mirrored model coordinates. This catches the old rod helper's reversed pitch.
+    if (ROOT/f'src/main/resources/data/jjkcraft/jjkcraft/curse/{name}.json').is_file():
+        by_name={b['name']:b for b in bones}
+        for bone in bones:
+            if not bone['name'].endswith('_joint'):continue
+            upper=by_name[bone['parent']]['cubes'][0]
+            if 'rotation' not in upper:continue
+            pitch,yaw=map(math.radians,upper['rotation'][:2]);length=upper['size'][2];start=upper['pivot']
+            end=[start[0]+math.sin(yaw)*math.cos(pitch)*length,start[1]+math.sin(pitch)*length,start[2]+math.cos(yaw)*math.cos(pitch)*length]
+            assert math.dist(end,bone['pivot'])<1e-5,(name,bone['name'],'detached limb')
     for bone in bones:
         visited = set()
         parent = bone['name']
@@ -65,14 +77,19 @@ for path in techniques:
     assert (A/icon).is_file(),(path.stem,'missing icon')
 assert len(techniques)==296,len(techniques)
 with Image.open(A/'textures/vfx/energy_materials.png') as materials:
-    assert materials.mode=='RGBA' and materials.size==(1024,1024),'VFX material atlas layout'
+    assert materials.mode=='RGBA' and materials.size==(2048,1024),'VFX sprite and volume atlas layout'
     for tile in range(16):
         cell=materials.crop(((tile%4)*256,(tile//4)*256,(tile%4+1)*256,(tile//4+1)*256))
         alpha=cell.getchannel('A')
         assert alpha.getextrema()[1]>100,(tile,'empty VFX material')
         assert alpha.crop((0,0,256,1)).getextrema()[1]==0,(tile,'missing transparent gutter')
         assert alpha.crop((0,0,1,256)).getextrema()[1]==0,(tile,'missing transparent gutter')
+        surface=materials.crop((1024+(tile%4)*256,(tile//4)*256,1024+(tile%4+1)*256,(tile//4+1)*256))
+        assert surface.getchannel('A').getextrema()==(255,255),(tile,'surface contains a sprite cutout')
+        for n in range(256):
+            assert max(abs(a-b) for a,b in zip(surface.getpixel((0,n)),surface.getpixel((255,n))))<=1,(tile,'horizontal UV seam')
+            assert max(abs(a-b) for a,b in zip(surface.getpixel((n,0)),surface.getpixel((n,255))))<=1,(tile,'vertical UV seam')
 metadata=json.loads((A/'textures/vfx/energy_materials.png.mcmeta').read_text())
 assert metadata['texture']['blur'],'VFX materials require smooth filtering'
 print(f'PASS: {count} unique creature rigs, {cubes} UV-mapped cubes, {count*16} clips, {count*4} atlases, 17 equipment items and 296 technique icons.')
-print('PASS: sixteen filtered 256px VFX materials with transparent atlas gutters.')
+print('PASS: sixteen filtered glow materials and sixteen seamless volume surfaces.')

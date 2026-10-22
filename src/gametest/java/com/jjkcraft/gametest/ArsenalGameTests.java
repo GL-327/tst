@@ -65,6 +65,8 @@ public class ArsenalGameTests {
 		Awakening.awaken(player, false);
 		Progression.setGrade(player, id(grade));
 		TechniqueService.grant(player, id(technique));
+        player.setAttached(com.jjkcraft.entity.shikigami.TenShadows.TAMED,List.copyOf(com.jjkcraft.entity.shikigami.TenShadows.BEASTS));
+        if(technique.equals("infinity")&&com.jjkcraft.technique.InfinityField.preferred(player))com.jjkcraft.technique.InfinityField.toggle(player);
 		CursedEnergy.fill(player);
 		return player;
 	}
@@ -240,14 +242,14 @@ public class ArsenalGameTests {
 	@GameTest
 	public void oathboundEdgeFollowsTheVow(GameTestHelper helper) {
 		ServerPlayer player = caster(helper, "grade_2", "oathbound_edge");
-		Zombie first = dummy(helper, 1.5, 3.5);
+		Zombie first = dummy(helper, 1.5, 3.5);first.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);first.setHealth(1000);
 		float before = first.getHealth();
 		TechniqueService.cast(player, id("oathbound_edge"), -1);
 		float unsworn = before - first.getHealth();
 		first.discard();
 		Vows.swear(player, List.of(id("half_vessel"), id("bare_skin")), com.jjkcraft.core.vow.VowMath.Focus.EFFICIENCY,
 				com.jjkcraft.core.vow.VowMath.Term.DAY);
-		Zombie second = dummy(helper, 1.5, 3.5);
+		Zombie second = dummy(helper, 1.5, 3.5);second.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1000);second.setHealth(1000);
 		before = second.getHealth();
 		TechniqueService.resetCooldowns(player);
 		CursedEnergy.fill(player);

@@ -64,6 +64,7 @@ public final class SandboxGameTests {
     }
     @GameTest(environment="jjkcraft:expansion",padding=16) public void summonExpressionChangesCountHealthAndMovement(GameTestHelper h){
         var p=player(h);var id=JjkCraft.id("ten_shadows_divine_dogs");TechniqueService.grant(p,id);
+        p.setAttached(com.jjkcraft.entity.shikigami.TenShadows.TAMED,List.of(JjkCraft.id("divine_dog")));
         var raw=Techniques.get(p.registryAccess(),id).orElseThrow();var t=TechniqueTuning.DEFAULT.with(23,3).with(24,200).with(25,150);Personalization.save(p,id,t);
         var def=t.apply(raw);var ctx=new CastContext(p,h.getLevel(),id,def,1,1);def.behavior().cast(ctx);
         var pets=com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(h.getLevel(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p);

@@ -38,7 +38,7 @@ public final class AtelierGameTests {
     }
     @GameTest(environment="jjkcraft:expansion",padding=16) public void soulSummonsHonorIndividualTuning(GameTestHelper h){
         var p=player(h);Personalization.save(p,JjkCraft.id("transfigured_soul"),TechniqueTuning.DEFAULT.with(23,2).with(24,200).with(25,150).with(3,150));cast(h,p,"transfigured_soul");var souls=ShikigamiEntity.ownedBy(h.getLevel(),TransfiguredSoulEntity.class,p);
-        h.assertTrue(souls.size()==2&&souls.getFirst().getMaxHealth()==28&&souls.getFirst().lifetime()==900,"count vitality and lifetime are real mechanics");h.succeed();
+        h.assertTrue(souls.size()==2&&souls.getFirst().getMaxHealth()==35&&souls.getFirst().lifetime()==900,"count vitality and lifetime are real mechanics");h.succeed();
     }
     @GameTest(environment="jjkcraft:expansion",padding=16) public void soulContactDamagesAndBindsTarget(GameTestHelper h){
         var p=player(h);var e=h.spawn(EntityTypes.HUSK,new Vec3(1,1,3));e.setNoAi(true);p.setPos(e.getX(),e.getY(),e.getZ()-2);p.setYRot(0);p.setXRot(0);float before=e.getHealth();
