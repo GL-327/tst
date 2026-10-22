@@ -191,9 +191,9 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			context.runOnClient(mc->{for(var child:mc.gui.screen().children())if(child instanceof net.minecraft.client.gui.components.EditBox box){box.setValue("180");break;}});
 			context.waitTicks(1);context.clickScreenButton("Apply tuning");context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("hollow_purple")).output()==180);
 			context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-workshop-saved");
-			context.clickScreenButton("Core >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-delivery");
-			context.clickScreenButton("Delivery >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-control");
-			context.clickScreenButton("Control >");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-style");context.setScreen(()->null);
+			context.clickScreenButton("Core >");context.clickScreenButton("Delivery");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-delivery");
+			context.clickScreenButton("Delivery >");context.clickScreenButton("Control");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-control");
+			context.clickScreenButton("Control >");context.clickScreenButton("Style");context.waitTicks(2);context.takeScreenshot("jjkcraft-overhaul-style");context.setScreen(()->null);
 			server.computeOnServer(s->{var p=s.getPlayerList().getPlayers().getFirst();com.jjkcraft.technique.TechniqueService.grant(p,JjkCraft.id("ink_step"));com.jjkcraft.technique.TechniqueService.setLoadout(p,0,java.util.Optional.of(JjkCraft.id("ink_step")));p.getInventory().setSelectedSlot(8);return true;});
 			context.waitFor(mc->ClientTechniques.state().slot(0).filter(JjkCraft.id("ink_step")::equals).isPresent());
 			context.runOnClient(mc->mc.player.getInventory().setSelectedSlot(8));context.getInput().holdKey(com.jjkcraft.client.JjkKeys.SKILLS[0]);context.waitTicks(3);context.getInput().releaseKey(com.jjkcraft.client.JjkKeys.SKILLS[0]);context.waitTicks(4);
@@ -222,9 +222,9 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily(JjkCraft.id("limitless"),false));return true;});
 			context.waitFor(mc->ClientProgress.get().grade().equals(JjkCraft.id("calamity"))&&ClientTechniques.known().contains(JjkCraft.id("hollow_purple")));
 			context.setScreen(()->new com.jjkcraft.client.screen.TechniqueWorkshopScreen(JjkCraft.id("hollow_purple")));context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-core");
-			context.clickScreenButton("Core >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-delivery");
-			context.clickScreenButton("Delivery >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-control");
-			context.clickScreenButton("Control >");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-style");
+			context.clickScreenButton("Core >");context.clickScreenButton("Delivery");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-delivery");
+			context.clickScreenButton("Delivery >");context.clickScreenButton("Control");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-control");
+			context.clickScreenButton("Control >");context.clickScreenButton("Style");context.waitTicks(2);context.takeScreenshot("jjkcraft-deep-style");
 			var tune=com.jjkcraft.technique.TechniqueTuning.DEFAULT.with(6,175).with(7,4).with(8,20).with(9,2).with(12,12).with(15,0xD055BB).named("Personal Purple");
 			context.computeOnClient(mc->{net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.send(new com.jjkcraft.network.payload.PersonalizationPayloads.Tune(JjkCraft.id("hollow_purple"),tune));return true;});
 			context.waitFor(mc->com.jjkcraft.client.state.ClientPersonalization.get(JjkCraft.id("hollow_purple")).details().title().equals("Personal Purple"));
@@ -353,21 +353,25 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 
 	private static void energyHud(ClientGameTestContext context, TestSingleplayerContext singleplayer) {
 		context.waitFor(mc -> ClientEnergy.hasData());
+		// Starting reserves are rolled per character (350-550 at Grade 4), so compare with the server.
 		double max = context.computeOnClient(mc -> ClientEnergy.max());
-		if (Math.abs(max - 100) > 1e-6) {
-			throw new AssertionError("client should see 100 max CE at Grade 4, saw " + max);
+		double serverMax = singleplayer.getServer().computeOnServer(s -> CursedEnergy.max(s.getPlayerList().getPlayers().getFirst()));
+		if (Math.abs(max - serverMax) > 1e-6) {
+			throw new AssertionError("client should see the server's max CE " + serverMax + ", saw " + max);
 		}
 
-		singleplayer.getServer().runCommand("jjk energy set @a 62");
+		int partial = (int) Math.round(serverMax * 0.62);
+		singleplayer.getServer().runCommand("jjk energy set @a " + partial);
 		context.waitTicks(30);
 		double predicted = context.computeOnClient(mc -> ClientEnergy.predicted());
-		if (predicted < 62 || predicted > 70) {
-			throw new AssertionError("client prediction should be just above 62 after 1.5 s, was " + predicted);
+		double actual = singleplayer.getServer().computeOnServer(s -> CursedEnergy.current(s.getPlayerList().getPlayers().getFirst()));
+		if (predicted < partial || Math.abs(predicted - actual) > Math.max(2, serverMax * 0.02)) {
+			throw new AssertionError("client prediction should track regeneration from " + partial + " after 1.5 s: client " + predicted + ", server " + actual);
 		}
 
 		context.takeScreenshot("jjkcraft-m1-energy-bar");
 
-		singleplayer.getServer().runCommand("jjk energy spend @a 58");
+		singleplayer.getServer().runCommand("jjk energy spend @a " + (int) Math.ceil(actual - serverMax * 0.04));
 		context.waitTicks(4);
 		if (!context.computeOnClient(mc -> ClientEnergy.overexerted())) {
 			throw new AssertionError("client should show overexertion after spending below 10%");
@@ -1060,13 +1064,18 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 	}
 
 	private static void dimensionChangeKeepsEnergy(ClientGameTestContext context, TestSingleplayerContext singleplayer) {
+		// By now the character is high grade and regenerates quickly; pause regeneration so the
+		// check measures only what the dimension change keeps.
+		double regen = singleplayer.getServer().computeOnServer(s -> JjkConfig.server().energy.regenPercentPerSecond);
+		singleplayer.getServer().computeOnServer(s -> JjkConfig.server().energy.regenPercentPerSecond = 0);
 		singleplayer.getServer().runCommand("jjk energy set @a 47");
 		context.waitTicks(2);
 		singleplayer.getServer().runCommand("execute in minecraft:the_nether run tp @a 0 128 0");
 		context.waitTicks(40);
 		double after = singleplayer.getServer().computeOnServer(SmokeClientGameTest::firstPlayerEnergy);
-		if (after < 47 || after > 56) {
-			throw new AssertionError("CE should survive a dimension change (47 plus a little regen), was " + after);
+		singleplayer.getServer().computeOnServer(s -> JjkConfig.server().energy.regenPercentPerSecond = regen);
+		if (Math.abs(after - 47) > 1e-6) {
+			throw new AssertionError("CE should survive a dimension change unchanged at 47, was " + after);
 		}
 
 		singleplayer.getServer().runCommand("execute in minecraft:overworld run tp @a 0 100 0");
