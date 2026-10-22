@@ -49,6 +49,7 @@ public final class CombatClient {
     private CombatClient() { }
 
     public static boolean enabled() { return view.enabled() && ClientProgress.get().awakened(); }
+    public static boolean staggered(){return view.stun()>0;}
 
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.AutoStats.TYPE,(next,context)->autoStats=next);

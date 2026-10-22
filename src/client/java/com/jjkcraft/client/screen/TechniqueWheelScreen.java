@@ -23,16 +23,29 @@ public final class TechniqueWheelScreen extends Screen {
     private List<Optional<Identifier>> entries=List.of();
     private int hovered,page,held=-1,heldMouse=-1;
     private double lastX=Double.NaN,lastY;
-    private boolean scrolling=true,finishing;
+    private boolean scrolling=true,finishing,quick;
     private int branch;
+    private boolean restored;
     private static final String[] BRANCHES={"All","Blue","Red","Infinity","Purple"};
     public TechniqueWheelScreen(){this(null,ClientTechniques.state().selected());}
-    public TechniqueWheelScreen(Identifier family,int slot){super(Component.literal("Technique wheel"));this.family=family;this.slot=slot;hovered=family==null?slot:0;}
+    public TechniqueWheelScreen(Identifier family,int slot){super(Component.literal("Technique wheel"));this.family=family;this.slot=slot;hovered=family==null?slot:0;if(family!=null)branch=com.jjkcraft.client.state.ClientTechniqueMenus.branch(family);}
     @Override protected void init(){
         entries=family==null?ClientTechniques.state().loadout():ClientTechniques.variants(family).stream().filter(id->inBranch(id,branch)).map(Optional::of).toList();
+        if(family!=null&&!restored){
+            if(entries.isEmpty()&&branch!=0){branch=0;entries=ClientTechniques.variants(family).stream().map(Optional::of).toList();}
+            var remembered=com.jjkcraft.client.state.ClientTechniqueMenus.selected(family);for(int i=0;i<entries.size();i++)if(entries.get(i).filter(id->id.equals(remembered)).isPresent())hovered=i;
+            restored=true;
+        }
         hovered=Math.clamp(hovered,0,Math.max(0,entries.size()-1));page=hovered/12;
         if(limitless()&&width>=320)for(int i=0;i<BRANCHES.length;i++){final int b=i;var button=addRenderableWidget(new InkButton(7,height/2-49+i*20,57,18,Component.literal(BRANCHES[i]),v->{branch=b;page=hovered=0;scrolling=true;rebuildWidgets();}).selected(i==branch));button.active=held<0&&ClientTechniques.variants(family).stream().anyMatch(id->inBranch(id,b));}
         if(family!=null&&family.getPath().equals("family/ten_shadows"))addRenderableWidget(new InkButton(7,35,90,20,Component.literal("Subjugation"),b->minecraft.gui.setScreen(new TechniqueAbilityScreen(com.jjkcraft.JjkCraft.id("ten_shadows")))));
+        if(family!=null){
+            var id=Identifier.fromNamespaceAndPath(family.getNamespace(),family.getPath().substring(7));
+            addRenderableWidget(new InkButton(width-87,35,80,20,Component.literal("Abilities"),b->minecraft.gui.setScreen(new TechniqueAbilityScreen(id,entry(hovered).orElse(null)))));
+            if(ClientTechniques.variants(family).stream().map(ClientTechniques::definition).flatMap(Optional::stream).anyMatch(d->d.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior||d.behavior() instanceof com.jjkcraft.technique.behavior.FusionBehavior))
+                addRenderableWidget(new InkButton(width-107,58,100,20,Component.literal("Dismiss summons"),b->com.jjkcraft.client.state.ClientTechniqueMenus.request(id,entry(hovered).orElse(com.jjkcraft.JjkCraft.id("ten_shadows_divine_dogs")),2)));
+            com.jjkcraft.client.state.ClientTechniqueMenus.request(id,entry(hovered).orElse(com.jjkcraft.JjkCraft.id("infinity")),0);
+        }
     }
     private boolean limitless(){return family!=null&&family.getPath().equals("family/limitless");}
     private boolean untamed(Identifier id){return minecraft.player!=null&&!minecraft.player.isCreative()&&ClientTechniques.definition(id).filter(d->!com.jjkcraft.client.state.ClientTechniqueMenus.allowed(d)).isPresent();}
@@ -73,13 +86,14 @@ public final class TechniqueWheelScreen extends Screen {
             String detail=family==null?"Slot "+(hovered+1)+(id.filter(TechniqueBindings::family).isPresent()?" · family selector":""):d.map(v->String.format(Locale.ROOT,"%.0f CE · %s",ClientTechniques.cost(id.orElseThrow()),v.cast().chargeable()?"hold to charge":v.cast().mode()==CastMode.TOGGLE?"toggle":"instant")).orElse("");
             Ink.centered(g,Ink.fit(Component.literal(detail),112),cx,cy+1,Palette.energyHigh(),1);
             var failure=ClientTechniques.recentFailure(slot);if(family!=null&&failure!=CastFailure.NONE)Ink.centered(g,Ink.fit(Component.translatable(failure.translationKey()),120),cx,cy+15,Palette.danger(),1);
-            else if(family!=null&&id.isPresent()&&d.isPresent()&&held<0){long ticks=ClientTechniques.state().readyAt(id.get())-com.jjkcraft.client.state.ClientEnergy.gameTime();String ready=ClientTechniques.activeIs(id.get())?"ACTIVE · click to stop":ticks>0?String.format(Locale.ROOT,"Ready in %.1f s",ticks/20.0):!ClientTechniques.gradeAllows(d.get())?"Higher grade required":untamed(id.get())?"UNTAMED � subjugate":!ClientTechniques.affordable(id.get())?"Low CE (estimate)":"READY";Ink.centered(g,Ink.fit(Component.literal(ready),112),cx,cy+15,ticks>0?Palette.TEXT_DIM:Palette.gold(),1);}
+            else if(family!=null&&id.isPresent()&&d.isPresent()&&held<0){var status=com.jjkcraft.client.state.ClientTechniqueStatus.get(id.get());Ink.centered(g,Ink.fit(Component.literal(status.label()),112),cx,cy+15,status.color(),1);}
         }
         var charge=ClientTechniques.charge();if(held>=0&&charge.slot()>=0)Ink.centered(g,Component.literal("CHARGE "+charge.percent()+"% · release to cast"),cx,cy+18,Palette.accent(),1);
         String hint=family==null?"Scroll / point · release "+JjkKeys.WHEEL.getTranslatedKeyMessage().getString()+" to select":"Hold click / "+JjkKeys.CAST.getTranslatedKeyMessage().getString()+" to cast · "+(pinButton()==InputConstants.MOUSE_BUTTON_RIGHT?"right":"middle")+" click pins move";
         Ink.centered(g,Ink.fit(Component.literal(hint),width-12),cx,height-21,Palette.TEXT_DIM,1);
         Ink.centered(g,Component.literal(family==null?"Click a family to browse its powers":"Scroll through learned moves · Esc cancels"),cx,height-10,Palette.TEXT_DIM,1);
         if(entries.size()>12)Ink.text(g,(page+1)+" / "+((entries.size()+11)/12),width-40,7,Palette.TEXT_DIM,1);
+        if(family!=null){var id=Identifier.fromNamespaceAndPath(family.getNamespace(),family.getPath().substring(7));String feedback=com.jjkcraft.client.state.ClientTechniqueMenus.feedback(id);if(!feedback.isEmpty())Ink.centered(g,Ink.fit(Component.literal(feedback),width-14),cx,height-34,Palette.gold(),1);}
         super.extractRenderState(g,mx,my,a);
     }
     @Override public boolean mouseScrolled(double x,double y,double sx,double sy){
@@ -92,9 +106,11 @@ public final class TechniqueWheelScreen extends Screen {
         if(d!=null&&minecraft.player!=null&&!minecraft.player.isCreative()&&!com.jjkcraft.client.state.ClientTechniqueMenus.allowed(d)){
             minecraft.gui.setScreen(new TechniqueAbilityScreen(com.jjkcraft.JjkCraft.id("ten_shadows"),id));return;
         }
-        held=hovered;heldMouse=mouse;ClientPlayNetworking.send(new VariantCastPayload(slot,id));}
-    private void finish(){if(held<0)return;finishing=true;ClientPlayNetworking.send(new CastPayload(slot,false));held=-1;onClose();}
+        held=hovered;heldMouse=mouse;quick=d!=null&&!d.cast().chargeable()&&d.cast().mode()!=CastMode.CHANNEL;
+        if(quick)ClientPlayNetworking.send(new CastTechniquePayload(id));else ClientPlayNetworking.send(new VariantCastPayload(slot,id));}
+    private void finish(){if(held<0)return;finishing=true;if(!quick)ClientPlayNetworking.send(new CastPayload(slot,false));held=-1;onClose();}
     @Override public boolean mouseClicked(MouseButtonEvent e,boolean twice){
+        if(family!=null&&e.x()>=width-107&&e.y()>=35&&e.y()<78)return super.mouseClicked(e,twice);
         if(family!=null&&family.getPath().equals("family/ten_shadows")&&e.x()>=7&&e.x()<97&&e.y()>=35&&e.y()<55)return super.mouseClicked(e,twice);
         if(limitless()&&width>=320&&e.x()>=7&&e.x()<64&&e.y()>=height/2-49&&e.y()<height/2+49)return super.mouseClicked(e,twice);
         if(hovered<0||hovered>=entries.size())return true;
@@ -110,5 +126,5 @@ public final class TechniqueWheelScreen extends Screen {
         if(family!=null&&held>=0&&heldMouse<0&&JjkKeys.CAST.matches(e)){finish();return true;}
         return super.keyReleased(e);
     }
-    @Override public void removed(){if(held>=0&&!finishing)ClientPlayNetworking.send(new CastPayload(slot,false,true));super.removed();}
+    @Override public void removed(){if(family!=null)entry(hovered).ifPresent(id->com.jjkcraft.client.state.ClientTechniqueMenus.remember(family,id,branch));if(held>=0&&!finishing&&!quick)ClientPlayNetworking.send(new CastPayload(slot,false,true));super.removed();}
 }

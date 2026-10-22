@@ -27,6 +27,8 @@ public final class TenShadows {
     private TenShadows() { }
     public static List<Identifier> tamed(Player p){return p.getAttachedOrCreate(TAMED);}
     public static String trial(Player p){var trial=TRIALS.get(p.getUUID());return trial==null?"":trial.kind.toString();}
+    public static int remaining(Player p){var t=TRIALS.get(p.getUUID());return t!=null&&t.level.getEntity(t.beast) instanceof ShikigamiEntity beast?Math.max(0,beast.lifetime()):0;}
+    public static double distance(Player p){var t=TRIALS.get(p.getUUID());var e=t==null?null:t.level.getEntity(t.beast);return e==null?0:p.distanceTo(e);}
     public static boolean canSummon(Player p,Identifier kind){return !BEASTS.contains(kind)||p.isCreative()||tamed(p).contains(kind);}
     public static boolean allowed(Player p,TechniqueDefinition d){
         if(d.behavior() instanceof SummonBehavior b)return canSummon(p,b.entity());
@@ -44,8 +46,9 @@ public final class TenShadows {
             for(var id:List.copyOf(TRIALS.keySet())){
                 var t=TRIALS.get(id);var p=server.getPlayerList().getPlayer(id);var e=t.level.getEntity(t.beast);
                 if(p==null||!p.isAlive()||p.isSpectator()||p.level()!=t.level||e==null||!e.isAlive()||p.distanceTo(e)>48){
-                    TRIALS.remove(id);if(e!=null)e.discard();
+                    TRIALS.remove(id);if(e!=null)e.discard();if(p!=null)TechniqueFamilies.open(p,JjkCraft.id("ten_shadows"),false,"Ritual ended: stay alive, within 48 blocks and in the same dimension.");
                 }
+                else if(server.getTickCount()%20==0)TechniqueFamilies.open(p,JjkCraft.id("ten_shadows"),false,"");
             }
         });
     }

@@ -29,18 +29,28 @@ public final class TechniqueFamilies {
                 if(!message.family().equals(JjkCraft.id("ten_shadows"))||!family(p,message.family()).orElseThrow().techniques().contains(message.move()))return;
                 feedback=TenShadows.challenge(p,message.move());
             }else if(message.action()==2){
-                var allowed=family(p,message.family()).orElseThrow().techniques().stream().map(id->Techniques.get(p.registryAccess(),id)).flatMap(Optional::stream)
-                    .filter(d->d.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior).map(d->((com.jjkcraft.technique.behavior.SummonBehavior)d.behavior()).entity()).collect(java.util.stream.Collectors.toSet());
+                var allowed=summons(p,message.family());int count=0;
                 for(var pet:com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(p.level(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p))
-                    if(allowed.contains(net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(pet.getType())))pet.dissolve(p.level());
-                feedback="Summons dismissed.";
+                    if(allowed.contains(net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(pet.getType()))){pet.dissolve(p.level());count++;}
+                feedback=count==0?"No active summons in this family.":"Dismissed "+count+" summon"+(count==1?".":"s.");
+            }else if(message.action()==3){
+                if(!message.family().equals(JjkCraft.id("ten_shadows")))return;
+                TenShadows.cancel(p);feedback="Ritual ended. No unlock granted; spent CE is not refunded.";
             }else if(message.action()!=0)return;
             open(p,message.family(),false,feedback);
         });
         com.jjkcraft.sorcerer.SorcererLifecycle.addFullSync(p->{migrate(p);open(p,JjkCraft.id("ten_shadows"),false,"");});
     }
     public static void open(ServerPlayer p,Identifier family,boolean open,String feedback){
-        if(access(p,family))JjkNetworking.send(p,new TechniqueMenuPayloads.View(family,TenShadows.tamed(p),TenShadows.trial(p),open,feedback));
+        if(access(p,family)){var allowed=summons(p,family);int count=(int)com.jjkcraft.entity.shikigami.ShikigamiEntity.ownedBy(p.level(),com.jjkcraft.entity.shikigami.ShikigamiEntity.class,p).stream().filter(pet->allowed.contains(net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(pet.getType()))).count();
+            JjkNetworking.send(p,new TechniqueMenuPayloads.View(family,TenShadows.tamed(p),TenShadows.trial(p),open,feedback,count,TenShadows.remaining(p),TenShadows.distance(p)));
+        }
+    }
+    private static Set<Identifier> summons(Player p,Identifier family){
+        Set<Identifier> result=new HashSet<>();family(p,family).ifPresent(f->f.techniques().forEach(id->Techniques.get(p.registryAccess(),id).ifPresent(d->{
+            if(d.behavior() instanceof com.jjkcraft.technique.behavior.SummonBehavior b)result.add(b.entity());
+            if(d.behavior() instanceof com.jjkcraft.technique.behavior.FusionBehavior b)result.add(b.result());
+        })));return result;
     }
     /** Upgrade local-preview family_* slots to the newer family/ selector without losing direct bindings. */
     public static void migrate(ServerPlayer p){

@@ -5,6 +5,24 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.12.3-preview, 2026-10-22
+
+- Family ability browsers now support search and All, Learned, Ready and Untamed
+  filters, with live cooldown, grade and CE feedback. Opening a specific move selects
+  its page automatically; search focus survives refreshes.
+- Family wheels remember their selected move and Limitless branch until disconnect.
+  Added Abilities and Dismiss summons shortcuts, including owned fusion summons.
+- Infinity's HUD and tooltip show its saved toggle, actual field state and server
+  upkeep, including waiting for CE or suppression. Learning RCT updates the display
+  without toggling Infinity again.
+- Ten Shadows rituals have a configurable countdown and distance HUD, with warnings
+  near the time or 48-block distance limit. End ritual cancels without granting an
+  unlock or refunding the CE spent. Summon management shows the active owned count.
+- Instant casts and toggles from a family wheel no longer release an unrelated
+  channel. Summon dismissal leaves other players' summons alone.
+- Added the repository workflow reminder to push completed updates and launch
+  Minecraft afterward. See `docs/QUALITY_OF_LIFE.md` for controls and verification.
+
 ## 1.12.2-preview, 2026-10-22
 
 - Reconciled GitHub main `5cb71c5` with the local rework. Retains the 51 families,

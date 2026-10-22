@@ -24,9 +24,13 @@ public final class ClientTechniques {
 	private static Optional<Identifier> active = Optional.empty();
     private static boolean infinity;
     private static boolean infinityPreferred;
+    private static double infinityUpkeep;
+    private static int infinityReason;
+    public static double infinityUpkeep(){return infinityUpkeep;}
+    public static int infinityReason(){return infinityReason;}
     public static boolean infinityEnabled(){return infinityPreferred;}
     public static boolean infinityActive(){return infinity;}
-    public static void accept(com.jjkcraft.network.payload.InfinityPayload payload){infinity=payload.enabled();infinityPreferred=payload.preferred();}
+    public static void accept(com.jjkcraft.network.payload.InfinityPayload payload){infinity=payload.enabled();infinityPreferred=payload.preferred();infinityUpkeep=payload.upkeep();infinityReason=payload.reason();}
 	private static int feedbackSlot = -2;
 	private static CastFailure feedback = CastFailure.NONE;
 	private static long feedbackAt;
@@ -52,6 +56,7 @@ public final class ClientTechniques {
 	public static void reset() {
         infinity=false;
         infinityPreferred=false;
+        infinityUpkeep=0;infinityReason=0;
         charge=new com.jjkcraft.network.payload.ChargePayload(-1,0,100,0);
 		state = TechniqueState.EMPTY;
 		active = Optional.empty();

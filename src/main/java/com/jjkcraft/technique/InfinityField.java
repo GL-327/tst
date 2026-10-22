@@ -16,6 +16,7 @@ import com.jjkcraft.network.payload.InfinityPayload;
 public final class InfinityField {
     private static final Map<UUID,CastContext> FIELDS=new HashMap<>();
     private static final Map<UUID,Long> DISRUPTED=new HashMap<>();
+    private static final Map<UUID,InfinityPayload> LAST_SYNC=new HashMap<>();
     private static final net.fabricmc.fabric.api.attachment.v1.AttachmentType<Boolean> PREFERRED=net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry.create(com.jjkcraft.JjkCraft.id("infinity_enabled"),b->b.persistent(com.mojang.serialization.Codec.BOOL).copyOnDeath().initializer(()->true));
     private InfinityField() { }
     public static boolean preferred(ServerPlayer p){return p.getAttachedOrCreate(PREFERRED);}
@@ -46,11 +47,17 @@ public final class InfinityField {
     public static double upkeep(LivingEntity caster,TechniqueDefinition d){return ReverseTechnique.available(caster)?0:d.cast().upkeep()*TechniqueService.modifiers(caster,com.jjkcraft.JjkCraft.id("infinity"),d).cost();}
     public static void start(CastContext ctx){FIELDS.put(ctx.caster().getUUID(),ctx);sync(ctx.caster());}
     public static void stop(LivingEntity caster){if(FIELDS.containsKey(caster.getUUID()))CursedEnergy.checkpoint(caster);var ctx=FIELDS.remove(caster.getUUID());if(ctx!=null){ctx.technique().behavior().end(ctx);sync(caster);}}
-    private static void sync(LivingEntity caster){if(caster instanceof ServerPlayer p)JjkNetworking.send(p,new InfinityPayload(on(caster),preferred(p)));}
+    private static void sync(LivingEntity caster){if(caster instanceof ServerPlayer p){
+        var id=com.jjkcraft.JjkCraft.id("infinity");var raw=Techniques.get(p.registryAccess(),id).orElse(null);
+        var d=raw==null?null:Personalization.definition(p,id,raw);double cost=d==null?0:upkeep(p,d);
+        boolean active=on(p);int reason=!preferred(p)?1:active?0:!eligible(p)||p.level().getGameTime()<DISRUPTED.getOrDefault(p.getUUID(),0L)||com.jjkcraft.combat.CursedCombat.interrupted(p)||p.hasEffect(com.jjkcraft.effect.JjkEffects.STUNNED)||p.hasEffect(com.jjkcraft.effect.JjkEffects.FROZEN_FRAME)||d!=null&&PersonalPacts.check(p,id,d)!=CastFailure.NONE?3:cost>0&&CursedEnergy.current(p)<cost/20?2:4;
+        var payload=new InfinityPayload(active,preferred(p),cost,reason);
+        if(!payload.equals(LAST_SYNC.put(p.getUUID(),payload)))JjkNetworking.send(p,payload);
+    }}
     public static void init(){
-        com.jjkcraft.sorcerer.SorcererLifecycle.addFullSync(InfinityField::sync);
+        com.jjkcraft.sorcerer.SorcererLifecycle.addFullSync(p->{LAST_SYNC.remove(p.getUUID());sync(p);});
         com.jjkcraft.sorcerer.Awakening.addResetHook(p->{stop(p);DISRUPTED.remove(p.getUUID());p.setAttached(PREFERRED,true);sync(p);});
-        net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register((h,s)->{stop(h.getPlayer());DISRUPTED.remove(h.getPlayer().getUUID());});
+        net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register((h,s)->{stop(h.getPlayer());DISRUPTED.remove(h.getPlayer().getUUID());LAST_SYNC.remove(h.getPlayer().getUUID());});
         // Checkpoint before changing the map so lazy regeneration cannot be recovered on toggle-off.
         CursedEnergy.addRegenModifier(caster->on(caster)&&!ReverseTechnique.available(caster)?0:1);
         DamageModifiers.add((level,target,source,amount)->{
@@ -74,7 +81,7 @@ public final class InfinityField {
             double cost=upkeep(caster,ctx.technique())/20;
             if(cost>0&&!CursedEnergy.trySpend(caster,cost)){stop(caster);continue;}
             ctx.technique().behavior().tick(ctx,0);
-        }});
-        ServerLifecycleEvents.SERVER_STOPPED.register(s->{FIELDS.clear();DISRUPTED.clear();});
+        }if(server.getTickCount()%20==0)for(var p:server.getPlayerList().getPlayers())sync(p);});
+        ServerLifecycleEvents.SERVER_STOPPED.register(s->{FIELDS.clear();DISRUPTED.clear();LAST_SYNC.clear();});
     }
 }

@@ -40,6 +40,17 @@ public final class TechniqueHotbarHud {
 			return;
 		}
 
+        var trial=com.jjkcraft.client.state.ClientTechniqueMenus.view(com.jjkcraft.JjkCraft.id("ten_shadows"));
+        var tracker=ClientConfig.get().hud.ritualTracker;
+        if(tracker.visible&&trial!=null&&!trial.trial().isEmpty()){
+            int seconds=com.jjkcraft.client.state.ClientTechniqueMenus.trialSeconds();int color=trial.trialDistance()>40||seconds<20?Palette.danger():Palette.gold();float alpha=tracker.opacity();
+            var hud=ClientConfig.get().hud;HudLayout.pushBelow(g,tracker,180,45,hud.energyBar,hud.gradeBadge,hud.cullingPanel,hud.missionTracker,hud.mulMeter);
+            Ink.panel(g,0,0,180,45,color,alpha*.9f);
+            Ink.text(g,String.format(java.util.Locale.ROOT,"SUBJUGATION / %d:%02d",seconds/60,seconds%60),5,4,color,alpha);
+            var id=Identifier.tryParse(trial.trial());if(id!=null)Ink.text(g,Ink.fit(Component.translatable("entity."+id.getNamespace()+"."+id.getPath()),170),5,15,Palette.TEXT,alpha);
+            Ink.text(g,String.format(java.util.Locale.ROOT,"%.0fm / 48m limit",trial.trialDistance()),5,26,color,alpha);
+            g.fill(5,40,175,42,ARGB.multiplyAlpha(0xFF2A2533,alpha));g.fill(5,40,5+(int)(170*Math.clamp(seconds/180.0,0,1)),42,ARGB.multiplyAlpha(color,alpha));g.pose().popMatrix();
+        }
         var charge=ClientTechniques.charge();
         var meter=ClientConfig.get().hud.chargeMeter;
         if(charge.slot()>=0&&meter.visible){
@@ -55,12 +66,13 @@ public final class TechniqueHotbarHud {
         if(!cfg.visible)return;
         // A single selected-power badge replaces the four-row sidebar. Selection lives on the wheel.
         var state=ClientTechniques.state();int selected=state.selected();float alpha=cfg.opacity();
-        HudLayout.push(g,cfg,150,34);Ink.panel(g,0,0,150,34,Palette.accent(),alpha*.85f);
+        boolean infinity=ClientTechniques.known().contains(com.jjkcraft.JjkCraft.id("infinity"));int badgeHeight=infinity?47:34;
+        HudLayout.push(g,cfg,150,badgeHeight);Ink.panel(g,0,0,150,badgeHeight,Palette.accent(),alpha*.85f);
         slot(g,4,5,selected,state.slot(selected),true,ClientTechniques.recentFailure(selected),alpha);
         String title=state.slot(selected).flatMap(ClientTechniques::definition).map(d->Component.translatable(d.name()).getString()).orElse("Empty slot");
         Ink.text(g,Ink.fit(Component.literal(title),116),31,5,Palette.TEXT,alpha);
         Ink.text(g,Ink.fit(Component.literal(JjkKeys.WHEEL.getTranslatedKeyMessage().getString()+" wheel · "+JjkKeys.CAST.getTranslatedKeyMessage().getString()+" activate"),116),31,18,Palette.TEXT_DIM,alpha);
-        if(ClientTechniques.activeIs(com.jjkcraft.JjkCraft.id("infinity")))Ink.text(g,"∞",139,23,Palette.energyHigh(),alpha);
+        if(infinity)Ink.text(g,Ink.fit(Component.literal(com.jjkcraft.client.state.ClientTechniqueStatus.infinity()),140),5,33,ClientTechniques.infinityActive()?Palette.good():ClientTechniques.infinityEnabled()?Palette.gold():Palette.TEXT_DIM,alpha);
         g.pose().popMatrix();
     }
 

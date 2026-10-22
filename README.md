@@ -3,10 +3,13 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.12.2-preview.** The GitHub and local reworks are reconciled: the current
-variant wheels, Projection planner, RCT training and 75 creature rigs now include
-Ten Shadows subjugation, the respawn-immunity repair, automatic Infinity with a saved
-toggle, and the additional local equipment. [Combined behavior and migration](docs/RECONCILIATION.md).
+**Status: 1.12.3-preview.** The quality-of-life update adds searchable family abilities,
+live readiness filters, remembered wheel selections, summon dismissal, an Infinity
+status/upkeep display and a configurable Ten Shadows ritual tracker.
+[Controls and verification](docs/QUALITY_OF_LIFE.md).
+The GitHub and local reworks remain combined, including the Projection planner, RCT
+training, 75 creature rigs, defeat-to-tame subjugation, respawn-immunity repair and
+additional equipment. [Combined behavior and migration](docs/RECONCILIATION.md).
 
 The visual overhaul rebuilds 75 creature rigs with articulated
 limbs, individual UV materials, emissive accents and sixteen animation clips each. Spells

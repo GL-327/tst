@@ -61,6 +61,8 @@ public final class SmokeClientGameTest implements FabricClientGameTest {
 		}
 		if("personalization".equals(System.getProperty("jjkcraft.clientTestFocus"))){personalization(context);return;}
         if("reconcile".equals(System.getProperty("jjkcraft.clientTestFocus"))){ReconciliationClientChecks.run(context);return;}
+        if("qol".equals(System.getProperty("jjkcraft.clientTestFocus"))){QolClientChecks.run(context);return;}
+        if("qolRegression".equals(System.getProperty("jjkcraft.clientTestFocus"))){QolClientChecks.run(context);ReconciliationClientChecks.run(context);return;}
         if("reconcileArt".equals(System.getProperty("jjkcraft.clientTestFocus"))){CreatureRevampChecks.run(context);EquipmentReworkChecks.run(context);return;}
         if("wheel".equals(System.getProperty("jjkcraft.clientTestFocus"))){WheelClientChecks.run(context);return;}
         if("polish".equals(System.getProperty("jjkcraft.clientTestFocus"))){WheelClientChecks.run(context);PolishClientChecks.run(context);return;}

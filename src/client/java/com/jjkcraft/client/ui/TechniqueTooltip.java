@@ -30,12 +30,13 @@ public final class TechniqueTooltip {
             lines.add(Component.literal("Activate to open the variant wheel.").withColor(Palette.TEXT));lines.add(Component.literal("Bind a specific move for direct casting.").withColor(Palette.TEXT));return lines;
         }
 		lines.add(Component.translatable(def.category().translationKey()).withColor(def.category().color()));
+        if(id.equals(com.jjkcraft.JjkCraft.id("infinity")))lines.add(Component.literal(com.jjkcraft.client.state.ClientTechniqueStatus.infinity()).withColor(Palette.gold()));
 
 		double cost = ClientTechniques.cost(id);
 		boolean affordable = ClientTechniques.affordable(id);
 		lines.add(Component.translatable("tooltip.jjkcraft.cost", fmt(cost)).withColor(affordable ? Palette.good() : Palette.danger()));
 		if (def.cast().mode() != CastMode.INSTANT && def.cast().upkeep() > 0) {
-			lines.add(Component.translatable("tooltip.jjkcraft.upkeep", fmt(def.cast().upkeep())).withColor(Palette.TEXT_DIM));
+			lines.add(Component.translatable("tooltip.jjkcraft.upkeep", fmt(id.equals(com.jjkcraft.JjkCraft.id("infinity"))?ClientTechniques.infinityUpkeep():def.cast().upkeep())).withColor(Palette.TEXT_DIM));
 		}
 
 		lines.add(Component.translatable("tooltip.jjkcraft.cooldown", fmt(def.cast().cooldown() / 20.0)).withColor(Palette.TEXT_DIM));
