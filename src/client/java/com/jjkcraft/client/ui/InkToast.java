@@ -27,6 +27,12 @@ public final class InkToast implements Toast {
 	}
 
 	@Override
+	public int width() {
+		var font = Minecraft.getInstance().font;
+		return Math.clamp(Math.max(font.width(title), font.width(body)) + 32, 160, 280);
+	}
+
+	@Override
 	public Visibility getWantedVisibility() {
 		return visibility;
 	}

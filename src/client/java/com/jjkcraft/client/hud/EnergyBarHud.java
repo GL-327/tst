@@ -14,17 +14,17 @@ import com.jjkcraft.client.ui.Ink;
 import com.jjkcraft.client.ui.Palette;
 
 /**
- * The segmented CE bar. Colors shift to the danger palette during overexertion, and a chevron
- * regen indicator shows when CE is refilling (two chevrons while idle-boosted). Meaning is also
- * carried by shape (stripes while overexerted), not color alone.
+ * The CE gauge at the top of the status column: a label with regen chevrons and the exact value
+ * above a full-width segmented bar. Colors shift to the danger palette during overexertion, which
+ * also adds moving stripes so the state reads without color.
  */
 public final class EnergyBarHud {
-	public static final int WIDTH = 112;
-	public static final int HEIGHT = 20;
-	private static final int BAR_X = 18;
-	private static final int BAR_Y = 6;
-	private static final int BAR_W = 80;
-	private static final int BAR_H = 6;
+	public static final int WIDTH = HudStyle.COLUMN_WIDTH;
+	public static final int HEIGHT = 22;
+	private static final int BAR_X = 5;
+	private static final int BAR_Y = 14;
+	private static final int BAR_W = WIDTH - 9;
+	private static final int BAR_H = 5;
 
 	private EnergyBarHud() {
 	}
@@ -42,14 +42,30 @@ public final class EnergyBarHud {
 		boolean strained = ClientEnergy.overexerted();
 		long millis = Util.getMillis();
 		boolean motion = !ClientConfig.reducedMotion();
+		int accent = strained ? Palette.danger() : Palette.energyHigh();
 
 		HudLayout.push(g, cfg, WIDTH, HEIGHT);
 		Ink.panel(g, 0, 0, WIDTH, HEIGHT, strained ? Palette.danger() : Palette.accent(), alpha);
-		Ink.text(g, "CE", 3, 5, strained ? Palette.danger() : Palette.energyHigh(), alpha);
+		Ink.text(g, "CE", BAR_X, 4, accent, alpha);
 
-		int segments = Mth.clamp((int) Math.round(max / 25.0), 4, 16);
+		if (ClientEnergy.regenerating()) {
+			int chevrons = ClientEnergy.idleBoosted() ? 2 : 1;
+			int shift = motion ? (int) ((millis / 140) % 3) : 0;
+			for (int c = 0; c < chevrons; c++) {
+				drawChevron(g, BAR_X + 16 + shift + c * 4, 5, ARGB.multiplyAlpha(Palette.good(), alpha));
+			}
+		}
+
+		if (ClientConfig.get().hud.showNumbers) {
+			String label = Math.round(shown) + " / " + (ClientEnergy.uncapped() ? "∞" : Math.round(max));
+			Ink.text(g, label, WIDTH - 4 - Ink.font().width(label), 4, strained ? Palette.dangerHigh() : Palette.TEXT_DIM, alpha);
+		}
+
+		int segments = Mth.clamp((int) Math.round(max / 25.0), 6, 20);
 		int gap = 1;
 		int segW = Math.max(2, (BAR_W - gap * (segments - 1)) / segments);
+		// Spread the rounding remainder so the bar always ends flush with the panel edge.
+		int spare = BAR_W - (segW * segments + gap * (segments - 1));
 		double perSegment = max / segments;
 
 		int low = strained ? Palette.danger() : Palette.energy();
@@ -60,18 +76,17 @@ public final class EnergyBarHud {
 			high = ARGB.scaleRGB(high, pulse);
 		}
 
+		int sx = BAR_X;
 		for (int i = 0; i < segments; i++) {
-			int sx = BAR_X + i * (segW + gap);
-			g.fill(sx, BAR_Y, sx + segW, BAR_Y + BAR_H, ARGB.multiplyAlpha(0xFF1C1A24, alpha));
+			int w = segW + (i < spare ? 1 : 0);
+			g.fill(sx, BAR_Y, sx + w, BAR_Y + BAR_H, ARGB.multiplyAlpha(HudStyle.TRACK, alpha));
 			double fill = Mth.clamp((shown - i * perSegment) / perSegment, 0, 1);
 			if (fill > 0) {
-				int fw = Math.max(1, (int) Math.round(segW * fill));
+				int fw = Math.max(1, (int) Math.round(w * fill));
 				float t = segments == 1 ? 1 : (float) i / (segments - 1);
-				int color = ARGB.multiplyAlpha(ARGB.srgbLerp(t, low, high), alpha);
-				g.fill(sx, BAR_Y, sx + fw, BAR_Y + BAR_H, color);
-				g.fill(sx, BAR_Y, sx + fw, BAR_Y + 1, ARGB.multiplyAlpha(0x60FFFFFF, alpha));
+				g.fill(sx, BAR_Y, sx + fw, BAR_Y + BAR_H, ARGB.multiplyAlpha(ARGB.srgbLerp(t, low, high), alpha));
+				g.fill(sx, BAR_Y, sx + fw, BAR_Y + 1, ARGB.multiplyAlpha(0x50FFFFFF, alpha));
 				if (strained) {
-					// Diagonal stripes so overexertion reads without color.
 					for (int px = 0; px < fw; px++) {
 						if (((px + (motion ? millis / 80 : 0)) % 4) == 0) {
 							g.fill(sx + px, BAR_Y + 1, sx + px + 1, BAR_Y + BAR_H, ARGB.multiplyAlpha(0x70000000, alpha));
@@ -79,25 +94,8 @@ public final class EnergyBarHud {
 					}
 				}
 			}
-		}
 
-		// Regen indicator.
-		if (ClientEnergy.regenerating()) {
-			int chevrons = ClientEnergy.idleBoosted() ? 2 : 1;
-			int shift = motion ? (int) ((millis / 120) % 3) : 0;
-			int cx = BAR_X + BAR_W + 3 + shift;
-			for (int c = 0; c < chevrons; c++) {
-				drawChevron(g, cx + c * 4, BAR_Y, ARGB.multiplyAlpha(Palette.good(), alpha));
-			}
-		}
-
-		if (ClientConfig.get().hud.showNumbers) {
-			String label = Math.round(shown) + "/" + (ClientEnergy.uncapped()?"∞":Math.round(max));
-			g.pose().pushMatrix();
-			g.pose().translate(BAR_X, BAR_Y + BAR_H + 2);
-			g.pose().scale(0.5f, 0.5f);
-			Ink.text(g, label, 0, 0, strained ? Palette.dangerHigh() : Palette.TEXT_DIM, alpha);
-			g.pose().popMatrix();
+			sx += w + gap;
 		}
 
 		g.pose().popMatrix();

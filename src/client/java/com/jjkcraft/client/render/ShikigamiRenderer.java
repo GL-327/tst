@@ -25,7 +25,7 @@ public class ShikigamiRenderer<T extends ShikigamiEntity> extends GeoEntityRende
 	}
     @Override public void submitRenderTasks(com.geckolib.renderer.base.RenderPassInfo<LivingEntityRenderState> info,net.minecraft.client.renderer.OrderedSubmitNodeCollector nodes,net.minecraft.client.renderer.rendertype.RenderType type){
         super.submitRenderTasks(info,nodes,type);
-        if(com.jjkcraft.client.config.ClientConfig.effectsOff()||net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(glow).isEmpty())return;
+        if(com.jjkcraft.client.config.ClientConfig.effectsOff()||!ResourcePresence.exists(glow))return;
         nodes.submitCustomGeometry(info.poseStack(),net.minecraft.client.renderer.rendertype.RenderTypes.entityTranslucentEmissive(glow),(pose,vertices)->{
             var stack=info.poseStack();stack.pushPose();stack.last().set(pose);info.renderPosed(()->info.model().render(info,vertices,15728880,net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,0xDDFFFFFF));stack.popPose();
         });

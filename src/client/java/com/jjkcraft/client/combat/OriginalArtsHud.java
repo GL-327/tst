@@ -15,9 +15,13 @@ public final class OriginalArtsHud {
         HudElementRegistry.addLast(JjkCraft.id("original_resonance"),(g,dt)->{
             var mc=net.minecraft.client.Minecraft.getInstance();if(mc.player==null||mc.level==null||!mc.player.isAlive()||mc.gui.screen()!=null||mc.gui.hud.isHidden()||value.family().isEmpty()||mc.level.getGameTime()-received>6000)return;
             var id=net.minecraft.resources.Identifier.tryParse("jjkcraft:"+value.family());if(id==null)return;var family=mc.level.registryAccess().lookupOrThrow(com.jjkcraft.awakening.CharacterAwakening.FAMILIES).getValue(id);if(family==null)return;
-            int x=6,y=g.guiHeight()-96;g.fill(x-2,y-2,x+108,y+26,0xD0141726);Ink.text(g,Ink.fit(Component.translatable(family.name()),104),x,y,Palette.energyHigh(),1);
-            Ink.text(g,"RESONANCE "+value.resonance()+" / 8",x,y+11,Palette.TEXT,1);for(int n=0;n<8;n++)g.fill(x+n*13,y+22,x+n*13+10,y+24,n<value.resonance()?Palette.gold():0xFF343548);
-            if(value.wards()>0&&mc.level.getGameTime()-received<value.wardTicks())Ink.text(g,"WARD · "+value.wards()+" HITS",x,y-12,Palette.TEXT_DIM,1);
+            var hud=com.jjkcraft.client.config.ClientConfig.get().hud;var cfg=hud.resonance;if(!cfg.visible)return;
+            boolean ward=value.wards()>0&&mc.level.getGameTime()-received<value.wardTicks();int w=com.jjkcraft.client.hud.HudStyle.COLUMN_WIDTH,h=ward?40:30;float alpha=cfg.opacity();
+            com.jjkcraft.client.hud.HudLayout.pushBelow(g,cfg,w,h,hud.energyBar,hud.gradeBadge,hud.combatPanel,hud.cullingPanel,hud.ritualTracker);
+            Ink.panel(g,0,0,w,h,Palette.energyHigh(),alpha);Ink.text(g,Ink.fit(Component.translatable(family.name()),w-9),5,3,Palette.energyHigh(),alpha);
+            Ink.text(g,"Resonance "+value.resonance()+" / 8",5,14,Palette.TEXT,alpha);int cell=(w-10)/8;for(int n=0;n<8;n++)g.fill(5+n*cell,25,5+n*cell+cell-2,27,net.minecraft.util.ARGB.multiplyAlpha(n<value.resonance()?Palette.gold():0xFF343548,alpha));
+            if(ward)Ink.text(g,"Ward · "+value.wards()+" hits",5,30,Palette.TEXT_DIM,alpha);
+            g.pose().popMatrix();
         });
     }
 }

@@ -30,6 +30,12 @@ public final class ClientTechniqueStatus {
         if(!ClientTechniques.affordable(id))return new Status("Not enough CE",Palette.danger(),false);
         return new Status("Ready",Palette.good(),true);
     }
+    /** The same state in as few words as fit beside the hotbar. */
+    public static String infinityShort(){
+        if(!ClientTechniques.infinityEnabled())return "Infinity off";
+        if(ClientTechniques.infinityActive())return ClientTechniques.infinityUpkeep()<=0?"Infinity on":String.format(Locale.ROOT,"Infinity · %.1f CE/s",ClientTechniques.infinityUpkeep());
+        return switch(ClientTechniques.infinityReason()){case 2->"Infinity · no CE";case 3->"Infinity suppressed";default->"Infinity starting";};
+    }
     public static String infinity(){
         if(!ClientTechniques.infinityEnabled())return "Infinity OFF";
         if(ClientTechniques.infinityActive())return ClientTechniques.infinityUpkeep()<=0?"Infinity ON / no upkeep":String.format(Locale.ROOT,"Infinity ON / %.1f CE/s",ClientTechniques.infinityUpkeep());

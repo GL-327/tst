@@ -33,8 +33,10 @@ public final class CombatPayloads {
         public static final StreamCodec<ByteBuf,Endurance> CODEC=StreamCodec.composite(ByteBufCodecs.FLOAT,Endurance::stamina,ByteBufCodecs.FLOAT,Endurance::maximum,ByteBufCodecs.VAR_INT,Endurance::hand,ByteBufCodecs.VAR_INT,Endurance::leftReady,ByteBufCodecs.VAR_INT,Endurance::rightReady,Endurance::new);
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
-    /** 0 right punch, 1 release, 2 manual guard, 3 dash, 4 toggle, 5 heavy, 6 assisted attack, 7 assisted guard, 8 CE fists, 9 left punch. */
+    /** A combat key event. {@code data} carries the guard height, dash direction or assisted choice. */
     public record Input(int action, int data) implements CustomPacketPayload {
+        public static final int RIGHT_PUNCH = 0, RELEASE = 1, GUARD = 2, DASH = 3, TOGGLE = 4, HEAVY = 5,
+                ASSISTED_ATTACK = 6, ASSISTED_GUARD = 7, CE_FISTS = 8, LEFT_PUNCH = 9;
         public static final Type<Input> TYPE = new Type<>(JjkCraft.id("combat_input"));
         public static final StreamCodec<ByteBuf, Input> CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, Input::action, ByteBufCodecs.VAR_INT, Input::data, Input::new);
         @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }

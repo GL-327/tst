@@ -10,15 +10,9 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-
-import com.jjkcraft.JjkCraft;
-
 import com.jjkcraft.client.JjkKeys;
 
 import com.jjkcraft.client.state.ClientProgress;
-
-import com.jjkcraft.client.ui.Ink;
 
 import com.jjkcraft.client.ui.Palette;
 
@@ -52,6 +46,25 @@ public final class CombatClient {
 
     public static boolean enabled() { return view.enabled() && ClientProgress.get().awakened(); }
     public static boolean staggered(){return view.stun()>0;}
+    public static CombatPayloads.View view() { return view; }
+    public static CombatPayloads.AutoStats autoStats() { return autoStats; }
+    public static CombatPayloads.Resources resources() { return resources; }
+
+    /** Set when the player presses the combat toggle; the server's reply decides whether combat came on. */
+    private static boolean hintPending;
+    /** The key reminder shows once per world, not on every toggle. */
+    private static boolean hintShown;
+
+    /** The key reference, once, when the player switches combat on, instead of permanently on the HUD. */
+    private static void showHint() {
+        hintPending = false;
+        if (hintShown) return;
+        hintShown = true;
+        Component keys = Component.literal("Punch " + JjkKeys.LIGHT.getTranslatedKeyMessage().getString() + "/" + JjkKeys.LEFT_PUNCH.getTranslatedKeyMessage().getString()
+                + " · Heavy " + JjkKeys.HEAVY.getTranslatedKeyMessage().getString() + " · Guard " + JjkKeys.BLOCK.getTranslatedKeyMessage().getString()
+                + " · Evade " + JjkKeys.DASH.getTranslatedKeyMessage().getString());
+        com.jjkcraft.client.ui.InkToast.show(Component.literal("Cursed Combat on (" + JjkKeys.COMBAT.getTranslatedKeyMessage().getString() + " to leave)"), keys, Palette.accent());
+    }
 
     public static void init() {
         PunchImbuementClient.init();
@@ -63,9 +76,13 @@ public final class CombatClient {
 
         ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.Resources.TYPE,(next,ctx)->resources=next);
 
-        ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.View.TYPE, (next, context) -> view = next);
+        ClientPlayNetworking.registerGlobalReceiver(CombatPayloads.View.TYPE, (next, context) -> {
+            if (hintPending && next.enabled() && !view.enabled()) showHint();
+            if (next.enabled() != view.enabled()) hintPending = false;
+            view = next;
+        });
 
-        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, mc) -> { view = new CombatPayloads.View(false, 100, 0, 0, "", 0); autoStats=new CombatPayloads.AutoStats(0,0,0); resources=new CombatPayloads.Resources(0,0,0);endurance=new CombatPayloads.Endurance(100,100,0,0,0);leftDown=false;lastAttack=-100;pressed = false;attackClick=false;lightDown=false;heavyDown=false;autoNext=0;manualUntil=0; guard = -1; lockTarget = -1; lastMovement = 0; ticks = 0; java.util.Arrays.fill(lastTap, -100); });
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register((handler, mc) -> { view = new CombatPayloads.View(false, 100, 0, 0, "", 0); hintShown = false; hintPending = false; autoStats=new CombatPayloads.AutoStats(0,0,0); resources=new CombatPayloads.Resources(0,0,0);endurance=new CombatPayloads.Endurance(100,100,0,0,0);leftDown=false;lastAttack=-100;pressed = false;attackClick=false;lightDown=false;heavyDown=false;autoNext=0;manualUntil=0; guard = -1; lockTarget = -1; lastMovement = 0; ticks = 0; java.util.Arrays.fill(lastTap, -100); });
 
         ClientPreAttackCallback.EVENT.register((mc, player, clicks) -> {
 
@@ -80,28 +97,6 @@ public final class CombatClient {
 
         JjkKeys.addHandler(CombatClient::tick);
 
-        HudElementRegistry.addLast(JjkCraft.id("combat"), (g, dt) -> {
-
-            Minecraft mc = Minecraft.getInstance();
-
-            if (!enabled() || mc.player == null || mc.gui.hud.isHidden()||mc.gui.screen()!=null) return;
-
-            var config=com.jjkcraft.client.config.ClientConfig.get();var panel=config.hud.combatPanel;if(!panel.visible)return;
-            float alpha=panel.opacity();com.jjkcraft.client.hud.HudLayout.push(g,panel,110,PunchImbuementClient.label().isEmpty()?54:65);
-            Ink.panel(g,0,0,110,PunchImbuementClient.label().isEmpty()?54:65,view.stun()>0?Palette.danger():Palette.accent(),alpha);
-            String status=view.stun()>0?"STAGGERED":view.move().isEmpty()?config.autoCombat?"AUTO COMBAT":"MANUAL COMBAT":view.move().replace('_',' ').toUpperCase(java.util.Locale.ROOT)+(view.combo()>1?" · "+view.combo():"");
-            Ink.text(g,Ink.fit(Component.literal(status),102),4,4,view.stun()>0?Palette.danger():view.combo()>1?Palette.gold():Palette.TEXT,alpha);
-            String detail=config.autoCombat?autoStats.attempts()<5?"60% commitment":"Contact "+autoStats.hits()+" / "+autoStats.attempts()+" · "+(100*autoStats.hits()/Math.max(1,autoStats.attempts()))+"%":"Hits: "+JjkKeys.LIGHT.getTranslatedKeyMessage().getString()+" / "+JjkKeys.LEFT_PUNCH.getTranslatedKeyMessage().getString();
-            Ink.text(g,Ink.fit(Component.literal(detail),102),4,15,Palette.TEXT_DIM,alpha);
-            int guardColor=view.guard()<30?Palette.danger():Palette.energyHigh();g.fill(4,26,106,28,net.minecraft.util.ARGB.multiplyAlpha(0xFF241D31,alpha));g.fill(4,26,4+(int)Math.clamp(102*view.guard()/100,0,102),28,net.minecraft.util.ARGB.multiplyAlpha(guardColor,alpha));
-            String escape=resources.escapeCooldown()==0?"Evade: "+JjkKeys.DASH.getTranslatedKeyMessage().getString():"Evade: "+String.format(java.util.Locale.ROOT,"%.1f s",resources.escapeCooldown()/20.0);
-            Ink.text(g,Ink.fit(Component.literal(escape),102),4,32,resources.escapeCooldown()==0?Palette.good():Palette.TEXT_DIM,alpha);
-            if(!PunchImbuementClient.label().isEmpty())Ink.text(g,Ink.fit(Component.literal(PunchImbuementClient.label()),102),4,56,PunchImbuementClient.mode()==2?0xFFFF6A7A:Palette.energyHigh(),alpha);
-            Ink.text(g,Component.literal("Stamina "+Math.round(endurance.stamina())+" / "+Math.round(endurance.maximum())),4,43,Palette.TEXT_DIM,alpha);
-            g.fill(4,52,4+(int)(102*endurance.stamina()/Math.max(1,endurance.maximum())),54,net.minecraft.util.ARGB.multiplyAlpha(endurance.stamina()<24?Palette.danger():Palette.gold(),alpha));
-            g.pose().popMatrix();
-
-        });
 
     }
 
@@ -116,7 +111,7 @@ public final class CombatClient {
         boolean light=focused&&JjkKeys.LIGHT.isDown(),left=focused&&JjkKeys.LEFT_PUNCH.isDown(),heavy=focused&&JjkKeys.HEAVY.isDown();
 
         boolean lightClick=JjkKeys.clicked(JjkKeys.LIGHT),leftClick=JjkKeys.clicked(JjkKeys.LEFT_PUNCH),heavyClick=JjkKeys.clicked(JjkKeys.HEAVY);
-        if(focused&&(light||lightClick)&&!lightDown){send(0,0);manualUntil=ticks+16;}if(focused&&(left||leftClick)&&!leftDown){send(9,0);manualUntil=ticks+16;}if(focused&&(heavy||heavyClick)&&!heavyDown){send(5,0);manualUntil=ticks+16;}
+        if(focused&&(light||lightClick)&&!lightDown){send(CombatPayloads.Input.RIGHT_PUNCH,0);manualUntil=ticks+16;}if(focused&&(left||leftClick)&&!leftDown){send(CombatPayloads.Input.LEFT_PUNCH,0);manualUntil=ticks+16;}if(focused&&(heavy||heavyClick)&&!heavyDown){send(CombatPayloads.Input.HEAVY,0);manualUntil=ticks+16;}
         while(JjkKeys.AUTO_COMBAT.consumeClick())if(focused){com.jjkcraft.client.config.ClientConfig.get().autoCombat=!com.jjkcraft.client.config.ClientConfig.get().autoCombat;com.jjkcraft.client.config.ClientConfig.save();}
         if(!migrated&&mc.player!=null){migrated=true;
             var config=com.jjkcraft.client.config.ClientConfig.get();
@@ -150,8 +145,8 @@ public final class CombatClient {
 
         while(JjkKeys.LIGHT.consumeClick()){}while(JjkKeys.HEAVY.consumeClick()){}
 
-        while (JjkKeys.COMBAT.consumeClick()) if (mc.player != null && mc.gui.screen() == null) send(4, 0);
-        while(JjkKeys.CE_IMBUE.consumeClick())if(mc.player!=null&&mc.gui.screen()==null)send(8,0);
+        while (JjkKeys.COMBAT.consumeClick()) if (mc.player != null && mc.gui.screen() == null) { send(CombatPayloads.Input.TOGGLE, 0); hintPending = true; }
+        while(JjkKeys.CE_IMBUE.consumeClick())if(mc.player!=null&&mc.gui.screen()==null)send(CombatPayloads.Input.CE_FISTS,0);
 
         if (!enabled() || mc.player == null) { pressed=false;attackClick=false;guard=-1;autoNext=0;return; }
 
@@ -169,11 +164,11 @@ public final class CombatClient {
             boolean threat=pose!=null&&!pose.move().isEmpty()&&mc.level.getGameTime()-pose.started()>=5&&mc.level.getGameTime()-pose.started()<pose.startup()+pose.active();
             int choice=com.jjkcraft.core.combat.AutoCombatMath.action(enemy==null?4:mc.player.distanceTo(enemy),pose==null?-1:pose.guard(),threat);
             autoGuard=choice==2;
-            if(!autoGuard&&(ticks>=autoNext||clicked&&!pressed)){send(6,choice);autoNext=ticks+(choice==5?20:8);lastAttack=ticks;}
+            if(!autoGuard&&(ticks>=autoNext||clicked&&!pressed)){send(CombatPayloads.Input.ASSISTED_ATTACK,choice);autoNext=ticks+(choice==5?20:8);lastAttack=ticks;}
             pressed=true;
-        }else if(attack&&!pressed){send(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT&&(!mc.player.getMainHandItem().isEmpty()||!mc.player.getOffhandItem().isEmpty())?9:0,0);pressed=true;lastAttack=ticks;}
+        }else if(attack&&!pressed){send(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT&&(!mc.player.getMainHandItem().isEmpty()||!mc.player.getOffhandItem().isEmpty())?CombatPayloads.Input.LEFT_PUNCH:CombatPayloads.Input.RIGHT_PUNCH,0);pressed=true;lastAttack=ticks;}
 
-        if (!attack && pressed) { send(1, mc.options.keyDown.isDown() ? -1 : mc.options.keyLeft.isDown() || mc.options.keyRight.isDown() ? 1 : 0); pressed = false; }
+        if (!attack && pressed) { send(CombatPayloads.Input.RELEASE, mc.options.keyDown.isDown() ? -1 : mc.options.keyLeft.isDown() || mc.options.keyRight.isDown() ? 1 : 0); pressed = false; }
 
         boolean usableHand = mc.player.getMainHandItem().isEmpty() || !mc.player.getMainHandItem().has(net.minecraft.core.component.DataComponents.CONSUMABLE);
 
@@ -182,13 +177,13 @@ public final class CombatClient {
             ? mc.player.isShiftKeyDown() ? 0 : 1 : -1;
 
         if(JjkKeys.BLOCK.isDown())manualUntil=ticks+8;
-        if (height != guard || height >= 0 && ticks % 4 == 0) { send(auto&&!JjkKeys.BLOCK.isDown()?7:2, height); guard = height; }
+        if (height != guard || height >= 0 && ticks % 4 == 0) { send(auto&&!JjkKeys.BLOCK.isDown()?CombatPayloads.Input.ASSISTED_GUARD:CombatPayloads.Input.GUARD, height); guard = height; }
 
         int movement = (mc.options.keyUp.isDown() ? 1 : 0) | (mc.options.keyDown.isDown() ? 2 : 0) | (mc.options.keyLeft.isDown() ? 4 : 0) | (mc.options.keyRight.isDown() ? 8 : 0);
 
         lastMovement = movement;
 
-        while (JjkKeys.DASH.consumeClick()) if (inGame) send(3, mc.options.keyDown.isDown() ? -1 : mc.options.keyLeft.isDown() ? 1 : mc.options.keyRight.isDown() ? 2 : 0);
+        while (JjkKeys.DASH.consumeClick()) if (inGame) send(CombatPayloads.Input.DASH, mc.options.keyDown.isDown() ? -1 : mc.options.keyLeft.isDown() ? 1 : mc.options.keyRight.isDown() ? 2 : 0);
 
         while (JjkKeys.LOCK_ON.consumeClick()) if (inGame) {
 

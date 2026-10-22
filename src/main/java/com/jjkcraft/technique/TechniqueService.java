@@ -692,6 +692,14 @@ public final class TechniqueService {
 		}
 	}
 
+	/** Forgets expired mob cooldowns, so a long session does not keep an entry for every curse that ever cast. */
+	private static void pruneMobCooldowns(long now) {
+		MOB_COOLDOWNS.values().removeIf(cooldowns -> {
+			cooldowns.values().removeIf(readyAt -> readyAt <= now);
+			return cooldowns.isEmpty();
+		});
+	}
+
 	public static void resetCooldowns(ServerPlayer player) {
 		set(player, get(player).withoutCooldowns());
 	}
@@ -721,6 +729,10 @@ public final class TechniqueService {
 	// ---------------------------------------------------------------- ticking
 
 	private static void tick(MinecraftServer server) {
+		if (server.getTickCount() % 200 == 0) {
+			pruneMobCooldowns(server.overworld().getGameTime());
+		}
+
         for(Charge charge:List.copyOf(CHARGES.values())){
             var player=charge.player;
             if(!player.isAlive()||player.isRemoved()||player.isSpectator()||player.level()!=charge.level||charge.ticks>=400||check(player,charge.id,charge.definition)!=CastFailure.NONE||!Personalization.definition(player,charge.id,Techniques.get(player.registryAccess(),charge.id).orElse(charge.definition)).equals(charge.definition)){

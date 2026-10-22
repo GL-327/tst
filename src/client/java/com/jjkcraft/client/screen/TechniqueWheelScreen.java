@@ -48,7 +48,7 @@ public final class TechniqueWheelScreen extends Screen {
             com.jjkcraft.client.state.ClientTechniqueMenus.request(id,entry(hovered).orElse(com.jjkcraft.JjkCraft.id("infinity")),0);
         }
         addRenderableWidget(new InkButton(width-107,105,100,20,Component.literal("Domain workshop"),b->minecraft.gui.setScreen(new DomainWorkshopScreen(this))));
-        ceButton=addRenderableWidget(new InkButton(width-107,81,100,20,Component.literal("CE fists: "+(com.jjkcraft.client.combat.PunchImbuementClient.ce()?"ON":"OFF")),b->ClientPlayNetworking.send(new CombatPayloads.Input(8,0))));
+        ceButton=addRenderableWidget(new InkButton(width-107,81,100,20,Component.literal("CE fists: "+(com.jjkcraft.client.combat.PunchImbuementClient.ce()?"ON":"OFF")),b->ClientPlayNetworking.send(new CombatPayloads.Input(CombatPayloads.Input.CE_FISTS,0))));
     }
     private boolean limitless(){return family!=null&&family.getPath().equals("family/limitless");}
     @Override public void tick(){if(ceButton!=null)ceButton.setMessage(Component.literal("CE fists: "+(com.jjkcraft.client.combat.PunchImbuementClient.ce()?"ON":"OFF")));}

@@ -102,6 +102,7 @@ public final class JjkCraftClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.InfinityPayload.TYPE,(payload,ctx)->ClientTechniques.accept(payload));
 		ClientConfig.init();
+		com.jjkcraft.client.render.ResourcePresence.init();
         com.jjkcraft.client.design.UiDesign.init();
         com.jjkcraft.client.training.TrainingClient.init();
         EntityRendererRegistry.register(com.jjkcraft.entity.JjkEntities.TRAINING_DUMMY,com.jjkcraft.client.training.TrainingDummyRenderer::new);
@@ -188,6 +189,7 @@ public final class JjkCraftClient implements ClientModInitializer {
 		HudElementRegistry.attachElementBefore(VanillaHudElements.MISC_OVERLAYS, JjkCraft.id("overexertion_vignette"), OverexertionVignette::extract);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("energy_bar"), EnergyBarHud::extract);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("grade_badge"), GradeBadgeHud::extract);
+		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("combat"), com.jjkcraft.client.hud.CombatPanelHud::extract);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("technique_hotbar"), TechniqueHotbarHud::extract);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("sense_radar"), SenseRadarHud::extract);
 		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, JjkCraft.id("domain_meter"), DomainMeterHud::extract);
@@ -256,7 +258,7 @@ public final class JjkCraftClient implements ClientModInitializer {
 		ProfileScreen.addSection(new ProfileScreen.Section(Component.translatable("screen.jjkcraft.profile.techniques"),
 				() -> ClientTechniques.known().stream()
 						.map(id -> ClientTechniques.definition(id)
-								.map(def -> (Component) Component.translatable(def.name()).withColor(def.visuals().color()))
+								.map(def -> (Component) Component.literal(ClientTechniques.shortName(Component.translatable(def.name()).getString())).withColor(def.visuals().color()))
 								.orElse(Component.literal(id.toString())))
 						.toList()));
 		ProfileScreen.addSection(new ProfileScreen.Section(Component.translatable("screen.jjkcraft.profile.vows"),

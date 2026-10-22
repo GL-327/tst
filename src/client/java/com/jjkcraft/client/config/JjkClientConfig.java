@@ -11,7 +11,13 @@ public class JjkClientConfig implements ConfigData {
     @Comment("Assist attack choice and defensive reactions while holding attack. Manual hit/block inputs take priority.")
     public boolean autoCombat = true;
     public boolean creativeAutoCalamity = false;
+    // Migration markers: internal, so they stay out of the config screen.
+    @ConfigEntry.Gui.Excluded
     public int controlsRevision = 0;
+    /** Bumped when the default HUD layout changes; elements still at an old default move to the new one. */
+    @ConfigEntry.Gui.Excluded
+    public int hudRevision = 0;
+    @ConfigEntry.Gui.Excluded
     public boolean irisBindingsAdjusted = false;
 	@ConfigEntry.Gui.CollapsibleObject
 	public Hud hud = new Hud();
@@ -68,28 +74,32 @@ public class JjkClientConfig implements ConfigData {
 	}
 
 	public static class Hud {
+		// The status column (CE, grade, combat, then event panels) stacks down the top-left corner;
+		// panels lower in the column step below the ones above them when those are showing.
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement energyBar = new HudElement(Anchor.TOP_LEFT, 6, 6);
+		public HudElement energyBar = new HudElement(Anchor.TOP_LEFT, 4, 4);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement techniqueHotbar = new HudElement(Anchor.CENTER_RIGHT, -6, 0);
+		public HudElement techniqueHotbar = new HudElement(Anchor.BOTTOM_RIGHT, -4, -4);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement combatPanel = new HudElement(Anchor.BOTTOM_LEFT, 6, -6);
+		public HudElement combatPanel = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement chargeMeter = new HudElement(Anchor.CENTER_RIGHT, -6, 39);
+		public HudElement chargeMeter = new HudElement(Anchor.CENTER, 0, 0);
         @ConfigEntry.Gui.CollapsibleObject
-        public HudElement ritualTracker = new HudElement(Anchor.TOP_LEFT,6,90);
+        public HudElement ritualTracker = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement gradeBadge = new HudElement(Anchor.TOP_LEFT, 6, 30);
+		public HudElement gradeBadge = new HudElement(Anchor.TOP_LEFT, 4, 28);
 		@ConfigEntry.Gui.CollapsibleObject
 		public HudElement domainMeter = new HudElement(Anchor.TOP_CENTER, 0, 34);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement senseRadar = new HudElement(Anchor.BOTTOM_RIGHT, -6, -6);
+		public HudElement senseRadar = new HudElement(Anchor.CENTER_RIGHT, -4, 0);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement cullingPanel = new HudElement(Anchor.TOP_LEFT, 6, 66);
+		public HudElement cullingPanel = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement mulMeter = new HudElement(Anchor.TOP_LEFT, 6, 50);
+		public HudElement mulMeter = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		@ConfigEntry.Gui.CollapsibleObject
-		public HudElement missionTracker = new HudElement(Anchor.TOP_LEFT, 6, 66);
+		public HudElement missionTracker = new HudElement(Anchor.TOP_LEFT, 4, 46);
+		@ConfigEntry.Gui.CollapsibleObject
+		public HudElement resonance = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		@ConfigEntry.Gui.CollapsibleObject
 		public HudElement dialogue = new HudElement(Anchor.BOTTOM_CENTER, 0, -62);
 		@Comment("Show numbers (for example 87 / 100) on bars.")
@@ -139,6 +149,33 @@ public class JjkClientConfig implements ConfigData {
 		public int volumePercent = 100;
 	}
 
+	/**
+	 * Revision 1 gathered the HUD into a top-left status column with the selected power beside the
+	 * hotbar and the charge ring on the crosshair. Elements a player moved keep their position.
+	 */
+	private void migrateHud() {
+		Hud fresh = new Hud();
+		move(hud.energyBar, Anchor.TOP_LEFT, 6, 6, fresh.energyBar);
+		move(hud.gradeBadge, Anchor.TOP_LEFT, 6, 30, fresh.gradeBadge);
+		move(hud.techniqueHotbar, Anchor.CENTER_RIGHT, -6, 0, fresh.techniqueHotbar);
+		move(hud.combatPanel, Anchor.BOTTOM_LEFT, 6, -6, fresh.combatPanel);
+		move(hud.chargeMeter, Anchor.CENTER_RIGHT, -6, 39, fresh.chargeMeter);
+		move(hud.ritualTracker, Anchor.TOP_LEFT, 6, 90, fresh.ritualTracker);
+		move(hud.senseRadar, Anchor.BOTTOM_RIGHT, -6, -6, fresh.senseRadar);
+		move(hud.cullingPanel, Anchor.TOP_LEFT, 6, 66, fresh.cullingPanel);
+		move(hud.mulMeter, Anchor.TOP_LEFT, 6, 50, fresh.mulMeter);
+		move(hud.missionTracker, Anchor.TOP_LEFT, 6, 66, fresh.missionTracker);
+		hudRevision = 1;
+	}
+
+	private static void move(HudElement element, Anchor oldAnchor, int oldX, int oldY, HudElement target) {
+		if (element != null && element.anchor == oldAnchor && element.offsetX == oldX && element.offsetY == oldY) {
+			element.anchor = target.anchor;
+			element.offsetX = target.offsetX;
+			element.offsetY = target.offsetY;
+		}
+	}
+
 	@Override
 	public void validatePostLoad() {
 		if (hud == null) {
@@ -158,22 +195,26 @@ public class JjkClientConfig implements ConfigData {
 		}
 
 		if (hud.mulMeter == null) {
-			hud.mulMeter = new HudElement(Anchor.TOP_LEFT, 6, 50);
+			hud.mulMeter = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		}
 
 		if (hud.missionTracker == null) {
-			hud.missionTracker = new HudElement(Anchor.TOP_LEFT, 6, 66);
+			hud.missionTracker = new HudElement(Anchor.TOP_LEFT, 4, 46);
+		}
+
+		if (hud.resonance == null) {
+			hud.resonance = new HudElement(Anchor.TOP_LEFT, 4, 46);
 		}
 
 		if (hud.dialogue == null) {
 			hud.dialogue = new HudElement(Anchor.BOTTOM_CENTER, 0, -62);
 		}
-		if(hud.combatPanel==null)hud.combatPanel=new HudElement(Anchor.BOTTOM_LEFT,6,-6);
-		if(hud.chargeMeter==null)hud.chargeMeter=new HudElement(Anchor.CENTER_RIGHT,-6,39);
-		if(hud.ritualTracker==null)hud.ritualTracker=new HudElement(Anchor.TOP_LEFT,6,90);
+		if(hud.combatPanel==null)hud.combatPanel=new HudElement(Anchor.TOP_LEFT,4,46);
+		if(hud.chargeMeter==null)hud.chargeMeter=new HudElement(Anchor.CENTER,0,0);
+		if(hud.ritualTracker==null)hud.ritualTracker=new HudElement(Anchor.TOP_LEFT,4,46);
 
 		for (HudElement element : new HudElement[] {hud.energyBar, hud.techniqueHotbar, hud.gradeBadge, hud.domainMeter, hud.senseRadar, hud.cullingPanel,
-				hud.mulMeter, hud.missionTracker, hud.dialogue, hud.combatPanel, hud.chargeMeter, hud.ritualTracker}) {
+				hud.mulMeter, hud.missionTracker, hud.dialogue, hud.combatPanel, hud.chargeMeter, hud.ritualTracker, hud.resonance}) {
 			if (element != null) {
 				element.scalePercent = Math.clamp(element.scalePercent, 50, 300);
 				element.opacityPercent = Math.clamp(element.opacityPercent, 10, 100);
@@ -181,6 +222,10 @@ public class JjkClientConfig implements ConfigData {
 					element.anchor = Anchor.TOP_LEFT;
 				}
 			}
+		}
+
+		if (hudRevision < 1) {
+			migrateHud();
 		}
 
 		accessibility.uiScalePercent = Math.clamp(accessibility.uiScalePercent, 75, 200);

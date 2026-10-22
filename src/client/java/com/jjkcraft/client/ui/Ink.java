@@ -73,6 +73,29 @@ public final class Ink {
 		return Component.literal(cut.stripTrailing() + "…").withStyle(text.getStyle());
 	}
 
+	/** {@code text} broken into lines no wider than {@code width} pixels at word boundaries, keeping its style. */
+	public static java.util.List<Component> wrap(Component text, int width) {
+		java.util.List<Component> lines = new java.util.ArrayList<>();
+		StringBuilder line = new StringBuilder();
+		for (String word : text.getString().split(" ")) {
+			String next = line.isEmpty() ? word : line + " " + word;
+			if (!line.isEmpty() && font().width(next) > width) {
+				lines.add(fit(Component.literal(line.toString()).withStyle(text.getStyle()), width));
+				line.setLength(0);
+				line.append(word);
+			} else {
+				line.setLength(0);
+				line.append(next);
+			}
+		}
+
+		if (!line.isEmpty()) {
+			lines.add(fit(Component.literal(line.toString()).withStyle(text.getStyle()), width));
+		}
+
+		return lines;
+	}
+
 	public static void centered(GuiGraphicsExtractor g, Component text, int cx, int y, int color, float alpha) {
 		text(g,text,cx-font().width(text)/2,y,color,alpha);
 	}

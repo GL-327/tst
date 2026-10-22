@@ -1,5 +1,8 @@
 package com.jjkcraft.client.render.curse;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.geckolib.constant.dataticket.DataTicket;
 import com.geckolib.model.GeoModel;
 import com.geckolib.renderer.base.GeoRenderState;
@@ -9,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
+import com.jjkcraft.client.render.ResourcePresence;
 import com.jjkcraft.curse.CurseDefinition;
 import com.jjkcraft.curse.CurseEntity;
 
@@ -21,6 +25,12 @@ public final class CurseModel extends GeoModel<CurseEntity> {
 	public static final DataTicket<Identifier> GEO = DataTicket.create("jjkcraft_curse_geo", Identifier.class);
 	public static final DataTicket<Identifier> TEXTURE = DataTicket.create("jjkcraft_curse_texture", Identifier.class);
 	private static final Identifier MISSING = Identifier.withDefaultNamespace("missingno");
+	/** Beyond this many blocks a curse uses its low-detail model, when its art provides one. */
+	private static final int LOD_DISTANCE = 32;
+	/** Per model: the LOD model id and the file that must exist for it. */
+	private static final Map<Identifier, Identifier[]> LODS = new ConcurrentHashMap<>();
+	/** Per texture: the wounded and critical variants. */
+	private static final Map<Identifier, Identifier[]> DAMAGED = new ConcurrentHashMap<>();
 
 	@Override
 	public Identifier getModelResource(GeoRenderState renderState) {
@@ -56,9 +66,13 @@ public final class CurseModel extends GeoModel<CurseEntity> {
 		}
 
 		var player = net.minecraft.client.Minecraft.getInstance().player;
-		Identifier lod = model.geo().withPath(model.geo().getPath() + "_lod");
-		boolean available = net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(lod.withPath("geckolib/models/" + lod.getPath() + ".geo.json")).isPresent();
-		return available && player != null && curse.distanceToSqr(player) > 32 * 32 ? lod : model.geo();
+		if (player == null || curse.distanceToSqr(player) <= LOD_DISTANCE * LOD_DISTANCE) {
+			return model.geo();
+		}
+
+		Identifier[] lod = LODS.computeIfAbsent(model.geo(), geo -> new Identifier[] {
+				geo.withPath(geo.getPath() + "_lod"), geo.withPath("geckolib/models/" + geo.getPath() + "_lod.geo.json")});
+		return ResourcePresence.exists(lod[1]) ? lod[0] : model.geo();
 	}
 
 	public static Identifier texture(CurseEntity curse) {
@@ -78,9 +92,15 @@ public final class CurseModel extends GeoModel<CurseEntity> {
 		}
 
 		float health = curse.getHealth() / curse.getMaxHealth();
-		String suffix = health < 0.3f ? "_critical.png" : health < 0.65f ? "_wounded.png" : ".png";
-		Identifier damaged = model.texture().withPath(model.texture().getPath().replace(".png", suffix));
-		return net.minecraft.client.Minecraft.getInstance().getResourceManager().getResource(damaged).isPresent() ? damaged : model.texture();
+		if (health >= 0.65f) {
+			return model.texture();
+		}
+
+		Identifier[] damaged = DAMAGED.computeIfAbsent(model.texture(), texture -> new Identifier[] {
+				texture.withPath(texture.getPath().replace(".png", "_wounded.png")),
+				texture.withPath(texture.getPath().replace(".png", "_critical.png"))});
+		Identifier variant = health < 0.3f ? damaged[1] : damaged[0];
+		return ResourcePresence.exists(variant) ? variant : model.texture();
 	}
 
 	private static Identifier fallback(CurseEntity curse) {

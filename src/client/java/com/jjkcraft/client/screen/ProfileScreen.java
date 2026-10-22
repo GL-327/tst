@@ -76,9 +76,10 @@ public final class ProfileScreen extends JjkScreen {
 		double regen = ClientEnergy.regenerationPerSecond();
 		int line = y + 12;
 		line = stat(g, sx, line, "screen.jjkcraft.profile.capacity", ClientEnergy.uncapped()?"∞":fmt(max), regen > 0 ? "+" + fmt(regen) + "/s" : "-");
-		line = stat(g, sx, line, "growth.jjkcraft.output", fmt(p.ceSpentTotal()) + " CE", points(p.growth().output()));
+		// Output is measured as CE spent and Control as the share of casts that landed.
+		line = stat(g, sx, line, "growth.jjkcraft.output", fmt(p.ceSpentTotal()) + " CE spent", points(p.growth().output()));
 		line = stat(g, sx, line, "growth.jjkcraft.control",
-				p.castsAttempted() == 0 ? "-" : Math.round(p.controlRatio() * 100) + "%", points(p.growth().control()));
+				p.castsAttempted() == 0 ? "no casts yet" : Math.round(p.controlRatio() * 100) + "% landed", points(p.growth().control()));
 		line = stat(g, sx, line, "growth.jjkcraft.efficiency",
 				p.growth().efficiency() == 0 ? "-" : "-" + fmt(100 - ProgressionMath.cooldownMultiplier(p.growth().efficiency()) * 100) + "% cd",
 				points(p.growth().efficiency()));
@@ -103,8 +104,18 @@ public final class ProfileScreen extends JjkScreen {
 			Section section = sections.get(i);
 			int cx = x + 8 + i * colW;
 			g.fill(cx, stripY, cx + colW - 6, stripY + stripH, 0x50000000);
-			Ink.text(g, Ink.fit(section.title(), colW - 12), cx + 3, stripY + 3, Palette.gold(), 1f);
-			List<Component> lines = section.lines().get();
+			// Titles shrink a little before they would be cut; entries wrap rather than truncate.
+			float titleScale = Math.clamp((colW - 12) / (float) Math.max(1, Ink.font().width(section.title())), 0.8f, 1f);
+			g.pose().pushMatrix();
+			g.pose().translate(cx + 3, stripY + 3);
+			g.pose().scale(titleScale, titleScale);
+			Ink.text(g, Ink.fit(section.title(), (int) ((colW - 12) / titleScale)), 0, 0, Palette.gold(), 1f);
+			g.pose().popMatrix();
+			List<Component> lines = new ArrayList<>();
+			for (Component entry : section.lines().get()) {
+				lines.addAll(Ink.wrap(entry, (int) ((colW - 12) / 0.85f)));
+			}
+
 			int maxLines = Math.max(0, (stripH - 16) / 10);
 			for (int l = 0; l < Math.min(lines.size(), maxLines); l++) {
 				Component text = lines.get(l);

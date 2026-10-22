@@ -114,11 +114,11 @@ public final class CursedCombat {
         long now = p.level().getGameTime();
         if (com.jjkcraft.vessel.CursedVessels.controlled(p)||!p.isAlive() || p.isSpectator() || !INPUT.tryAcquire(p.getUUID(), now)) return;
         Actor state = actor(p);
-        if(input.action()==8){PunchImbuement.toggleCe(p);return;}
-        if (input.action() == 4) { state.enabled = !state.enabled; state.guardHeight = -1; state.pressed = -1; sync(p); return; }
+        if(input.action()==CombatPayloads.Input.CE_FISTS){PunchImbuement.toggleCe(p);return;}
+        if (input.action()==CombatPayloads.Input.TOGGLE) { state.enabled = !state.enabled; state.guardHeight = -1; state.pressed = -1; sync(p); return; }
         if (!enabled(p)) return;
-        if(input.action()==6){autoAttack(p,input.data());return;}
-        if(input.action()==7){
+        if(input.action()==CombatPayloads.Input.ASSISTED_ATTACK){autoAttack(p,input.data());return;}
+        if(input.action()==CombatPayloads.Input.ASSISTED_GUARD){
             int height=Math.clamp(input.data(),-1,1);
             if(height<0){state.autoGuardChoice=-1;state.guardHeight=-1;return;}
             if(state.autoGuardChoice<0)state.autoGuardChoice=com.jjkcraft.core.combat.AutoCombatMath.commit(state.autoDefences++)?1:0;
@@ -126,17 +126,17 @@ public final class CursedCombat {
             return;
         }
         boolean escaped=false;
-        if((input.action()==0||input.action()==5||input.action()==9)&&PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
-        if((input.action()==0||input.action()==9)&&state.stunned<=now&&state.knockedUntil<=now){
-            int hand=input.action()==9?-1:1;long last=hand<0?state.leftTap:state.lightTap;
+        if((input.action()==CombatPayloads.Input.RIGHT_PUNCH||input.action()==CombatPayloads.Input.HEAVY||input.action()==CombatPayloads.Input.LEFT_PUNCH)&&PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
+        if((input.action()==CombatPayloads.Input.RIGHT_PUNCH||input.action()==CombatPayloads.Input.LEFT_PUNCH)&&state.stunned<=now&&state.knockedUntil<=now){
+            int hand=input.action()==CombatPayloads.Input.LEFT_PUNCH?-1:1;long last=hand<0?state.leftTap:state.lightTap;
             if(now-last<=6){state.special="uppercut";state.specialHand=hand;state.specialAt=now;state.specialUntil=now+16;state.buffered=false;if(hand<0)state.leftTap=-100;else state.lightTap=-100;}
             else {state.buffered=true;state.bufferHand=hand;state.bufferUntil=now+12;if(hand<0)state.leftTap=now;else state.lightTap=now;basic(p,state,now);}
         }
-        if(input.action()==5&&state.stunned<=now&&state.knockedUntil<=now){
+        if(input.action()==CombatPayloads.Input.HEAVY&&state.stunned<=now&&state.knockedUntil<=now){
             boolean twice=now-state.heavyTap<=6;state.specialHand=(!p.getMainHandItem().isEmpty()||!p.getOffhandItem().isEmpty())?(p.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT?-1:1):state.nextHand;state.special=twice?"sweep":"heavy";state.specialAt=twice?now:now+6;state.specialUntil=Math.max(now,state.ready)+14;state.heavyTap=twice?-100:now;state.buffered=false;
         }
-        if(input.action()==1)state.pressed=-1;
-        if (input.action() == 2) {
+        if(input.action()==CombatPayloads.Input.RELEASE)state.pressed=-1;
+        if (input.action()==CombatPayloads.Input.GUARD) {
             state.autoGuardChoice=-1;
             int height = PersonalPacts.forbids(p,TechniquePact.GUARD)?-1:Math.clamp(input.data(), -1, 2);
             if (height >= 0 && state.stunned <= now && state.move == null && state.guard > 0) {
@@ -144,14 +144,14 @@ public final class CursedCombat {
                 state.guardHeight = height; state.guardSeen = now;
             } else state.guardHeight = -1;
         }
-        if(input.action()==3&&PersonalPacts.forbids(p,TechniquePact.DASH))return;
-        if(input.action()==3&&(state.stunned>now||state.knockedUntil>now)&&state.escapeReady<=now){
+        if(input.action()==CombatPayloads.Input.DASH&&PersonalPacts.forbids(p,TechniquePact.DASH))return;
+        if(input.action()==CombatPayloads.Input.DASH&&(state.stunned>now||state.knockedUntil>now)&&state.escapeReady<=now){
             if(!Progression.get(p).heavenlyRestricted()&&!CursedEnergy.trySpend(p,33))return;
             state.stunned=0;state.knockedUntil=0;state.move=null;state.ready=now;state.dodge=now+6;state.escapeReady=now+200;state.dashReady=now;
             p.removeEffect(com.jjkcraft.effect.JjkEffects.STUNNED);state.buffered=false;
             escaped=true;
         }
-        if (input.action() == 3 && state.dashReady <= now && state.stunned <= now && state.move == null) {
+        if (input.action()==CombatPayloads.Input.DASH && state.dashReady <= now && state.stunned <= now && state.move == null) {
             boolean heavenly = Progression.get(p).heavenlyRestricted();
             if (!heavenly && !escaped && !CursedEnergy.trySpend(p, state.guardHeight >= 0 ? 4 : 8)) return;
             Vec3 look = p.getLookAngle().multiply(1, 0, 1).normalize();

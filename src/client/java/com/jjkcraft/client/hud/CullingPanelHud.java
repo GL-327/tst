@@ -17,7 +17,7 @@ import com.jjkcraft.network.payload.CullingPayloads;
  * and how many rules are in force. Shown only while the game runs and concerns you.
  */
 public final class CullingPanelHud {
-	public static final int WIDTH = 140;
+	public static final int WIDTH = HudStyle.COLUMN_WIDTH;
 	public static final int HEIGHT = 38;
 
 	private CullingPanelHud() {
@@ -34,7 +34,8 @@ public final class CullingPanelHud {
 		}
 
 		float alpha = cfg.opacity();
-		HudLayout.push(g, cfg, WIDTH, HEIGHT);
+		var hud = ClientConfig.get().hud;
+		HudLayout.pushBelow(g, cfg, WIDTH, HEIGHT, hud.energyBar, hud.gradeBadge, hud.combatPanel);
 		Ink.panel(g, 0, 0, WIDTH, HEIGHT, ClientCulling.ACCENT, alpha);
 		Ink.text(g, Component.translatable("hud.jjkcraft.culling.title", view.day() + 1), 5, 4, ClientCulling.ACCENT, alpha);
 		if (me.participant()) {

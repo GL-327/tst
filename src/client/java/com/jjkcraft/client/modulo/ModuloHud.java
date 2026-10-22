@@ -46,7 +46,7 @@ public final class ModuloHud {
 		}
 
 		float alpha = cfg.opacity();
-		HudLayout.pushBelow(g, cfg, MUL_W, MUL_H, ClientConfig.get().hud.gradeBadge);
+		HudLayout.pushBelow(g, cfg, MUL_W, MUL_H, ClientConfig.get().hud.energyBar, ClientConfig.get().hud.gradeBadge, ClientConfig.get().hud.combatPanel, ClientConfig.get().hud.cullingPanel);
 		Ink.flatPanel(g, 0, 0, MUL_W, MUL_H, alpha * 0.85f);
 		Ink.text(g, Component.translatable("hud.jjkcraft.modulo.mul"), 3, 2, ClientModulo.ACCENT, alpha);
 		int x0 = 24;
@@ -77,7 +77,7 @@ public final class ModuloHud {
 		String where = where(mc, view);
 		int height = 16 + lines.size() * 10 + (where.isEmpty() ? 0 : 10);
 		var hud = ClientConfig.get().hud;
-		HudLayout.pushBelow(g, cfg, TRACKER_W, height, hud.gradeBadge, hud.mulMeter, hud.cullingPanel);
+		HudLayout.pushBelow(g, cfg, TRACKER_W, height, hud.energyBar, hud.gradeBadge, hud.combatPanel, hud.cullingPanel, hud.mulMeter);
 		Ink.panel(g, 0, 0, TRACKER_W, height, ClientModulo.ACCENT, alpha);
 		Component title = view.missionTitle().isEmpty() ? Component.translatable("itemGroup.jjkcraft.modulo")
 				: Component.translatable(view.missionTitle());

@@ -84,6 +84,12 @@ public final class ClientTechniques {
 		return (System.currentTimeMillis() - feedbackAt) / 1500f;
 	}
 
+	/** "Family: Move" names without the family, for lists where the family is already clear. */
+	public static String shortName(String name) {
+		int colon = name.indexOf(": ");
+		return colon > 0 && colon + 2 < name.length() ? name.substring(colon + 2) : name;
+	}
+
 	public static Optional<TechniqueDefinition> definition(Identifier id) {
 		if(com.jjkcraft.technique.TechniqueBindings.family(id))return ClientProgress.registries().flatMap(r->com.jjkcraft.technique.TechniqueBindings.definition(r,id).flatMap(f->f.techniques().stream().filter(state.known()::contains).map(move->Techniques.get(r,move)).flatMap(Optional::stream).findFirst().map(d->new TechniqueDefinition(f.name(),"screen.jjkcraft.family_selector.desc",d.category(),d.grade(),d.cast(),d.behavior(),d.visuals(),d.icon(),d.vowModifiers(),0,d.masteryUses()))));
 		return ClientProgress.registries().flatMap(r -> Techniques.get(r, id)).map(ClientPersonalization.get(id)::apply);

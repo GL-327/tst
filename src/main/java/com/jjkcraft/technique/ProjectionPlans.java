@@ -39,7 +39,7 @@ public final class ProjectionPlans {
             Vec3 aim=enemy==null?r.ctx.look():enemy.getEyePosition().subtract(stage.destination.add(0,p.getEyeHeight(),0)).normalize();
             float yaw=enemy==null?p.getYRot():(float)Math.toDegrees(Math.atan2(-aim.x,aim.z)),pitch=enemy==null?p.getXRot():(float)-Math.toDegrees(Math.asin(aim.y));
             p.teleportTo(r.ctx.level(),stage.destination.x,stage.destination.y,stage.destination.z,Set.of(),yaw,pitch,true);r.ctx.fx(TechniqueFxPayload.Phase.CAST,from.add(0,1,0),stage.destination.subtract(from).normalize(),List.of());
-            int action=stage.action;if(action==6&&p instanceof ServerPlayer sp)CursedCombat.input(sp,new CombatPayloads.Input(2,1));
+            int action=stage.action;if(action==6&&p instanceof ServerPlayer sp)CursedCombat.input(sp,new CombatPayloads.Input(CombatPayloads.Input.GUARD,1));
             else if(action>0){String move=switch(action){case 2->"hook";case 3->"uppercut";case 4->"sweep";case 5->"heavy";default->"jab";};if(CursedCombat.start(p,JjkCraft.id(move),aim)&&enemy!=null&&enemy.distanceTo(p)<2.5)enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(JjkEffects.FROZEN_FRAME,Math.min(6,r.frameTicks),0));}
             r.next=now+r.frameTicks;
         }});

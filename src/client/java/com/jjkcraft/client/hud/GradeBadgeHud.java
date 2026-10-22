@@ -19,12 +19,13 @@ import com.jjkcraft.grade.GradeDefinition;
 import com.jjkcraft.sorcerer.SorcererProgress;
 
 /**
- * Grade badge: a colored diamond, the grade name, a thin bar toward the next grade, and status
- * tags (Heavenly Restriction, and indicators other systems add such as Black Flash).
+ * Grade badge under the CE gauge: a colored diamond, the grade name, a thin line of progress
+ * toward the next grade, and status tags (Heavenly Restriction, and indicators other systems add
+ * such as Black Flash).
  */
 public final class GradeBadgeHud {
-	public static final int WIDTH = 112;
-	public static final int HEIGHT = 18;
+	public static final int WIDTH = HudStyle.COLUMN_WIDTH;
+	public static final int HEIGHT = 16;
 
 	/** A small tag shown on the badge while its condition holds. */
 	public record Indicator(Component label, int color, BooleanSupplier active) {
@@ -52,23 +53,6 @@ public final class GradeBadgeHud {
 			return;
 		}
 
-		float alpha = cfg.opacity();
-		HudLayout.push(g, cfg, WIDTH, HEIGHT);
-		Ink.panel(g, 0, 0, WIDTH, HEIGHT, grade.color(), alpha);
-		Ink.diamond(g, 9, 9, 5, ARGB.multiplyAlpha(grade.color(), alpha));
-		Ink.diamond(g, 9, 9, 2, ARGB.multiplyAlpha(0xFF0B0B10, alpha));
-		Ink.text(g, Component.translatable(grade.name()), 18, 3, grade.color(), alpha);
-
-		ClientProgress.nextGrade().ifPresent(next -> {
-			int required = next.definition().xpRequired();
-			if (required > 0) {
-				double fraction = Math.min(1, (double) p.gradeXp() / required);
-				g.fill(18, 13, 18 + 60, 14, ARGB.multiplyAlpha(0xFF2A2633, alpha));
-				g.fill(18, 13, 18 + (int) (60 * fraction), 14, ARGB.multiplyAlpha(next.definition().color(), alpha));
-			}
-		});
-
-		int tagX = WIDTH - 4;
 		List<Indicator> tags = new ArrayList<>();
 		if (p.heavenlyRestricted()) {
 			tags.add(new Indicator(Component.translatable("hud.jjkcraft.heavenly_short"), Palette.gold(), () -> true));
@@ -80,29 +64,43 @@ public final class GradeBadgeHud {
 			}
 		}
 
-		// Tags sit right-aligned beside the grade name; when they would run into it, they move to
-		// a strip under the badge instead.
+		// Tags sit right-aligned beside the grade name; when they would run into it, they move to a
+		// strip under the badge instead.
 		int tagsWidth = 0;
 		for (Indicator tag : tags) {
 			tagsWidth += Ink.font().width(tag.label()) + 4;
 		}
 
-		int nameEnd = 18 + Ink.font().width(Component.translatable(grade.name())) + 4;
-		int tagY = 4;
-		if (!tags.isEmpty() && tagX - tagsWidth < nameEnd) {
-			tagY = HEIGHT + 4;
+		Component name = Ink.fit(Component.translatable(grade.name()), WIDTH - 22);
+		int nameEnd = 17 + Ink.font().width(name) + 4;
+		boolean strip = !tags.isEmpty() && WIDTH - 4 - tagsWidth < nameEnd;
+		float alpha = cfg.opacity();
+		HudLayout.push(g, cfg, WIDTH, strip ? HEIGHT + 13 : HEIGHT);
+		Ink.panel(g, 0, 0, WIDTH, HEIGHT, grade.color(), alpha);
+		Ink.diamond(g, 9, 7, 4, ARGB.multiplyAlpha(grade.color(), alpha));
+		Ink.diamond(g, 9, 7, 1, ARGB.multiplyAlpha(0xFF0B0B10, alpha));
+		Ink.text(g, name, 17, 3, grade.color(), alpha);
+
+		ClientProgress.nextGrade().ifPresent(next -> {
+			int required = next.definition().xpRequired();
+			if (required > 0) {
+				double fraction = Math.min(1, (double) p.gradeXp() / required);
+				HudStyle.gauge(g, 17, HEIGHT - 3, WIDTH - 21, 1, fraction, next.definition().color(), alpha);
+			}
+		});
+
+		int tagX = WIDTH - 4;
+		int tagY = 3;
+		if (strip) {
+			tagY = HEIGHT + 3;
 			tagX = Math.min(WIDTH, tagsWidth + 4);
 			Ink.panel(g, 0, HEIGHT + 1, tagX, 12, 0xFF2A2633, alpha);
 			tagX -= 4;
 		}
 
 		for (Indicator tag : tags) {
-			int w = Ink.font().width(tag.label());
-			tagX -= w;
-			g.pose().pushMatrix();
-			g.pose().translate(tagX, tagY);
-			Ink.text(g, tag.label(), 0, 0, tag.color(), alpha);
-			g.pose().popMatrix();
+			tagX -= Ink.font().width(tag.label());
+			Ink.text(g, tag.label(), tagX, tagY, tag.color(), alpha);
 			tagX -= 4;
 		}
 

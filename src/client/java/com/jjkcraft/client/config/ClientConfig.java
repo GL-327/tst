@@ -15,6 +15,8 @@ public final class ClientConfig {
 	public static void init() {
 		if (holder == null) {
 			holder = AutoConfig.register(JjkClientConfig.class, JanksonConfigSerializer::new);
+			// validatePostLoad migrates old layouts in memory; write the result once.
+			save();
 		}
 	}
 
