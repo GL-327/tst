@@ -40,7 +40,8 @@ public final class JjkKeys {
     public static final KeyMapping CE_IMBUE = key("ce_imbue",InputConstants.KEY_O);
     public static final KeyMapping BANK = key("bank",InputConstants.KEY_BACKSLASH);
     public static final KeyMapping LIGHT = key("light_hit",InputConstants.KEY_U);
-    public static final KeyMapping HEAVY = key("heavy_hit",InputConstants.KEY_I);
+    public static final KeyMapping LEFT_PUNCH = key("left_punch",InputConstants.KEY_I);
+    public static final KeyMapping HEAVY = key("heavy_hit",InputConstants.KEY_SEMICOLON);
     public static final KeyMapping BLOCK = key("block",InputConstants.KEY_RBRACKET);
 	public static final KeyMapping[] SKILLS={key("skill_1",InputConstants.KEY_NUMPAD1),key("skill_2",InputConstants.KEY_NUMPAD2),key("skill_3",InputConstants.KEY_NUMPAD3),key("skill_4",InputConstants.KEY_NUMPAD4)};
 	private static final boolean[] skillDown=new boolean[4];

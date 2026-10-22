@@ -52,6 +52,7 @@ import com.jjkcraft.modulo.mission.Missions;
 public final class SmokeClientGameTest implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext context) {
+        if("vesselCombat".equals(System.getProperty("jjkcraft.clientTestFocus"))){VesselCombatClientChecks.run(context);return;}
         if("studioArt".equals(System.getProperty("jjkcraft.clientTestFocus"))){StudioClientChecks.run(context);return;}
         if("studio".equals(System.getProperty("jjkcraft.clientTestFocus"))){StudioClientChecks.run(context);MasteryVfxChecks.run(context);return;}
 		if (!JjkCraft.isInitialized() || !JjkCraftClient.isInitialized()) {

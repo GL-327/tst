@@ -573,7 +573,7 @@ public final class TechniqueService {
 			}
 
 			int rank = Grades.rank(player.registryAccess(), progress.grade());
-			if (rank < Techniques.gradeRank(player.registryAccess(), definition)) {
+			if (rank < Techniques.gradeRank(player.registryAccess(), definition)&&!com.jjkcraft.vessel.CursedVessels.acting(player)) {
 				return CastFailure.GRADE_TOO_LOW;
 			}
 		}
@@ -743,9 +743,8 @@ public final class TechniqueService {
 
 				if (pending.ctx().level().getGameTime() >= pending.executeAt()) {
 					it.remove();
-					if (check(caster,pending.id(),pending.definition())==CastFailure.NONE) {
-						execute(pending.ctx(), pending.id(), pending.definition(), pending.costPaid(), pending.slot());
-					}
+                    Runnable resolve=()->{if(check(caster,pending.id(),pending.definition())==CastFailure.NONE)execute(pending.ctx(),pending.id(),pending.definition(),pending.costPaid(),pending.slot());};
+                    if(caster instanceof ServerPlayer p)com.jjkcraft.vessel.CursedVessels.resolveOwnedCast(p,resolve);else resolve.run();
 				}
 			}
 		}

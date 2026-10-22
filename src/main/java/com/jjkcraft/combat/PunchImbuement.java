@@ -43,8 +43,9 @@ public final class PunchImbuement {
     public static void vanillaContact(LivingEntity target,net.minecraft.world.damagesource.DamageSource source){
         if(source.getEntity() instanceof ServerPlayer p&&source.is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK)&&!CursedCombat.enabled(p))contact(p,target);
     }
-    public static void contact(LivingEntity attacker,LivingEntity target){
-        if(!(attacker instanceof ServerPlayer p)||!attacker.getMainHandItem().isEmpty()||!target.isAlive()||!p.isAlive()||p.isSpectator()||RESOLVING.contains(p.getUUID())
+    public static void contact(LivingEntity attacker,LivingEntity target){contact(attacker,target,net.minecraft.world.InteractionHand.MAIN_HAND);}
+    public static void contact(LivingEntity attacker,LivingEntity target,net.minecraft.world.InteractionHand hand){
+        if(!(attacker instanceof ServerPlayer p)||!attacker.getItemInHand(hand).isEmpty()||!target.isAlive()||!p.isAlive()||p.isSpectator()||RESOLVING.contains(p.getUUID())
             ||PersonalPacts.forbids(p,TechniquePact.COMBAT)||com.jjkcraft.sorcerer.Progression.get(p).heavenlyRestricted())return;
         RESOLVING.add(p.getUUID());
         try {

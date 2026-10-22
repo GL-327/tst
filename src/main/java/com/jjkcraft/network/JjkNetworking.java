@@ -36,6 +36,10 @@ public final class JjkNetworking {
 	}
 
 	public static void init() {
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.VesselPayload.TYPE,com.jjkcraft.network.payload.VesselPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.DomainProfilePayload.TYPE,com.jjkcraft.network.payload.DomainProfilePayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.DomainProfilePayload.TYPE,com.jjkcraft.network.payload.DomainProfilePayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.CombatPayloads.Endurance.TYPE,com.jjkcraft.network.payload.CombatPayloads.Endurance.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ReverseStudyPayload.TYPE,com.jjkcraft.network.payload.ReverseStudyPayload.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.InfinityPayload.TYPE,com.jjkcraft.network.payload.InfinityPayload.CODEC);
         PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.VariantCastPayload.TYPE,com.jjkcraft.network.payload.VariantCastPayload.CODEC);

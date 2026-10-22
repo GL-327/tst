@@ -112,6 +112,7 @@ public final class DomainService {
 	}
 
 	public static void init() {
+        DomainCustomization.init();
 		net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AFTER_DAMAGE.register((entity,source,base,taken,blocked)->{
 			var d=BY_CASTER.get(entity.getUUID());if(d==null||taken<=0)return;
 			double damage=((Number)d.memory().getOrDefault("caster_damage",0.0)).doubleValue()+taken;d.memory().put("caster_damage",damage);
@@ -119,8 +120,8 @@ public final class DomainService {
 		});
 		com.jjkcraft.damage.DamageModifiers.add((level,target,source,amount)->{
             if(!(source.getEntity() instanceof LivingEntity attacker)||source.is(com.jjkcraft.damage.JjkDamageTypes.SURE_HIT))return amount;
-			for(var d:BY_CASTER.values())if(d.level()==level&&d.hasBarrier()&&d.phase()==ActiveDomain.Phase.ACTIVE&&attacker!=d.caster()&&d.contains(target)&&!d.contains(attacker)){
-				d.damageBarrier(amount);worldVersion++;return 0;
+			for(var d:BY_CASTER.values())if(d.level()==level&&d.hasBarrier()&&d.phase()==ActiveDomain.Phase.ACTIVE&&d.contains(target)!=d.contains(attacker)){
+				d.damageBarrier(amount*(d.contains(attacker)?.35:1));worldVersion++;return 0;
 			}return amount;
 		});
 		ServerPlayNetworking.registerGlobalReceiver(DomainActionPayload.TYPE, (payload, context) -> onAction(context.player(), payload.action()));
@@ -266,12 +267,12 @@ public final class DomainService {
 	// ---------------------------------------------------------------- casting
 
 	private static void onAction(ServerPlayer player, DomainActionPayload.Action action) {
-		if (!player.isAlive() || player.isSpectator() || !LIMITER.tryAcquire(player.getUUID(), player.level().getGameTime())) {
+		if (com.jjkcraft.vessel.CursedVessels.controlled(player) || !player.isAlive() || player.isSpectator() || !LIMITER.tryAcquire(player.getUUID(), player.level().getGameTime())) {
 			return;
 		}
 
 		CastFailure failure = switch (action) {
-			case EXPAND -> toggle(player, DomainMath.Variant.FULL);
+			case EXPAND -> toggle(player,DomainCustomization.get(player).open()?DomainMath.Variant.BARRIERLESS:DomainMath.Variant.FULL);
 			case EXPAND_BARRIERLESS -> toggle(player, DomainMath.Variant.BARRIERLESS);
 			case SIMPLE -> toggleSimple(player);
 		};
@@ -319,7 +320,9 @@ public final class DomainService {
 			return CastFailure.BUSY;
 		}
 
-		DomainDefinition definition = found.get();
+		if(variant==DomainMath.Variant.BARRIERLESS&&!DomainCustomization.allowsOpen(domainId))return CastFailure.DISABLED;
+        DomainProfile expression=(caster instanceof Player p?DomainCustomization.get(p):DomainProfile.DEFAULT).withOpen(variant==DomainMath.Variant.BARRIERLESS);
+        DomainDefinition definition=DomainCustomization.apply(found.get(),expression);
 		if (caster.hasEffect(JjkEffects.STUNNED)) {
 			return CastFailure.STUNNED;
 		}
@@ -361,7 +364,8 @@ public final class DomainService {
 
 		double radius = definition.radius() * variant.radius;
 		ActiveDomain domain = new ActiveDomain(nextInstance++, caster, level, domainId, definition, variant, caster.position(), radius,
-				DomainMath.power(variant, domainPoints));
+				DomainMath.power(variant, domainPoints)*expression.output()/100.0);
+        domain.memory().put("expression",expression);
 		BY_CASTER.put(caster.getUUID(), domain);
 		if(caster instanceof ServerPlayer p){
 			var pose=new com.jjkcraft.network.payload.CombatPosePayload(caster.getId(),"cast_domain",level.getGameTime(),ActiveDomain.OPENING_TICKS,3,8,-1,0);
@@ -464,7 +468,7 @@ public final class DomainService {
 		}
 
 		if (!caster.isAlive() || caster.isRemoved() || caster.level() != level
-				|| caster.position().distanceTo(domain.center()) > domain.radius() * ANCHOR_RADII) {
+				|| ((!domain.hasBarrier()||!domain.tookHold())&&caster.position().distanceTo(domain.center()) > domain.radius() * ANCHOR_RADII)) {
 			close(domain);
 			return;
 		}
@@ -529,8 +533,10 @@ public final class DomainService {
 		domain.setPhase(ActiveDomain.Phase.ACTIVE);
 		domain.markHeld();
 		if (domain.hasBarrier()) {
-			for (LivingEntity enemy : domain.enemiesInside()) {
-				domain.trapped.add(enemy.getUUID());
+			if(!(domain.caster() instanceof Player p&&(p.isCreative()||p.isSpectator()))){domain.trapped.add(domain.caster().getUUID());domain.safePositions.put(domain.caster().getUUID(),domain.center());}
+			for (LivingEntity enemy : domain.everyoneInside()) {
+                if(enemy instanceof Player p&&(p.isCreative()||p.isSpectator()))continue;
+				domain.trapped.add(enemy.getUUID());domain.safePositions.put(enemy.getUUID(),enemy.position());
 			}
 		}
 
@@ -583,39 +589,49 @@ public final class DomainService {
 		}
 
 		domain.inside.clear();
-		domain.trapped.clear();
+		domain.trapped.clear();domain.safePositions.clear();
 	}
 
-	/** The barrier: targets caught when it closed can't walk, fly or be knocked out of it. */
-	private static void confine(ActiveDomain domain) {
-		if (!domain.hasBarrier() || domain.trapped.isEmpty()) {
-			return;
-		}
-
-		double limit = domain.radius() - 0.6;
-		for (UUID id : domain.trapped) {
-			if (!(domain.level().getEntity(id) instanceof LivingEntity entity) || !entity.isAlive()) {
-				continue;
-			}
-
-			Vec3 offset = entity.position().subtract(domain.center());
-			double distance = offset.length();
-			if (distance <= limit) {
-				continue;
-			}
-
-			Vec3 inward = offset.scale(-1 / Math.max(distance, 1e-3));
-			Vec3 target = domain.center().add(offset.scale(limit / Math.max(distance, 1e-3)));
-			if (entity instanceof ServerPlayer player) {
-				player.teleportTo(target.x, Math.max(target.y, entity.getY()), target.z);
-			} else {
-				entity.setPos(target.x, Math.max(target.y, entity.getY()), target.z);
-			}
-
-			entity.setDeltaMovement(inward.scale(0.3));
-			entity.needsSync = true;
-		}
-	}
+    /** Closed barriers constrain the whole body in every direction, using safe collision-free feet positions. */
+    private static void confine(ActiveDomain domain){
+        if(!domain.hasBarrier())return;
+        for(var incoming:domain.everyoneInside()){
+            if(domain.trapped.contains(incoming.getUUID())||incoming instanceof Player p&&(p.isCreative()||p.isSpectator()))continue;
+            Vec3 previous=new Vec3(incoming.xo,incoming.yo,incoming.zo);
+            if(!domain.contains(previous.add(0,incoming.getBbHeight()/2,0))){
+                if(incoming instanceof ServerPlayer p)p.teleportTo(previous.x,previous.y,previous.z);else incoming.setPos(previous);
+                incoming.setDeltaMovement(Vec3.ZERO);incoming.needsSync=true;
+            }else {domain.trapped.add(incoming.getUUID());domain.safePositions.put(incoming.getUUID(),incoming.position());}
+        }
+        for(UUID id:List.copyOf(domain.trapped)){
+            LivingEntity entity=id.equals(domain.caster().getUUID())?domain.caster():domain.level().getEntity(id) instanceof LivingEntity e?e:domain.level().getServer().getPlayerList().getPlayer(id);
+            if(entity==null||!entity.isAlive()||entity.isSpectator()||entity instanceof Player p&&p.isCreative()){domain.trapped.remove(id);domain.safePositions.remove(id);continue;}
+            Vec3 feet=domain.safePositions.getOrDefault(id,domain.center());
+            if(entity.level()!=domain.level()){
+                if(entity instanceof ServerPlayer p)p.teleportTo(domain.level(),feet.x,feet.y,feet.z,Set.of(),p.getYRot(),p.getXRot(),true);
+                continue;
+            }
+            double margin=Math.max(entity.getBbHeight()/2,entity.getBbWidth()/2)+.15,limit=Math.max(.5,domain.radius()-margin);
+            Vec3 offset=entity.getBoundingBox().getCenter().subtract(domain.center());
+            if(offset.lengthSqr()<=limit*limit){domain.safePositions.put(id,entity.position());continue;}
+            Vec3 target=domain.center().add(offset.normalize().scale(limit)).subtract(0,entity.getBbHeight()/2,0);
+            if(!domain.level().noCollision(entity,entity.getBoundingBox().move(target.subtract(entity.position()))))target=feet;
+            if(entity instanceof ServerPlayer p)p.teleportTo(target.x,target.y,target.z);else entity.setPos(target);
+            Vec3 velocity=entity.getDeltaMovement(),out=offset.normalize();double radial=velocity.dot(out);
+            entity.setDeltaMovement(radial>0?velocity.subtract(out.scale(radial)):velocity);entity.needsSync=true;
+        }
+    }
+    /** Fists can fracture a closed barrier at its visible boundary, rather than requiring a target outside it. */
+    public static boolean strikeBarrier(ServerPlayer p,double damage){
+        for(var d:BY_CASTER.values())if(d.level()==p.level()&&d.hasBarrier()&&d.phase()==ActiveDomain.Phase.ACTIVE){
+            Vec3 eye=p.getEyePosition(),end=eye.add(p.getLookAngle().scale(3));
+            if(d.contains(eye)!=d.contains(end)){
+                long last=((Number)d.memory().getOrDefault("barrier_hit/"+p.getUUID(),-100L)).longValue();
+                if(p.level().getGameTime()-last<4)return false;
+                d.memory().put("barrier_hit/"+p.getUUID(),p.level().getGameTime());d.damageBarrier(Math.max(1,damage)*(d.contains(eye)?.35:1));worldVersion++;return true;
+            }
+        }return false;
+    }
 
 	private static double regenMultiplier(LivingEntity entity) {
 		if (BY_CASTER.isEmpty()) {
@@ -849,7 +865,7 @@ public final class DomainService {
 		for (ActiveDomain d : BY_CASTER.values()) {
 			if (d.level() == player.level() && d.center().distanceTo(player.position()) < SYNC_RANGE + d.radius()) {
 				views.add(new DomainWorldPayload.View(d.id(), d.caster().getId(), d.domainId(), d.center().x, d.center().y, d.center().z,
-						(float) d.radius(), d.variant().ordinal(), d.phase().ordinal(), d.phaseStart(), d.openedAt(),d.integrity()));
+						(float) d.radius(), d.variant().ordinal(), d.phase().ordinal(), d.phaseStart(), d.openedAt(),d.integrity(),d.profile()));
 			}
 		}
 

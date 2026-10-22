@@ -1,0 +1,9 @@
+{
+  "name": "trait.jjkcraft.cursed_vessel",
+  "description": "trait.jjkcraft.cursed_vessel.desc",
+  "category": "physical",
+  "weight": 6,
+  "damage": 2.5,
+  "health": 6,
+  "speed": 0.08
+}

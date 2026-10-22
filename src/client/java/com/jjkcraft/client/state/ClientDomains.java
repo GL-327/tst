@@ -33,11 +33,12 @@ import com.jjkcraft.technique.CastFailure;
 public final class ClientDomains {
 	/** One open domain. */
 	public record Domain(int instance, int casterEntity, Identifier id, Vec3 center, float radius, DomainMath.Variant variant,
-			ActiveDomain.Phase phase, long phaseStart, long openedAt,float integrity) {
+			ActiveDomain.Phase phase, long phaseStart, long openedAt,float integrity,com.jjkcraft.domain.DomainProfile expression) {
+        public Domain(int instance,int casterEntity,Identifier id,Vec3 center,float radius,DomainMath.Variant variant,ActiveDomain.Phase phase,long phaseStart,long openedAt,float integrity){this(instance,casterEntity,id,center,radius,variant,phase,phaseStart,openedAt,integrity,com.jjkcraft.domain.DomainProfile.DEFAULT);}
 		public Domain(int instance,int casterEntity,Identifier id,Vec3 center,float radius,DomainMath.Variant variant,ActiveDomain.Phase phase,long phaseStart,long openedAt){this(instance,casterEntity,id,center,radius,variant,phase,phaseStart,openedAt,1);}
 		public Optional<DomainDefinition> definition() {
 			Minecraft mc = Minecraft.getInstance();
-			return mc.level == null ? Optional.empty() : Domains.get(mc.level.registryAccess(), id);
+			return mc.level == null ? Optional.empty() : Domains.get(mc.level.registryAccess(), id).map(d->com.jjkcraft.domain.DomainCustomization.apply(d,expression));
 		}
 
 		public boolean contains(Vec3 point) {
@@ -72,7 +73,7 @@ public final class ClientDomains {
 		for (DomainWorldPayload.View v : payload.domains()) {
 			next.put(v.instance(), new Domain(v.instance(), v.casterEntity(), v.domain(), new Vec3(v.x(), v.y(), v.z()), v.radius(),
 					DomainMath.Variant.values()[Math.floorMod(v.variant(), DomainMath.Variant.values().length)],
-					ActiveDomain.Phase.values()[Math.floorMod(v.phase(), ActiveDomain.Phase.values().length)], v.phaseStart(), v.openedAt(),v.integrity()));
+					ActiveDomain.Phase.values()[Math.floorMod(v.phase(), ActiveDomain.Phase.values().length)], v.phaseStart(), v.openedAt(),v.integrity(),v.expression()));
 		}
 
 		DOMAINS.clear();
@@ -183,7 +184,7 @@ public final class ClientDomains {
 	}
 
 	public static Component name(Domain domain) {
-		return domain.definition().map(d -> (Component) Component.translatable(d.name()).withColor(d.visuals().color()))
+		return domain.definition().map(d -> (Component) (domain.expression().title().isEmpty()?Component.translatable(d.name()):Component.literal(domain.expression().title())).withColor(d.visuals().color()))
 				.orElse(Component.literal(domain.id().toString()));
 	}
 

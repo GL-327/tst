@@ -5,7 +5,8 @@
   "mixins": [
     "LivingEntityMixin",
     "ServerPlayerMixin",
-    "MobCombatMixin"
+    "MobCombatMixin",
+    "PossessionInputMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -46,6 +46,9 @@ public final class CursedCombat {
         boolean enabled = true;
         long pressed = -1, started, ready, stunned, dodge, dashReady, guardRaised, guardSeen, lastHit,escapeReady,knockedUntil,lastChain=-100,bufferUntil,combatUntil;
         int chain=-1;
+        int hand,bufferHand=1,specialHand=1,nextHand=1;
+        long leftReady,rightReady,staminaAt,leftTap=-100;
+        double stamina=100;
         boolean buffered;
         boolean assisted,feint,autoContact;
         int autoAttempts,autoHits,autoFeints,autoDefences,autoGuardChoice=-1;
@@ -109,7 +112,7 @@ public final class CursedCombat {
     }
     public static void input(ServerPlayer p, CombatPayloads.Input input) {
         long now = p.level().getGameTime();
-        if (!p.isAlive() || p.isSpectator() || !INPUT.tryAcquire(p.getUUID(), now)) return;
+        if (com.jjkcraft.vessel.CursedVessels.controlled(p)||!p.isAlive() || p.isSpectator() || !INPUT.tryAcquire(p.getUUID(), now)) return;
         Actor state = actor(p);
         if(input.action()==8){PunchImbuement.toggleCe(p);return;}
         if (input.action() == 4) { state.enabled = !state.enabled; state.guardHeight = -1; state.pressed = -1; sync(p); return; }
@@ -123,13 +126,14 @@ public final class CursedCombat {
             return;
         }
         boolean escaped=false;
-        if((input.action()==0||input.action()==5)&&PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
-        if(input.action()==0&&state.stunned<=now&&state.knockedUntil<=now){
-            if(now-state.lightTap<=6){state.special="uppercut";state.specialAt=now;state.specialUntil=Math.max(now,state.ready)+8;state.buffered=false;state.lightTap=-100;}
-            else{state.buffered=true;state.bufferUntil=Math.max(now,state.ready)+5;state.lightTap=now;basic(p,state,now);}
+        if((input.action()==0||input.action()==5||input.action()==9)&&PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
+        if((input.action()==0||input.action()==9)&&state.stunned<=now&&state.knockedUntil<=now){
+            int hand=input.action()==9?-1:1;long last=hand<0?state.leftTap:state.lightTap;
+            if(now-last<=6){state.special="uppercut";state.specialHand=hand;state.specialAt=now;state.specialUntil=now+16;state.buffered=false;if(hand<0)state.leftTap=-100;else state.lightTap=-100;}
+            else {state.buffered=true;state.bufferHand=hand;state.bufferUntil=now+12;if(hand<0)state.leftTap=now;else state.lightTap=now;basic(p,state,now);}
         }
         if(input.action()==5&&state.stunned<=now&&state.knockedUntil<=now){
-            boolean twice=now-state.heavyTap<=6;state.special=twice?"sweep":"heavy";state.specialAt=twice?now:now+6;state.specialUntil=Math.max(now,state.ready)+14;state.heavyTap=twice?-100:now;state.buffered=false;
+            boolean twice=now-state.heavyTap<=6;state.specialHand=(!p.getMainHandItem().isEmpty()||!p.getOffhandItem().isEmpty())?(p.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT?-1:1):state.nextHand;state.special=twice?"sweep":"heavy";state.specialAt=twice?now:now+6;state.specialUntil=Math.max(now,state.ready)+14;state.heavyTap=twice?-100:now;state.buffered=false;
         }
         if(input.action()==1)state.pressed=-1;
         if (input.action() == 2) {
@@ -159,20 +163,20 @@ public final class CursedCombat {
         }
     }
     private static void basic(ServerPlayer p,Actor state,long now){
-        if(state.move!=null||state.ready>now||state.guardHeight>=0||!state.special.isEmpty()||PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
+        if(state.guardHeight>=0||!state.special.isEmpty()||PersonalPacts.forbids(p,TechniquePact.COMBAT))return;
         int step=CombatMath.chainStep(state.chain,state.lastChain,now);
-        if(start(p,JjkCraft.id(CombatMath.chainMove(step,!p.onGround(),p.isShiftKeyDown())),p.getLookAngle())){
+        if(startPunch(p,JjkCraft.id(CombatMath.chainMove(step,!p.onGround(),p.isShiftKeyDown())),p.getLookAngle(),state.bufferHand)){
             state.chain=step;state.lastChain=now;state.buffered=false;
         }
     }
     public static boolean autoAttack(ServerPlayer p,int choice){
         var s=actor(p);long now=p.level().getGameTime();
-        if(!enabled(p)||now<s.autoReady||s.move!=null||PersonalPacts.forbids(p,TechniquePact.COMBAT))return false;
+        if(!enabled(p)||now<s.autoReady||PersonalPacts.forbids(p,TechniquePact.COMBAT))return false;
         boolean committed=com.jjkcraft.core.combat.AutoCombatMath.commit(s.autoAttempts);
         String key=choice==5?"heavy":CombatMath.chainMove(CombatMath.chainStep(s.chain,s.lastChain,now),!p.onGround(),p.isShiftKeyDown());
-        if(!start(p,JjkCraft.id(key),p.getLookAngle(),true,!committed))return false;
+        if(!start(p,JjkCraft.id(key),p.getLookAngle(),true,!committed,s.nextHand))return false;
         s.autoAttempts++;if(s.feint)s.autoFeints++;
-        s.autoReady=s.ready+com.jjkcraft.core.combat.AutoCombatMath.recovery(s.autoAttempts);
+        s.autoReady=now+(key.equals("heavy")?18:7)+Math.floorMod(s.autoAttempts,3);
         s.chain=CombatMath.chainStep(s.chain,s.lastChain,now);s.lastChain=now;s.buffered=false;s.special="";sync(p);return true;
     }
     public static int[] autoStats(LivingEntity e){var s=actor(e);return new int[]{s.autoAttempts,s.autoHits,s.autoFeints};}
@@ -181,22 +185,34 @@ public final class CursedCombat {
     public static boolean start(LivingEntity entity, Identifier id, Vec3 aim) {
         return start(entity,id,aim,false,false);
     }
-    private static boolean start(LivingEntity entity, Identifier id, Vec3 aim,boolean assisted,boolean feint) {
-        Actor state = actor(entity); long now = entity.level().getGameTime();
-        if (state.move != null || state.ready > now || state.stunned > now || state.knockedUntil>now || !entity.isAlive()
-                || entity.hasEffect(com.jjkcraft.effect.JjkEffects.STUNNED) || entity.hasEffect(com.jjkcraft.effect.JjkEffects.FROZEN_FRAME)) return false;
-        if(PersonalPacts.forbids(entity,TechniquePact.COMBAT))return false;
-        CombatMove move = entity.registryAccess().lookupOrThrow(MOVES).getValue(id); if (move == null) return false;
-        boolean heavenly = entity instanceof Player p && Progression.get(p).heavenlyRestricted();
-        if (!heavenly && (entity instanceof Player||CursedEnergy.max(entity)>0) && !CursedEnergy.trySpend(entity, move.ce())) return false;
-        state.move = move; state.moveId = id.getPath(); state.started = now; state.ready = now + move.duration();
+    public static double stamina(LivingEntity e){return actor(e).stamina;}
+    public static double maximumStamina(LivingEntity e){return e instanceof Player p&&com.jjkcraft.awakening.CharacterTraits.has(p,"cursed_vessel")?140:100;}
+    public static void restoreStamina(LivingEntity e){actor(e).stamina=maximumStamina(e);}
+    public static void clearActions(LivingEntity e){var a=actor(e);a.move=null;a.buffered=false;a.special="";a.guardHeight=-1;a.ready=e.level().getGameTime();a.leftReady=a.rightReady=a.ready;}
+    public static int currentHand(LivingEntity e){return actor(e).hand;}
+    public static boolean startPunch(ServerPlayer p,Identifier id,Vec3 aim,int hand){return start(p,id,aim,false,false,hand<0?-1:1);}
+    private static boolean start(LivingEntity e,Identifier id,Vec3 aim,boolean assisted,boolean feint){int hand=e instanceof Player p?(!p.getMainHandItem().isEmpty()||!p.getOffhandItem().isEmpty())?(p.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT?-1:1):actor(e).nextHand:0;return start(e,id,aim,assisted,feint,hand);}
+    private static boolean start(LivingEntity entity,Identifier id,Vec3 aim,boolean assisted,boolean feint,int hand){
+        Actor state=actor(entity);long now=entity.level().getGameTime();
+        if(entity instanceof Player p&&(!p.getMainHandItem().isEmpty()||!p.getOffhandItem().isEmpty())){int main=p.getMainArm()==net.minecraft.world.entity.HumanoidArm.LEFT?-1:1;if(hand!=main&&!assisted)return false;hand=main;}
+        boolean fist=entity instanceof Player&&Set.of("jab","hook","backfist","uppercut").contains(id.getPath())&&entity.getMainHandItem().isEmpty()&&entity.getOffhandItem().isEmpty();
+        boolean alternate=fist&&state.hand!=hand&&state.move!=null&&Set.of("jab","hook","backfist","uppercut","feint").contains(state.moveId)&&now>=state.started+state.move.startup()+state.move.active();
+        if((state.move!=null&&!alternate)||(state.ready>now&&!alternate)||state.stunned>now||state.knockedUntil>now||!entity.isAlive()
+            ||entity.hasEffect(com.jjkcraft.effect.JjkEffects.STUNNED)||entity.hasEffect(com.jjkcraft.effect.JjkEffects.FROZEN_FRAME)||PersonalPacts.forbids(entity,TechniquePact.COMBAT))return false;
+        if(entity instanceof Player&&(hand<0?state.leftReady:state.rightReady)>now)return false;
+        CombatMove move=entity.registryAccess().lookupOrThrow(MOVES).getValue(id);if(move==null)return false;
+        if(fist)move=new CombatMove(Math.min(3,move.startup()),Math.min(2,move.active()),3,move.damage(),move.ce(),move.height(),move.reach(),move.guardDamage(),Math.min(4,move.stun()),move.knockback(),move.lift());
+        double effort=feint?5:switch(id.getPath()){case "heavy"->28;case "uppercut","sweep"->24;case "hook","backfist"->15;default->12;};
+        if(entity instanceof Player&&state.stamina<effort)return false;
+        boolean heavenly=entity instanceof Player p&&Progression.get(p).heavenlyRestricted();
+        if(!heavenly&&(entity instanceof Player||CursedEnergy.max(entity)>0)&&!CursedEnergy.trySpend(entity,move.ce()))return false;
+        if(entity instanceof Player){state.stamina-=effort;state.staminaAt=now;if(hand<0)state.leftReady=now+(fist?10:move.duration());else state.rightReady=now+(fist?10:move.duration());}
+        state.hand=hand;state.nextHand=hand<0?1:-1;
+        state.move=move;state.moveId=id.getPath();state.started=now;state.ready=now+move.duration();
         state.assisted=assisted;state.feint=feint;state.autoContact=false;state.combatUntil=now+80;if(feint)state.moveId="feint";
-        state.aim = aim.normalize(); state.hit.clear(); state.guardHeight = -1;
-        if (entity instanceof CurseEntity curse) curse.triggerAnim("action",id.getPath().equals("jab")?"jab":id.getPath().equals("sweep")?"sweep":id.getPath().equals("uppercut")?"uppercut":id.getPath().equals("heavy")?"heavy":"attack_windup");
-        if (entity instanceof ServerPlayer p) {
-            sync(p);
-        }
-        return true;
+        state.aim=aim.normalize();state.hit.clear();state.guardHeight=-1;
+        if(entity instanceof CurseEntity curse)curse.triggerAnim("action",Set.of("jab","sweep","uppercut","heavy").contains(id.getPath())?id.getPath():"attack_windup");
+        if(entity instanceof ServerPlayer p)sync(p);return true;
     }
     public static boolean startMob(net.minecraft.world.entity.Mob mob,LivingEntity target){
         var a=actor(mob);long now=mob.level().getGameTime();int step=CombatMath.chainStep(a.chain,a.lastChain,now);
@@ -206,7 +222,7 @@ public final class CursedCombat {
     private static void broadcastPose(LivingEntity e){
         var s=actor(e);long now=e.level().getGameTime();boolean down=s.knockedUntil>now;
         var pose=new com.jjkcraft.network.payload.CombatPosePayload(e.getId(),down?"knockdown":s.move==null?"":s.moveId,down?s.knockedUntil-24:s.started,
-            down?1:s.move==null?0:s.move.startup(),down?24:s.move==null?0:s.move.active(),down?4:s.move==null?0:s.move.recovery(),s.guardHeight,(int)Math.max(0,s.stunned-now));
+            down?1:s.move==null?0:s.move.startup(),down?24:s.move==null?0:s.move.active(),down?4:s.move==null?0:s.move.recovery(),s.guardHeight,(int)Math.max(0,s.stunned-now),s.hand);
         for(var p:net.fabricmc.fabric.api.networking.v1.PlayerLookup.tracking(e))JjkNetworking.send(p,pose);
     }
     public static boolean startCurse(CurseEntity curse, LivingEntity target) {
@@ -238,6 +254,8 @@ public final class CursedCombat {
             if(e instanceof net.minecraft.world.entity.Mob mob && !(e instanceof CurseEntity)&&mob.getTarget()!=null&&server.getTickCount()%12==0&&state.move==null&&state.stunned<=now&&mob.distanceToSqr(mob.getTarget())<16&&attacking(mob.getTarget())&&mob.getRandom().nextFloat()<0.2f){
                 state.guardHeight=1;state.guardSeen=now;state.guardRaised=now;}
 
+            state.stamina=Math.min(state.stamina,maximumStamina(e));
+            if(now-state.staminaAt>12&&state.move==null)state.stamina=Math.min(maximumStamina(e),state.stamina+(state.guardHeight<0?.75:.35)*(maximumStamina(e)/100));
             if (state.guardHeight < 0 && state.stunned <= now) state.guard = Math.min(100, state.guard + 0.65);
             if (state.lastHit + 50 < now) state.combo = 0;
             if(state.knockedUntil>now){e.setDeltaMovement(e.getDeltaMovement().multiply(0.6,1,0.6));e.setSprinting(false);}
@@ -249,7 +267,7 @@ public final class CursedCombat {
             }
             if(e instanceof ServerPlayer p&&!state.special.isEmpty()){
                 if(now>state.specialUntil||PersonalPacts.forbids(p,TechniquePact.COMBAT))state.special="";
-                else if(now>=state.specialAt&&state.move==null&&state.ready<=now&&state.guardHeight<0&&start(p,JjkCraft.id(state.special),p.getLookAngle()))state.special="";
+                else if(now>=state.specialAt&&state.guardHeight<0&&startPunch(p,JjkCraft.id(state.special),p.getLookAngle(),state.specialHand))state.special="";
             }
             if(e instanceof ServerPlayer p&&state.buffered){if(now>state.bufferUntil)state.buffered=false;else basic(p,state,now);}
             if(server.getTickCount()%4==0){if(e instanceof ServerPlayer p)sync(p);else broadcastPose(e);}
@@ -258,6 +276,8 @@ public final class CursedCombat {
     private static void strike(ServerLevel level, Actor state) {
         if(state.feint)return;
         LivingEntity source = state.entity; CombatMove move = state.move;
+        InteractionHand used=source instanceof Player p&&(state.hand>0)!=(p.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT)?InteractionHand.OFF_HAND:InteractionHand.MAIN_HAND;
+        var weapon=source.getItemInHand(used);
         Vec3 from = source.getEyePosition(), end = from.add(state.aim.scale(move.reach()));
         var block = level.clip(new ClipContext(from, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, source));
         if (block.getType() != HitResult.Type.MISS) end = block.getLocation();
@@ -265,7 +285,7 @@ public final class CursedCombat {
         var candidates=level.getEntitiesOfClass(LivingEntity.class,source.getBoundingBox().inflate(move.reach()+0.5),t->t!=source&&t.isAlive()&&!t.isSpectator());
         candidates.sort(java.util.Comparator.comparingDouble(source::distanceToSqr));
         for (LivingEntity target : candidates) {
-            if(source.isAlliedTo(target)||target instanceof net.minecraft.world.entity.OwnableEntity own&&own.getOwner()==source||target instanceof CurseEntity c&&c.getAttachedOrCreate(com.jjkcraft.awakening.ControlledCurses.OWNER).equals(source.getUUID().toString()))continue;
+            if(!(source instanceof Player possessed&&com.jjkcraft.vessel.CursedVessels.controlled(possessed))&&(source.isAlliedTo(target)||target instanceof net.minecraft.world.entity.OwnableEntity own&&own.getOwner()==source||target instanceof CurseEntity c&&c.getAttachedOrCreate(com.jjkcraft.awakening.ControlledCurses.OWNER).equals(source.getUUID().toString())))continue;
             if(knockedDown(target))continue;
             if (state.hit.contains(target.getUUID()) || !source.hasLineOfSight(target) || target instanceof Player p && (p.isCreative() || (source instanceof Player attacker && !attacker.canHarmPlayer(p)))) continue;
             var box = target.getBoundingBox().inflate(0.25);
@@ -280,7 +300,7 @@ public final class CursedCombat {
             double attribute = source.getAttributeValue(Attributes.ATTACK_DAMAGE);
             double damage = move.damage() * Math.max(1, attribute * (source instanceof Player ? 0.7 : 0.4));
             var damageSource = source instanceof Player p ? level.damageSources().playerAttack(p) : level.damageSources().mobAttack(source);
-            damage = net.minecraft.world.item.enchantment.EnchantmentHelper.modifyDamage(level, source.getMainHandItem(), target, damageSource, (float) damage);
+            damage = net.minecraft.world.item.enchantment.EnchantmentHelper.modifyDamage(level, weapon, target, damageSource, (float) damage);
             if (source instanceof Player p) damage *= Progression.get(p).heavenlyRestricted() ? 1.35 : 1 + Progression.get(p).growth().output() * 0.025;
             if(source instanceof CurseEntity c)damage*=c.mechanic().attackMultiplier(c,target);
             damage *= CombatMath.combo(state.combo+1);
@@ -318,9 +338,9 @@ public final class CursedCombat {
                     }
                 }
                 if(actualContact){
-                    PunchImbuement.contact(source,target);
-                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffectsWithItemSource(level,target,damageSource,source.getMainHandItem());
-                    if(source.getMainHandItem().hurtEnemy(target,source))source.getMainHandItem().postHurtEnemy(target,source);
+                    PunchImbuement.contact(source,target,used);
+                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffectsWithItemSource(level,target,damageSource,weapon);
+                    if(weapon.hurtEnemy(target,source))weapon.postHurtEnemy(target,source);
                 }
             } finally { INCOMING.remove(target.getUUID()); }
             if(actualContact&&state.assisted&&!state.autoContact){state.autoHits++;state.autoContact=true;}
@@ -330,6 +350,7 @@ public final class CursedCombat {
             sparks(level, target, state.moveId.equals("heavy") ? 0xE0303F : 0xB1A0E8, 8);
             break;
         }
+        if(state.hit.isEmpty()&&source instanceof ServerPlayer p)com.jjkcraft.domain.DomainService.strikeBarrier(p,move.damage());
     }
     private static void sparks(ServerLevel level, LivingEntity target, int color, int count) {
         level.sendParticles(JjkParticles.of(JjkParticles.CURSED_SPARK, color, 0.8f), target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), count, 0.2, 0.3, 0.2, 0.08);
@@ -344,13 +365,14 @@ public final class CursedCombat {
     }
     public static void sync(ServerPlayer p) {
         PunchImbuement.sync(p);
+        var endurance=actor(p);long tick=p.level().getGameTime();JjkNetworking.send(p,new CombatPayloads.Endurance((float)endurance.stamina,(float)maximumStamina(p),endurance.hand,(int)Math.max(0,endurance.leftReady-tick),(int)Math.max(0,endurance.rightReady-tick)));
         Actor s = actor(p); long now = p.level().getGameTime();
         JjkNetworking.send(p,new CombatPayloads.AutoStats(s.autoAttempts,s.autoHits,s.autoFeints));
         JjkNetworking.send(p, new CombatPayloads.View(enabled(p), (float) s.guard, s.combo, (int) Math.max(0, s.stunned - now), s.move == null ? "" : s.moveId, s.move == null ? 0 : (int) (now - s.started)));
         boolean down=s.knockedUntil>now;
         var pose=new com.jjkcraft.network.payload.CombatPosePayload(p.getId(),down?"knockdown":s.move==null?(enabled(p)&&s.combatUntil>now?"stance":""):s.moveId,down?s.knockedUntil-24:s.started,
             down?1:s.move==null?0:s.move.startup(),down?24:s.move==null?0:s.move.active(),down?4:s.move==null?0:s.move.recovery(),
-            enabled(p)?s.guardHeight:-1,(int)Math.max(0,s.stunned-now));
+            enabled(p)?s.guardHeight:-1,(int)Math.max(0,s.stunned-now),s.hand);
         JjkNetworking.send(p,pose);
         for(var observer:net.fabricmc.fabric.api.networking.v1.PlayerLookup.tracking(p))JjkNetworking.send(observer,pose);
         JjkNetworking.send(p,new CombatPayloads.Resources((int)Math.max(0,s.escapeReady-now),(int)Math.max(0,s.knockedUntil-now),Math.max(0,s.chain+1)));

@@ -82,9 +82,10 @@ public final class CombatAnimations {
         }else if(p.guard()>=0){float height=p.guard()==2?-2.25f:p.guard()==0?-0.65f:-1.5f;
             rot(m.rightArm,height,-0.45f,0.28f);rot(m.leftArm,height,0.45f,-0.28f);m.body.xRot+=p.guard()==0?0.3f:0;}
         // Clothing is parented to these limbs in 26.3 and inherits their transforms.
-        if(state.mainArm==net.minecraft.world.entity.HumanoidArm.LEFT){
+        boolean baseLeft=p.move().equals("backfist");
+        if(p.hand()!=0?(p.hand()<0)!=baseLeft:state.mainArm==net.minecraft.world.entity.HumanoidArm.LEFT){
             float x=m.rightArm.xRot,y=m.rightArm.yRot,z=m.rightArm.zRot;
-            rot(m.rightArm,m.leftArm.xRot,-m.leftArm.yRot,-m.leftArm.zRot);rot(m.leftArm,x,-y,-z);m.body.yRot=-m.body.yRot;
+            rot(m.rightArm,m.leftArm.xRot,-m.leftArm.yRot,-m.leftArm.zRot);rot(m.leftArm,x,-y,-z);float rz=m.rightArm.z;m.rightArm.z=m.leftArm.z;m.leftArm.z=rz;m.body.yRot=-m.body.yRot;
         }
     }
     public static boolean hands(PoseStack stack,boolean right,float partial){
@@ -97,7 +98,7 @@ public final class CombatAnimations {
         int side=right?1:-1;
         boolean dominant=right==(mc.player.getMainArm()==net.minecraft.world.entity.HumanoidArm.RIGHT);
         float breath=mc.level==null?0:(float)Math.sin((mc.level.getGameTime()+partial)*.11)*.003f;
-        stack.translate(side*(dominant?.34:.32),dominant?-.30+breath:-.26-breath,dominant?-.67:-.74);
+        stack.translate(side*(dominant?.55:.53),dominant?-.39+breath:-.36-breath,dominant?-.67:-.74);
         stack.rotateDegrees(Axis.ZP,side*12);stack.rotateDegrees(Axis.YP,-side*10);
         if(charging){stack.translate(-side*.10,.035,-.06);stack.rotateDegrees(Axis.ZP,-side*10);}
         if(p.guard()>=0&&!move){stack.translate(-side*.09,.10+(p.guard()-1)*.065,-.05);stack.rotateDegrees(Axis.ZP,-side*12);}
@@ -105,8 +106,9 @@ public final class CombatAnimations {
             float age=mc.level.getGameTime()-p.started()+partial;
             float strike=smooth((age-p.startup()+2)/4f),recovery=smooth((age-p.startup()-p.active())/Math.max(1,p.recovery()));
             float w=smooth(age/Math.max(1,p.startup()))*(1-strike),h=strike*(1-recovery);
-            boolean active=dominant||p.move().equals("heavy")||p.move().startsWith("cast_");
-            if(p.move().equals("backfist"))active=!dominant;
+            boolean active=p.hand()==0?dominant:(right?p.hand()>0:p.hand()<0);
+            if(p.move().startsWith("cast_")||p.move().equals("heavy"))active=true;
+            if(p.hand()==0&&p.move().equals("backfist"))active=!dominant;
             if(!active){stack.translate(-side*.025*h,.025*h,.025*h);}
             else switch(p.move()){
                 case "feint" -> {stack.translate(0,.015*h,-.07*h+.04*w);}

@@ -34,7 +34,8 @@
       "com.jjkcraft.gametest.WheelReverseGameTests",
       "com.jjkcraft.gametest.PolishGameTests",
       "com.jjkcraft.gametest.FieldBudgetGameTests",
-      "com.jjkcraft.gametest.DirectionGameTests"
+      "com.jjkcraft.gametest.DirectionGameTests",
+      "com.jjkcraft.gametest.VesselCombatGameTests"
     ],
     "fabric-client-gametest": [
       "com.jjkcraft.gametest.SmokeClientGameTest"

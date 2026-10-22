@@ -47,6 +47,7 @@ public final class TechniqueWheelScreen extends Screen {
                 addRenderableWidget(new InkButton(width-107,58,100,20,Component.literal("Dismiss summons"),b->com.jjkcraft.client.state.ClientTechniqueMenus.request(id,entry(hovered).orElse(com.jjkcraft.JjkCraft.id("ten_shadows_divine_dogs")),2)));
             com.jjkcraft.client.state.ClientTechniqueMenus.request(id,entry(hovered).orElse(com.jjkcraft.JjkCraft.id("infinity")),0);
         }
+        addRenderableWidget(new InkButton(width-107,105,100,20,Component.literal("Domain workshop"),b->minecraft.gui.setScreen(new DomainWorkshopScreen(this))));
         ceButton=addRenderableWidget(new InkButton(width-107,81,100,20,Component.literal("CE fists: "+(com.jjkcraft.client.combat.PunchImbuementClient.ce()?"ON":"OFF")),b->ClientPlayNetworking.send(new CombatPayloads.Input(8,0))));
     }
     private boolean limitless(){return family!=null&&family.getPath().equals("family/limitless");}
@@ -117,7 +118,7 @@ public final class TechniqueWheelScreen extends Screen {
         if(quick)ClientPlayNetworking.send(new CastTechniquePayload(id));else ClientPlayNetworking.send(new VariantCastPayload(slot,id));}
     private void finish(){if(held<0)return;finishing=true;if(!quick)ClientPlayNetworking.send(new CastPayload(slot,false));held=-1;onClose();}
     @Override public boolean mouseClicked(MouseButtonEvent e,boolean twice){
-        if(e.x()>=width-107&&e.y()>=35&&e.y()<102)return super.mouseClicked(e,twice);
+        if(e.x()>=width-107&&e.y()>=35&&e.y()<126)return super.mouseClicked(e,twice);
         if(family!=null&&family.getPath().equals("family/ten_shadows")&&e.x()>=7&&e.x()<97&&e.y()>=35&&e.y()<55)return super.mouseClicked(e,twice);
         if(limitless()&&width>=320&&e.x()>=7&&e.x()<64&&e.y()>=height/2-49&&e.y()<height/2+49)return super.mouseClicked(e,twice);
         if(hovered<0||hovered>=entries.size())return true;

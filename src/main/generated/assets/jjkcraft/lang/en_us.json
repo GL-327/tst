@@ -1584,7 +1584,7 @@
   "family.jjkcraft.echo_ledger": "Echo Ledger (Original)",
   "family.jjkcraft.mercury_mirror": "Mercury Mirror (Original)",
   "family.jjkcraft.mourning_thread": "Mourning Thread (Original)",
-  "key.jjkcraft.light_hit": "Light hit / double-tap uppercut",
+  "key.jjkcraft.light_hit": "Right punch / double-tap uppercut",
   "key.jjkcraft.heavy_hit": "Heavy hit / double-tap sweep",
   "key.jjkcraft.bank": "Next power bank",
   "key.jjkcraft.auto_combat": "Toggle Auto Combat",
@@ -2094,5 +2094,9 @@
   "item.jjkcraft.warding_talisman.desc": "Use: spend 25 CE for four absorption health for 60 seconds. Consumed on use; 10-second cooldown.",
   "tooltip.jjkcraft.tool.activate": "Use while holding this tool to cast its technique.",
   "key.jjkcraft.ce_imbue": "Toggle CE fist imbuement",
-  "text.autoconfig.jjkcraft-server.option.casting.techniqueDamageMultiplier": "Technique damage multiplier"
+  "text.autoconfig.jjkcraft-server.option.casting.techniqueDamageMultiplier": "Technique damage multiplier",
+  "key.jjkcraft.left_punch": "Left punch / double-tap uppercut",
+  "item.jjkcraft.sukunas_finger": "Sukuna's Finger",
+  "trait.jjkcraft.cursed_vessel": "Cursed Vessel",
+  "trait.jjkcraft.cursed_vessel.desc": "An exceptionally strong body: +2.5 attack damage, +6 health, +8% movement speed and 140 stamina. Sukuna relics grant power but weaken your control. Rest and maintain health and CE to suppress him."
 }

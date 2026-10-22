@@ -61,7 +61,9 @@ public final class ActiveDomain {
 	ActiveDomain opponent;
 	private boolean closeRequested;
 	private double barrierDamage;
-	public double barrierMaximum(){return 80+radius*2+com.jjkcraft.sorcerer.Progression.gradeRank(caster.registryAccess(),caster)*10;}
+    final Map<UUID,Vec3> safePositions=new HashMap<>();
+    public DomainProfile profile(){return (DomainProfile)memory.getOrDefault("expression",DomainProfile.DEFAULT);}
+	public double barrierMaximum(){return (80+radius*2+com.jjkcraft.sorcerer.Progression.gradeRank(caster.registryAccess(),caster)*10)*profile().barrier()/100.0;}
 	public float integrity(){return (float)Math.max(0,1-barrierDamage/barrierMaximum());}
 	public void damageBarrier(double damage){barrierDamage+=Math.max(0,damage);if(integrity()<=0)requestClose();}
 

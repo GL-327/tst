@@ -25,6 +25,8 @@ public abstract class CameraMixin {
 	@Inject(method = "alignWithEntity", at = @At("TAIL"))
 	private void jjkcraft$applyShake(float partialTicks, CallbackInfo ci) {
 		float[] offsets = ClientFx.shakeOffsets();
+        float sway=com.jjkcraft.client.vessel.VesselClient.sway(partialTicks);
+        if(sway!=0)setRotation(yRot+sway,xRot+sway*.35f);
 		if (offsets != null) {
 			setRotation(yRot + offsets[0], xRot + offsets[1]);
 		}

@@ -41,6 +41,7 @@ public final class JjkItems {
 	public static final Map<EntityType<?>, Item> SPAWN_EGGS = new LinkedHashMap<>();
 
 	public static final Item CURSED_ENERGY_SHARD = register("cursed_energy_shard", CursedEnergyShardItem::new, new Item.Properties().stacksTo(32));
+	public static final Item SUKUNAS_FINGER=register("sukunas_finger",SukunaFingerItem::new,new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).food(new net.minecraft.world.food.FoodProperties(0,0f,true)));
 	public static final Item DIVINE_CHALICE=register("divine_chalice",DivineChaliceItem::new,new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
 
 	// One trophy per curse: crafting material for cursed tools later.

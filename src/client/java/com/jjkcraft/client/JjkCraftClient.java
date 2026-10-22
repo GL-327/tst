@@ -112,6 +112,8 @@ public final class JjkCraftClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.TYPE,(payload,context)->com.jjkcraft.client.state.ClientPersonalization.accept(payload));
 		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ShikigamiPayloads.Reply.TYPE,(payload,context)->com.jjkcraft.client.screen.ShikigamiFusionScreen.accept(payload));
 		com.jjkcraft.client.combat.CombatClient.init();
+        com.jjkcraft.client.domain.DomainEditor.init();
+        com.jjkcraft.client.vessel.VesselClient.init();
 		com.jjkcraft.client.death.SoulClient.init();
 		com.jjkcraft.client.state.ClientTraits.init();
 		ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.AwakeningPayloads.View.TYPE,

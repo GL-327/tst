@@ -5,6 +5,20 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.16.0-preview, 2026-10-22
+
+- Moved fighting hands toward the lower corners; added physical right/left punch keys,
+  hand-aware first/third-person poses, faster alternating recovery and server stamina.
+  Auto Combat chooses fists; default heavy moves to semicolon, preserving vanilla bindings.
+- Added Cursed Vessel as an independent physical attribute and an original Sukuna's
+  Finger item, rare special-grade drops, finger progression, false-curse hallucinations
+  and bounded server-controlled takeovers with blackout and lifecycle cleanup.
+- Added a domain workshop with radius/output/duration/barrier trade-offs, custom
+  colours, names and scenery, observer synchronisation and compatible open/closed modes.
+  Unlimited Void and rule domains require closed barriers. Repaired vertical containment,
+  whole-body boundaries, direct cross-wall damage, barrier punching and release.
+- Added dedicated server and native client coverage for the new mechanics and layouts.
+
 ## 1.15.0-preview, 2026-10-22
 
 - Separated cast aim from overloaded VFX radius/duration parameters. Cursed Speech

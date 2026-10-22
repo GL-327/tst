@@ -28,7 +28,12 @@ public final class CombatPayloads {
         public static final StreamCodec<ByteBuf,Resources> CODEC=StreamCodec.composite(ByteBufCodecs.VAR_INT,Resources::escapeCooldown,ByteBufCodecs.VAR_INT,Resources::knockdown,ByteBufCodecs.VAR_INT,Resources::chain,Resources::new);
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
-    /** 0 light, 1 release, 2 manual guard, 3 dash, 4 toggle, 5 heavy, 6 assisted attack, 7 assisted guard. */
+    public record Endurance(float stamina,float maximum,int hand,int leftReady,int rightReady) implements CustomPacketPayload {
+        public static final Type<Endurance> TYPE=new Type<>(JjkCraft.id("combat_endurance"));
+        public static final StreamCodec<ByteBuf,Endurance> CODEC=StreamCodec.composite(ByteBufCodecs.FLOAT,Endurance::stamina,ByteBufCodecs.FLOAT,Endurance::maximum,ByteBufCodecs.VAR_INT,Endurance::hand,ByteBufCodecs.VAR_INT,Endurance::leftReady,ByteBufCodecs.VAR_INT,Endurance::rightReady,Endurance::new);
+        @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    }
+    /** 0 right punch, 1 release, 2 manual guard, 3 dash, 4 toggle, 5 heavy, 6 assisted attack, 7 assisted guard, 8 CE fists, 9 left punch. */
     public record Input(int action, int data) implements CustomPacketPayload {
         public static final Type<Input> TYPE = new Type<>(JjkCraft.id("combat_input"));
         public static final StreamCodec<ByteBuf, Input> CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, Input::action, ByteBufCodecs.VAR_INT, Input::data, Input::new);

@@ -20,7 +20,8 @@ public record DomainWorldPayload(List<View> domains, List<SimpleView> simple) im
 
 	/** One open domain. Variant and phase are ordinals of {@code DomainMath.Variant} and {@code ActiveDomain.Phase}. */
 	public record View(int instance, int casterEntity, Identifier domain, double x, double y, double z, float radius, int variant, int phase,
-			long phaseStart, long openedAt,float integrity) {
+			long phaseStart, long openedAt,float integrity,com.jjkcraft.domain.DomainProfile expression) {
+        public View(int instance,int casterEntity,Identifier domain,double x,double y,double z,float radius,int variant,int phase,long phaseStart,long openedAt,float integrity){this(instance,casterEntity,domain,x,y,z,radius,variant,phase,phaseStart,openedAt,integrity,com.jjkcraft.domain.DomainProfile.DEFAULT);}
 		public View(int instance,int casterEntity,Identifier domain,double x,double y,double z,float radius,int variant,int phase,long phaseStart,long openedAt){this(instance,casterEntity,domain,x,y,z,radius,variant,phase,phaseStart,openedAt,1);}
 		public static final StreamCodec<ByteBuf, View> CODEC = StreamCodec.of((buf, v) -> {
 			ByteBufCodecs.VAR_INT.encode(buf, v.instance);
@@ -35,9 +36,10 @@ public record DomainWorldPayload(List<View> domains, List<SimpleView> simple) im
 			ByteBufCodecs.VAR_LONG.encode(buf, v.phaseStart);
 			ByteBufCodecs.VAR_LONG.encode(buf, v.openedAt);
 			buf.writeFloat(v.integrity);
+            ByteBufCodecs.fromCodec(com.jjkcraft.domain.DomainProfile.CODEC).encode(buf,v.expression);
 		}, buf -> new View(ByteBufCodecs.VAR_INT.decode(buf), ByteBufCodecs.VAR_INT.decode(buf), Identifier.STREAM_CODEC.decode(buf),
 				buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readByte(), buf.readByte(),
-				ByteBufCodecs.VAR_LONG.decode(buf), ByteBufCodecs.VAR_LONG.decode(buf),buf.readFloat()));
+				ByteBufCodecs.VAR_LONG.decode(buf), ByteBufCodecs.VAR_LONG.decode(buf),buf.readFloat(),ByteBufCodecs.fromCodec(com.jjkcraft.domain.DomainProfile.CODEC).decode(buf)));
 	}
 
 	/** One Simple Domain, centered on its holder. */

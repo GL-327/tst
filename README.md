@@ -3,7 +3,13 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.15.0-preview.** Cursed Speech and other directional effects now retain the
+**Status: 1.16.0-preview.** Empty-hand combat now has separate right/left punches,
+faster alternating combinations and stamina. Cursed Vessel is a physical attribute;
+Sukuna's Finger grants power with hallucination and takeover risks. Domains gain a
+workshop for size, output, duration, barrier strength and visual expression, with repaired
+containment and open/closed rules. [Controls and mechanics](docs/VESSELS_AND_DOMAINS.md).
+
+Cursed Speech and other directional effects retain the
 server's cast direction, including vertical aim and personal aim offsets. Techniques use
 depth-tested 3D energy cores, pressure shells and material fragments. All 52 curses have
 rebuilt connected silhouettes and restrained pixel-art textures, with small eye accents
