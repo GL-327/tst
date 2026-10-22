@@ -36,7 +36,7 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 
 	public static final class State extends EntityRenderState {
 		int color;
-        int tile;boolean spatial;
+        int tile;boolean spatial;String technique="";
 		float size;
         float age;
 		List<Vec3> trail = List.of();
@@ -57,7 +57,7 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 		state.color = entity.color();
 		state.size = entity.size();
         var technique=entity.technique();
-        state.spatial=technique!=null&&com.jjkcraft.client.vfx.SpectralFx.spatial(technique.getPath());
+        state.spatial=technique!=null&&com.jjkcraft.client.vfx.SpectralFx.spatial(technique.getPath());state.technique=technique==null?"":technique.getPath();
         state.tile=technique==null?3:state.spatial?com.jjkcraft.client.vfx.EnergySprites.spatialTile(technique.getPath()):com.jjkcraft.client.vfx.TechniqueMaterials.tile(technique);
         state.age=entity.tickCount+partialTicks;
 		Vec3 now = new Vec3(state.x, state.y, state.z);
@@ -92,6 +92,19 @@ public final class CursedBoltRenderer extends EntityRenderer<CursedBoltEntity, C
 	@Override
     public void submit(State state,PoseStack stack,SubmitNodeCollector collector,CameraRenderState camera){
         if(ClientConfig.effectsOff())return;
+        if(state.spatial){
+            // Limitless projectiles are light, not solid volumes: a mesh around the camera flooded the view.
+            Vec3 at=new Vec3(state.x,state.y,state.z);var trail=state.trail;int kind=com.jjkcraft.client.vfx.GlowFx.limitless(state.technique);
+            stack.pushPose();stack.translate(camera.pos.x-state.x,camera.pos.y-state.y,camera.pos.z-state.z);
+            com.jjkcraft.client.vfx.WorldFx.submitGlow(collector,stack,camera,f->{
+                double r=Math.max(.3,state.size*.55);
+                int rgb=state.color&0xFFFFFF;
+                com.jjkcraft.client.vfx.GlowFx.limitless(f,kind,at,r,1,rgb);
+                if(trail.size()>1)com.jjkcraft.client.vfx.GlowFx.tail(f,at,at.add(trail.getLast()),r,rgb,.8f);
+                return true;
+            });
+            stack.popPose();super.submit(state,stack,collector,camera);return;
+        }
         Vec3 right=new Vec3(camera.orientation.transform(new Vector3f(1,0,0))),up=new Vec3(camera.orientation.transform(new Vector3f(0,1,0)));
         double size=state.size;
         float near=(float)Math.clamp(camera.pos.distanceTo(new Vec3(state.x,state.y,state.z))/Math.max(1,size*1.5),.18,1);

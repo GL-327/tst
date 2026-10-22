@@ -24,6 +24,8 @@ public final class SpectralFx {
         if(ClientConfig.effectsOff()||!Set.of("jab","hook","backfist","heavy","uppercut","sweep","feint").contains(pose.move())||MELEE.getOrDefault(pose.entity(),-1L)==pose.started())return;
         MELEE.put(pose.entity(),pose.started());if(MELEE.size()>256)MELEE.clear();
         WorldFx.add(f->{var mc=Minecraft.getInstance();var entity=mc.level==null?null:mc.level.getEntity(pose.entity());if(entity==null)return false;
+            // Seen from inside, the arc surrounds the camera as floating panels; the first-person fists show the swing.
+            if(entity==mc.player&&mc.options.getCameraType().isFirstPerson())return true;
             float age=f.time()-pose.started();if(age>pose.startup()+pose.active()+4)return false;if(age<pose.startup()-1)return true;
             double yaw=Math.toRadians(entity.getYRot()),sweep=(age-pose.startup()+1)/Math.max(1,pose.active());
             Vec3 center=entity.position().add(0,pose.move().equals("sweep")?.4:entity.getBbHeight()*.7,0),right=new Vec3(Math.cos(yaw),0,Math.sin(yaw)),forward=new Vec3(-Math.sin(yaw),0,Math.cos(yaw));

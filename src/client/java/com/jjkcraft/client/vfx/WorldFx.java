@@ -48,6 +48,8 @@ public final class WorldFx {
 		final float time;
 		final boolean low;
         boolean depthOnly;
+        /** Set while glow effects draw their alpha-blended tints; additive calls are skipped. */
+        boolean tintPass;
         Vec3 viewForward=new Vec3(0,0,1),viewRight=new Vec3(1,0,0),viewUp=new Vec3(0,1,0);
 		int quads;
         int[] shared=new int[1];
@@ -76,6 +78,61 @@ public final class WorldFx {
             if(alpha*opacity<.025f||!budgetLeft())return;shared[0]++;quads++;
             if(depthOnly){for(Vec3 p:new Vec3[]{a,b,c,d})buffer.addVertex(pose,(float)(p.x-camera.x),(float)(p.y-camera.y),(float)(p.z-camera.z));return;}
             EnergySprites.surface(pose,buffer,a.subtract(camera),b.subtract(camera),c.subtract(camera),d.subtract(camera),tile,fade(color,alpha*opacity),u0,v0,u1,v1);
+        }
+        /**
+         * An additive camera-facing sprite from the glow atlas ({@link GlowFx} tiles). Intensity scales
+         * brightness; a glow the camera is inside fades away so it never floods the screen.
+         */
+        public void glow(Vec3 at,double size,int tile,int rgb,float intensity,double spin){
+            if(depthOnly||tintPass)return;
+            double near=size*.6,distance=at.distanceTo(camera);
+            if(distance<near)intensity*=(float)((distance/near)*(distance/near));
+            float k=Mth.clamp(intensity*opacity,0,1);
+            if(k<.01f||!budgetLeft())return;shared[0]++;quads++;
+            double half=size/2;
+            Vec3 u=viewRight.scale(Math.cos(spin)).add(viewUp.scale(Math.sin(spin))).scale(half);
+            Vec3 v=viewUp.scale(Math.cos(spin)).subtract(viewRight.scale(Math.sin(spin))).scale(half);
+            Vec3 c=at.subtract(camera);
+            glowVertex(c.subtract(u).subtract(v),rgb,k,tile,0,1);glowVertex(c.add(u).subtract(v),rgb,k,tile,1,1);
+            glowVertex(c.add(u).add(v),rgb,k,tile,1,0);glowVertex(c.subtract(u).add(v),rgb,k,tile,0,0);
+        }
+        /** An additive streak sprite stretched from {@code from} to {@code to}, turned toward the camera. */
+        public void streak(Vec3 from,Vec3 to,double width,int rgb,float intensity){
+            if(depthOnly||tintPass)return;
+            float k=Mth.clamp(intensity*opacity,0,1);
+            if(k<.01f||!budgetLeft())return;
+            Vec3 axis=to.subtract(from);Vec3 side=axis.cross(camera.subtract(from.lerp(to,.5)));
+            if(side.lengthSqr()<1e-10)return;shared[0]++;quads++;
+            side=side.normalize().scale(width/2);
+            Vec3 a=from.subtract(camera),b=to.subtract(camera);
+            glowVertex(a.subtract(side),rgb,k,GlowFx.STREAK,0,1);glowVertex(b.subtract(side),rgb,k,GlowFx.STREAK,1,1);
+            glowVertex(b.add(side),rgb,k,GlowFx.STREAK,1,0);glowVertex(a.add(side),rgb,k,GlowFx.STREAK,0,0);
+        }
+        /**
+         * An alpha-blended glow sprite that tints what is behind it. Drawn under the additive light so
+         * energy keeps its hue against a bright sky instead of washing out to white.
+         */
+        public void tint(Vec3 at,double size,int tile,int rgb,float alpha,double spin){
+            if(!tintPass)return;
+            double near=size*.6,distance=at.distanceTo(camera);
+            if(distance<near)alpha*=(float)((distance/near)*(distance/near));
+            float a=Mth.clamp(alpha*opacity,0,1);
+            if(a<.01f||!budgetLeft())return;shared[0]++;quads++;
+            double half=size/2;
+            Vec3 u=viewRight.scale(Math.cos(spin)).add(viewUp.scale(Math.sin(spin))).scale(half);
+            Vec3 v=viewUp.scale(Math.cos(spin)).subtract(viewRight.scale(Math.sin(spin))).scale(half);
+            Vec3 c=at.subtract(camera);int color=ARGB.color((int)(a*255),rgb&0xFFFFFF);
+            tintVertex(c.subtract(u).subtract(v),color,tile,0,1);tintVertex(c.add(u).subtract(v),color,tile,1,1);
+            tintVertex(c.add(u).add(v),color,tile,1,0);tintVertex(c.subtract(u).add(v),color,tile,0,0);
+        }
+        private void tintVertex(Vec3 p,int color,int tile,float u,float v){
+            buffer.addVertex(pose,(float)p.x,(float)p.y,(float)p.z).setColor(color).setUv((tile+.02f+.96f*u)/GLOW_TILES,.02f+.96f*v)
+                .setOverlay(net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY).setLight(0xf000f0).setNormal(pose,0,1,0);
+        }
+        private void glowVertex(Vec3 p,int rgb,float k,int tile,float u,float v){
+            int color=ARGB.color(255,(int)(((rgb>>16)&255)*k),(int)(((rgb>>8)&255)*k),(int)((rgb&255)*k));
+            buffer.addVertex(pose,(float)p.x,(float)p.y,(float)p.z).setColor(color).setUv((tile+.02f+.96f*u)/GLOW_TILES,.02f+.96f*v)
+                .setOverlay(net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY).setLight(0xf000f0).setNormal(pose,0,1,0);
         }
         public void sprite(Vec3 at,double width,double height,int tile,int color,float alpha,double spin){
             if(depthOnly)return;
@@ -131,6 +188,12 @@ public final class WorldFx {
 	private static final List<Effect> EFFECTS = new ArrayList<>();
     private static final List<Effect> SOLID=new ArrayList<>();
     private static final List<Effect> MATERIALS=new ArrayList<>();
+    private static final List<Effect> GLOWS=new ArrayList<>();
+    /** White-on-black sprites added to the frame (see tools/glow_atlas.py). */
+    static final net.minecraft.resources.Identifier GLOW_ATLAS=com.jjkcraft.JjkCraft.id("textures/vfx/glow_atlas.png");
+    static final int GLOW_TILES=8;
+    /** Light-emitting effects. The newest are kept when the list is full. */
+    public static void addGlow(Effect effect){if(!ClientConfig.effectsOff()){if(GLOWS.size()>=192)GLOWS.removeLast();GLOWS.addFirst(effect);}}
     public static void addMaterial(Effect effect){if(!ClientConfig.effectsOff()){if(MATERIALS.size()>=192)MATERIALS.removeLast();MATERIALS.addFirst(effect);}}
     public static void addSolid(Effect effect){if(!ClientConfig.effectsOff()&&SOLID.size()<96)SOLID.add(effect);}
 
@@ -139,6 +202,35 @@ public final class WorldFx {
 
 	public static void init() {
 		LevelRenderEvents.COLLECT_SUBMITS.register(WorldFx::render);
+	}
+
+	/**
+	 * Draws glow effects from an entity renderer. {@code cameraRelative} must be translated so its
+	 * origin is the camera, like the level pass; both the tint and the additive layer are submitted.
+	 */
+	public static void submitGlow(net.minecraft.client.renderer.SubmitNodeCollector collector, PoseStack cameraRelative,
+			net.minecraft.client.renderer.state.level.CameraRenderState cameraState, Effect draw) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null || ClientConfig.effectsOff()) {
+			return;
+		}
+
+		float time = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+		var orientation = cameraState.orientation;
+		Vec3 forward = new Vec3(orientation.transform(new org.joml.Vector3f(0, 0, -1)));
+		Vec3 right = new Vec3(orientation.transform(new org.joml.Vector3f(1, 0, 0)));
+		Vec3 up = new Vec3(orientation.transform(new org.joml.Vector3f(0, 1, 0)));
+		for (boolean tint : new boolean[] {true, false}) {
+			var type = tint ? RenderTypes.entityTranslucentEmissive(GLOW_ATLAS) : com.jjkcraft.client.render.JjkRenderTypes.glow(GLOW_ATLAS);
+			collector.submitCustomGeometry(cameraRelative, type, (pose, buffer) -> {
+				Frame frame = new Frame(pose, buffer, cameraState.pos, time, ClientConfig.lowVfx());
+				frame.tintPass = tint;
+				frame.viewForward = forward;
+				frame.viewRight = right;
+				frame.viewUp = up;
+				draw.render(frame);
+			});
+		}
 	}
 
 	public static void add(Effect effect) {
@@ -159,11 +251,12 @@ public final class WorldFx {
 		EFFECTS.clear();
         SOLID.clear();
         MATERIALS.clear();
+        GLOWS.clear();
 	}
 
 	private static void render(LevelRenderContext context) {
 		Minecraft mc = Minecraft.getInstance();
-		if (ClientConfig.effectsOff() || EFFECTS.isEmpty()&&SOLID.isEmpty()&&MATERIALS.isEmpty() || mc.level == null) {
+		if (ClientConfig.effectsOff() || EFFECTS.isEmpty()&&SOLID.isEmpty()&&MATERIALS.isEmpty()&&GLOWS.isEmpty() || mc.level == null) {
 			lastFrameQuads=0;
 			return;
 		}
@@ -185,6 +278,16 @@ public final class WorldFx {
         context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.entityTranslucentEmissive(EnergySprites.ATLAS),(pose,buffer)->{
             Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
             for(Iterator<Effect> it=MATERIALS.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
+        });
+        // Glow effects draw twice: alpha-blended tints first, then additive light on top. Neither writes
+        // depth, so overlapping glows layer freely.
+        context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.entityTranslucentEmissive(GLOW_ATLAS),(pose,buffer)->{
+            Frame frame=new Frame(pose,buffer,camera,time,low);frame.tintPass=true;frame.shared=shared;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
+            for(Effect effect:GLOWS)effect.render(frame);
+        });
+        context.submitNodeCollector().submitCustomGeometry(poseStack,com.jjkcraft.client.render.JjkRenderTypes.glow(GLOW_ATLAS),(pose,buffer)->{
+            Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;frame.viewForward=forward;frame.viewRight=right;frame.viewUp=up;
+            for(Iterator<Effect> it=GLOWS.iterator();it.hasNext();)if(!it.next().render(frame))it.remove();
         });
         context.submitNodeCollector().submitCustomGeometry(poseStack,RenderTypes.debugQuads(),(pose,buffer)->{
             Frame frame=new Frame(pose,buffer,camera,time,low);frame.shared=shared;

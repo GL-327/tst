@@ -16,5 +16,7 @@ public final class IrisCompat {
 	public static void init() {
 		// The pack's basic program: unlit coloured geometry, like the leash and debug lines.
 		IrisApi.getInstance().assignPipeline(JjkRenderTypes.DOME_PIPELINE, IrisProgram.BASIC);
+		// Energy glows are self-lit textured sprites, like spider eyes.
+		IrisApi.getInstance().assignPipeline(JjkRenderTypes.GLOW_PIPELINE, IrisProgram.EMISSIVE_ENTITIES);
 	}
 }

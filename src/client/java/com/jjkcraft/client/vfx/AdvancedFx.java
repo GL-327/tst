@@ -31,11 +31,13 @@ public final class AdvancedFx {
         ClientTickEvents.END_CLIENT_TICK.register(AdvancedFx::tick);
         HudElementRegistry.addLast(JjkCraft.id("traits_overlay"), (g, dt) -> {
             Minecraft mc = Minecraft.getInstance(); if (mc.player == null || mc.gui.hud.isHidden() || ClientConfig.effectsOff()) return;
+            // Soft edge tints rather than hard lines, which read as rendering glitches.
+            int w = g.guiWidth(), h = g.guiHeight();
             if (ClientAwakening.view().record().sixEyes()) {
-                int w = g.guiWidth(), h = g.guiHeight();
-                for (int n=0; n<8; n++) { int y = h*(n+1)/9; g.fill(0,y,20+n*3,y+1,0x504DBFFF); g.fill(w-20-n*3,y,w,y+1,0x504DBFFF); }
+                com.jjkcraft.client.ui.Ink.hGradient(g, 0, 0, 28, h, 0x224DBFFF, 0x004DBFFF);
+                com.jjkcraft.client.ui.Ink.hGradient(g, w - 28, 0, w, h, 0x004DBFFF, 0x224DBFFF);
             }
-            if (ClientProgress.get().heavenlyRestricted()) { g.fill(0,0,g.guiWidth(),2,0x5040DBBA); g.fill(0,g.guiHeight()-2,g.guiWidth(),g.guiHeight(),0x5040DBBA); }
+            if (ClientProgress.get().heavenlyRestricted()) { g.fillGradient(0, 0, w, 14, 0x2040DBBA, 0x0040DBBA); g.fillGradient(0, h - 14, w, h, 0x0040DBBA, 0x2040DBBA); }
         });
     }
     private static void tick(Minecraft mc) {
@@ -67,8 +69,11 @@ public final class AdvancedFx {
             boolean firstPerson = e == mc.player && mc.options.getCameraType().isFirstPerson();
             float partial = mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
             Vec3 base = e.getPosition(partial); int color = color(e);
-            if (!firstPerson && aura > 0) shell(f, e, base, color, aura);
-            if (e instanceof CurseEntity curse && (curse.isEmerging() || curse.getEntityData().get(CurseEntity.STATE) == com.jjkcraft.curse.brain.CurseBrain.State.CAST.ordinal())) {
+            // The shell marks a curse gathering energy. Drawn constantly around every curse and player it
+            // read as a glass cylinder; channelled techniques already draw their own aura.
+            boolean gathering = e instanceof CurseEntity curse && (curse.isEmerging() || curse.getEntityData().get(CurseEntity.STATE) == com.jjkcraft.curse.brain.CurseBrain.State.CAST.ordinal());
+            if (gathering && aura > 0) shell(f, e, base, color, aura);
+            if (gathering) {
                 double r = e.getBbWidth()*0.18; Vec3 core = base.add(0,e.getBbHeight()*0.7,0);
                 f.beam(core.add(0,-r,0),core.add(0,r,0),r*2,WorldFx.fade(color,0.75f),WorldFx.fade(color,0.1f));
             }

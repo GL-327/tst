@@ -58,12 +58,31 @@ public final class TechniqueMaterials {
         final Vec3 base=origin;
         var basis=com.jjkcraft.vfx.EffectOrientation.of(EffectAim.forward(e,caster));
         double size=field?Math.clamp(Math.abs(e.direction().x)*.3,.5,4):phase==TechniqueFxPayload.Phase.BURST?Math.clamp(Math.abs(e.direction().x)*.4,.7,5):wind?.35:phase==TechniqueFxPayload.Phase.HIT?.65:1.0;
+        // Where the effect sits this frame: windups follow the caster's hands, everything else stays put.
+        java.util.function.Function<WorldFx.Frame,Vec3> locate=f->{
+            if(!wind)return base;
+            var entity=mc.level==null?null:mc.level.getEntity(e.caster());if(entity==null)return null;
+            return entity==mc.player&&mc.options.getCameraType().isFirstPerson()?f.aimPoint(1.25):ChargeFx.anchor(entity,mc.getDeltaTracker().getGameTimeDeltaPartialTick(false),f.camera);
+        };
+        // The technique's own light under its material: on their own, materials read as painted solids.
+        // Dark techniques (shadows, ink) darken their surroundings instead of glowing.
+        int rgb=color&0xFFFFFF;boolean dark=((rgb>>16&255)*.3+(rgb>>8&255)*.59+(rgb&255)*.11)<70;
+        WorldFx.addGlow(f->{
+            if(f.time()>state.expires)return false;
+            if(f.camera.distanceToSqr(base)>96*96)return true;
+            Vec3 at=locate.apply(f);if(at==null)return false;
+            float t=Math.clamp((f.time()-now)/duration,0,1),alpha=field?Math.min(1,(state.expires-f.time())/8):(float)Math.pow(1-t,1.3);
+            double r=size*(wind?1:field?1:.55+.7*Math.sqrt(t));
+            if(dark){f.tint(at,r*2.6,GlowFx.SOFT,rgb,.55f*alpha,0);f.glow(at,r*.8,GlowFx.RING,GlowFx.lighten(rgb,.35f),.25f*alpha,0);}
+            else if(phase==TechniqueFxPayload.Phase.HIT||phase==TechniqueFxPayload.Phase.BURST)GlowFx.flash(f,at,r*1.5,rgb,t,.8f);
+            else{f.glow(at,r*2.6,GlowFx.SOFT,rgb,.4f*alpha,0);f.glow(at,r*.9,GlowFx.CORE,GlowFx.lighten(rgb,.55f),.35f*alpha,0);}
+            return true;
+        });
         WorldFx.addMaterial(f->{
             if(f.time()>state.expires){if(field)FIELDS.remove(key,state);return false;}
             if(f.camera.distanceToSqr(base)>96*96)return true;
             float t=Math.clamp((f.time()-now)/duration,0,1),alpha=field?Math.min(1,(state.expires-f.time())/8):(float)Math.pow(1-t,1.3);
-            Vec3 at=base;
-            if(wind){var entity=mc.level.getEntity(e.caster());if(entity==null)return false;at=entity==mc.player&&mc.options.getCameraType().isFirstPerson()?f.aimPoint(1.25):ChargeFx.anchor(entity,mc.getDeltaTracker().getGameTimeDeltaPartialTick(false),f.camera);}
+            Vec3 at=locate.apply(f);if(at==null)return false;
             double r=size*(wind?1:field?1:.55+.7*Math.sqrt(t));
             double spin=ClientConfig.reducedMotion()?0:(tile==7?-.4:tile==11?.04:f.time()*.017);
             if(at.distanceToSqr(f.camera)<.6*.6)return true;

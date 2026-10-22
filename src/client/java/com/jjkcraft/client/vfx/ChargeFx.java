@@ -28,7 +28,8 @@ public final class ChargeFx {
         var old=CHARGES.get(event.caster());if(old!=null){old.event=event;old.updated=now;return;}
         if(CHARGES.size()>=64)return;
         var charge=new Charge(event,now);CHARGES.put(event.caster(),charge);
-        WorldFx.addMaterial(f->render(charge,f));
+        if(GlowFx.limitless(event.technique().getPath())>=0&&SpectralFx.spatial(event.technique().getPath()))WorldFx.addGlow(f->render(charge,f));
+        else WorldFx.addMaterial(f->render(charge,f));
     }
     private static boolean render(Charge charge,WorldFx.Frame f){
         var e=charge.event;var mc=Minecraft.getInstance();var caster=mc.level==null?null:mc.level.getEntity(e.caster());
@@ -42,12 +43,13 @@ public final class ChargeFx {
         // Only -1 is the absent-color sentinel; otherwise Blue/Red/Purple lose their hues.
         int color=e.color()==-1?com.jjkcraft.client.state.ClientTechniques.definition(e.technique()).map(d->d.visuals().color()).orElse(0x9ebaff):e.color();
         if(spatial){
-            int tile=EnergySprites.spatialTile(name);
-            EnergySprites.orb(f,at,r,tile,color,.98f);
-            if(tile==2){
-                double spread=r*(.50-.18*Math.min(1,q));Vec3 right=f.viewRight.scale(spread);
-                VolumeMesh.orb(f,at.subtract(right),new Vec3(r*.3,r*.3,r*.3),0,0x499FFF,.65f,ClientConfig.reducedMotion()?0:-f.time()*.03);
-                VolumeMesh.orb(f,at.add(right),new Vec3(r*.3,r*.3,r*.3),1,0xFF4261,.65f,ClientConfig.reducedMotion()?0:f.time()*.03);
+            // Seen from the caster's own eyes the charge sits in the middle of the view: keep it lighter.
+            float view=caster==mc.player&&mc.options.getCameraType().isFirstPerson()?.7f:1f;
+            int rgb=color&0xFFFFFF;
+            switch(GlowFx.limitless(name)){
+                case 2->GlowFx.purple(f,at,r*.8,view,Math.min(1,q/2),rgb);
+                case 1->GlowFx.red(f,at,r*.7,view,rgb);
+                default->GlowFx.blue(f,at,r*.65,view,rgb);
             }
         }else{
             int tile=TechniqueMaterials.tile(e.technique());
@@ -58,15 +60,14 @@ public final class ChargeFx {
     }
     private static void shot(SpatialShotPayload p){
         var mc=Minecraft.getInstance();if(mc.level==null)return;stop(p.caster());float born=mc.level.getGameTime()+mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
-        WorldFx.addMaterial(f->{float t=(f.time()-born)/Math.max(1,p.ticks());if(t>1)return false;
-            Vec3 at=p.from().lerp(p.to(),Math.clamp(t,0,1));
-            EnergySprites.orb(f,at,p.radius()*.60,EnergySprites.spatialTile(p.technique().getPath()),p.color(),.95f);
-            Vec3 axis=p.to().subtract(p.from()).normalize();
-            for(int i=1;i<=f.segments(8);i++){
-                double length=Math.min(p.from().distanceTo(at),i*p.radius()*.5);
-                float alpha=(float)(.34*(1-i/9.0));double r=p.radius()*(.55-i*.035);
-                f.sprite(at.subtract(axis.scale(length)),r,r,4,p.color(),alpha,f.time()*.04+i*.4);
-            }return true;
+        int kind=GlowFx.limitless(p.technique().getPath());
+        int tint=p.color()==-1&&kind>=0?GlowFx.limitlessColor(kind):p.color()&0xFFFFFF;
+        WorldFx.addGlow(f->{float t=(f.time()-born)/Math.max(1,p.ticks());if(t>1)return false;
+            Vec3 at=p.from().lerp(p.to(),Math.clamp(t,0,1));double r=p.radius()*.6;
+            if(kind>=0)GlowFx.limitless(f,kind,at,kind==2?r:r*.8,1,tint);else GlowFx.orb(f,at,r,tint,1);
+            Vec3 back=at.subtract(p.to().subtract(p.from()).normalize().scale(Math.min(p.from().distanceTo(at),r*10)));
+            GlowFx.tail(f,at,back,r,tint,.85f);
+            return true;
         });
     }
 }
