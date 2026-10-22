@@ -34,10 +34,13 @@ Client config (`config/jjkcraft-client.json5`, also in Mod Menu through Cloth Co
 | `accessibility.reduceFlashing` | false | flashes and strobes become steady tints |
 | `accessibility.colorblindPalette` | false | swaps the palette for one that stays distinct for common colour vision deficiencies |
 
-Elements anchored at the top centre step below vanilla boss bars when any are showing. In the
-top-left column, the Mul meter steps below the grade badge, and the mission tracker below the
-badge, the Mul meter and the Culling Game panel, when they would overlap (for example when the
-badge's tags move to their own strip). Every
+Elements anchored at the top centre step below vanilla boss bars when any are showing. The
+top-left status column is 124 px wide: CE bar, grade badge, then the combat panel while combat
+is on. Event panels (Culling Game, Mul meter, mission tracker, ritual tracker, resonance) are
+placed directly under the grade badge and each steps below any column element above it that is
+showing, so the column never overlaps and closes up when a panel hides. Configs from before
+1.18 that still use an old default position are moved to the new one once (`hudRevision`);
+positions a player changed are kept. Every
 element hides with the vanilla HUD (F1). With Jade installed, Jade's look-at tooltip moves clear
 of any element it would cover (below one in the top half of the screen, above one in the bottom
 half), the way Jade moves it below boss bars.
@@ -46,19 +49,23 @@ half), the way Jade moves it below boss bars.
 
 | Element | Default place | Shows |
 |---|---|---|
-| CE bar | top left (6, 6) | segmented bar of current CE; danger colours and stripes while overexerted; a chevron regen indicator (two chevrons while idle-boosted); numbers |
-| Grade badge | top left (6, 30) | grade diamond and name, a thin progress line to the next grade, and state tags: HR (Heavenly Restriction), ZONE (Black Flash zone), RCT (reverse healing), VOW, DEBT, SENSE, SIMPLE (Simple Domain up), UNSETTLED. When the tags would run into the grade name they move to a strip under the badge |
-| Culling Game panel | top left (6, 66) | the game day; your colony and points, or the days left to enter one (red at 3 or fewer); rules in force; a STALLED or KOGANE tag. Shown only while the game runs and concerns you |
-| Technique hotbar | centre right | up to six slots stacked vertically: icon, cooldown ring and sweep, a red "!" when CE is too low, a glow while a channel or toggle is active, and a short shake with the reason when the server refuses a cast |
+| CE bar | top left (4, 4) | "CE" with a chevron regen indicator (two while idle-boosted) and the exact value above a full-width segmented bar; danger colours and moving stripes while overexerted |
+| Grade badge | top left (4, 28) | grade diamond and name, a thin progress line to the next grade, and state tags: HR (Heavenly Restriction), ZONE (Black Flash zone), RCT (reverse healing), VOW, DEBT, SENSE, SIMPLE (Simple Domain up), UNSETTLED. When the tags would run into the grade name they move to a strip under the badge |
+| Combat panel | top left (4, 46), under the grade badge | while Cursed Combat is on: the mode (MANUAL, AUTO with observed contact rate), the current move and combo, or STAGGERED; evade readiness or its cooldown; stamina and guard gauges; active fist coatings. The combat keys are shown once per world as a toast when combat is switched on |
+| Culling Game panel | top left, in the column | the game day; your colony and points, or the days left to enter one (red at 3 or fewer); rules in force; a STALLED or KOGANE tag. Shown only while the game runs and concerns you |
+| Selected power | bottom right (-4, -4), clear of the hotbar | the selected slot's icon with cooldown sweep and ring, a red wash when CE is too low and a pulse while active; the move's name (without its family prefix), its CE cost or status (cooldown, untamed, stunned), the refusal reason after a failed cast, the cast key, and Infinity's state when known. 118 px wide so it fits right of the hotbar at a 427 px GUI |
+| Charge ring | centre, around the crosshair | while a move is held: a ring filling to 100%, a second outer ring for 100–200% (Hollow Purple), the percentage and the CE/s drain |
+| Ritual tracker | top left, in the column | a Ten Shadows subjugation: time left, the shikigami, distance against the 48 m limit |
+| Resonance | top left, in the column | an original family's resonance (eight pips) and active wards |
 | Domain meter | top centre (below boss bars) | your domain (ready and cost, how long your CE can hold it, clashing, burnout) or the one you stand in (name, sure-hit, shielded); gamble reels; recitation count. Hidden when there is nothing to show |
 | Domain title | centre | step one of the domain sequence: "Domain Expansion" and the name written letter by letter over an ink flash |
-| Sense radar | bottom right | while sensing: presences as dots in their grade colour (diamonds for curses, squares otherwise), forward at the top, ticks for above or below |
+| Sense radar | centre right | while sensing: presences as dots in their grade colour (diamonds for curses, squares otherwise), forward at the top, ticks for above or below |
 | Promotion ceremony | full screen overlay | ink wash, a brush stroke in the new grade's colour, the grade name stroke by stroke; about 4 s; play continues |
 | Overexertion vignette | screen edge | dark red edge while overexerted, pulsing unless reduced flashing |
 | Domain overlay | full screen | edge distortion inside someone else's domain; the information flood while Overloaded |
 | Black Flash frame | full screen | red and black frame with a black lightning jag, clear around the crosshair, 0.4 s |
-| Mul meter | top left (6, 50), below the grade badge | Mul energy as a green bar with its number (Modulo, 1.1.0). Shown while the player has any, or is in a Modulo dimension |
-| Mission tracker | top left (6, 66), below the Mul meter | the Modulo mission's title (cut with an ellipsis) and its number (1/11), the objective, and where: the site with distance and compass direction, "elsewhere" when the site is in another dimension, or the Descent's coordinates while one is on. Hidden during the epilogue |
+| Mul meter | top left, in the column | Mul energy as a green bar with its number (Modulo, 1.1.0). Shown while the player has any, or is in a Modulo dimension |
+| Mission tracker | top left, in the column | the Modulo mission's title (cut with an ellipsis) and its number (1/11), the objective, and where: the site with distance and compass direction, "elsewhere" when the site is in another dimension, or the Descent's coordinates while one is on. Hidden during the epilogue |
 | Dialogue box | bottom centre (0, -62) | the speaker's name in the Modulo green and their line; the narrator's lines in paper colour with no name. Lines queue and each stays about 3 s plus its length; drawn over recent chat so a line is never hidden |
 | Epilogue | full screen overlay | a dark veil over the world and the whole HUD, the title, and six lines of text, five seconds each (about 32 s); no voice |
 | Toasts | top right | short ink toasts: Black Flash, Domain Expansion, clash results, jackpots, promotion, Reverse awakening, Culling Game joins, points, new rules, deadline warnings, the game's start and end |

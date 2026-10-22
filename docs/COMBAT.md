@@ -1,7 +1,8 @@
 # Cursed Combat — 1.12.1-preview
 
-Combat status is a compact panel at the bottom left, with guard, evasive readiness and
-observed Auto contact statistics. Move/scale/hide it independently in client HUD settings.
+Combat status is a compact panel in the top-left status column (since 1.18), under the CE
+bar and grade badge, with stamina, guard, evasive readiness and observed Auto contact
+statistics. Move/scale/hide it independently in client HUD settings or the F6 design studio.
 Actual melee stagger interrupts pending windups and held channels/charges; a brief stun
 cannot let an interrupted windup resume later. Manual parries and evasive timing still apply.
 

@@ -37,8 +37,8 @@ python tools/energy_materials.py
 python tools/verify_spectral_assets.py
 ```
 
-`studio_curses.py` contains the anatomy recipes. `studio_materials.py` paints the pixel
-materials. The creatures-only option avoids touching equipment artwork. The VFX atlas
+`studio_curses.py` contains the anatomy recipes. `curse_materials.py` paints the pixel
+materials and faces (rewritten in 1.18.0 with shaded panels and lit eyes). The creatures-only option avoids touching equipment artwork. The VFX atlas
 contains sixteen guttered glows and sixteen seamless opaque surfaces. Low VFX reduces
 mesh detail; the shared geometry budget and existing accessibility controls still apply.
 

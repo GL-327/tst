@@ -18,6 +18,16 @@ client only draws it.
   pack's basic program (see `docs/TEST_REPORT.md`, "Compatibility runs").
 - Additive light can't draw darkness: dark looks come from translucent geometry (domain domes,
   colony barriers) or from bright rims around an unlit centre.
+- Cursed-energy light (1.18) uses the mod's own `jjkcraft:pipeline/glow`: additive, textured
+  from `textures/vfx/glow_atlas.png` (`tools/glow_atlas.py`), depth-tested without writing
+  depth, with a small fragment shader (`shaders/core/glow.fsh`) that fades light out with fog
+  instead of mixing toward the fog colour. Each glow effect also draws an alpha-blended tint
+  pass first, so colours stay saturated against a bright sky. `GlowFx` holds the shared looks:
+  Blue (inward streaks and an accretion disk), Red (outward streaks and a pressure ring),
+  Purple (a dark violet mass with a lit rim, crackling arcs and, while charging, a blue and a red
+  mote that merge), generic orbs, impact flashes and comet tails. A glow the camera is inside
+  fades away so releases never fill the screen. Iris assigns the pipeline its emissive-entity
+  program.
 - Every strong effect has a tell: windups draw a glyph ring and wisps spiralling in for the whole
   cast time, so others can react.
 - Budgets: world effects share a quad budget per frame, particles are capped
@@ -53,7 +63,8 @@ Each technique's data picks a colour, a particle, sounds, camera shake, hit-stop
 | Block (barrier) | shards where the blow lands |
 
 Bolts (`CursedBoltRenderer`): a soft round glow in three layers (halo, core, white centre) that
-fades to the rim, and a ribbon trail of recent positions, in the technique's colour.
+fades to the rim, and a ribbon trail of recent positions, in the technique's colour. Limitless
+bolts (Blue, Red, Hollow Purple) draw their `GlowFx` signature and a comet tail instead.
 
 ## 4. Black Flash
 

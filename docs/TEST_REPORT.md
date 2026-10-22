@@ -1,5 +1,37 @@
 # Test report
 
+## 1.18.0-preview, 2026-10-22
+
+All **140 unit tests and 279 server scenarios passed** (`./gradlew build`), and the asset
+validator passed for 75 creature rigs, 1,200 clips and 300 atlases.
+
+Every native client scenario was run on this machine (NVIDIA GeForce RTX 5070, OpenGL, without Sodium or Iris):
+the full smoke suite, `relog` and all 19 focused suites (`refinementAll`, `masteryVfx`, `qol`,
+`reconcile`, `wheel`, `polish`, `dojo`, `vesselCombat`, `studio`, `output`, `charge`,
+`menagerie`, `spectral`, `atelier`, `arsenal`, `deep`, `overhaul`, `sandbox`,
+`personalization`, `revision`). **All of them passed** after the fixes below.
+
+Earlier releases only re-ran the focused suite for their own feature, so several older
+scenarios had drifted from the game and failed before any 1.18 change:
+
+- `refinement`: a fully trained Blue-coated jab now defeats the 500 HP test dummy outright
+  (after the 1.17.1 output buff), so the vanilla-hit and Red-coating checks use fresh dummies.
+- `masteryVfx`: expected the pre-1.17.1 ×3 mastery curve; it now checks the current formula.
+- `wheel`, `polish`: clicked the removed Practice-screen reverse-flow button; they now start
+  the drill by right-clicking a real focus stone and interrupting it by sneaking.
+- `deep`, `overhaul`: stepped through workshop pages with the old "next page" button; they now
+  use the page chooser.
+- Full smoke: expected 100 max CE at Grade 4 (starting reserves are 350–550) and a few CE of
+  regeneration during a dimension change (regeneration is now much faster at high grade); it
+  now compares with the server's values and pauses regeneration for the dimension check.
+
+Screenshot review of the new HUD, glow effects and curse textures caught and fixed: a faint
+fog-coloured square around additive sprites (the vanilla entity shader mixes toward the fog
+colour; the glow pipeline now has its own fog-fading fragment shader), Hollow Purple washing
+the whole screen on release (its projectile mesh enclosed the camera), the Infinity status
+line truncating beside the hotbar, and an over-small cyclops eye on Hunger Eclipse.
+Iris/Sodium compatibility runs were not repeated for this release.
+
 ## 1.17.1-preview, 2026-10-22
 
 All **140 unit tests and 279 server scenarios passed**, and packaging succeeded in

@@ -24,9 +24,10 @@ Only releasing the input that began a charge fires it; another button/key releas
 Melee stagger, stun, death, spectator mode and dimension changes cancel the affected cast.
 An unrelated slot edit preserves a charge; removing that move's binding cancels it.
 
-The compact combat panel defaults to the bottom left. The charge meter sits below the
-selected-power badge on the right. Configure their visibility, position, scale and opacity
-independently in the client HUD settings.
+Since 1.18 the compact combat panel sits in the top-left status column, the selected-power
+badge beside the hotbar on the right, and the charge meter is a ring around the crosshair.
+Configure their visibility, position, scale and opacity independently in the client HUD
+settings.
 
 ## Limitless
 

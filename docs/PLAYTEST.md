@@ -1,4 +1,4 @@
-# Playing 1.12.1-preview
+# Playing Jujutsu Craft
 
 For chargeable moves, hold R or a direct power key, then release to cast. Three seconds reaches 100%;
 Hollow Purple reaches 200% after seven seconds. Watch the CE/s meter: long holds are
@@ -22,7 +22,7 @@ physical mobility. Held tools with granted techniques also cast on Use. See
 
 Y toggles combat; Backslash changes the selected power bank.
 
-Manual defaults: U light hit, double-U uppercut; I heavy hit, double-I sweep; hold Right Bracket (]) to block.
+Manual defaults: U right punch and I left punch (double-tap either for an uppercut); semicolon (;) heavy hit, double-tap for a sweep; hold Right Bracket (]) to block. O toggles CE-coated fists.
 Crouching blocks low sweeps. Raise guard just before contact for a parry. Left Alt dashes;
 while staggered it spends 33 CE on an escape with a ten-second cooldown. All are rebindable.
 Q still drops, E opens inventory and F swaps hands. Normal number keys still select inventory.

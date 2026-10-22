@@ -5,6 +5,38 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.18.0-preview, 2026-10-22
+
+A quality pass across the HUD, effects, curse art, stability and documentation.
+
+- Reorganised the HUD into one top-left status column (CE, grade, then combat stamina,
+  guard and evade), with Culling Game, ritual and resonance panels stacking beneath it.
+  The combat panel no longer covers chat. The selected power sits beside the hotbar with
+  its cost, cooldown or failure reason; charging shows a ring around the crosshair. Combat
+  key hints appear once as a notification instead of permanently. Layouts a player moved
+  keep their position; untouched ones move to the new defaults.
+- Added an additive glow layer for cursed energy with its own fog-aware shader. Blue,
+  Red and Hollow Purple charges, fields, projectiles and impacts are now light rather than
+  opaque balls: Blue pulls streaks inward, Red throws them outward behind a pressure ring,
+  and Purple is a violet mass with a crackling rim that merges a blue and a red mote while
+  charging. Its release no longer floods the screen. Every other family's effect gains a
+  matching light (or a shadow tint for dark techniques).
+- Repainted all 52 curses: shaded panels lit from above, material detail (veins, cracks,
+  rust, talisman script, folds), sunken eyes with lit slit-pupil irises and fanged maws.
+  Ten Mouth Sovereign, Ossuary King and Hunger Eclipse have new silhouettes.
+- Removed visual artifacts: the translucent cylinder drawn around every curse and other
+  player, the ring of panels around your own body when punching in first person, and the
+  hard Six Eyes / Heavenly Restriction screen-edge lines (now soft tints).
+- Performance: curse and shikigami renderers no longer search resource packs every frame;
+  expired mob cooldowns are pruned instead of accumulating for the whole session.
+- Profile: Output and Control now say what they measure ("CE spent", "% landed"), and the
+  summary cards wrap long entries and list moves by name instead of cutting them off.
+- Limitless glows follow a move's personalized colour from the workshop.
+- Combat input actions are named constants rather than bare numbers.
+- Brought six client test scenarios up to date with the current game (they still expected
+  the pre-1.17 Practice buttons, workshop navigation and mastery curve) and rewrote the
+  README with accurate default keys and install steps.
+
 ## 1.17.1-preview, 2026-10-22
 
 - Buffed base technique power by 20%, strengthened higher-grade scaling and increased
