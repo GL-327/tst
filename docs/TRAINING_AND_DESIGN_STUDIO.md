@@ -1,4 +1,35 @@
-# Physical training and the visual design studio — 1.17
+# Physical training, technique output and the visual design studio — 1.17.1
+
+## Stronger techniques and higher output
+
+Techniques now start with 20% more power. Grade scaling grows more strongly at higher
+grades, and landed-use mastery keeps improving through four milestones. Mastery power
+bonuses are ×1.8 at the first milestone, ×3 at the second and ×6.3 at the fourth.
+At full Calamity grade, Output growth and mastery, a technique at its normal 100% output
+has about **4.4 times its previous power**. Summons, healing and damaging techniques
+share that power scaling. Movement and lasting utility also gain stronger mastery:
+up to +60% reach and +100% duration, with half the base mastery cost and recovery time.
+
+Open **Moves → Personalize → Core** to choose CE output. The ceiling now grows with your
+character instead of stopping at 300% forever. Before training bonuses, the grade ceilings
+are 300% at Grade 4, 450% at Grade 3, 600% at Semi-Grade 2, 800% at Grade 2, 1,050% at
+Semi-Grade 1, 1,400% at Grade 1, 1,900% at Special Grade and 2,500% at Calamity Grade.
+Each Output growth point adds 10 percentage points. Each move mastery milestone adds
+75, with continuous progress between milestones. The full ceiling is **3,000%**.
+The workshop displays your current ceiling and uses it for both sliders and typed values.
+
+Reach, area and duration limits also rise with grade, reaching 600%, 400% and 600%.
+Each move retains its own applicable settings and distance bounds. Increasing output
+raises CE cost faster than power; choose an output your reserves can sustain. Large
+bursts can exceed your current CE pool even when you have unlocked their output setting.
+
+For reinforcement and RCT, open **Practice → Energy / RCT settings**. These share the
+same grade and Output bonuses, with physical control training replacing move mastery:
+each control level adds 15 percentage points, up to 300. Both can reach 3,000%.
+Higher reinforcement has higher ongoing CE consumption; higher RCT output increases
+healing per beat and its CE cost. Learning either skill still requires its physical drills.
+Creative characters may select the full ceilings directly, including in the character editor.
+Changing settings does not spend CE until you use the power or enable reinforcement/healing.
 
 ## Train in the world
 

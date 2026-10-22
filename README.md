@@ -3,7 +3,11 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.17.0-preview.** Train through in-world drills and physical equipment, with
+**Status: 1.17.1-preview.** Techniques gain stronger grade/mastery scaling and earned CE
+output ceilings up to 3,000%, including reinforcement and RCT. Reach, area and duration
+limits also grow with grade. [Output and training guide](docs/TRAINING_AND_DESIGN_STUDIO.md).
+
+Train through in-world drills and physical equipment, with
 bounded strength, endurance, agility and weapon skill. **F6** opens a visual studio for
 dragging UI parts and building block-shaped training props, including live prop-pack
 exports. Shared UI styling is redesigned across menus and HUD panels. Weapons now use

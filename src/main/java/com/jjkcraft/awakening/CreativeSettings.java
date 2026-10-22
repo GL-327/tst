@@ -29,7 +29,7 @@ public record CreativeSettings(Identifier grade,int xp,Growth growth,Energy ener
             Codec.intRange(0,3000).fieldOf("birth").forGetter(Energy::birth),Codec.intRange(0,10000).fieldOf("trained").forGetter(Energy::trained),
             Codec.intRange(1,10).fieldOf("regen").forGetter(Energy::regen),Codec.doubleRange(0,1000000000).fieldOf("stored").forGetter(Energy::stored),
             Codec.BOOL.fieldOf("reinforcement").forGetter(Energy::reinforcement),Codec.BOOL.fieldOf("active").forGetter(Energy::active),
-            Codec.intRange(25,300).fieldOf("output").forGetter(Energy::output),Codec.intRange(25,300).fieldOf("healing").forGetter(Energy::healing),
+            Codec.intRange(25,3000).fieldOf("output").forGetter(Energy::output),Codec.intRange(25,3000).fieldOf("healing").forGetter(Energy::healing),
             Codec.intRange(25,100).fieldOf("threshold").forGetter(Energy::threshold),Codec.BOOL.fieldOf("rct").forGetter(Energy::rct),Codec.BOOL.fieldOf("auto_rct").forGetter(Energy::autoRct)
         ).apply(i,Energy::new));
     }

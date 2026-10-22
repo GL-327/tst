@@ -18,7 +18,7 @@ public record PracticeState(int birth, int trained, boolean reinforcement, boole
         Codec.INT.optionalFieldOf("potential_version",0).forGetter(PracticeState::potentialVersion)
     ).apply(i,PracticeState::new));
     public PracticeState { birth=PersonalizationMath.clamp(birth,0,3000);trained=PersonalizationMath.clamp(trained,0,10000);
-        output=PersonalizationMath.clamp(output,25,300);healing=PersonalizationMath.clamp(healing,25,300);healBelow=PersonalizationMath.clamp(healBelow,25,100);regenLevel=PersonalizationMath.clamp(regenLevel,0,10);active&=reinforcement; }
+        output=PersonalizationMath.clamp(output,25,com.jjkcraft.core.technique.OutputScaling.MAX_OUTPUT);healing=PersonalizationMath.clamp(healing,25,com.jjkcraft.core.technique.OutputScaling.MAX_OUTPUT);healBelow=PersonalizationMath.clamp(healBelow,25,100);regenLevel=PersonalizationMath.clamp(regenLevel,0,10);active&=reinforcement; }
     public PracticeState withBirth(int b){return new PracticeState(b,trained,reinforcement,active,output,healing,healBelow,regenLevel,rolled,potentialVersion);}
     public PracticeState withPotential(int b,int r){return new PracticeState(b,trained,reinforcement,active,output,healing,healBelow,r,true,CURRENT_POTENTIAL);}
     public PracticeState withTraining(){return withTraining(25);}

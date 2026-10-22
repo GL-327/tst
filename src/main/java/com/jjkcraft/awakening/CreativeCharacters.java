@@ -34,7 +34,7 @@ public final class CreativeCharacters {
             ||!Double.isFinite(s.bodyHealth())||s.bodyHealth()<4||s.bodyHealth()>100
             ||potential.birth()<0||potential.birth()>3000||potential.trained()<0||potential.trained()>10000||potential.regen()<1||potential.regen()>10
             ||!Double.isFinite(potential.stored())||potential.stored()<0||potential.stored()>1e9
-            ||potential.output()<25||potential.output()>300||potential.healing()<25||potential.healing()>300||potential.threshold()<25||potential.threshold()>100
+            ||potential.output()<25||potential.output()>3000||potential.healing()<25||potential.healing()>3000||potential.threshold()<25||potential.threshold()>100
             ||Arrays.stream(new int[]{growth.output(),growth.control(),growth.efficiency(),growth.domain()}).anyMatch(n->n<0||n>20)
             ||s.mastery().size()>512||s.traits().stream().anyMatch(id->traitRegistry.getValue(id)==null)
             ||s.learned().stream().anyMatch(id->Techniques.get(p.registryAccess(),id).isEmpty())

@@ -21,10 +21,14 @@ public final class Personalization {
     private static final RateLimiter LIMIT=new RateLimiter(4,8);
     private Personalization() { }
     public static TechniqueTuning get(LivingEntity caster,Identifier id) {
-        if(caster instanceof Player p){var saved=p.getAttachedOrCreate(TUNINGS).get(id);if(saved!=null)return saved;}
+        if(caster instanceof Player p){var saved=p.getAttachedOrCreate(TUNINGS).get(id);if(saved!=null)return constrain(p,id,saved);}
         return Techniques.get(caster.registryAccess(),id).map(TechniqueTuning::defaultFor).orElse(TechniqueTuning.DEFAULT);
     }
     public static TechniqueDefinition definition(LivingEntity caster,Identifier id,TechniqueDefinition raw) { return get(caster,id).apply(raw); }
+    private static TechniqueTuning constrain(Player p,Identifier id,TechniqueTuning tuning){
+        double mastery=Techniques.get(p.registryAccess(),id).map(d->TechniqueService.mastery(p,id,d)).orElse(0.0);
+        return tuning.limited(Progression.gradeRank(p.registryAccess(),p),Progression.get(p).growth().output(),mastery,p.isCreative());
+    }
     public static void init() {
         ExpressionArts.init();
         net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler,sender,server)->{
@@ -44,10 +48,12 @@ public final class Personalization {
         Awakening.addResetHook(p->{p.setAttached(TUNINGS,Map.of());p.setAttached(PersonalPacts.SEALED,0L);p.removeEffect(net.minecraft.world.effect.MobEffects.RESISTANCE);p.removeEffect(com.jjkcraft.effect.JjkEffects.BULKED);p.removeEffect(com.jjkcraft.effect.JjkEffects.SHRUNK);send(p);});
     }
     public static boolean save(ServerPlayer p,Identifier id,TechniqueTuning tuning) {
+        tuning=constrain(p,id,tuning);
         if(!PersonalPacts.maySave(p,id,tuning))return false;
         if(!TechniqueService.knows(p,id)||Techniques.get(p.registryAccess(),id).isEmpty())return false;
         tuning=tuning.normalized(Techniques.get(p.registryAccess(),id).orElseThrow());
-        if(tuning.equals(get(p,id)))return true;
+        var stored=p.getAttachedOrCreate(TUNINGS).getOrDefault(id,TechniqueTuning.defaultFor(Techniques.get(p.registryAccess(),id).orElseThrow()));
+        if(tuning.equals(stored))return true;
         var map=new HashMap<>(p.getAttachedOrCreate(TUNINGS));
         if(tuning.equals(TechniqueTuning.defaultFor(Techniques.get(p.registryAccess(),id).orElseThrow())))map.remove(id); else if(map.size()<256||map.containsKey(id))map.put(id,tuning);else return false;
         if(id.getPath().equals("infinity"))InfinityField.stop(p);

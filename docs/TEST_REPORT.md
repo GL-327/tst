@@ -1,5 +1,25 @@
 # Test report
 
+## 1.17.1-preview, 2026-10-22
+
+All **140 unit tests and 279 server scenarios passed**, and packaging succeeded in
+`build/output-balance-final-build.log`. New coverage checks monotonically increasing
+grade/training/mastery ceilings, paid output beyond 300%, finite extreme costs and
+substantially stronger veteran power. Every registered technique retains its behavior
+identity with the expanded tuning bounds.
+
+Server scenarios also verify effective limits on older saves, normalization before
+persistence, a real 1,000% Dismantle hit and its increased CE deduction, refusal with
+insufficient energy, control-drill limits for reinforcement/RCT, and four-digit creative
+settings through the codec and complete server character validation. The barrier
+regression now expects the intended stronger starter protection while still checking
+CE payment and removal when lowered.
+
+The focused native `output` scenario with Sodium/Iris **passed**. It uses the actual workshop and
+universal-skill fields to save 3,000%, checks the server replies, then lowers the character's
+grade/training and verifies that the client returns to the 300% ceiling. Its log is
+`build/output-balance-client.log`; screenshots stay under `build/`.
+
 ## 1.17.0-preview, 2026-10-22
 
 All **137 unit tests and 275 server scenarios passed** in `build/server-117-final.log`.

@@ -131,7 +131,7 @@ public final class TechniqueGameTests {
 
 		double ceBefore = CursedEnergy.current(player);
 		float through = DamageModifiers.apply(helper.getLevel(), player, helper.getLevel().damageSources().mobAttack(zombie), 10f);
-		helper.assertTrue(Math.abs(through - 3f) < 0.01, "70% of frontal damage blocked, got " + through);
+		helper.assertTrue(Math.abs(through - 1.6f) < 0.01, "buffed starter barrier blocks 84% of frontal damage, got " + through);
 		helper.assertTrue(ceBefore - CursedEnergy.current(player) > 4, "blocking costs CE");
 
 		TechniqueService.stop(player);

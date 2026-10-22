@@ -102,7 +102,7 @@ public final class CreativeTechniqueScreen extends JjkScreen {
             case 6->{
                 toggle("Learn reinforcement",x(),y(),col,reinforcement,v->{reinforcement=v;if(!v)active=false;});toggle("Learn RCT",x()+col+8,y(),col,rct,v->rct=v);
                 toggle("Reinforcement active",x(),y()+24,col,active,v->{active=v;if(v)reinforcement=true;});toggle("Automatic RCT",x()+col+8,y()+24,col,autoRct,v->autoRct=v);
-                number("Reinforcement output %",x(),y()+50,col,output,25,300,v->output=v);number("RCT output %",x()+col+8,y()+50,col,healing,25,300,v->healing=v);
+                number("Reinforcement output %",x(),y()+50,col,output,25,3000,v->output=v);number("RCT output %",x()+col+8,y()+50,col,healing,25,3000,v->healing=v);
                 number("Auto RCT below %",x(),y()+85,col,threshold,25,100,v->threshold=v);
                 String[] forms={"","spirit","transplanted"};int at=Arrays.asList(forms).indexOf(form);button("Body: "+(form.isEmpty()?"human":form),x()+col+8,y()+97,col,()->{form=forms[(at+1)%3];if(form.equals("spirit"))traits.add(JjkCraft.id("vengeful_spirit"));else traits.remove(JjkCraft.id("vengeful_spirit"));rebuildWidgets();});
             }

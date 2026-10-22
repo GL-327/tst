@@ -25,8 +25,10 @@ public final class SorceryPractice {
     private static final RateLimiter LIMIT=new RateLimiter(3,4);
     private static final Set<UUID> REINFORCED=new HashSet<>();
     private SorceryPractice() { }
-    public static PracticeState get(Player p){return p.getAttachedOrCreate(STATE);}
-    public static void set(ServerPlayer p,PracticeState state){CursedEnergy.checkpoint(p);p.setAttached(STATE,state);EnergySync.markDirty(p);Personalization.send(p);}
+    public static int outputLimit(Player p){return p.isCreative()?com.jjkcraft.core.technique.OutputScaling.MAX_OUTPUT:com.jjkcraft.core.technique.OutputScaling.outputLimit(Progression.gradeRank(p.registryAccess(),p),Progression.get(p).growth().output(),com.jjkcraft.training.Training.get(p).level("control")/5.0);}
+    private static PracticeState limited(Player p,PracticeState state){int cap=outputLimit(p);return state.output()<=cap&&state.healing()<=cap?state:state.tune(Math.min(cap,state.output()),Math.min(cap,state.healing()),state.healBelow());}
+    public static PracticeState get(Player p){return limited(p,p.getAttachedOrCreate(STATE));}
+    public static void set(ServerPlayer p,PracticeState state){CursedEnergy.checkpoint(p);p.setAttached(STATE,limited(p,state));EnergySync.markDirty(p);Personalization.send(p);}
     public static double base(Player p){var s=get(p);return (s.birth()>0?s.birth():com.jjkcraft.config.JjkConfig.server().energy.baseCapacity)+s.trained();}
     public static void ensureBirth(ServerPlayer p) {
         var s=get(p);

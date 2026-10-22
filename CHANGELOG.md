@@ -5,6 +5,17 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.17.1-preview, 2026-10-22
+
+- Buffed base technique power by 20%, strengthened higher-grade scaling and increased
+  veteran mastery to ×6.3 power, half cost/recovery, +60% reach and +100% duration.
+- Replaced the flat 300% output cap with earned ceilings up to 3,000%, based on grade,
+  Output growth and mastery. Reinforcement/RCT use control drills for their mastery bonus.
+  Reach, area and duration ceilings also grow with grade. Costs scale beyond the old cap.
+- Updated numeric fields, sliders, previews and creative character validation for higher
+  settings. Saved data and requests remain subject to the actual character's earned limits.
+- Expanded the training/design guide with output progression and usage instructions.
+
 ## 1.17.0-preview, 2026-10-22
 
 - Replaced survival menu purchases with measured physical drills. Added a recoverable

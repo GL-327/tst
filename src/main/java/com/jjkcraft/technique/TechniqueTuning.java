@@ -3,6 +3,7 @@ package com.jjkcraft.technique;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.jjkcraft.core.technique.PersonalizationMath;
+import com.jjkcraft.core.technique.OutputScaling;
 
 /** Each known move has its own persistent tuning, rather than modifying shared registry data. */
 public record TechniqueTuning(int output, int reach, int area, int duration, int cooldown, int mode,TechniqueDetails details,TechniquePact pact) {
@@ -20,12 +21,17 @@ public record TechniqueTuning(int output, int reach, int area, int duration, int
         Codec.INT.optionalFieldOf("mode",0).forGetter(TechniqueTuning::mode),TechniqueDetails.CODEC.optionalFieldOf("details",TechniqueDetails.DEFAULT).forGetter(TechniqueTuning::details),TechniquePact.CODEC.optionalFieldOf("pact",TechniquePact.NONE).forGetter(TechniqueTuning::pact)
     ).apply(i,TechniqueTuning::new));
     public TechniqueTuning {
-        output=PersonalizationMath.clamp(output,25,300); reach=PersonalizationMath.clamp(reach,25,300);
-        area=PersonalizationMath.clamp(area,50,200); duration=PersonalizationMath.clamp(duration,25,300);
+        output=PersonalizationMath.clamp(output,25,OutputScaling.MAX_OUTPUT); reach=PersonalizationMath.clamp(reach,25,OutputScaling.MAX_REACH);
+        area=PersonalizationMath.clamp(area,50,OutputScaling.MAX_AREA); duration=PersonalizationMath.clamp(duration,25,OutputScaling.MAX_DURATION);
         cooldown=PersonalizationMath.clamp(cooldown,25,400); mode=PersonalizationMath.clamp(mode,0,2);
         if(details==null)details=TechniqueDetails.DEFAULT; if(pact==null)pact=TechniquePact.NONE;
     }
     public double costMultiplier() { return PersonalizationMath.cost(output,reach,area,duration,cooldown); }
+    public TechniqueTuning limited(int rank,int points,double mastery,boolean creative){
+        return new TechniqueTuning(Math.min(output,creative?OutputScaling.MAX_OUTPUT:OutputScaling.outputLimit(rank,points,mastery)),
+            Math.min(reach,creative?OutputScaling.MAX_REACH:OutputScaling.reachLimit(rank)),Math.min(area,creative?OutputScaling.MAX_AREA:OutputScaling.areaLimit(rank)),
+            Math.min(duration,creative?OutputScaling.MAX_DURATION:OutputScaling.durationLimit(rank)),cooldown,mode,details,pact);
+    }
     public TechniqueTuning normalized(TechniqueDefinition d) {
         return new TechniqueTuning(TunedBehaviors.output(d.behavior())?output:100,TunedBehaviors.reach(d)?reach:100,TunedBehaviors.area(d.behavior())?area:100,
             TunedBehaviors.duration(d)?duration:100,cooldown,d.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior?mode:0,details.normalized(d),pact);

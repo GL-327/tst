@@ -19,7 +19,7 @@ class PersonalizationMathTest {
     }
     @Test void extremePacketsCannotMakeFreeOrInfiniteCasts(){
         for(int o:new int[]{Integer.MIN_VALUE,25,100,300,Integer.MAX_VALUE})for(int c:new int[]{Integer.MIN_VALUE,25,400,Integer.MAX_VALUE}){
-            double cost=PersonalizationMath.cost(o,o,o,o,c);assertTrue(Double.isFinite(cost)&&cost>=0.15&&cost<=64);
+            double cost=PersonalizationMath.cost(o,o,o,o,c);assertTrue(Double.isFinite(cost)&&cost>=0.15&&cost<=4096);
         }
     }
     @Test void birthRollHasLowAndHighPotentialAndNeverExceedsBounds(){

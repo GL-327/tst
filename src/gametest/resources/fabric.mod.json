@@ -36,7 +36,8 @@
       "com.jjkcraft.gametest.FieldBudgetGameTests",
       "com.jjkcraft.gametest.DirectionGameTests",
       "com.jjkcraft.gametest.VesselCombatGameTests",
-      "com.jjkcraft.gametest.DojoGameTests"
+      "com.jjkcraft.gametest.DojoGameTests",
+      "com.jjkcraft.gametest.OutputScalingGameTests"
     ],
     "fabric-client-gametest": [
       "com.jjkcraft.gametest.SmokeClientGameTest"

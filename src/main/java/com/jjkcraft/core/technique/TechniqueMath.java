@@ -10,11 +10,11 @@ public final class TechniqueMath {
     public static final double DEFAULT_DAMAGE_MULTIPLIER=3.0;
     public static double damage(double amount,double multiplier){return Math.max(0,amount)*(Double.isFinite(multiplier)?Math.clamp(multiplier,.1,10):DEFAULT_DAMAGE_MULTIPLIER);}
 	/** Damage bonus per grade rank above Grade 4. */
-	public static final double RANK_POWER = 0.08;
+	public static final double RANK_POWER = 0.12;
 	/** Mastered techniques deal this much more damage. */
-	public static final double MASTERY_POWER = 1.60;
+	public static final double MASTERY_POWER = 1.80;
 	/** Mastered techniques cost this much less. */
-	public static final double MASTERY_COST = 0.85;
+	public static final double MASTERY_COST = 0.80;
 	/** Upper bound on a target's CE ratio for scaling techniques. */
 	public static final double MAX_CE_RATIO = 3.0;
 
@@ -27,14 +27,15 @@ public final class TechniqueMath {
     }
     public static double masteryPower(double mastery) {
         double m=Math.clamp(mastery,0,4);
-        return m<=1 ? 1+.6*m : m<=2 ? 1.6+.65*(m-1) : 2.25+.375*(m-2);
+        return m<=1 ? 1+.8*m : m<=2 ? 1.8+1.2*(m-1) : 3+1.65*(m-2);
     }
-    public static double masteryCost(double mastery) {return 1-.15*Math.min(1,Math.max(0,mastery))-.20*Math.clamp((mastery-1)/3,0,1);}
-    public static double masteryRecovery(double mastery) {return 1-.15*Math.min(1,Math.max(0,mastery))-.20*Math.clamp((mastery-1)/3,0,1);}
-    public static double masteryReach(double mastery) {return 1+.075*Math.clamp(mastery,0,4);}
-    public static double masteryDuration(double mastery) {return 1+.125*Math.clamp(mastery,0,4);}
+    public static double masteryCost(double mastery) {return 1-.20*Math.min(1,Math.max(0,mastery))-.30*Math.clamp((mastery-1)/3,0,1);}
+    public static double masteryRecovery(double mastery) {return 1-.20*Math.min(1,Math.max(0,mastery))-.30*Math.clamp((mastery-1)/3,0,1);}
+    public static double masteryReach(double mastery) {return 1+.15*Math.clamp(mastery,0,4);}
+    public static double masteryDuration(double mastery) {return 1+.25*Math.clamp(mastery,0,4);}
+    public static double gradePower(int rank){int r=Math.clamp(rank,0,7);return 1.2*(1+RANK_POWER*r+.018*r*r);}
     public static double power(int rank,int outputPoints,double mastery,double vowMultiplier) {
-        return (1+RANK_POWER*Math.max(0,rank))*ProgressionMath.damageMultiplier(outputPoints)*masteryPower(mastery)*vowMultiplier;
+        return gradePower(rank)*ProgressionMath.damageMultiplier(outputPoints)*masteryPower(mastery)*vowMultiplier;
     }
     public static double cost(double base,int controlPoints,double mastery,double vowMultiplier) {
         return base*ProgressionMath.costMultiplier(controlPoints)*masteryCost(mastery)*vowMultiplier;
@@ -45,7 +46,7 @@ public final class TechniqueMath {
 
 	/** Damage multiplier for a caster. */
 	public static double power(int rank, int outputPoints, boolean mastered, double vowMultiplier) {
-		return (1 + RANK_POWER * Math.max(0, rank)) * ProgressionMath.damageMultiplier(outputPoints)
+		return gradePower(rank) * ProgressionMath.damageMultiplier(outputPoints)
 				* (mastered ? MASTERY_POWER : 1.0) * vowMultiplier;
 	}
 
