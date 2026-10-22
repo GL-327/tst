@@ -1,0 +1,8 @@
+{
+  "item": "jjkcraft:black_rope",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "on_hit": "dispel",
+  "amount": 9,
+  "description": "item.jjkcraft.black_rope.desc"
+}

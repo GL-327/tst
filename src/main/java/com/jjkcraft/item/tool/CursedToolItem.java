@@ -51,6 +51,7 @@ public class CursedToolItem extends Item {
 		CursedTools.get(attacker, stack).filter(tool -> CursedTools.usable(attacker, tool)).ifPresent(tool -> {
 			switch (tool.onHit()) {
 				case DISPEL -> {
+                    com.jjkcraft.technique.InfinityField.disrupt(target,100);
 					TechniqueService.cancel(target);
 					CursedEnergy.drain(target, tool.amount());
 					level.sendParticles(JjkParticles.of(JjkParticles.DOMAIN_SHARD, 0xE0E0F0, 0.8f), target.getX(), target.getY() + target.getBbHeight() * 0.6,

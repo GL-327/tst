@@ -2,7 +2,7 @@
   "name": "technique.jjkcraft.infinity",
   "description": "technique.jjkcraft.infinity.desc",
   "category": "passive",
-  "grade": "jjkcraft:grade_3",
+  "grade": "jjkcraft:grade_4",
   "cast": {
     "cost": 0,
     "cooldown": 0,

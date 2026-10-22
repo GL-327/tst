@@ -47,6 +47,13 @@ loom {
 	runs.configureEach {
 		ideConfigGenerated = true
 	}
+
+	// Optional isolated play profile for previewing a rework alongside another client.
+	runs.named('client') {
+		if (providers.gradleProperty('clientRunDir').isPresent()) {
+			runDir providers.gradleProperty('clientRunDir').get()
+		}
+	}
 }
 
 fabricApi {

@@ -410,7 +410,7 @@ public final class TechniqueService {
 		}
 
 		CastFailure failure = beginCharge(player, id, -1);
-		if(failure==CastFailure.NONE&&CHARGES.containsKey(player.getUUID()))onCastKey(player,-1,false);
+        if(failure==CastFailure.NONE&&CHARGES.containsKey(player.getUUID())&&CHARGES.get(player.getUUID()).id.equals(id))onCastKey(player,-1,false);
 		if (failure != CastFailure.NONE) {
 			feedback(player, -1, failure);
 		}
@@ -455,6 +455,7 @@ public final class TechniqueService {
 	// ---------------------------------------------------------------- casting
 
     private static CastFailure beginCharge(ServerPlayer player,Identifier id,int slot){
+        if(id.equals(com.jjkcraft.JjkCraft.id("infinity"))&&InfinityField.preferred(player))return InfinityField.toggle(player);
         if(CHARGES.containsKey(player.getUUID())||PENDING.stream().anyMatch(p->p.ctx().caster()==player))return CastFailure.BUSY;
         var found=Techniques.get(player.registryAccess(),id);if(found.isEmpty())return CastFailure.NOT_KNOWN;
         var d=Personalization.definition(player,id,found.get());
@@ -487,7 +488,7 @@ public final class TechniqueService {
 		}
 
 		TechniqueDefinition definition = Personalization.definition(caster,id,found.get());
-        if(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior&&InfinityField.on(caster)){CursedEnergy.checkpoint(caster);InfinityField.stop(caster);return CastFailure.NONE;}
+        if(definition.behavior() instanceof com.jjkcraft.technique.behavior.InfinityBehavior&&caster instanceof ServerPlayer p)return InfinityField.toggle(p);
         if(CHARGES.containsKey(caster.getUUID()))return CastFailure.BUSY;
         if(PENDING.stream().anyMatch(p->p.ctx().caster().getUUID().equals(caster.getUUID())))return CastFailure.BUSY;
 		CastMode mode = definition.cast().mode();

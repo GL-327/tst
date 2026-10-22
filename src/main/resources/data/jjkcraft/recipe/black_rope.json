@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:string",
+    "minecraft:string",
+    "minecraft:string",
+    "minecraft:string",
+    "jjkcraft:broken_knot",
+    "jjkcraft:cursed_energy_shard",
+    "jjkcraft:cursed_energy_shard",
+    "jjkcraft:cursed_energy_shard"
+  ],
+  "result": {
+    "id": "jjkcraft:black_rope",
+    "count": 1
+  }
+}

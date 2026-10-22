@@ -49,6 +49,8 @@ public final class JjkNetworking {
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.TuneReply.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeFamily.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.ShikigamiPayloads.Recipe.TYPE,com.jjkcraft.network.payload.ShikigamiPayloads.Recipe.CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.TechniqueMenuPayloads.Action.TYPE,com.jjkcraft.network.payload.TechniqueMenuPayloads.Action.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.TechniqueMenuPayloads.View.TYPE,com.jjkcraft.network.payload.TechniqueMenuPayloads.View.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.ShikigamiPayloads.Reply.TYPE,com.jjkcraft.network.payload.ShikigamiPayloads.Reply.CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeEdit.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeEdit.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.TYPE,com.jjkcraft.network.payload.PersonalizationPayloads.CreativeReply.CODEC);

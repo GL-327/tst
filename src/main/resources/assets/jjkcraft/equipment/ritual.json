@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jjkcraft:ritual"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "jjkcraft:ritual"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jjkcraft:ritual"
+      }
+    ]
+  }
+}

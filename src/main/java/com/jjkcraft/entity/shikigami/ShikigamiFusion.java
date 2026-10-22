@@ -28,11 +28,12 @@ public final class ShikigamiFusion {
     public static boolean save(ServerPlayer p,List<Identifier> ids){
         if(!TechniqueService.knows(p,JjkCraft.id("chimera_fusion"))||ids.size()<2||ids.size()>4||new HashSet<>(ids).size()!=ids.size())return false;
         var allowed=Techniques.all(p.registryAccess()).stream().filter(e->TechniqueService.knows(p,e.id())&&e.definition().behavior() instanceof SummonBehavior).map(e->((SummonBehavior)e.definition().behavior()).entity()).toList();
-        if(ids.stream().anyMatch(id->!allowed.contains(id)||id.equals(JjkCraft.id("transfigured_soul"))||id.equals(JjkCraft.id("custom_chimera"))))return false;
+        if(ids.stream().anyMatch(id->!allowed.contains(id)||!TenShadows.canSummon(p,id)||id.equals(JjkCraft.id("transfigured_soul"))||id.equals(JjkCraft.id("custom_chimera"))))return false;
         p.setAttached(RECIPE,List.copyOf(ids));return true;
     }
     public static CastResult cast(CastContext ctx,List<Identifier> fixed,Identifier result,int lifetime){
         var recipe=fixed.isEmpty()?ctx.caster().getAttachedOrCreate(RECIPE):fixed;
+        if(ctx.caster() instanceof net.minecraft.world.entity.player.Player p&&recipe.stream().anyMatch(id->!TenShadows.canSummon(p,id)))return miss(ctx,"Subjugate every component shikigami before fusing.");
         if(recipe.size()<2||recipe.size()>4)return miss(ctx,"Configure two to four components in Moves → Fusion first.");
         var type=ShadowBeasts.TYPES.get(result);if(type==null)return CastResult.miss(ctx.eye());
         var owned=ShikigamiEntity.ownedBy(ctx.level(),ShikigamiEntity.class,ctx.caster());var consumed=new ArrayList<ShikigamiEntity>();int flags=0;

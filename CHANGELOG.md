@@ -5,6 +5,26 @@ All notable changes are listed here. Versions follow the milestone plan in `docs
 phases: Phases 0 and 1 are 1.1.0, Phases 2 to 6 are 1.2.0 to 1.6.0, and Phase 7 is 2.0.0.
 Entries before 1.1.0 use the names of their time; `docs/NAMING.md` maps them to the canon names.
 
+## 1.12.2-preview, 2026-10-22
+
+- Reconciled GitHub main `5cb71c5` with the local rework. Retains the 51 families,
+  296 moves, variant wheels, Projection planner, RCT drills, combat polish and all
+  75 creature rigs from GitHub.
+- Ten Shadows subjugation integrates with the family wheel. Untamed survival summons
+  open ritual management; direct casts and fusions use the same persistent unlocks.
+  Hostile trials cannot act as friendly guards or fusion components.
+- Old local `family_*` loadouts migrate to `family/` bindings while preserving direct
+  slots, learned moves, mastery and the selected slot.
+- Fixed damage immunity from a stale `respawning` soul attachment. Existing affected
+  characters recover automatically, including on reopening their world.
+- Infinity defaults on with Limitless, preserves its manual toggle across death and
+  reconnect, and consumes CE until RCT is learned. Dispelling tools interrupt it.
+- Retains the local ritual armour, Black Rope, Vowbound Blade, Soulsteel Katana,
+  Warding Talisman and Sealed Reliquary alongside GitHub's equipment. Common weapon
+  IDs retain GitHub's behavior. Local painted sprites accent distant VFX impacts.
+- Successful Black Flashes now apply weapon wear, on-hit tool effects and the
+  combat-hit counter, while retaining the newer assisted-combat contact accounting.
+
 ## 1.12.1-preview, 2026-10-21
 
 - Limitless selectors have All, Blue, Red, Infinity and Purple filters on normal-size

@@ -36,6 +36,14 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 	private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
 	private @Nullable EntityReference<LivingEntity> owner;
 	private int lifetime = 600;
+	private boolean ritual, soloRitual=true;
+	private @Nullable LivingEntity ritualist;
+	public boolean isRitual(){return ritual;}
+	public void beginRitual(net.minecraft.server.level.ServerPlayer player,int ticks){
+		bind(player,ticks,1);ritual=true;ritualist=player;
+		var hp=getAttribute(Attributes.MAX_HEALTH);if(hp!=null){hp.setBaseValue(Math.max(20,hp.getBaseValue()));setHealth(getMaxHealth());}
+		setCustomName(net.minecraft.network.chat.Component.literal("Subjugation · ").append(getType().getDescription()));setCustomNameVisible(true);
+	}
 	protected double power = 1.0;
 
 	protected ShikigamiEntity(EntityType<? extends PathfinderMob> type, Level level) {
@@ -56,7 +64,8 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 
 	@Override
 	public @Nullable EntityReference<LivingEntity> getOwnerReference() {
-		return owner;
+		// A hostile trial must not appear as the caller's pet to combat/technique targeting.
+		return ritual?null:owner;
 	}
 
 	public int lifetime() {
@@ -65,6 +74,7 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 
 	@Override
 	protected boolean considersEntityAsAlly(Entity other) {
+		if(ritual)return other==this;
 		LivingEntity mine = getOwner();
 		if (mine != null && (other == mine || (other instanceof OwnableEntity ownable && ownable.getOwner() == mine))) {
 			return true;
@@ -96,13 +106,23 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 	@Override
 	protected void customServerAiStep(ServerLevel level) {
 		super.customServerAiStep(level);
-		LivingEntity mine = getOwner();
+		LivingEntity mine = ritual?ritualist:getOwner();
 		if (--lifetime <= 0 || mine == null || !mine.isAlive() || mine.level() != level() || mine.distanceTo(this) > 48) {
 			dissolve(level);
 			return;
 		}
 
 		LivingEntity target = ownerTarget();
+		if(ritual){
+			setTarget(mine);getLookControl().setLookAt(mine,60,60);
+			if(isNoGravity())setDeltaMovement(mine.getEyePosition().subtract(getEyePosition()).normalize().scale(.22));
+			else if(tickCount%5==0)getNavigation().moveTo(mine,1.25);
+			if(tickCount%25==0&&distanceTo(mine)<Math.max(2.2,getBbWidth()+.7)&&hasLineOfSight(mine)){
+				var attack=getAttribute(Attributes.ATTACK_DAMAGE);float damage=attack==null?3:(float)Math.max(2,attack.getValue());
+				mine.hurtServer(level,level.damageSources().mobAttack(this),damage);triggerAnim("action","attack");
+			}
+			return;
+		}
 		if (target != getTarget()) {
 			setTarget(target);
 		}
@@ -124,7 +144,7 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 
 	/** Every summon of this type the owner has out. */
 	public static <T extends ShikigamiEntity> List<T> ownedBy(ServerLevel level, Class<T> type, LivingEntity owner) {
-		return level.getEntitiesOfClass(type, owner.getBoundingBox().inflate(64), s -> s.getOwner() == owner);
+		return level.getEntitiesOfClass(type, owner.getBoundingBox().inflate(64), s -> s.getOwner() == owner&&!s.isRitual());
 	}
 
 	@Override
@@ -139,10 +159,21 @@ public abstract class ShikigamiEntity extends PathfinderMob implements GeoEntity
 
 	@Override
 	public void die(net.minecraft.world.damagesource.DamageSource source) {
+		if(ritual&&ritualist instanceof net.minecraft.server.level.ServerPlayer p){
+			Entity killer=source.getEntity();boolean yours=killer==p||killer instanceof ShikigamiEntity pet&&!pet.isRitual()&&pet.getOwner()==p;
+			TenShadows.defeated(this,p,soloRitual&&yours);
+		}
 		super.die(source);
 		if (level() instanceof ServerLevel level) {
 			dissolve(level);
 		}
+	}
+
+	@Override public boolean hurtServer(ServerLevel level,net.minecraft.world.damagesource.DamageSource source,float amount){
+		if(ritual&&source.getEntity()!=null){Entity attacker=source.getEntity();LivingEntity caller=ritualist;
+			if(attacker!=caller&&!(attacker instanceof ShikigamiEntity pet&&!pet.isRitual()&&pet.getOwner()==caller))soloRitual=false;
+		}
+		return super.hurtServer(level,source,amount);
 	}
 
 	@Override

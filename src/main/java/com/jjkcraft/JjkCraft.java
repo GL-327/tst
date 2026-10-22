@@ -119,6 +119,8 @@ public final class JjkCraft implements ModInitializer {
 		com.jjkcraft.awakening.BodyTransfer.init();
 		com.jjkcraft.awakening.ControlledCurses.init();
 		com.jjkcraft.entity.shikigami.ShikigamiFusion.init();
+        com.jjkcraft.entity.shikigami.TenShadows.init();
+        com.jjkcraft.technique.TechniqueFamilies.init();
 		com.jjkcraft.awakening.CharacterAwakening.init();
 
 		CurseMechanics.init();

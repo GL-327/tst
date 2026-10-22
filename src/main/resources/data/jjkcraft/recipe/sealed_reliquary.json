@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "jjkcraft:gate_seal",
+    "jjkcraft:folded_charm",
+    "minecraft:amethyst_block",
+    "jjkcraft:cursed_energy_shard",
+    "jjkcraft:cursed_energy_shard",
+    "jjkcraft:cursed_energy_shard"
+  ],
+  "result": {
+    "id": "jjkcraft:sealed_reliquary",
+    "count": 1
+  }
+}

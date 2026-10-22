@@ -3,15 +3,16 @@
 A Fabric mod for Minecraft Java 26.3 that adds cursed energy, cursed techniques, sorcerer
 grades, Domain Expansions, original curse mobs and a Culling Game event.
 
-**Status: 1.12.1-preview.** The follow-up adds Limitless branch filters, rebound mouse
-controls, a draggable Projection planner with terrain warnings, reliable Infinity filter
-saving and safer cast interruption. Workshop presets preserve vows and visual choices.
+**Status: 1.12.2-preview.** The GitHub and local reworks are reconciled: the current
+variant wheels, Projection planner, RCT training and 75 creature rigs now include
+Ten Shadows subjugation, the respawn-immunity repair, automatic Infinity with a saved
+toggle, and the additional local equipment. [Combined behavior and migration](docs/RECONCILIATION.md).
 
 The visual overhaul rebuilds 75 creature rigs with articulated
 limbs, individual UV materials, emissive accents and sixteen animation clips each. Spells
 use layered material effects, dark cores, orbiting filaments, crystals and blood tendrils.
 Combat adds a breathing stance, body weight shifts, two visible first-person fists and
-lighter impact pauses. Five new cursed weapons and three four-piece armor sets have
+lighter impact pauses. Eight new cursed weapons and four four-piece armor sets have
 crafting recipes and working combat bonuses. See [the visual and equipment guide](docs/VISUAL_OVERHAUL.md).
 
 Suitable moves such as Blue, Red, Purple, Piercing Blood and

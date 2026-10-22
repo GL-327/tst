@@ -115,7 +115,9 @@ public final class SoulSystem {
             }
             return InteractionResult.PASS;
         });
-        DamageModifiers.add((level, target, source, amount) -> target instanceof ServerPlayer p && !state(p).phase().equals("alive") && !state(p).phase().equals("spirit") ? 0 : amount);
+        // Transitional attachments can arrive after AFTER_RESPAWN when Fabric copies the old
+        // player. A living, corporeal respawn must never inherit death-menu damage immunity.
+        DamageModifiers.add((level, target, source, amount) -> target instanceof ServerPlayer p && protectedSoul(p) ? 0 : amount);
         ServerTickEvents.END_SERVER_TICK.register(SoulSystem::tick);
         net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register((handler, srv) -> { MENUS.remove(handler.getPlayer().getUUID()); TAKEOVER.remove(handler.getPlayer().getUUID()); });
     }
@@ -195,6 +197,18 @@ public final class SoulSystem {
             case "choosing" -> { p.setGameMode(GameType.SPECTATOR); send(p, false); }
             default -> { }
         }
+    }
+    private static boolean transitioning(SoulState soul) {
+        return Set.of("respawning", "becoming_spirit", "becoming_object", "reincarnating").contains(soul.phase());
+    }
+    private static boolean protectedSoul(ServerPlayer p) {
+        String phase = state(p).phase();
+        return !phase.equals("alive") && !phase.equals("spirit")
+            && (!transitioning(state(p)) || !p.isAlive() || p.isSpectator());
+    }
+    /** Also repairs saves written while a respawn attachment was still in transit. */
+    public static void finishPendingRespawn(ServerPlayer p) {
+        if (p.isAlive() && transitioning(state(p))) resolveRespawn(p);
     }
     private static void leaveGame(ServerPlayer p) {
         var game=CullingGame.state(server(p));
@@ -312,6 +326,7 @@ public final class SoulSystem {
     private static void tick(MinecraftServer server) {
         long now = now(server);
         for (ServerPlayer p : server.getPlayerList().getPlayers()) {
+            finishPendingRespawn(p);
             SoulState s = state(p);
             if (s.phase().equals("choosing") && p.isAlive()) { if(!p.isSpectator()) p.setGameMode(GameType.SPECTATOR); }
             if (s.phase().equals("spirit") && p.isAlive() && server.getTickCount()%40==0 && p.getHealth()<p.getMaxHealth() && CursedEnergy.trySpend(p,3)) p.heal(1);

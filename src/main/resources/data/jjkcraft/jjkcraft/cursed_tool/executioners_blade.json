@@ -1,0 +1,9 @@
+{
+  "item": "jjkcraft:executioners_blade",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_1",
+  "on_hit": "none",
+  "amount": 0,
+  "description": "item.jjkcraft.executioners_blade.desc",
+  "technique": "jjkcraft:cleave"
+}

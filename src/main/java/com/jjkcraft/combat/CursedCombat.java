@@ -303,8 +303,6 @@ public final class CursedCombat {
                     boolean landed = target.hurtServer(level, source instanceof Player p ? level.damageSources().playerAttack(p) : level.damageSources().mobAttack(source), (float) damage);
                     if (landed) {actualContact=true;
                         state.combo++;state.lastHit=level.getGameTime();
-                        net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffectsWithItemSource(level, target, damageSource, source.getMainHandItem());
-                        if (source.getMainHandItem().hurtEnemy(target, source)) source.getMainHandItem().postHurtEnemy(target, source);
                         Actor defender = actor(target);
                         if (defender.guardHeight < 0) defender.stunned = Math.max(defender.stunned, level.getGameTime() + move.stun());
                         target.knockback(move.knockback(), source.getX() - target.getX(), source.getZ() - target.getZ(), level.damageSources().mobAttack(source), 0f);
@@ -313,12 +311,16 @@ public final class CursedCombat {
                             defender.knockedUntil=level.getGameTime()+24;defender.stunned=Math.max(defender.stunned,defender.knockedUntil);defender.move=null;defender.buffered=false;
                             target.needsSync=true;
                         }
-                        if (source instanceof ServerPlayer p) Progression.addCounter(p, "combat_hits", 1);
                         impact(level,source,target,knockedDown(target)?1:0);
                     }
                 }
+                if(actualContact){
+                    net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffectsWithItemSource(level,target,damageSource,source.getMainHandItem());
+                    if(source.getMainHandItem().hurtEnemy(target,source))source.getMainHandItem().postHurtEnemy(target,source);
+                }
             } finally { INCOMING.remove(target.getUUID()); }
             if(actualContact&&state.assisted&&!state.autoContact){state.autoHits++;state.autoContact=true;}
+            if(actualContact&&source instanceof ServerPlayer p)Progression.addCounter(p,"combat_hits",1);
             if(actualContact&&source instanceof CurseEntity c)c.combatLanded(level,target);
             if (source instanceof CurseEntity curse && !java.util.Set.of("jab","heavy","uppercut","sweep").contains(state.moveId)) curse.triggerAnim("action", "attack");
             sparks(level, target, state.moveId.equals("heavy") ? 0xE0303F : 0xB1A0E8, 8);

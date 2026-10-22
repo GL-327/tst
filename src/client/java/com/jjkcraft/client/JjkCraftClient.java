@@ -102,6 +102,7 @@ public final class JjkCraftClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.InfinityPayload.TYPE,(payload,ctx)->ClientTechniques.accept(payload));
 		ClientConfig.init();
+        com.jjkcraft.client.vfx.TexturedFx.init();
         com.jjkcraft.client.combat.OriginalArtsHud.init();
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ProjectionPayloads.Reply.TYPE,(reply,context)->com.jjkcraft.client.screen.ProjectionPlannerScreen.accept(reply));
 		JjkKeys.init();
@@ -132,6 +133,7 @@ public final class JjkCraftClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(ProgressSyncPayload.TYPE, (payload, context) -> ClientProgress.accept(payload));
 		ClientPlayNetworking.registerGlobalReceiver(PromotionPayload.TYPE, (payload, context) -> PromotionCeremony.start(payload));
 		ClientPlayNetworking.registerGlobalReceiver(TechniqueSyncPayload.TYPE, (payload, context) -> ClientTechniques.accept(payload));
+        ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.TechniqueMenuPayloads.View.TYPE,(payload,context)->com.jjkcraft.client.state.ClientTechniqueMenus.accept(payload));
         ClientPlayNetworking.registerGlobalReceiver(com.jjkcraft.network.payload.ChargePayload.TYPE,(payload,context)->ClientTechniques.accept(payload));
 		ClientPlayNetworking.registerGlobalReceiver(CastFeedbackPayload.TYPE, (payload, context) -> {
 			ClientTechniques.accept(payload);
@@ -153,6 +155,7 @@ public final class JjkCraftClient implements ClientModInitializer {
 			com.jjkcraft.client.state.ClientAwakening.reset();
 			ClientProgress.reset();
 			ClientTechniques.reset();
+            com.jjkcraft.client.state.ClientTechniqueMenus.reset();
 			ClientSensing.reset();
 			ClientDomains.reset();
 			ClientSorcery.reset();

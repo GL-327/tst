@@ -35,6 +35,7 @@ public final class TechniqueFxClient {
 	public static void reset() {
 		REMOTE_ACTIVE.clear();
         SpectralFx.clear();
+        TexturedFx.clear();
 	}
 
 	public static void handle(TechniqueFxPayload fx) {
@@ -61,6 +62,9 @@ public final class TechniqueFxClient {
 		float now = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		boolean involvesMe = mc.player != null && (fx.caster() == mc.player.getId() || fx.targets().contains(mc.player.getId()));
         boolean spectral=SpectralFx.event(fx,color,now);
+        // Keep GitHub's clear spatial envelopes; material sprites accent distant impacts only.
+        if((fx.phase()==TechniqueFxPayload.Phase.HIT||fx.phase()==TechniqueFxPayload.Phase.BURST)
+            &&mc.player!=null&&mc.player.getEyePosition().distanceToSqr(fx.origin())>6.25)TexturedFx.event(fx,color,now);
 
 		switch (fx.phase()) {
 			case WINDUP -> {if(!spectral)windup(caster, def, color);}

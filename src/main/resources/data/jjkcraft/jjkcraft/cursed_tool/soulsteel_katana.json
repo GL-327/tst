@@ -1,0 +1,9 @@
+{
+  "item": "jjkcraft:soulsteel_katana",
+  "kind": "weapon",
+  "grade": "jjkcraft:grade_2",
+  "on_hit": "siphon",
+  "amount": 3,
+  "description": "item.jjkcraft.soulsteel_katana.desc",
+  "technique": "jjkcraft:grudge_bolt"
+}

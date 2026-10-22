@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "S S",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": "jjkcraft:cursed_energy_shard"
+  },
+  "result": {
+    "id": "jjkcraft:ritual_coat",
+    "count": 1
+  }
+}

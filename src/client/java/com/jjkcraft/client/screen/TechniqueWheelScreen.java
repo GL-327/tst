@@ -32,8 +32,10 @@ public final class TechniqueWheelScreen extends Screen {
         entries=family==null?ClientTechniques.state().loadout():ClientTechniques.variants(family).stream().filter(id->inBranch(id,branch)).map(Optional::of).toList();
         hovered=Math.clamp(hovered,0,Math.max(0,entries.size()-1));page=hovered/12;
         if(limitless()&&width>=320)for(int i=0;i<BRANCHES.length;i++){final int b=i;var button=addRenderableWidget(new InkButton(7,height/2-49+i*20,57,18,Component.literal(BRANCHES[i]),v->{branch=b;page=hovered=0;scrolling=true;rebuildWidgets();}).selected(i==branch));button.active=held<0&&ClientTechniques.variants(family).stream().anyMatch(id->inBranch(id,b));}
+        if(family!=null&&family.getPath().equals("family/ten_shadows"))addRenderableWidget(new InkButton(7,35,90,20,Component.literal("Subjugation"),b->minecraft.gui.setScreen(new TechniqueAbilityScreen(com.jjkcraft.JjkCraft.id("ten_shadows")))));
     }
     private boolean limitless(){return family!=null&&family.getPath().equals("family/limitless");}
+    private boolean untamed(Identifier id){return minecraft.player!=null&&!minecraft.player.isCreative()&&ClientTechniques.definition(id).filter(d->!com.jjkcraft.client.state.ClientTechniqueMenus.allowed(d)).isPresent();}
     private static boolean inBranch(Identifier id,int branch){String p=id.getPath();return switch(branch){case 1->p.contains("blue");case 2->p.contains("red");case 3->p.equals("infinity");case 4->p.contains("purple");default->true;};}
     public int entryCount(){return entries.size();}
     public Optional<Identifier> entry(int index){return index>=0&&index<entries.size()?entries.get(index):Optional.empty();}
@@ -71,7 +73,7 @@ public final class TechniqueWheelScreen extends Screen {
             String detail=family==null?"Slot "+(hovered+1)+(id.filter(TechniqueBindings::family).isPresent()?" · family selector":""):d.map(v->String.format(Locale.ROOT,"%.0f CE · %s",ClientTechniques.cost(id.orElseThrow()),v.cast().chargeable()?"hold to charge":v.cast().mode()==CastMode.TOGGLE?"toggle":"instant")).orElse("");
             Ink.centered(g,Ink.fit(Component.literal(detail),112),cx,cy+1,Palette.energyHigh(),1);
             var failure=ClientTechniques.recentFailure(slot);if(family!=null&&failure!=CastFailure.NONE)Ink.centered(g,Ink.fit(Component.translatable(failure.translationKey()),120),cx,cy+15,Palette.danger(),1);
-            else if(family!=null&&id.isPresent()&&d.isPresent()&&held<0){long ticks=ClientTechniques.state().readyAt(id.get())-com.jjkcraft.client.state.ClientEnergy.gameTime();String ready=ClientTechniques.activeIs(id.get())?"ACTIVE · click to stop":ticks>0?String.format(Locale.ROOT,"Ready in %.1f s",ticks/20.0):!ClientTechniques.gradeAllows(d.get())?"Higher grade required":!ClientTechniques.affordable(id.get())?"Low CE (estimate)":"READY";Ink.centered(g,Ink.fit(Component.literal(ready),112),cx,cy+15,ticks>0?Palette.TEXT_DIM:Palette.gold(),1);}
+            else if(family!=null&&id.isPresent()&&d.isPresent()&&held<0){long ticks=ClientTechniques.state().readyAt(id.get())-com.jjkcraft.client.state.ClientEnergy.gameTime();String ready=ClientTechniques.activeIs(id.get())?"ACTIVE · click to stop":ticks>0?String.format(Locale.ROOT,"Ready in %.1f s",ticks/20.0):!ClientTechniques.gradeAllows(d.get())?"Higher grade required":untamed(id.get())?"UNTAMED � subjugate":!ClientTechniques.affordable(id.get())?"Low CE (estimate)":"READY";Ink.centered(g,Ink.fit(Component.literal(ready),112),cx,cy+15,ticks>0?Palette.TEXT_DIM:Palette.gold(),1);}
         }
         var charge=ClientTechniques.charge();if(held>=0&&charge.slot()>=0)Ink.centered(g,Component.literal("CHARGE "+charge.percent()+"% · release to cast"),cx,cy+18,Palette.accent(),1);
         String hint=family==null?"Scroll / point · release "+JjkKeys.WHEEL.getTranslatedKeyMessage().getString()+" to select":"Hold click / "+JjkKeys.CAST.getTranslatedKeyMessage().getString()+" to cast · "+(pinButton()==InputConstants.MOUSE_BUTTON_RIGHT?"right":"middle")+" click pins move";
@@ -85,9 +87,15 @@ public final class TechniqueWheelScreen extends Screen {
         hovered=Math.floorMod(hovered-(int)Math.signum(sy),entries.size());page=hovered/12;scrolling=true;return true;
     }
     private void select(){if(hovered>=0&&hovered<entries.size())ClientPlayNetworking.send(new SelectSlotPayload(hovered));onClose();}
-    private void begin(int mouse){if(held>=0||hovered<0||hovered>=entries.size()||entries.get(hovered).isEmpty())return;held=hovered;heldMouse=mouse;ClientPlayNetworking.send(new VariantCastPayload(slot,entries.get(held).orElseThrow()));}
+    private void begin(int mouse){if(held>=0||hovered<0||hovered>=entries.size()||entries.get(hovered).isEmpty())return;
+        var id=entries.get(hovered).orElseThrow();var d=ClientTechniques.definition(id).orElse(null);
+        if(d!=null&&minecraft.player!=null&&!minecraft.player.isCreative()&&!com.jjkcraft.client.state.ClientTechniqueMenus.allowed(d)){
+            minecraft.gui.setScreen(new TechniqueAbilityScreen(com.jjkcraft.JjkCraft.id("ten_shadows"),id));return;
+        }
+        held=hovered;heldMouse=mouse;ClientPlayNetworking.send(new VariantCastPayload(slot,id));}
     private void finish(){if(held<0)return;finishing=true;ClientPlayNetworking.send(new CastPayload(slot,false));held=-1;onClose();}
     @Override public boolean mouseClicked(MouseButtonEvent e,boolean twice){
+        if(family!=null&&family.getPath().equals("family/ten_shadows")&&e.x()>=7&&e.x()<97&&e.y()>=35&&e.y()<55)return super.mouseClicked(e,twice);
         if(limitless()&&width>=320&&e.x()>=7&&e.x()<64&&e.y()>=height/2-49&&e.y()<height/2+49)return super.mouseClicked(e,twice);
         if(hovered<0||hovered>=entries.size())return true;
         if(family==null){var id=entries.get(hovered);if(id.filter(TechniqueBindings::family).isPresent()){ClientPlayNetworking.send(new SelectSlotPayload(hovered));minecraft.gui.setScreen(new TechniqueWheelScreen(id.get(),hovered));}else select();return true;}

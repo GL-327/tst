@@ -40,6 +40,7 @@ public record SummonBehavior(Identifier entity, int count, int lifetime) impleme
 
 	@Override
 	public CastResult cast(CastContext ctx) {
+		if(ctx.caster() instanceof net.minecraft.world.entity.player.Player p&&!com.jjkcraft.entity.shikigami.TenShadows.canSummon(p,entity))return CastResult.miss(ctx.eye());
 		EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(entity);
 		var owned=ShikigamiEntity.ownedBy(ctx.level(),ShikigamiEntity.class,ctx.caster());
 		long retained=owned.stream().filter(e->e.getType()!=type||type==com.jjkcraft.entity.JjkEntities.TRANSFIGURED_SOUL).count();
